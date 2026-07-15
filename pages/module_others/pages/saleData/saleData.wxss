@@ -1,0 +1,267 @@
+.body {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.title-bg {
+	position: fixed;
+	top: -50rpx;
+	z-index: 1;
+	width: 100%;
+	height: 35%;
+	background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg7.png');
+	background-image: linear-gradient(-179deg, #e9cbad, #fff);
+	background-repeat: no-repeat;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+	width: 100%;
+	height: 100%;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg3.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.titleimg {
+	display: flex;
+}
+
+.titleimgone {
+	width: 40%;
+}
+
+.titleimgtwo {
+	width: 60%;
+}
+
+.top-image1 {
+	width: 190rpx;
+	height: 140rpx;
+	position: absolute;
+	top: 220rpx;
+	left: 80rpx;
+}
+
+.top-image2 {
+	width: 70%;
+	height: 450rpx;
+
+
+}
+
+.return_out {
+	position: fixed;
+	top: 100rpx;
+	width: 30%;
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 2;
+}
+
+.return {
+	width: 17rpx;
+	height: 31rpx;
+	margin-right: 15rpx
+}
+
+.module1 {
+	text-align: center;
+	background: #fff;
+	border-radius: 20rpx;
+}
+
+.title {
+	margin-top: 20rpx
+}
+
+.Tips {
+	margin-top: 50rpx;
+	color: rgb(136, 135, 135);
+	margin-bottom: 50rpx;
+}
+
+.popup-window {
+	background: white;
+	position: fixed;
+	top: 20%;
+	left: 5%;
+	width: 90%;
+	z-index: 98;
+	height: 600rpx;
+	padding: 10rpx;
+	border-radius: 5%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.popup-window-bg {
+	position: fixed;
+	left: 0rpx;
+	top: 20rpx;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 97;
+	display: flex;
+	justify-content: center;
+}
+
+.alertQRcode {
+    height: 150rpx;
+    display: flex;
+	flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+	width: 100%;
+}
+
+.QRcodebtn {
+	font-size: 26rpx;
+	border-radius: 50rpx;
+	height: 80rpx;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	width: 30%;
+	justify-content: center;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.thtd {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: auto;
+	padding: 0 10rpx;
+	margin: 0 10rpx 10rpx 10rpx;
+	z-index: 2;
+}
+
+.form {
+    flex: 1;
+    z-index: 2;
+	display: flex;
+	flex-direction: column;
+	width: 95%;
+	background-image: linear-gradient(#fff, #f1d9c1);
+	border-radius: 15rpx;
+	margin-left: 20rpx;
+	box-shadow: 0px 3px 4px #dbd3ca
+		/*阴影出现在元素下方*/
+}
+
+.from-table {
+	width: 100%;
+	position: absolute;
+	top: 20rpx;
+
+}
+
+.form_tittle {
+	width: 90%;
+	margin-left: 5%;
+	height: 60rpx;
+	display: flex;
+	font-size: 28rpx;
+	/* margin-top: 50rpx */
+	margin-top: 10%
+}
+
+.th1 {
+	width: 50%;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	font-size: 28rpx;
+	color: #381f12;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg9.png');
+	background-repeat: no-repeat;
+	margin-right: 5rpx;
+
+}
+
+.th2 {
+	width: 49%;
+	justify-content: center;
+	align-items: center;
+	display: flex;
+	font-size: 28rpx;
+	color: #381f12;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg9.png');
+	background-repeat: no-repeat;
+	margin-left: 10rpx;
+}
+
+.text {
+	font-size: 28rpx;
+	font-weight: 700;
+}
+
+.for {
+	width: 90%;
+	margin-left: 5%;
+	justify-content: center;
+	align-items: center;
+	height: 70rpx;
+	font-size: 28rpx;
+	display: flex;
+}
+
+.td1 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	border: 2rpx solid #9b4c3c;
+	width: 50%;
+	border-bottom-left-radius: 10rpx;
+	border-bottom-right-radius: 10rpx;
+}
+
+.td2 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 95%;
+	border-bottom: 2rpx solid #9b4c3c;
+	border-right: 2rpx solid #9b4c3c;
+	width: 49%;
+	border-bottom-left-radius: 10rpx;
+	border-bottom-right-radius: 10rpx;
+	margin-left: 5rpx;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg6.png');
+	background-repeat: no-repeat;
+}
+
+.foot {
+	position: absolute;
+	bottom: 0%;
+	z-index: 99;
+	transform: translate(-50%, 0%);
+	left: 50%;
+}
+
+.footimg {
+	width: 250px;
+	height: 70px;
+}
+
+.container1 {
+	position: absolute;
+	left: 37%;
+	top: 12%;
+	z-index: initial;
+}

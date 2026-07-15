@@ -1,0 +1,34 @@
+<view class="container">
+  <view wx:if="{{myList.length > 0}}">
+    <view class="my-card" wx:for="{{myList}}" wx:key="id">
+      <view class="my-card-title">{{item.signupName}} 的报名</view>
+      <view class="card-row">
+        <text class="card-label">活动编号：</text>
+        <text class="card-text">{{item.activityNo}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">报名金额：</text>
+        <text class="card-text price-text">¥{{item.amount}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">支付状态：</text>
+        <text class="card-text">{{item.payStatus === 0 ? '待支付' : item.payStatus === 1 ? '已支付' : item.payStatus === 2 ? '已取消' : '已退款'}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">报名状态：</text>
+        <text class="card-text">{{item.signupStatus === 0 ? '待审核' : item.signupStatus === 1 ? '报名成功' : item.signupStatus === 2 ? '已取消' : '已退款'}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">报名时间：</text>
+        <text class="card-text">{{item.createTime}}</text>
+      </view>
+      <view wx:if="{{item.payStatus === 0}}" class="card-actions">
+        <view class="btn-pay" bindtap="goPay" data-item="{{item}}">去支付</view>
+      </view>
+    </view>
+    <view wx:if="{{myLoading}}" class="list-loading">加载中...</view>
+    <view wx:elif="{{myList.length >= myTotal && myTotal > 0}}" class="list-end">没有更多了</view>
+  </view>
+  <view wx:elif="{{myLoading}}" class="empty-tip">加载中...</view>
+  <view wx:else class="empty-tip">暂无报名记录</view>
+</view>

@@ -1,0 +1,196 @@
+/* pages/mine/mine.wxss */
+page{
+  height:100%
+}
+.page {
+  /* position: fixed; */
+  width: 100%;
+  height: 100%;
+  /* background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/top_background.png") no-repeat;
+  background-size: 100% 50%; */
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 5px;
+  width: 75rpx;
+  height: 75rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}
+
+.top-mode {
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userName {
+  margin-top: 15%;
+}
+.gb1{
+  width: 100%;
+  height: 380rpx;
+}
+
+/*第一第二句让方形的头像变圆*/
+
+.userAvatarUrl {
+  border-radius: 50%;
+  overflow: hidden;
+  height: 100rpx;
+  width: 100rpx;
+  margin-top: 20%;
+  margin-left: 5%;
+  display: flex;
+}
+
+.ren{
+  position: absolute;
+  top: 120px;
+  right: 30px;
+  width: 180rpx;
+  height: 120rpx;
+}
+
+
+.btn-bar {
+  display: flex;
+  width: 90%;
+  margin-left: 5%;
+  font-size: 24rpx;
+  font-weight: bold;
+  height: 120rpx;
+  margin-top: 3%;
+}
+
+.btn-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5rpx;
+}
+
+.btn-image-bg1 {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 50%;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/background_1.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-image-bg2 {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 50%;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/background_2.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-image-bg3 {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 50%;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/background_3.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-image-bg4 {
+  height: 80rpx;
+  width: 80rpx;
+  border-radius: 50%;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/background_4.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  margin-top: 1rpx;
+  font-weight: normal;
+  font-size: 28rpx;
+}
+
+.btn {
+  margin-top: 10rpx;
+  padding: 5rpx;
+  text-align: center;
+  height: 80rpx;
+  width: 23%;
+}
+
+
+
+.content1 {
+  display: flex;
+  align-items: center;
+  /* margin-left: 5%; */
+  margin-bottom: 2%;
+  width: 90%;
+  height: 65rpx;
+  /* border-bottom: #e5e5e5 solid 2rpx; */
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg3.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.content-image {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: 5%;
+}
+
+.content-text {
+  font-size: 32rpx;
+}
+
+.right {
+  position: absolute;
+  right: 60rpx;
+  width: 20rpx;
+  height: 36rpx;
+}
+
+.intermediate {
+  width: 100%;
+  height: 45%;
+  /* background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/intermediate.png") no-repeat;
+  background-size: 100% 100%; */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.head-mode {
+  height: 320rpx;
+  width: 90%;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg1.png") no-repeat;
+  background-size: 100% 100%;
+  margin-bottom: 3%;
+}
+
+.bottom {
+  width: 80%;
+  margin-left: 10%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15%;
+}

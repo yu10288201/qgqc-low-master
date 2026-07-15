@@ -1,0 +1,114 @@
+<wxs module="filters">
+    module.exports = {
+        formatDate: function (value) {
+            //不能使用 new Date()
+            var time = getDate(value);
+            var year = time.getFullYear();
+            var month = time.getMonth() + 1;
+            var date = time.getDate();
+            var hour = time.getHours();
+            var minute = time.getMinutes();
+            var second = time.getSeconds();
+            month = month < 10 ? "0" + month : month;
+            date = date < 10 ? "0" + date : date;
+            hour = hour < 10 ? "0" + hour : hour;
+            minute = minute < 10 ? "0" + minute : minute;
+            second = second < 10 ? "0" + second : second;
+            return year + "年" + month + "月" + date + "日";
+        },
+    } 
+</wxs>
+
+<view style="width: 100%;display: flex;flex-direction: column;justify-content: start;background-color: #fff;" wx:for="{{foodList}}" >
+  <view style="width: 100%;height: 10rpx;background: #fff"></view>
+  <view style="width: 712rpx;height: 380rpx;" wx:if="{{isFoodOrCombo}}" wx:key="index">
+    <swiper style="width: 100%;height: 380rpx; background-color: #fff" data-index="{{index}}" bindtap="toDetail" data-item="{{item}}" data-isFoodOrCombo="{{isFoodOrCombo}}" autoplay="true" interval="1600" duration="0">
+      <swiper-item wx:for="{{item.pageUrl}}">
+        <image style="width: 712rpx;height: 380rpx;border-top-right-radius: 20px;border-top-left-radius: 20px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;" mode="scaleToFill" src="{{item.pageURL}}?x-oss-process=image/resize,m_fill,h_250,w_356"></image>
+      </swiper-item>
+    </swiper>
+    <!-- 优惠券卡片 -->
+  </view>
+  <view style="width: 712rpx;margin-top: 20rpx;" wx:if="{{!isFoodOrCombo}}">
+    <view class="ticket" style="display: flex;flex-direction: column;"  data-item="{{item}}" data-isFoodOrCombo="{{isFoodOrCombo}}" bindtap="toDetail" >
+      <view style="margin-left: 40rpx;display: flex;flex-direction: column;">
+        <text style="width:100%;font-size:30rpx;font-weight:900;">{{item.coupon_name}}</text>
+        <text style="width:76%;font-size: 24rpx;font-weight: 300;">[{{item.shop_name}}]</text>
+      </view>
+
+      <view style="display: flex;justify-content: space-between;">
+        <view class="menu_right_view" style="width: 40%;margin-left: 40rpx;justify-content: center;">
+          <text wx:if="{{item.coupon_superposition == 0 && item.coupon_superposition == ''}}">不可叠加</text>
+          <text wx:elif="{{item.coupon_superposition >= '9999'}}">可无限叠加</text>
+          <text wx:elif="{{item.coupon_superposition != 0 && item.coupon_superposition != ''}}">可叠加{{item.coupon_superposition}}张</text>
+          <text>{{item.coupon_ruleweekstar}}</text>
+        </view>
+        <view style="display: flex;flex-direction: column;justify-content: center;align-items: flex-end;margin-right: 20rpx;">
+          <text style="font-size:50rpx;font-weight:bolder;margin-right: 50rpx;color: #ea9518;">￥{{item.coupon_facevalue}}元</text>
+        </view>
+      </view>
+      <view style="margin-left: 40rpx;display: flex;flex-direction: column;">
+        <view style="font-size: 26rpx;color: green;font-weight: bold;">购买价：{{item.coupon_original}}元</view>
+          <text style="font-size: 24rpx;font-weight: 300;">有效期：{{item.coupon_validityend}} 止</text>
+      </view>
+    </view>
+  </view>
+  <view style="width: 98%;margin-top: 10rpx;">
+    <view style="font-size: 32rpx;font-weight: bold;" wx:if="{{isFoodOrCombo}}" bindtap="toDetail" data-item="{{item}}" data-isFoodOrCombo="{{isFoodOrCombo}}">{{item.setMealName}}</view>
+    <view style="font-size: 32rpx;font-weight: bold;" wx:if="{{!isFoodOrCombo}}" bindtap="toDetail" data-item="{{item}}" data-isFoodOrCombo="{{isFoodOrCombo}}">{{item.coupon_name}}简介</view>
+    <text style="width:100%;width:76%;font-size: 26rpx;" wx:if="{{isFoodOrCombo}}">[{{item.shop_name}}]</text>
+
+  </view>
+  <view style="width: 98%;display: flex;flex-direction: column;margin-top: 10rpx;" wx:if="{{item.setMealAbout != '' && isFoodOrCombo}}">
+    <view style="text-indent:64rpx;font-size: 24rpx;display:-webkit-box;-webkit-box-orient: vertical;overflow:hidden;-webkit-line-clamp:2;">{{item.setMealAbout}}</view>
+  </view>
+
+  <view style="width: 98%;display: flex;flex-direction: column;margin-top: 10rpx;" wx:if="{{item.coupon_Scopeofapplication != '' && !isFoodOrCombo}}">
+    <view style="text-indent:48rpx;font-size: 24rpx;display:-webkit-box;-webkit-box-orient: vertical;overflow:hidden;-webkit-line-clamp:2;">{{item.coupon_Scopeofapplication}}</view>
+  </view>
+  <view style="width: 99%;display: flex;flex-direction: row;justify-content: space-between;margin-top: 10rpx;">
+    <view style="display: flex;flex-direction: row;justify-content: flex-start;">
+      <view wx:if="{{item.ladder.length == 0 && isFoodOrCombo}}"><text style="color: rgb(255,153,0);font-weight: bold;" wx:if="{{isFoodOrCombo}}">￥{{item.price}}元</text></view>
+      <view wx:if="{{item.ladder.length != 0 && isFoodOrCombo}}"><text style="color: rgb(255,153,0);font-weight: bold;">￥{{item.ladder[0].ladderPrice}}元</text></view>
+      <view wx:if="{{item.ladder.length > 2}}"><text style="color: green;font-size: 20rpx;font-weight: bold;margin-left: 5rpx;">￥{{item.ladder[1].ladderPrice}}元</text></view>
+      <view wx:if="{{item.ladder.length > 3}}"><text style="color: green;font-size: 20rpx;font-weight: bold;margin-left: 5rpx;">￥{{item.ladder[2].ladderPrice}}元</text></view>
+      <view style="margin-left: 20rpx;font-size: 20rpx;line-height: 44rpx;color: #777;text-decoration: line-through;margin-left: 10rpx;" wx:if="{{isFoodOrCombo && item.ladder.length < 3}}">￥{{item.originalPrice}}元</view>
+    </view>
+    <view style="margin-left: 10rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: flex-end;" wx:if="{{item.startUsing3 != 1}}">
+      <view style="line-height: 35rpx;margin-right: 20rpx;"><text style="color: rgb(135,71,1);font-weight: bold;font-size: 27rpx;" wx:if="{{isFoodOrCombo && item.useStarDust != 0}}">可使用：{{item.useStarDust}}个 星盾抵扣</text></view>
+       <button wx:if="{{showButton}}" class="dnlm" style="font-size: 32rpx;line-height: 0;display: flex;flex-direction: row;align-items: center;border-radius: 20rpx;background-color: rgb(255,153,0);height: 44rpx;" data-item="{{item}}" data-indexShare="{{index}}" data-id="{{isFoodOrCombo ? 0 : 1 }}" bindtap="onShare">
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/00586bfc2184c33493da987da652235.png" style="width: 45rpx;height: 18rpx;"></image>
+      </button>
+    </view>
+    
+  </view>
+  <view style="margin-left: 10rpx;margin-top: 6rpx;display: flex;justify-content: flex-start;font-weight: bold;font-size: 27rpx;" wx:if="{{item.startUsing3 == 1}}">
+      <view style="color: rgb(135,71,1);">男士价:{{item.manPrice}}元/人</view>
+      <view style="color: rgb(255,153,0);margin-left: 8rpx;">返佣:{{item.commission_manPrice}}元</view>
+      <view style="color: rgb(135,71,1);margin-left: 20rpx;">女士价:{{item.ladyPrice}}元/人</view>
+      <view style="color: rgb(255,153,0);margin-left: 8rpx;">返佣:{{item.commission_ladyPrice}}元</view>
+    </view>
+    <view style="margin-left: 10rpx;margin-top: 6rpx;display: flex;justify-content: flex-start;font-weight: bold;font-size: 27rpx;" wx:if="{{item.startUsing3 == 1}}">
+      <view  wx:if="{{item.activityDate.time}}">用餐活动日期:{{filters.formatDate(item.activityDate.time)}}</view>
+      <view  wx:else >用餐活动日期: 待定</view>
+      <button wx:if="{{showButton}}" class="dnlm" style="position: absolute;right: 64rpx;font-size: 32rpx;line-height: 0;display: flex;flex-direction: row;align-items: center;border-radius: 20rpx;background-color: rgb(255,153,0);height: 42rpx;" data-item="{{item}}" data-indexShare="{{index}}" bindtap="onShare" wx:if="{{item.coupon_id == null}}">
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/00586bfc2184c33493da987da652235.png" style="width: 45rpx;height: 18rpx;"></image>
+      </button>
+    </view>
+    <view style="display: flex;flex-direction: row;margin-bottom: 15rpx;width: 100%;margin-top: 10rpx;font-size: 26rpx;color: #ea9518;" wx:if="{{(item.customer_platform_commission_star != 0 || item.customer_platform_commission_amount != 0) || (item.customer_shop_commission_star != 0 || item.customer_shop_commission_amount != 0)}}">
+        <view style="font-weight: bolder;">提成奖励：</view>
+        <view style="font-weight: bolder;" wx:if="{{item.customer_platform_commission_star != 0 || item.customer_platform_commission_amount != 0}}">{{item.customer_platform_commission_star == 0 ? item.customer_platform_commission_amount : item.customer_platform_commission_star}}{{item.customer_platform_commission_star == 0 ? '元 [平台现金]' : '个 [平台星盾]'}}</view>
+        <view style="font-weight: bolder;margin-left: 30rpx;" wx:if="{{item.customer_shop_commission_star != 0 || item.customer_shop_commission_amount != 0}}">{{item.customer_shop_commission_star == 0 ? item.customer_shop_commission_amount : item.customer_shop_commission_star}}{{item.customer_shop_commission_star == 0 ? '元 [商家现金]' : '个 [商家星盾]'}}</view>
+    </view>
+  <view style="display: flex;flex-direction: row;justify-content: space-between;align-items: flex-start;margin-bottom: 15rpx;width: 100%;margin-top: 10rpx;">
+    <view style="font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{isFoodOrCombo}}">销量：{{item.setMealSales}}</view>
+    <view style="font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{!isFoodOrCombo}}">销量：{{item.coupon_salesvolue}}</view>
+    <view style="margin-left: 20rpx;font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{isFoodOrCombo}}">库存：{{item.spreads}}</view>
+    <view style="margin-left: 20rpx;font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{!isFoodOrCombo}}">库存：{{item.saleNum}}</view>
+    <view style="margin-left: 20rpx;font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{isFoodOrCombo}}">分享人次：{{item.shareNum}}</view>
+    <view style="margin-left: 20rpx;font-size: 24rpx;line-height: 44rpx;color: #777;font-weight: bold;" wx:if="{{!isFoodOrCombo}}">分享人次：{{item.share_num}}</view>
+    <!-- <view style="margin-left: 20rpx;font-size: 20rpx;line-height: 44rpx;color: #777;" wx:if="{{isFoodOrCombo}}">分享：{{item.setMealSales}}</view>
+    <view style="margin-left: 20rpx;font-size: 20rpx;line-height: 44rpx;color: #777;" wx:if="{{!isFoodOrCombo}}">分享：{{item.coupon_salesvolue}}</view> -->
+  </view>
+  <view style="width: 100%;height: 20rpx;background: rgb(226, 226, 226);"></view>
+</view>

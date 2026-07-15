@@ -1,0 +1,13 @@
+<view class="page"> 
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" />
+  </view>
+  <view class="btn-view1">{{shop_name}}</view>
+  <view class="btn-view">
+    <button class="btn" bindtap="menu">
+    <text>超值套餐/菜品</text>
+    </button>
+    <button class="btn" bindtap="coupon"><text>优惠券</text></button>
+    <button class="btn" bindtap="history"><text>我的订单</text></button>
+  </view>
+</view>

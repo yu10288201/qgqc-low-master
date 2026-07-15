@@ -1,0 +1,89 @@
+<view class="fdcc" style="width: 100vw;height: auto;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/inviteFriends/background.png'); background-size: 100% 100%;">
+  <view class="fdcc card" style="width: 50%;height: 70rpx;margin-top: 10px;justify-content: center;font-size: 18px;font-weight: bolder;">情侣主题套餐活动</view>
+  <view class="fdcc card" style="width: 95%;height: 250rpx;margin-top: 10px;">
+    <view class="top_text">注册信息</view>
+    <view class="fdcc" style="align-items: flex-start;justify-content: center;width: 90%;flex: 1;">
+      <view style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;width: 100%;">
+        <view style="width: 36.66%;display: flex;align-items: center;">姓名: <input placeholder="" value="{{realName1 ? realName1 : realName}}" style="margin-left: 10rpx;width: 60%;height: auto;border-bottom: 1rpx solid;" bindinput="changeCustInf" data-id="realName" /></view>
+        <view style="width: 33.33%;display: flex;align-items: center;">性别:
+          <!-- <input placeholder="请输入" value="{{gender}}" style="margin-left: 10rpx;width: 50%;height: auto;border: 1rpx solid;" bindinput="changeCustInf" data-id="gender" /> -->
+          <picker bindchange="changeCustInf" value="{{genderIndex}}" range="{{genderArray}}" data-id="gender">
+            <view style="border-bottom: 1px solid;width: 80rpx;margin-left: 10rpx;text-align: center;">
+              {{genderArray[genderIndex]}}
+            </view>
+          </picker>
+        </view>
+        <view style="width: 30%;display: flex;align-items: center;">年龄: <input type="number" value="{{age1 ? age1 : age}}" style="margin-left: 10rpx;width: 40%;height: auto;border-bottom: 1rpx solid;" bindinput="changeCustInf" data-id="age" /></view>
+      </view>
+      <view style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;width: 100%;margin-top: 20rpx;">
+        <!-- <text>手机号码: {{customerInf.phone}}</text> -->
+        <view style="display: flex;align-items: center;">手机号码: <input type="number" value="{{phone1 ? phone1 : phone}}" style="margin-left: 10rpx;width: 50%;height: auto;border-bottom: 1rpx solid;" bindinput="changeCustInf" data-id="phone" /></view>
+      </view>
+      <view style="display: flex;flex-direction: row;justify-content: flex-end;align-items: center;width: 100%;margin-bottom: 10rpx;">
+        <!-- <view style="padding: 5rpx 10rpx;border: 1px solid;border-radius: 10rpx;"  bindtap="changeCustInf" data-id="confirm">确定</view> -->
+        <view class="font_size" style="color:#ffffff;border: none;" bindtap="changeCustInf" data-id="confirm" wx:if="{{!isSet}}"><text>确定</text></view>
+      </view>
+    </view>
+  </view>
+  <view class="fdcc card" style="width: 95%;height: 250rpx;justify-content: flex-start;align-items: center;">
+    <view style="width: 90%; display: flex;flex-direction: column;justify-content: center;align-items: flex-start;margin-top: 10rpx;" wx:if="{{!isSet}}">
+      <!-- <view style="padding: 10rpx;border: 1px solid;border-radius: 10rpx;" bindtap="toBuyLoveSet">选择套餐</view> -->
+      <view class="font_size" style="color:#fff;border: none;width: 150rpx;" bindtap="toBuyLoveSet"><text>选择套餐</text></view>
+    </view>
+    <view style="height: 230rpx;width: 90%; display: flex;flex-direction: column;justify-content: center;align-items: center;" wx:if="{{isSet}}">
+      <!--预留隐藏-->
+      <view style="display: flex;justify-content: space-between;width: 100%;">
+        <view>套餐名称: {{loveSetMeal.setMealName}}</view>
+      </view>
+      <view style="display: flex;justify-content: flex-start;width: 100%;margin-top: 20rpx;">
+        <view>套餐单价: {{genderIndex == 1 ? loveSetMeal.ladyPrice : loveSetMeal.manPrice }}元/位</view>
+      </view>
+      <view style="display: flex;justify-content: flex-start;width: 100%;margin-top: 20rpx;">
+        <view>用餐时间: {{loveSetMeal.usingDate}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="fdcc card" style="width: 95%;height: 300rpx;">
+    <view class="top_text">用户备注</view>
+    <textarea style="height: 200rpx;margin-top: 10rpx; width: 90%;background-color: #cecece;border-radius: 5px;font-size: 16px;" disabled="{{isSet}}">
+    </textarea>
+  </view>
+  <view class="fdcc card" style="width: 95%;height: auto;">
+    <view class="top_text">活动规则</view>
+    <text style="margin-top: 10rpx; width: 90%;background-color: #fff;border-radius: 5px;font-size: 16px;line-height: 50rpx;">{{rule}}
+    </text>
+  </view>
+  <!-- <view class="fdcc card" style="width: 95%;height: 300rpx;">
+    <view class="top_text">订单状态</view>
+    <view class="fdrcc" style="justify-content: flex-start !important;width: 90%;">
+      <text>●</text><text>等待接单</text>
+    </view>
+    <view class="fdrcc" style="justify-content: flex-start !important;width: 90%;">
+      <text>未能确认: 还没准备好</text>
+    </view>
+    <view class="fdrcc" style="justify-content: flex-start !important;width: 90%;">
+      <text>重新申请使用时间</text>
+      <picker style="width:100rpx;height:100rpx;">
+        <picker-view style="width:100rpx;height:100rpx;"></picker-view>
+      </picker>
+    </view>
+    <view class="fdrcc" style="justify-content: flex-start !important;width: 90%;">
+      <text>等待重新确认</text>
+      <text>已确认</text>
+    </view>
+  </view> -->
+  <view wx:if="{{isRegister}}" style="z-index: 99;display: flex;flex-direction: column;justify-content: center;align-items: center;position: fixed;width: 100vw;height: 100vh;background-color: rgba(0, 0, 0, 0.5);" catchtouchmove="true">
+    <view style="z-index: 999; width: 80%;height: auto;display: flex;flex-direction: column;justify-content: flex-start;background-color: #FFF;align-items: center;border-radius: 20rpx;height: 400rpx;">
+      <view style="width: 100%;font-size: 16px;font-weight: bolder;display: flex;flex-direction: row;justify-content: center;align-items: center;height: 100rpx;margin-top: 10rpx;">
+        提示
+      </view>
+      <view style="width: 100%;font-size: 16px;display: flex;flex-direction: row;justify-content: center;align-items: flex-start;height: 180rpx;color: #777;border-bottom: 0.5rpx #cacaca solid;margin-top: 10rpx;">
+        需注册本平台账号后方可报名套餐
+      </view>
+      <view style="width: 100%;font-size: 16px;display: flex;flex-direction: row;justify-content: center;align-items: center;height: 100rpx;color: rgb(87, 107, 149);" bindtap="goToRegister">
+        确定
+      </view>
+    </view>
+  </view>
+</view>
+

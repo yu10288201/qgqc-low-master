@@ -1,0 +1,94 @@
+<!--pages/paymerchandise/paymerchandise.wxml-->
+<wxs module="filters" src="paymerchandise.wxs"></wxs>
+
+<view class="top">
+  <view class="return_out" style="left:90rpx;width:300rpx;font-size: 29rpx;color: white;justify-content: flex-start;">
+    订单支付
+  </view>
+</view>
+
+<view style="position:fixed; top:0rpx; justify-content: center; display: flex; flex-direction: column; width: 100%; background-color:#FFF; height: 500rpx; z-index: 8;">
+  <view class="money" style="margin-top: 190rpx;">￥{{total_amount}}<text style="margin-left: 15rpx;">元</text></view>
+  <button wx:if="{{is_hide_pay==0&&total_amount>0}}" style='margin-top:20px' class='payBtn' type="primary" bindtap='pay1'>付 款</button>
+  <button wx:if="{{is_hide_pay==1||total_amount<=0}}" style='margin-top:20px;background-color: #ccc;color: #fff;' class='payBtn'>付 款</button>
+  <view style="display: flex;flex-direction: row;align-items: center;justify-content:space-evenly; margin-bottom: 30rpx; margin-top: 30rpx;">            
+    <view class="nextbtn" bindtap="goHome" >返回首页</view>           
+    <view class="nextbtn" bindtap="goBill" style="margin-left: 60rpx;">查看订单</view>
+  </view> 
+</view>
+
+<scroll-view style="width: 90%; display: flex; justify-content: center; margin-top: 500rpx; margin-left: 5%; flex-direction: column; align-items: center;">  
+ 
+
+    <view style="display: flex; flex-direction: column; align-items: center;">
+      <view class="discount_description">加入会员享受更多优惠</view>   
+      <view style="font-size: 34rpx;font-weight: bolder; margin-top: 15rpx;">会员权益规则</view> 
+      <view style="font-size: 24rpx;font-weight: bolder; margin-top: 15rpx; color:gray">(下滑看更多)</view>
+    </view>    
+
+    <view class="rule-content" style="font-weight: bolder; margin-top: 10rpx;">一、定义</view>
+    <view class="rule-content" style="margin-left: 20rpx;">1.1. “充值会员”是指顾客按平台的规定金额，充入平台本人账户后，就成为平台的“充值会员”，享受相应的权益；所充值的金额还可在平台消费后按规则抵扣消费金额；</view>    
+    <view class="rule-content" style="margin-left: 20rpx;">1.2.“Vip”会员是Vip付费会员的简称，顾客按平台规定支付年费后就可成为“Vip会员”，享受相应的权益。</view>
+
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">二、会员的获取：</view>
+    <view class="rule-content" style="margin-left: 20rpx;">2.1. 顾客在本人账户充入￥390.00元（平台会根据不同情况适时调整），就可获取“充值会员”资格，有效期为一年（365天）；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">2.2. 顾客可进行多次充值，以获取多份赠送礼品；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">2.3. 顾客在平台支付年费￥299.00元，就可成为“Vip会员”，享有相应的会员权益，有效期为一年（365天）；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">2.4. 订购一个季度鲜米的顾客也可以获得“充值会员”的资格，但就没有充值卡和礼品送了；订购半年期鲜米的就可获得“VIP会员”的资格；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">2.5. 广东容易新能源有限公司的“充电会员”，在本平台充值有￥1000.00元的充值卡特别优惠：充入￥199.00元，就可获取“充值会员”资格，还有￥1000.00元的充值卡赠送，再送￥100.00元的充电券（在容易公司的充电桩充电使用。</view>
+  
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">三、“充值会员”权益:</view>
+    <view class="rule-content" style="margin-left: 20rpx;">3.1. 平台赠送￥1000.00元的充值卡（账户余额就有￥1390.00元），还赠送一份礼品包，价值约在￥500.00-600.00元之间（有多种商品可供选择）；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">3.2. “充值会员”只能在“平台自营合作店”中享有相应的会员权益；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">3.3. 在“弹叮商城”购物时，以“充值会员价”进行结算，账户余额抵扣的金额为商品的“券后价”与“充值会员价”之差（约为券后价的10-15%）；平台消费后按规则抵扣消费金额； </view>
+    <view class="rule-content" style="margin-left: 20rpx;">3.4. 在类似于“餐厅”和“花店”等，没有商品的“充值会员价”的商家消费时，以当次消费总金额的10%在账户余额中抵扣（相当于九折优惠）；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">3.5. 账户余额为零时，“充值会员”就失效（在有效期内）。</view>
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">四、“Vip会员”权益：</view>
+    <view class="rule-content" style="margin-left: 20rpx;">4.1.“Vip会员”只能在“弹叮商城”中有的“平台自营合作店”购买商品时享有相应的权益；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">4.2. 会员以商品的，“Vip会员价”进行结算（“Vip会员价”是平台的成本价，就是最优惠的价格）；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">4.3.“Vip会员”只能本人使用，不得转借他人使用。</view>
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">五、“充电会员”的权益：</view>
+    <view class="rule-content" style="margin-left: 20rpx;">5.1.“充电会员”包括“充电充值会员”和“充电Vip会员”；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">5.2.“充电会员”除了上述普通会员享有的优惠之外，每次购物还可获得平台赠送的“充电券”，在充电时使用。</view>
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">六、关于充值金额的说明：</view>
+    <view class="rule-content" style="margin-left: 20rpx;">6.1.所有级别的会员充值金额概不退回，请在充值前考虑清楚；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">6.2.“充值会员”的余额在有效期内未用完的，顾客充入的部分可以继续使用，但不能享受“充值会员”的优惠了，平台赠送部分就不能使用了。</view>
+    <view style="color:white">123</view>
+    <view class="rule-content" style="font-weight: bolder;">七、声明：</view>
+    <view class="rule-content" style="margin-left: 20rpx;">7.1.本规则的官方解释权在“弹叮商城”平台，即佛山市诗么普科技有限公司；</view>
+    <view class="rule-content" style="margin-left: 20rpx;">7.2.平台方可在适当的时候，根据实际需要进行必要的修改。</view>
+
+
+
+    <view style="color:white">123</view>
+    <view style="color:white">123</view> 
+     <view style="color:white">123</view> 
+     <view style="color:white">123</view> 
+</scroll-view>
+
+<view style="position:fixed; bottom:0rpx; width: 100%; background-color:#FFF; height: 100rpx; z-index: 8;"/>
+
+
+
+
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{is_in_activity_staus==1||is_in_activity_staus==2||is_in_activity_staus==3}}" catch:tap="closeIsInActivityStaus">
+</view>
+
+<view style="position: fixed;right: 0;left: 0;bottom: 40%;margin: auto;height: 320rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #f2f2f2;" wx:if="{{is_in_activity_staus==1||is_in_activity_staus==2||is_in_activity_staus==3}}">
+ 
+      <view style="font-size: larger;padding: 20rpx;color:#F89600;font-weight: 900;">抢礼品活动</view>
+      <!-- <view  catch:tap="closeIsInActivityStaus" class="badgecontent-close" >X</view> -->
+
+    <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+      <text decode='true' style="font-size: large;color:#F89600;margin-bottom: 10rpx;width: 100%;word-break: break-all;text-align: left;text-indent:2em;padding: 0rpx 50rpx;">{{is_in_activity_content}}</text>
+      
+     
+    </view>
+</view>
+  

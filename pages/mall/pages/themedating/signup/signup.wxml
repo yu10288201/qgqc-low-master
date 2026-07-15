@@ -1,0 +1,130 @@
+<view class="container">
+  <!-- 活动信息（只读） -->
+  <view class="card">
+    <view class="card-label">活动信息</view>
+    <view class="info-row">
+      <text class="info-key">活动名称：</text>
+      <text class="info-val">{{activityName}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动类型：</text>
+      <text class="info-val">{{activityType == 1 ? 'KTV' : activityType == 2 ? '旅游' : activityType == 3 ? '美食' : '其他'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动时间：</text>
+      <text class="info-val">{{activityDateStart}}{{activityDateEnd ? ' - ' + activityDateEnd : ''}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动地点：</text>
+      <text class="info-val">{{activityAddress}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">报名费用：</text>
+      <text class="info-val price-text">¥{{activityPrice}}</text>
+    </view>
+    <view class="detail-link" bindtap="goDetail">查看活动详情 ›</view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="card">
+    <view class="card-label">基本信息</view>
+    <view class="form-item">
+      <text class="form-label required">姓名：</text>
+      <input class="form-input" placeholder="请输入真实姓名" data-field="signupName" bindinput="onInput" value="{{signupName}}" />
+    </view>
+    <view class="form-item">
+      <text class="form-label required">性别：</text>
+      <picker mode="selector" range="{{['男','女']}}" value="{{signupGender - 1}}" bindchange="onGenderChange">
+        <view class="picker-inline">
+          <text>{{signupGender === 1 ? '男' : '女'}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label required">年龄：</text>
+      <input class="form-input" placeholder="请输入年龄" data-field="signupAge" bindinput="onInput" value="{{signupAge}}" type="number" maxlength="3" />
+    </view>
+    <view class="form-item">
+      <text class="form-label required">手机号：</text>
+      <input class="form-input" placeholder="请输入手机号" data-field="signupPhone" bindinput="onInput" value="{{signupPhone}}" type="number" maxlength="11" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">职业：</text>
+      <input class="form-input" placeholder="请输入职业（选填）" data-field="occupation" bindinput="onInput" value="{{occupation}}" />
+    </view>
+    <view class="form-item">
+      <text class="form-label">学历：</text>
+      <input class="form-input" placeholder="如：本科、硕士（选填）" data-field="education" bindinput="onInput" value="{{education}}" />
+    </view>
+  </view>
+
+  <!-- 身份证信息（旅游类型必填） -->
+  <view class="card" wx:if="{{activityType == 2}}">
+    <view class="card-label">身份证信息</view>
+    <view class="form-item">
+      <text class="form-label required">身份证号：</text>
+      <input class="form-input" placeholder="请输入身份证号" data-field="idCardNo" bindinput="onInput" value="{{idCardNo}}" maxlength="18" />
+    </view>
+    <view class="upload-row">
+      <view class="upload-item" bindtap="uploadIdCardFront">
+        <view wx:if="{{uploadingFront}}" class="upload-loading">上传中...</view>
+        <image wx:elif="{{idCardFrontImg}}" src="{{idCardFrontImg}}" class="upload-preview" mode="aspectFill" />
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">+</text>
+          <text class="upload-tip">身份证正面</text>
+        </view>
+      </view>
+      <view class="upload-item" bindtap="uploadIdCardBack">
+        <view wx:if="{{uploadingBack}}" class="upload-loading">上传中...</view>
+        <image wx:elif="{{idCardBackImg}}" src="{{idCardBackImg}}" class="upload-preview" mode="aspectFill" />
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">+</text>
+          <text class="upload-tip">身份证反面</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 个人资料 -->
+  <view class="card">
+    <view class="card-label">个人资料</view>
+    <view class="form-item avatar-row">
+      <text class="form-label required">本人照片：</text>
+      <view class="upload-avatar" bindtap="uploadAvatar">
+        <view wx:if="{{uploadingAvatar}}" class="upload-loading">上传中...</view>
+        <image wx:elif="{{avatarPhoto}}" src="{{avatarPhoto}}" class="avatar-preview" mode="aspectFill" />
+        <view wx:else class="upload-placeholder avatar-placeholder">
+          <text class="upload-icon">+</text>
+          <text class="upload-tip">上传照片</text>
+        </view>
+      </view>
+    </view>
+    <view class="form-item intro-item">
+      <view class="intro-label-row">
+        <text class="form-label">自我介绍：</text>
+        <view class="action-btn intro-use-btn" bindtap="fetchLatestIntro">选用原有</view>
+      </view>
+      <textarea class="form-textarea-full" placeholder="简单介绍自己，让大家更了解你（选填）" data-field="selfIntro" bindinput="onInput" value="{{selfIntro}}" maxlength="200" />
+    </view>
+  </view>
+
+  <!-- 活动规则（只读） -->
+  <view class="card" wx:if="{{activityRule}}">
+    <view class="card-label">活动规则</view>
+    <text class="rule-content">{{activityRule}}</text>
+  </view>
+
+  <!-- 协议 -->
+  <view class="agree-row" bindtap="toggleAgree">
+    <view class="agree-box {{agreed ? 'agreed' : ''}}">
+      <text wx:if="{{agreed}}" class="agree-check">✓</text>
+    </view>
+    <text class="agree-text">我已阅读并同意<text class="agree-link">《活动参与协议》</text></text>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <view class="submit-btn {{agreed ? '' : 'disabled'}}" bindtap="onSubmit">立即报名</view>
+  </view>
+</view>

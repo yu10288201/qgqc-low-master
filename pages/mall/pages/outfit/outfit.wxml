@@ -1,0 +1,246 @@
+<!--pages/mall/pages/outfit.wxml-->
+<view class="content_box">
+  <view class="flex_one" >
+      <image wx:if="{{person_image_url!=''}}" style="height: 25vh;width: 70vw;" src="{{person_image_url}}" mode="aspectFit"></image>
+      <image wx:else="" style="height: 25vh;width: 70vw;"  mode="aspectFit"></image>
+      <view style="width: 4rpx;background-color: #fff;height: 100%;margin: 0 10rpx;"></view>
+      
+      <view style="width: 180rpx;display: flex;align-items: center;justify-content: space-between;height: 100%;flex-direction: column;">
+        <view style="width: 100%;font-size: 28rpx;">
+        {{name}}
+        </view>
+        <view class="btn" bind:tap="choosePersonImageClick">选择人像</view>
+      </view>
+  </view>
+  <view style="width: 100%;height: 8rpx;background-color: #aaa;margin: 5rpx 0rpx; "></view>
+  <view class="flex_one"  >
+      <image wx:if="{{top_goods_img_url!=''}}" style="height: 25vh;width: 70vw;"  src="{{top_goods_img_url}}" mode="aspectFit"></image>
+      <image wx:else style="height: 25vh;width: 70vw;"  mode="aspectFit"></image>
+      <view style="width: 4rpx;background-color: #fff;height: 100%;margin: 0 10rpx;"></view>
+      
+      <view style="width: 180rpx;display: flex;align-items: center;justify-content: space-between;height: 100%;flex-direction: column;">
+        <view style="width: 100%;font-size: 28rpx;">
+        {{top_goods_name}}
+        </view>
+        <view class="btn" bind:tap="chooseTopImageClick" data-search_outfit_type="1">选择上衣</view>
+      </view>
+  </view>
+  <view style="width: 100%;height: 8rpx;background-color: #aaa;margin: 5rpx 0rpx; "></view>
+  <view class="flex_one" >
+    <image wx:if="{{bottom_goods_img_url!=''}}" style="height: 25vh;width: 70vw;"src="{{bottom_goods_img_url}}" mode="aspectFit"></image>
+    <image wx:else style="height: 25vh;width: 70vw;"src="{{bottom_goods_img_url}}" mode="aspectFit"></image>
+    <view style="width: 4rpx;background-color: #fff;height: 100%;margin: 0 10rpx;"></view>
+    
+    <view style="width: 180rpx;display: flex;align-items: center;justify-content: space-between;height: 100%;flex-direction: column;">
+      <view style="width: 100%;font-size: 28rpx;">
+        {{bottom_goods_name}}
+        </view>
+      <view wx:if="{{top_outfit_type!=3}}" class="btn" bind:tap="chooseBottomImageClick" data-search_outfit_type="2">选择下衣</view>
+    </view>
+  </view>
+  <view style="width: 100%;height: 8rpx;background-color: #aaa;margin: 5rpx 0rpx; "></view>
+  <view class="flex_one">
+
+    <view class="loading" wx:if="{{showLoading}}">
+        <view class="loading-spinner"></view>
+         <view style="font-size: 30rpx;">处理中...</view>
+     </view>
+   
+    <image data-src="{{oss_image_url}}" bind:tap="toOutfitPreview" wx:if="{{oss_image_url!=''}}" style="height: 25vh;width: 70vw;" src="{{oss_image_url}}" mode="aspectFit" ></image>
+    <image wx:else style="height: 25vh;width: 70vw;"  mode="aspectFit"></image>
+    <view style="width: 4rpx;background-color: #fff;height: 100%;margin: 0 10rpx;"></view>
+    <view style="width: 180rpx;display: flex;align-items: flex-end;justify-content: center;height: 100%;">
+      <view bind:tap="mallOutfitAnyoneSendTask" class="btn">提交试穿</view>
+      <!-- <view bind:tap="toScan" class="btn">试衣充值</view> -->
+    </view>
+  </view>
+</view>
+
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{personDialogShow==true}}">
+ 
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">人像保存</view>
+ <view  catch:tap="personDialogShowChange" class="badgecontent-close"  data-index="{{index}}">X</view>
+
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+    <view bind:tap="isDefaultTap"  style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;">
+        <image wx:if="{{is_default==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+        <image wx:if="{{is_default==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+        默认人像
+  </view>
+  <view  style="display: flex;flex-direction: row;align-items: center;width: 100%;margin-top:30rpx;font-size: 28rpx;">
+    <view style="margin-right: 20rpx;margin-left: 30rpx;">姓名</view><input model:value="{{tmp_name}}" placeholder="请输入姓名" style="width: 100%;background-color: #fff;border: 1rpx solid #f2f2f2;width: 300rpx;"/>
+  </view>
+
+  <view  style="display: flex;flex-direction: row;align-items: center;width: 100%;margin-top:30rpx;font-size: 28rpx;">
+    <view style="margin-right: 20rpx;margin-left: 30rpx;">备注</view><input model:value="{{tmp_remark}}" placeholder="请输入备注" style="width: 100%;background-color: #fff;border: 1rpx solid #f2f2f2;width: 300rpx;"/>
+  </view>
+
+
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="insertMallOutfitPerson" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          保存
+      </view>
+  </view>
+  
+  </view>
+</view>
+
+
+
+
+
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{typeDialogShow==true}}">
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">人像选择方式</view>
+ <view  catch:tap="typeDialogShowChange" class="badgecontent-close">X</view>
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view bind:tap="selectType" data-select_type="0" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{select_type==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_type==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从人像库选择
+  </view>
+  <view bind:tap="selectType" data-select_type="1" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;">
+    <image wx:if="{{select_type==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_type==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从相册/拍照选择
+  </view>
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="selectTypeConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          确定
+      </view>
+  </view>
+  
+  </view>
+</view>
+
+
+
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{topDialogShow==true}}">
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">上衣选择方式</view>
+ <view  catch:tap="topDialogShowChange" class="badgecontent-close">X</view>
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view bind:tap="selectTop" data-select_top="0" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{select_top==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_top==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从平台选择
+  </view>
+  <view bind:tap="selectTop" data-select_top="1" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{select_top==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_top==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从相册/拍照选择
+  </view>
+
+
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="selectTopConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          确定
+      </view>
+  </view>
+  </view>
+</view>
+
+
+
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{bottomDialogShow==true}}">
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">下衣选择方式</view>
+ <view  catch:tap="bottomDialogShowChange" class="badgecontent-close">X</view>
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view bind:tap="selectBottom" data-select_bottom="0" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{select_bottom==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_bottom==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从平台选择
+  </view>
+  <view bind:tap="selectBottom" data-select_bottom="1" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{select_bottom==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    <image wx:if="{{select_bottom==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    从相册/拍照选择
+  </view>
+  <!-- <view  style="display: flex;flex-direction: row;align-items: center;width: 100%;font-size: 28rpx;">
+    <view style="margin-right: 20rpx;margin-left: 30rpx;">商品名称</view><input model:value="{{bottom_goods_name}}" placeholder="" style="width: 100%;background-color: #fff;border: 1rpx solid #f2f2f2;width: 360rpx;"/>
+  </view> -->
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="selectBottomConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          确定
+      </view>
+  </view>
+  </view>
+</view>
+
+
+<!--上衣名称-->
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 480rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{topGoodsNameDialogShow==true}}">
+ 
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">上衣名称</view>
+ <view  catch:tap="topGoodsNameDialogShowChange" class="badgecontent-close">X</view>
+
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view  style="display: flex;flex-direction: row;align-items: center;width: 100%;margin-top:15rpx;font-size: 28rpx;margin-bottom:40rpx;margin-top:10rpx;">
+    <view style="margin-right: 20rpx;margin-left: 30rpx;">上衣名称</view><input model:value="{{tmp_top_goods_name}}" placeholder="" style="width: 100%;background-color: #fff;border: 1rpx solid #f2f2f2;width: 300rpx;"/>
+  </view>
+
+  <!--tmp_outfit_type-->
+  <view bind:tap="selectTmpTopOutfitType" data-tmp_top_outfit_type="1" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+   
+    <image wx:if="{{tmp_top_outfit_type==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    <image wx:else="" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    上衣
+  </view>
+  <view bind:tap="selectTmpTopOutfitType" data-tmp_top_outfit_type="3" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;">
+    <image wx:if="{{tmp_top_outfit_type==3}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    <image wx:else="" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    连衣裙
+  </view>
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="topGoodsNameConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          保存
+      </view>
+  </view>
+  
+  </view>
+</view>
+
+<!--下衣名称-->
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{bottomGoodsNameDialogShow==true}}">
+ 
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">下衣名称</view>
+ <view  catch:tap="bottomGoodsNameDialogShowChange" class="badgecontent-close">X</view>
+
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view  style="display: flex;flex-direction: row;align-items: center;width: 100%;margin-top:15rpx;font-size: 28rpx;">
+    <view style="margin-right: 20rpx;margin-left: 30rpx;">下衣</view><input model:value="{{tmp_bottom_goods_name}}" placeholder="" style="width: 100%;background-color: #fff;border: 1rpx solid #f2f2f2;width: 300rpx;"/>
+  </view>
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="bottomGoodsNameConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          保存
+      </view>
+  </view>
+  
+  </view>
+</view>
+
+
+
+
+
+<!--充值方式-->
+<view style="position: fixed;right: 0;left: 0;top:300rpx;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #ccc;border: #ccc 1rpx solid;" wx:if="{{rechargeDialogShow==true}}">
+ <view style="font-size: larger;padding: 20rpx;color: rgb(134,76,2);font-weight: 900;">充值方式</view>
+ <view  catch:tap="rechargeDialogShowChange" class="badgecontent-close">X</view>
+  <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+  <view bind:tap="rechargeType" data-recharge_type="0" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;margin-bottom:40rpx;font-weight: bold;">
+    <image wx:if="{{recharge_type==0}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    <image wx:else style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    试衣会员充值
+  </view>
+  <view bind:tap="rechargeType" data-recharge_type="1" style="display: flex;flex-direction: row;align-items: center;justify-content: flex-start;width: 100%;font-size: 28rpx;font-weight: bold;">
+    <image wx:if="{{recharge_type==1}}" style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_select_img}}"></image>
+    <image wx:else style="width: 40rpx;height: 40rpx;margin-left:30rpx;margin-right: 10rpx;" src="{{ding_not_select_img}}"></image>
+    充值会员充值
+  </view>
+  <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: flex-end;">
+        <view catch:tap="rechargeTypeConfirm" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;margin-right: 30rpx;">
+          确定
+      </view>
+  </view>
+  
+  </view>
+</view>

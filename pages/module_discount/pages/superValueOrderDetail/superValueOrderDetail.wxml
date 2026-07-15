@@ -1,0 +1,474 @@
+<wxs module="filters" src="superValueOrderDetail.wxs" />
+<!-- 超值套餐/菜品 -->
+<view class="page" wx:if="{{packageIndex == '2'}}">
+  <view class="part1" style="margin-top:40rpx;background-color: rgb(255,255,252);">
+    <view class="title" style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;font-size: 32rpx;font-weight:bold;height: 60rpx;">
+      <text>订单信息</text>
+      <view style="display: flex;flex-direction: row;align-items: center;font-size: 28rpx;">
+        <view style="margin-right: 15rpx;text-align:right;color:{{ordersList.orderNewStatus == 0 || ordersList.orderNewStatus == 4 || ordersList.orderNewStatus == 8 ? 'red' : 'green'}}">{{ordersList.orderNewStatus == 0 ? '未支付' :
+          ordersList.orderNewStatus == 1 ? '待接单' :
+          ordersList.orderNewStatus == 2 ? '待使用' :
+          ordersList.orderNewStatus == 3 ? '申请预约' :
+          ordersList.orderNewStatus == 4 ? '预约失败' :
+          ordersList.orderNewStatus == 5 ? '预约成功' :
+          ordersList.orderNewStatus == 6 ? '申请退款' :
+          ordersList.orderNewStatus == 7 ? '退款成功' :
+          ordersList.orderNewStatus == 8 ? '退款失败' :
+          ordersList.orderNewStatus == 9 ? '已使用' :
+          ordersList.orderNewStatus == 10 ? '部分使用' : '未支付'}}
+        </view>
+
+
+        <image class="refresh_icon " style="margin: 0;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/flesh.png" bindtap='refresh'></image>
+      </view>
+    </view>
+    <view style="color: #000;display:flex;flex-direction: column;justify-content: start;">
+      <view class="oneline line_txt" style="margin-top: 0rpx;justify-content: space-between;">
+        <view class="line_title" style="align-items: center;display: flex;margin-top: 10rpx;">订单号码：{{orderCode}}</view>
+      </view>
+      <view class="oneline line_txt">
+        <view class="line_title" style="margin-top: 10rpx;">下单时间：{{filters.formatDate(orderTime,1)}}</view>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;">
+        <view class="line_title">有效期限：<text wx:if="{{ticketInfo.endtime != null}}">{{filters.formatDate(ticketInfo.endtime,0)}} 止</text></view>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;">
+        <view class="line_title">订单数量：{{orderDetail.length}}{{ticketInfo.dishesUnit}}</view>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;">
+        <view class="line_title">订单金额：{{filters.toFix(orderTotal*0.01)}}元</view>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;">
+        <view class="line_title">支付状态：</view>{{orderStatus == 0 ? '未支付' : '已支付'}}
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;" wx:if="{{ministerTakesOrdersRecord == null}}">
+        <!-- 用来调样式 -->
+      </view>
+      <view class="oneline line_txt" style="display: flex;flex-direction: row;justify-content: center;margin-top: 10rpx;padding-bottom: 10rpx;" wx:if="{{ministerTakesOrdersRecord != null}}">
+        <view class="line_title" style="color: #519763;">[{{ministerTakesOrdersRecord.operatorName}}已接单] {{ministerTakesOrdersRecord.createTime}} </view>
+      </view>
+    </view>
+
+  </view>
+  <scroll-view scroll-y="true" style="height: 860rpx;">
+    <view class="part2" style="margin-top:20rpx;background-color: {{index == ListIndex? 'rgb(107,201,125)':'rgb(255,255,252)'}}" wx:for="{{orderDetail}}" data-index="{{index}}">
+      <view style="font-size: 32rpx;font-weight:bold;">
+        <text style="margin-left: 10rpx;" wx:if="{{ticketInfo.typeforsetmeal == 1}}"> 套餐详情</text>
+        <text style="margin-left: 10rpx;" wx:else> 菜品详情</text>
+      </view>
+      <view wx:key="index" wx:if="{{index == 0}}">
+        <view style="width: 100%;">
+          <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;margin-top: 10rpx;">
+            <image src="{{ticketInfo.minpageurl}}?x-oss-process=image/resize,m_fill,h_190,w_356" style="width: 712rpx;height: 380rpx;" mode="scaleToFill"></image>
+          </view>
+          <view style="margin-top: 20rpx;display: flex;flex-direction: column;">
+
+            <view class="oneline" style="display: flex;flex-direction: row;justify-content: space-between;">
+              <view style="display: flex;flex-direction: row;">
+                <view class="line_title" style="font-weight: bold;">名称：</view>
+                <view class="line_txt">{{orderName}}</view>
+              </view>
+              <view style="display: flex;flex-direction: row;">
+                <view class="line_title">销量：</view>
+                <view class="line_txt" style="margin-right: 20rpx;">{{ticketInfo.setmealsales}}</view>
+              </view>
+            </view>
+            <view class="oneline" style="display: flex;flex-direction: row;justify-content: space-between;">
+              <view style="display: flex;flex-direction: row;">
+                <view class="line_title" style="font-weight: bold;">价格：</view>
+                <view class="line_txt" style="color:#ff9c35;">￥{{filters.toFix(orderTotal*0.01/ordersList.detailedCount)}}元/{{ticketInfo.dishesUnit}}</view>
+              </view>
+
+              <view style="display: flex;flex-direction: row;">
+                <view class="line_title">点赞：</view>
+                <view class="line_txt" style="margin-right: 20rpx;">{{ticketInfo.setmeallike}}</view>
+              </view>              
+            </view>
+
+            <view class="oneline" style="display: flex;flex-direction: row;justify-content: space-between;">
+              <view style="display: flex;flex-direction: row;">
+                <view class="line_title" style="font-weight: bold;">单号：</view>
+                <view class="line_txt">{{item.detail_code}}</view>
+              </view>                           
+            </view>
+            <!--留白-->
+            <view class="oneline" style="display: flex;flex-direction: row;justify-content: space-between;">              
+                <view class="line_title" style="font-weight: bold;">   </view>                                        
+            </view>
+            
+            <view class="oneline box" style="justify-content:flex-end;display: flex;flex-direction: row;margin-top: 10rpx;position: relative;">
+              <view style="position: absolute;left: 20rpx;font-weight: bolder;font-size: 28rpx;color: #55b179;" wx:if="{{item.is_give == 1}}">[已赠送]</view>
+              <view wx:if="{{ordersList.orderNewStatus != 0 && ordersList.showStatus != '订单已过期' && (showStatus != '退款中' && showStatus != '已退款')}}" style="justify-content:flex-end;display: flex;flex-direction: row;">
+                <button wx:if="{{item.is_give == 1 && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" bindtap="showInquiry" data-item="{{item}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;">赠送朋友</button>
+                <button wx:elif="{{ticketInfo.startUsing3 != 1 && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;" data-item="{{item}}" open-type="share">赠送朋友</button>
+                <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;background: grey;" data-index="{{index}}" wx:if="{{ordersList.orderNewStatus == 1 && ticketInfo.appointment == 1 }}">预约</button>
+                <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;" data-index="{{index}}" wx:elif="{{item.appointment == 0 && item.appointmentOnShop == 0 && ticketInfo.appointment == 1 }}" bindtap="subscribe">预约</button>
+                <button class="buttom_package" wx:if="{{item.ticketStatus != 1 && ordersList.orderStatus == 1 && (ordersList.ticketType == 3 || ordersList.ticketType == 2)}}" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;" bindtap="checkGetCode" data-index="{{index}}" data-isgive="{{item.is_give}}">核销码</button>
+                <!--<button class="buttom_package" style="margin-bottom: 20rpx;" wx:if="{{orderList.isGiveAway != 1 && orderList.orderComplete != 1&& ordersList.orderStatus!=0 && ordersList.orderRefund == 0 && ordersList.orderRefundStatus == 0 && ticketInfo.refund != 0}}" data-item="{{item}}" bindtap="gotoRefund">申请退款</button>-->
+                <!-- (ordersList.orderNewStatus != 7 && ordersList.orderNewStatus != 9) && ordersList.showStatus != '已过期' -->
+              </view>
+              <button class="buttom_package" bindtap="moreInf" data-ticketDetails="{{ticketDetails}}" style="margin-right: 20rpx; margin-bottom: 20rpx;">更多信息</button>
+            </view>
+
+            <view style="margin: 5rpx 10rpx 0;font-weight: bold;font-size: 26rpx;border-bottom: 1rpx solid black;height: 50rpx;" wx:if="{{item.ticketStatus == 1}}">核销时间：[{{item.write_off_operator}}]{{filters.formatDate(item.actionTime,1)}}</view>
+            <!-- 危险操作 删除wx:else判断 -->
+            <view>
+              <!-- 预约成功 或 申请预约 -->
+              <view wx:if="{{item.appointment == 0 && item.appointmentOnShop == 0 }}"></view>
+              <view style="margin-left: 10rpx;margin-top: 20rpx;font-weight: bold;font-size: 26rpx;padding-bottom: 20rpx;" wx:else>
+                <view>预约时间：{{filters.formatDate(item.operateTime,1)}}</view>
+                <view style="margin-top: 10rpx;">使用时间：{{filters.formatDate(item.appointmentTime,1)}}</view>
+                <view style="margin-top: 10rpx;" wx:if="{{item.acceptAppointmentRecord != null}}">预约确认：{{item.acceptAppointmentRecord == null ? '' : '['+item.acceptAppointmentRecord.operatorName+']'}}{{filters.formatDate(item.acceptAppointmentRecord.createTime,1)}}</view>
+                <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 0 && item.appointmentOnShop == 1 && item.acceptAppointmentRecord != null}}">预约结果：<text style="color: green;margin-left: 6rpx;">预约成功</text></view>
+                <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 1 && item.appointmentOnShop == 0 && item.acceptAppointmentRecord == null }}">预约结果: <text style="color: red;margin-left: 6rpx;"> 预约中</text></view>
+              </view>
+
+              <!-- 拒绝预约 -->
+              <view wx:if="{{item.appointmentRecord != null}}" wx:for="{{item.appointmentRecord}}" wx:for-item="refuseItem" style="padding-bottom: 20rpx;margin-left: 5rpx;font-weight: bold;font-size: 26rpx;">
+                <view style="font-size: 26rpx;margin-top: 10rpx;">预约时间：{{filters.formatDate(refuseItem.operateTime,1)}}</view>
+                <view style="font-size: 26rpx;margin-top: 10rpx;">使用时间：{{filters.formatDate(refuseItem.appointmentTime,1)}}</view>
+                <view style="font-size: 26rpx;margin-top: 10rpx;">预约确认：[{{refuseItem.operatorName}}]{{filters.formatDate(item.createTime,1)}}</view>
+                <view style="font-size: 26rpx;margin-top: 10rpx;">预约结果：<text style="color: red;margin-left: 6rpx;">预约失败</text></view>
+                <view style="font-size: 26rpx;margin-top: 10rpx;">原因：<text style="color: red;">{{refuseItem.denialReason}}</text></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:key="index" wx:else>
+        <view class="part2_view" style="display: flex;flex-direction: column;">
+          <view style="display: flex;flex-direction: column">
+            <view style="flex-direction: row;display: flex;">
+              <view class="part2_view_left">
+                <image src="{{ticketInfo.minpageurl}}?x-oss-process=image/resize,m_fill,h_50,w_60" style="width: 60px;height: 50px;"></image>
+              </view>
+              <view class="part2_view_right">
+                <view class="oneline">
+                  <view class="line_title" style="font-weight: bold;">名称：</view>
+                  <view class="line_txt">{{orderName}}</view>
+                </view>
+                <view class="oneline">
+                  <view class="line_title" style="font-weight: bold;">价格：</view>
+                  <view class="line_txt" style="color:#ff9c35;">￥{{filters.toFix(orderTotal*0.01)/ordersList.detailedCount}}元/{{ticketInfo.dishesUnit}}</view>
+                </view>
+                <view class="oneline" style="display: flex;flex-direction: row;">    
+                  <view style="display: flex;flex-direction: row;">                
+                    <view class="line_title" style="font-weight: bold;">单号：</view>
+                    <view class="line_txt">{{item.detail_code}}</view>  
+                  </view>                                           
+                </view>
+              </view>
+            </view>
+            <view class="oneline box" style="justify-content:flex-end;display: flex;flex-direction: row;margin-top: 20rpx;">
+              <view style="position: absolute;left: 20rpx;font-weight: bolder;font-size: 28rpx;color: #55b179;" wx:if="{{item.is_give == 1}}">[已赠送]</view>
+              <view wx:if="{{ordersList.orderNewStatus != 0 && ordersList.showStatus != '订单已过期'}}" style="justify-content:flex-end;display: flex;flex-direction: row;">
+                <button wx:if="{{item.is_give == 1 && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" bindtap="showInquiry" data-item="{{item}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;">赠送朋友</button>
+                <button wx:elif="{{ ticketInfo.startUsing3 != 1 && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;" data-item="{{item}}" open-type="share">赠送朋友</button>
+                <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;background: grey;" data-index="{{index}}" wx:if="{{ordersList.orderNewStatus == 1 && ticketInfo.appointment == 1 }}">预约</button>
+                <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;" data-index="{{index}}" wx:elif="{{item.appointment == 0 && item.appointmentOnShop == 0 && ticketInfo.appointment == 1 }}" bindtap="subscribe">预约</button>
+                <button class="buttom_package" wx:if="{{item.ticketStatus != 1 && ordersList.orderStatus == 1 && (ordersList.ticketType == 3 || ordersList.ticketType == 2)}}" style="margin-right: 20rpx;width: 125rpx; margin-bottom: 20rpx;" bindtap="checkGetCode" data-index="{{index}}" data-isgive="{{item.is_give}}">核销码</button>
+                <!-- (ordersList.orderNewStatus != 7 && ordersList.orderNewStatus != 9) && ordersList.showStatus != '已过期' -->
+              </view>
+              <button class="buttom_package" bindtap="moreInf" data-ticketDetails="{{ticketDetails}}" style="margin-right: 20rpx; margin-bottom: 20rpx;">更多信息</button>
+            </view>
+          </view>
+
+
+          <view style="margin: 5rpx 10rpx 0;font-weight: bold;font-size: 26rpx;border-bottom: 1rpx solid black;height: 50rpx;" wx:if="{{item.ticketStatus == 1}}">核销时间：[{{item.write_off_operator}}]{{filters.formatDate(item.actionTime,1)}}</view>
+          <!-- 危险操作 删除wx:else判断 -->
+          <view>
+            <!-- 预约成功 或 申请预约 -->
+            <view wx:if="{{item.appointment == 0 && item.appointmentOnShop == 0 }}"></view>
+            <view style="margin-left: 10rpx;margin-top: 20rpx;font-weight: bold;font-size: 26rpx;padding-bottom: 20rpx;" wx:else>
+              <view>预约时间：{{filters.formatDate(item.operateTime,1)}}</view>
+              <view style="margin-top: 10rpx;">使用时间：{{filters.formatDate(item.appointmentTime,1)}}</view>
+              <view style="margin-top: 10rpx;" wx:if="{{item.acceptAppointmentRecord != null}}">预约确认：{{item.acceptAppointmentRecord == null ? '' : '['+item.acceptAppointmentRecord.operatorName+']'}}{{filters.formatDate(item.acceptAppointmentRecord.createTime,1)}}</view>
+              <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 0 && item.appointmentOnShop == 1 && item.acceptAppointmentRecord != null}}">预约结果：<text style="color: green;margin-left: 6rpx;">预约成功</text></view>
+              <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 1 && item.appointmentOnShop == 0 && item.acceptAppointmentRecord == null }}">预约结果: <text style="color: red;margin-left: 6rpx;"> 预约中</text></view>
+            </view>
+          </view>
+          <!-- 拒绝预约 -->
+          <view wx:if="{{item.appointmentRecord != null}}" wx:for="{{item.appointmentRecord}}" wx:for-item="refuseItem" style="padding-bottom: 20rpx;margin-left: 5rpx;font-weight: bold;font-size: 26rpx;">
+            <view style="font-size: 26rpx;margin-top: 10rpx;">预约时间：{{filters.formatDate(refuseItem.operateTime,1)}}</view>
+            <view style="font-size: 26rpx;margin-top: 10rpx;">使用时间：{{filters.formatDate(refuseItem.appointmentTime,1)}}</view>
+            <view style="font-size: 26rpx;margin-top: 10rpx;">预约确认：[{{refuseItem.operatorName}}]{{filters.formatDate(item.createTime,1)}}</view>
+            <view style="font-size: 26rpx;margin-top: 10rpx;">预约结果：<text style="color: red;margin-left: 6rpx;">预约失败</text></view>
+            <view style="font-size: 26rpx;margin-top: 10rpx;">原因：<text style="color: red;">{{refuseItem.denialReason}}</text></view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;" wx:if="{{ticketInfo.startUsing3 == '1'}}">
+      <view class="fdcc card" style="width: 95%;height: 250rpx;margin-top: 10px;">
+        <view class="top_text">注册信息</view>
+        <view class="fdcc" style="align-items: flex-start;justify-content: center;width: 90%;flex: 1;">
+          <view style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;width: 100%;">
+            <view style="width: 36.66%;display: flex;align-items: center;">姓名: <input placeholder="" disabled value="{{comboRealName}}" style="margin-left: 10rpx;text-align: center;width: 60%;height: auto;border-bottom: 1rpx solid;" /></view>
+            <view style="width: 33.33%;display: flex;align-items: center;">性别:
+              <input placeholder="" disabled value="{{comboSex}}" style="margin-left: 10rpx;width: 60%;height: auto;border-bottom: 1rpx solid;text-align: center;" />
+            </view>
+            <view style="width: 30%;display: flex;align-items: center;">年龄: <input type="number" disabled value="{{comboAge}}" style="margin-left: 10rpx;width: 40%;height: auto;border-bottom: 1rpx solid;text-align: center;" /></view>
+          </view>
+          <view style="display: flex;flex-direction: row;justify-content: flex-start;align-items: center;width: 100%;margin-top: 20rpx;">
+            <view style="display: flex;align-items: center;">手机号码: <input type="number" disabled value="{{comboPhone}}" style="margin-left: 10rpx;width: 50%;height: auto;border-bottom: 1rpx solid;text-align: center;" /></view>
+          </view>
+        </view>
+      </view>
+      <view class="fdcc card" style="width: 95%;height: 250rpx;justify-content: flex-start;align-items: center;">
+
+        <view style="height: 230rpx;width: 90%; display: flex;flex-direction: column;justify-content: center;align-items: center;">
+          <!--预留隐藏-->
+          <view style="display: flex;justify-content: space-between;width: 100%;">
+            <view>套餐名称: {{comboSetMealName}}</view>
+          </view>
+          <view style="display: flex;justify-content: space-between;width: 100%;margin-top: 20rpx;">
+            <view>套餐单价: {{comboPrice / orderDetail.length}}元/位</view>
+          </view>
+          <view style="display: flex;justify-content: flex-start;width: 100%;margin-top: 20rpx;">
+            <view>用餐时间: {{filters.formatDate(comboDinnerTime,0)}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="fdcc card" style="width: 95%;height: 300rpx;">
+        <view class="top_text">用户备注</view>
+        <textarea value="{{comboCustomerRemark}}" style="height: 200rpx;margin-top: 10rpx; width: 90%;background-color: #ffffff;border-radius: 5px;font-size: 16px;" disabled>
+    </textarea>
+      </view>
+      <view class="fdcc card" style="width: 95%;height: 300rpx;">
+        <view class="top_text">商家回复</view>
+        <textarea value="{{comboReplyRemark}}" disabled style="height: 200rpx;margin-top: 10rpx; width: 90%;background-color: #ffffff;border-radius: 5px;font-size: 16px;">
+    </textarea>
+      </view>
+    </view>
+
+    <!-- 互通信息 -->
+    <view class="part2" style="display: flex;flex-direction: column;align-items: center;" wx:if="{{packageIndex == 2}}">
+      <view class="title" style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;font-weight: bold;font-size: 32rpx;">
+          <text>互通信息</text>
+          <image class="refresh_icon " src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/flesh.png" bindtap='getTicketRemarkList'></image>
+        </view>
+      <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="width: 96%;height: 600rpx;padding: 20rpx 0;border-bottom: 1rpx solid black;">
+        <view class="message-box-list">
+          <view style="width: 100%;" wx:for="{{remarkList}}">
+            <view wx:if="{{item.remarkType == 1}}" style="width: 90%;display: flex;flex-direction: column;margin-bottom: 20rpx;">
+              <view>商家 {{filters.formatDate(item.createTime,9)}}</view>
+              <text style="width: fit-content;border: 1rpx solid #00000055;border-radius: 10px;padding: 10rpx 15rpx;background-color: white;">{{item.goodsRemark}}</text>
+            </view>
+            <view wx:if="{{item.remarkType == 0}}" style="width: 100%;display: flex;justify-content: flex-end;margin-bottom: 20rpx;">
+              <view style="width: 90%;display: flex;flex-direction: column;align-items: flex-end;">
+                <view>{{ordersList.userName}} {{filters.formatDate(item.createTime,9)}}</view>
+                <text style="width: fit-content;border: 1rpx solid #00000055;border-radius: 10px;padding: 10rpx 15rpx;background-color: white;">{{item.goodsRemark}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view style="display: flex;width: 96%;margin: 20rpx 0 30rpx;">
+        <textarea auto-height value="{{goodsRemark}}" bindinput="remarkInput" style="width: 76%;border: 1rpx solid #00000055;word-wrap: break-word;padding: 10rpx;border-radius: 3px;"></textarea>
+        <view style="flex: 1;display: flex;justify-content: center;align-items: flex-end;">
+          <view style="width: 80%;background-color: #52a76e;color: white;border-radius: 3px;padding: 4rpx;font-size: 30rpx;text-align: center;" bindtap="send">发送</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+</view>
+<!-- 超值优惠券 -->
+<view class="page" wx:if="{{packageIndex == '3'}}">
+  <scroll-view scroll-y="true" style='height:100%;width:100%;display: flex;justify-content: center;'>
+    <view class="part1" style="margin-top:40rpx;background-color: rgb(255,255,252);font-weight: bold;">
+      <view class="title" style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+        <text>订单信息</text>
+        <image class="refresh_icon " src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/flesh.png" bindtap='refresh'></image>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;justify-content: space-between;">
+        <view class="line_title" style="align-items: center;display: flex;color: #ff9c35;">订单号码：{{ordersList.orderCode}}</view>
+      </view>
+      <view class="oneline line_txt">
+        <view class="line_title" style="color: #ff9c35;margin-top: 10rpx;">下单时间：{{filters.formatDate(ordersList.createDate,1)}}</view>
+      </view>
+      <view class="oneline line_txt" style="margin-top: 10rpx;color: #ff9c35;">
+        <view class="line_title">支付状态：</view>{{ordersList.orderStatus == 0?'未支付':'已支付'}}
+      </view>
+      <view class="oneline line_txt" style="color: #ff9c35;margin-top: 10rpx;">
+        <view class="line_title">订单金额：{{filters.toFix(ordersList.orderTotal*0.01)}}元</view>
+      </view>
+      <view class="oneline line_txt" style="color: #ff9c35;margin-top: 10rpx;">
+        <view class="line_title">订单状态：{{ordersList.orderNewStatus == 0 ? '未支付' :
+          ordersList.orderNewStatus == 1 ? '待接单' :
+          ordersList.orderNewStatus == 2 ? '待使用' :
+          ordersList.orderNewStatus == 3 ? '申请预约' :
+          ordersList.orderNewStatus == 4 ? '预约失败' :
+          ordersList.orderNewStatus == 5 ? '预约成功' :
+          ordersList.orderNewStatus == 6 ? '申请退款' :
+          ordersList.orderNewStatus == 7 ? '退款成功' :
+          ordersList.orderNewStatus == 8 ? '退款失败' :
+          ordersList.orderNewStatus == 9 ? '已使用' :
+          ordersList.orderNewStatus == 10 ? '部分使用' : '未支付'}}</view>
+      </view>
+      <view class="oneline line_txt" style="display: flex;flex-direction: row;justify-content: center;" wx:if="{{ordersList.ministerTakesOrdersRecord != null}}">
+        <view class="line_title" style="color: #519763;">[{{ordersList.ministerTakesOrdersRecord.operatorName}}已接单] {{ordersList.ministerTakesOrdersRecord.createTime}} </view>
+      </view>
+    </view>
+    <view style="width: 95%;margin: 0 auto;margin-top: 25rpx;border: 2rpx solid gray;background: rgb(254,250,245);padding: 5rpx;" wx:for="{{orderDetailList}}">
+      <view class="ticket" style="font-weight: bold;">
+        <view style="font-size: 20rpx;">订单号:{{item.detail_code}}</view>
+        <view style="color:#009AA2;font-weight: 1000;margin-left: 40rpx;margin-top: 10rpx;">{{ticketInfo.coupon_name}}</view>
+        <view style="display: flex;flex-direction: row;justify-content: space-between;">
+          <view style="margin-left: 40rpx;color: rgb(131,131,131);font-size: 22rpx;margin-top: 10rpx;">{{filters.usefulWeek(ticketInfo.coupon_ruleweekstar,ticketInfo.coupon_ruleweekend)}}</view>
+          <view style="font-size: 40rpx;color: rgb(255,153,0);font-weight: 1000;margin-right: 20rpx;">￥{{ticketInfo.coupon_facevalue}}元</view>
+        </view>
+        <view style="font-size: 26rpx;margin-left: 40rpx;">购买价：{{filters.toFix(ticketInfo.coupon_original)}}元</view>
+        <view style="font-size: 26rpx;margin-left: 40rpx;margin-top: 10rpx;" wx:if="{{ticketInfo.coupon_validityend != null}}">有效期：{{filters.formatDate(ticketInfo.coupon_validityend,2)}} 止</view>
+        <view style="font-size: 26rpx;margin-left: 40rpx;margin-top: 10rpx;" wx:if="{{ticketInfo.coupon_validityend == null}}">有效期：{{ticketInfo.period_of_validity2}} 止</view>
+      </view>
+      <view style="background: linear-gradient(#dadada,white);height: 20rpx;width: 100%;"></view>
+
+      <view class="oneline box" style="justify-content:flex-end;display: flex;flex-direction: row;margin-right: 20rpx;width: 100%;border-bottom: 4rpx #cecece dashed;padding-bottom: 8rpx;">
+        <view style="position: absolute;left: 20rpx;font-weight: bolder;font-size: 28rpx;color: #55b179;" wx:if="{{item.is_give == 1}}">[已赠送]</view>
+        <view wx:if="{{ordersList.orderNewStatus != 0 && ordersList.showStatus != '订单已过期'}}" style="justify-content:flex-end;display: flex;flex-direction: row;">
+          <button wx:if="{{item.is_give == 1  && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" bindtap="showInquiry" data-item="{{item}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx;">赠送朋友</button>
+          <button wx:elif="{{ ticketInfo.startUsing3 != 1 && item.ticketStatus == 0 && item.appointment == 0 && item.appointmentOnShop == 0}}" class="buttom_package" style="margin-right: 20rpx;width: 125rpx;" data-item="{{item}}" open-type="share">赠送朋友</button>
+          <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;background: grey;" data-index="{{index}}" wx:if="{{ordersList.orderNewStatus == 1 && ticketInfo.appointment == 1 }}">预约</button>
+          <button class="buttom_package" style="margin-right: 20rpx;width: 125rpx;" data-index="{{index}}" wx:elif="{{item.appointment == 0 && item.appointmentOnShop == 0 && ticketInfo.appointment == 1 }}" bindtap="subscribe">预约</button>
+          <!-- ordersList.orderNewStatus  7-已退款   9-已使用 -->
+          <button class="buttom_package" wx:if="{{(ordersList.orderNewStatus != 7 && ordersList.orderNewStatus != 9 && (ordersList.ticketType == 3 || ordersList.ticketType == 2)) && ordersList.showStatus != '已过期' && item.ticketStatus != 1 }}" style="margin-right: 20rpx;width: 125rpx;" bindtap="checkGetCode" data-index="{{index}}" data-isgive="{{item.is_give}}">核销码</button>
+        </view>
+        <button class="buttom_package" bindtap="moreInf" data-ticketDetails="{{ticketDetails}}" style="margin-right: 20rpx;">详情</button>
+      </view>
+
+
+      <view style="margin: 0 10rpx 0 10rpx;font-weight: bold;font-size: 26rpx;border-bottom: 1rpx solid black;display: flex;flex-direction: row;justify-content: center;align-items: center;" wx:if="{{ticketWriteInfo}}" wx:for="{{ticketWriteInfo}}" wx:key="index">
+        <view style="display: flex;flex-direction: column;justify-content: flex-start;align-items: flex-start;width: 70%;">
+          <wxs module="fixedTime">
+            module.exports = function (v1) {
+              return v1.split('.')[0]
+            }
+          </wxs>
+          <text style="margin: 10rpx;">核销金额: <text style="color: rgb(255,153,0);font-size: 32rpx;">{{item.writeOffAmount}}</text> 元</text>
+          <text style="margin: 10rpx;">核销人: {{item.writeOffOperator}}</text>
+          <text style="margin: 10rpx 0 20rpx 10rpx;">核销时间: {{fixedTime(item.createTime)}}</text>
+        </view>
+        <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;width: 30%;">
+          <text style="font-size: 32rpx;color: crimson;">余额: {{item.balance}} 元</text>
+        </view>
+      </view>
+      <view style="margin: 5rpx 20rpx 0;font-weight: bold;font-size: 26rpx;border-bottom: 1rpx solid black;height: 50rpx;" wx:if="{{!ticketWriteInfo && item.ticketStatus == 1}}">核销时间：[{{item.write_off_operator}}]{{filters.formatDate(item.actionTime,1)}}</view>
+      <!-- 危险操作 删除wx:else判断 -->
+      <view>
+        <!-- 预约成功 或 申请预约 -->
+        <view wx:if="{{item.appointment == 0 && item.appointmentOnShop == 0 }}"></view>
+        <view style="margin-left: 20rpx;margin-top: 20rpx;font-weight: bold;font-size: 26rpx;padding-bottom: 20rpx;" wx:else>
+          <view>预约时间：{{filters.formatDate(item.operateTime,1)}}</view>
+          <view style="margin-top: 10rpx;">使用时间：{{filters.formatDate(item.appointmentTime,1)}}</view>
+          <view style="margin-top: 10rpx;" wx:if="{{item.acceptAppointmentRecord != null}}">预约确认：{{item.acceptAppointmentRecord == null ? '' : '['+item.acceptAppointmentRecord.operatorName+']'}}{{filters.formatDate(item.acceptAppointmentRecord.createTime,1)}}</view>
+          <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 0 && item.appointmentOnShop == 1 && item.acceptAppointmentRecord != null}}">预约结果：<text style="color: green;margin-left: 6rpx;">预约成功</text></view>
+          <view style="margin-top: 10rpx;" wx:if="{{item.appointment == 1 && item.appointmentOnShop == 0 && item.acceptAppointmentRecord == null }}">预约结果: <text style="color: red;margin-left: 6rpx;"> 预约中</text></view>
+        </view>
+
+        <!-- 拒绝预约 -->
+        <view wx:if="{{item.appointmentRecord != null}}" wx:for="{{item.appointmentRecord}}" wx:for-item="refuseItem" style="padding-bottom: 20rpx;margin-left: 20rpx;font-weight: bold;font-size: 26rpx;">
+          <view style="font-size: 26rpx;margin-top: 10rpx;">预约时间：{{filters.formatDate(refuseItem.operateTime,1)}}</view>
+          <view style="font-size: 26rpx;margin-top: 10rpx;">使用时间：{{filters.formatDate(refuseItem.appointmentTime,1)}}</view>
+          <view style="font-size: 26rpx;margin-top: 10rpx;">预约确认：[{{refuseItem.operatorName}}]{{filters.formatDate(item.createTime,1)}}</view>
+          <view style="font-size: 26rpx;margin-top: 10rpx;">预约结果：<text style="color: red;margin-left: 6rpx;">预约失败</text></view>
+          <view style="font-size: 26rpx;margin-top: 10rpx;">原因：<text style="color: red;">{{refuseItem.denialReason}}</text></view>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view>
+</view>
+
+<!-- 预约 -->
+<view wx:if="{{actionSheetHidden}}" class="modelview" bindtap=""></view>
+<view wx:if="{{actionSheetHidden}}" class="model">
+  <view class="modelTitle">
+    <text style="width:100%;text-align:center;padding-left:20rpx">预约</text>
+    <icon style="position: absolute;right: 25rpx;top: 15rpx" type="clear" size="20" bindtap="modalChange" />
+  </view>
+  <view class="menu_name">
+    <text>使用时间：</text>
+    <view style="display:flex;flex-direction:column;width:60%">
+      <picker style="width:220rpx;border:1rpx solid #dadada;height:42rpx;border-radius: 8rpx;font-size:28rpx;text-align:center" mode="date" value="{{startdate}}" bindchange="startDateChange">
+        <view class="picker" style="position: absolute;width:220rpx;height:42rpx">
+          <view class="picker_view" style="position: absolute;width:220rpx;height:42rpx;display:flex;justify-content: flex-start;left:10rpx">{{startdate}}
+          </view>
+          <image style="position: absolute;width:30rpx;height:30rpx;float:right;right:10rpx;top:6rpx" src='https://test.fsmbdlkj.com/wx_official/web/images/image/donwn.png'></image>
+        </view>
+      </picker>
+
+
+      <picker style="width:130rpx;margin-top: 35rpx;border:1rpx solid #dadada;height:42rpx;border-radius: 8rpx;font-size:28rpx;text-align:center" mode="time" value="{{starttime}}" bindchange="startTimeChange">
+        <view class="picker" style="position: absolute;width:130rpx;height:42rpx">
+          <view class="picker_view" style="position: absolute;width:120rpx;height:42rpx;display:flex;justify-content: flex-start;left:10rpx">{{starttime}}
+          </view>
+          <image style="position: absolute;width:30rpx;height:30rpx;float:right;right:10rpx;top:6rpx" src='https://test.fsmbdlkj.com/wx_official/web/images/image/donwn.png'></image>
+        </view>
+      </picker>
+
+    </view>
+  </view>
+  <!-- <view class="menu_name">
+
+    <text>电话号码：</text>
+    <view style="display:flex;flex-direction:column;width:60%">
+      <input style="margin:0;width:175rpx" value="{{phoneNum}}" bindinput="telInput"></input>
+    </view>
+  </view> -->
+  <view class="menu_name" style="margin-top:40rpx">
+    <text style="font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx">*使用时间段：</text>
+    <text style="font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx" wx:for="{{timeList}}">{{item}}</text>
+  </view>
+  <view class="menu_name">
+    <text style="width:90%;font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx">*请在使用时间段内预约</text>
+  </view>
+  <view class="modelTitle1" bindtap="gosubscribe">确定预约</view>
+</view>
+
+<!-- 核销 -->
+<view catchtouchmove="true" wx:if="{{actionSheetHidden1}}" class="modelview" bindtap="modalChange1"></view>
+<view catchtouchmove="true" wx:if="{{actionSheetHidden1}}" class="model1">
+
+  <image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 15rpx;top: 15rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png' bindtap='modalChange1'></image>
+  <view style="width:550rpx;height:600rpx;display: flex;flex-direction: column;align-items: center;">
+    <view class="order_shop" style="width: 90%;margin-left: 5%;">
+      <text style="width: 100%;color:#000">{{hexiaoShop}}</text>
+    </view>
+
+
+
+    <view class="order_shop" style="width: 90%;margin-left: 5%;">
+      <text style="width: 100%;" wx:if="{{packageIndex == '2'}}">名称 : {{orderName}}</text>
+      <text style="width: 100%;" wx:if="{{packageIndex == '3'}}">名称 : {{ticketInfo.coupon_name}}</text>
+      <text style="width: 100%;" wx:if="{{packageIndex == '4'}}">名称 : {{ticketInfo.distribution[0].dishesName}}</text>
+    </view>
+
+
+
+    <view class="order_shop" style="width: 90%;margin-left: 5%;">
+      <text style="color:rgb(255,153,0)" wx:if="{{packageIndex == '2'}}">价格 : ￥{{filters.toFix(orderTotal*0.01)/ordersList.detailedCount}}元<text style="text-decoration: line-through;font-size: 25rpx;margin-left:10rpx;color:#000">原价{{filters.toFix(ticketInfo.originalprice)}}元</text></text>
+      <text style="color:rgb(255,153,0);font-weight: bold;" wx:if="{{packageIndex == '3'}}">面额 : {{filters.toFix(ticketInfo.coupon_facevalue)}}元</text>
+    </view>
+    <view class="order_shop" style="width: 90%;margin-left: 5%;" wx:if="{{packageIndex == '3'}}">
+      <text>购买价：<text style="color: green;font-weight: bold;">{{filters.toFix(ticketInfo.coupon_original)}}</text>元</text>
+    </view>
+    <image style="width:300rpx;" mode="widthFix" src='{{codeImage}}'></image>
+  </view>
+</view>
+
+
+<view wx:if="{{showInquiry}}" style="position: fixed;top: 0;width: 100%;height: 100%;background-color: rgb(0, 0, 0,0.5);"></view>
+<view wx:if="{{showInquiry}}" style="position: fixed;top: 31%;width: 100%;display: flex;justify-content: center;">
+  <view style="font-size: 34rpx;width: 80%;border-radius: 26rpx;display: flex;flex-direction: column;align-items: center;background-color: white;overflow: hidden;">
+    <view style="font-weight: bold;padding-top: 60rpx;">提示</view>
+    <view style="color: #7f7f7f;margin-top: 30rpx;font-size: 35rpx;">已赠送，是否继续？</view>
+    <view style="width:100%;height:1rpx;background-color:#000000;transform:scaleY(.1);margin-top: 76rpx;"></view>
+    <view style="display: flex;width: 100%;">
+      <view style="width: 49%;display: flex;justify-content: center;align-items: center;font-weight: bolder;" bindtap="cancelInquiry">取消</view>
+      <view style="width: 1rpx;height: 110rpx;background-color:#000000;transform:scaleX(.1);"></view>
+      <button class="btn1" open-type="share" data-item="{{goods}}">确定</button>
+    </view>
+  </view>
+</view>

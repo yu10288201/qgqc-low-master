@@ -1,0 +1,685 @@
+<wxs module="filters" src="index.wxs"></wxs>
+<view class="wx" wx:if="{{show}}">
+  <official-account></official-account>
+</view>
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{shareDialog}}" bindtap="closeShareDialog">
+</view>
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 300rpx;width: 600rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;" wx:if="{{shareDialog}}">
+  <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;align-items: center;flex: 1;">
+    <view data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <button open-type="share" class="b1">
+        <view class="fri"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+          分享给朋友、群聊
+        </view>
+      </button>
+    </view>
+    <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;">
+    </view>
+    <view bindtap="shareTimeLine" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <view class="timeline"></view>
+      <view style="font-size: 30rpx;margin-top: 20rpx;">
+        分享到朋友圈
+      </view>
+    </view>
+  </view>
+</view>
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{toBookingDialog}}" bindtap="toBooking1">
+</view>
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 300rpx;width: 600rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;" wx:if="{{toBookingDialog}}">
+  <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;align-items: center;">
+    <image bindtap="toBooking1" class='exitTable' style="height: 50rpx;width: 50rpx;" src="" />
+    <view style="font-size: 36rpx;font-weight: bolder;margin-top: 10rpx;">已购/赠送</view>
+    <image bindtap="toBooking1" class='exitTable' style="height: 50rpx;width: 50rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/i_close.png" />
+  </view>
+  <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;align-items: center;flex: 1;">
+    <view bindtap="book" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <image style="width: 80rpx;height: 80rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_1.png'></image>
+      <view style="font-size: 30rpx;margin-top: 20rpx;">
+        线上使用
+      </view>
+    </view>
+    <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;">
+    </view>
+    <view bindtap="toBooking" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <image style="width: 80rpx;height: 80rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_2.png"></image>
+      <view style="font-size: 30rpx;margin-top: 20rpx;">
+        到店使用
+      </view>
+    </view>
+  </view>
+</view>
+<view class='hiddenview' wx:if="{{showChoose}}">
+  <view class='hiddenview2' style='height:95%;width: 95%;left:0;top: 0;right: 0;bottom: 0;margin: auto;display: flex;flex-direction: column;justify-content: center;align-items: center;' wx:if="{{isHall}}">
+    <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 5%;align-items: center;">
+      <view style="margin-left: 45rpx;width: 100rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;margin-top: 15rpx;" bindtap="qrscanForBuy">
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/i_scan.png" style="width: 80rpx;height: 80rpx;"></image>
+      </view>
+      <view style="margin-right: 45rpx;font-weight: bold;" wx:if="{{isOrder}}">已购/赠送</view>
+      <view style="margin-right: 45rpx;font-weight: bold;" wx:else>买 单</view>
+      <image bindtap="showChoose" class='exitTable' src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/i_close.png" />
+    </view>
+    <view class="oneline" style="width: 95%;justify-content: center;margin-top: 20rpx;height:15%;border: 1rpx solid black;border-radius: 15rpx;">
+      <scroll-view scroll-y="true" style="height: 100%;width: 100%;">
+        <view class="scroll-part" style=" display: flex;flex-direction: row;justify-content: left; flex-wrap: wrap;align-items: center;">
+          <view class="sign-setting-border {{hall_id ==item.id ?'selected':''}}" wx:for="{{typeItem}}" data-item="{{item}}" wx:key="index" bindtap='changeType'>{{item.name}}</view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='hiddenview_item' style='width:95%;height: 78%;flex: 1;display: flex;flex-direction: row;'>
+      <form bindsubmit='table_Bindsubmit' style='width:100%;'>
+        <scroll-view scroll-y='true' class="scroll-part" style="height:94%;margin-top:30rpx;border-bottom:solid 0.5px;border-bottom: #cecece dashed 1rpx;">
+          <radio-group name="area_nameGroup">
+            <label style="width:22%;display: inline-block;margin: 10rpx 1.5%" wx:for="{{hallTablesArray[hallIndex]}}" wx:key="index">
+              <checkbox value="{{index}}" checked="{{item.checked}}" style="display:none" />
+              <button class="hallcheckbox {{item.checked || (zhuantai && (table_id == item.table_id)) ? 'red_background':'yerrow_background'}}" data-item="{{item}}" data-index="{{index}}" form-type='submit' wx:if="{{item.table_status==1}}" style="color:#fff">
+                <text>{{item.field_name}}</text>
+                <view class="asd">{{item.table_name}}</view>
+                <view class="fenxiType">{{item.subSeatsId}}</view>
+                <text class="asd" style="margin-top: 0rpx;" wx:if="{{zhuantai && (table_id == item.table_id)}}">→</text>
+              </button>
+              <button class="hallcheckbox likepink_background" data-item="{{item}}" data-index="{{index}}" wx:elif="{{item.table_status==3}}" form-type='submit' style="color:#fff;">
+                <text>{{item.field_name}}</text>
+                <view class="asd">{{item.table_name}}</view>
+                <view class="fenxiType">{{item.subSeatsId}}</view>
+                <text class="asd" style="margin-top: 0rpx;" wx:if="{{(zhuantai && (table_id == item.table_id)) || ((item.table_id == changeBeforeTable[0].table_id) && chooseClick == 2)}}">→</text>
+              </button>
+              <button class="hallcheckbox {{item.checked || (zhuantai && (table_id == item.table_id)) ? (item.orderNumber>1 ? 'click_pingzhuo_background' :'red_background' ):(item.orderNumber>1 ? 'pingzhuo_background' :((item.table_id == changeBeforeTable[0].table_id) && chooseClick == 2 ? 'red_background':'blue_background'))}}" data-item="{{item}}" data-index="{{index}}" form-type='submit' wx:elif="{{item.table_status==0}}" style="color:#fff;">
+                <text>{{item.field_name}}</text>
+                <view class="asd">{{item.table_name}}</view>
+                <view class="fenxiType">{{item.subSeatsId}}</view>
+                <text class="asd" style="margin-top: 0rpx;" wx:if="{{(zhuantai && (table_id == item.table_id)) || ((item.table_id == changeBeforeTable[0].table_id) && chooseClick == 2)}}">→</text>
+              </button>
+            </label>
+          </radio-group>
+        </scroll-view>
+      </form>
+    </view>
+  </view>
+
+  <view class='hiddenview2' style='height:95%;width: 95%;left:0;top: 0;right: 0;bottom: 0;margin: auto;display: flex;flex-direction: column;justify-content: center;align-items: center;' wx:else>
+    <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 5%;align-items: center;">
+      <view style="margin-left: 45rpx;width: 100rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;margin-top: 15rpx;" bindtap="qrscanForBuy">
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/i_scan.png" style="width: 80rpx;height: 80rpx;"></image>
+      </view>
+      <view style="margin-right: 45rpx;font-weight: bold;" wx:if="{{isOrder}}">已购/赠送</view>
+      <view style="margin-right: 45rpx;font-weight: bold;" wx:else>买 单</view>
+      <text class='exitTable' bindtap='showChoose' style="margin-right: 10rpx;">x</text>
+    </view>
+    <view class="oneline" style="width: 95%;justify-content: center;margin-top: 20rpx;height:15%;border: 1rpx solid black;border-radius: 15rpx;">
+      <scroll-view scroll-y="true" style="height: 100%;width: 100%;">
+        <view class="scroll-part" style=" display: flex;flex-direction: row;justify-content: left; flex-wrap: wrap;align-items: center;">
+          <view class="sign-setting-border {{hall_id ==item.id ?'selected':''}}" wx:for="{{typeItem}}" data-item="{{item}}" wx:key="index" bindtap='changeType'>{{item.name}}</view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='hiddenview_item' style='width:95%;height: 78%;flex: 1;display: flex;flex-direction: row;'>
+      <form bindsubmit='hall_Bindsubmit' style='width:100%;'>
+        <scroll-view scroll-y='true' class="scroll-part" style="height:93.5%;margin-top:30rpx;border-bottom:solid 0.5px;border-bottom:#cecece dashed 1rpx;">
+          <radio-group name="area_nameGroup">
+            <label style="width:22%;display: inline-block;margin: 10rpx 1.5%" wx:for="{{compartmentLists}}" wx:key="index">
+              <checkbox value="{{index}}" checked="{{item.checked}}" style="display:none" />
+              <button class="hallcheckbox {{item.checked || (zhuantai && (table_id == item.table_id)) ? 'red_background':'yerrow_background'}}" data-item="{{item}}" data-index="{{index}}" form-type='submit' wx:if="{{item.table_status==1}}" style="color:{{item.checked ? '#000':'#fff'}};">
+                <text>{{item.field_name}}</text>
+                <view class="asd">{{item.table_name}}</view>
+                <text class="asd" style="margin-top: 0rpx;" wx:if="{{zhuantai && (table_id == item.table_id)}}">→</text>
+              </button>
+              <button class="hallcheckbox {{item.checked ? (item.orderNumber>1 ? 'click_pingzhuo_background' :'red_background' ):(item.orderNumber>1 ? 'pingzhuo_background' :((item.table_id == changeBeforeTable[0].table_id) && chooseClick == 2 ? 'red_background':'blue_background'))}}" data-item="{{item}}" data-index="{{index}}" form-type='submit' wx:elif="{{item.table_status==0}}" style="{{item.checked ? 'color:#000':'color:#fff'}}">
+                <text>{{item.field_name}}</text>
+                <view class="asd">{{item.table_name}}</view>
+                <text class="asd" style="margin-top: 0rpx;" wx:if="{{(item.table_id == changeBeforeTable[0].table_id) && chooseClick == 2}}">→</text>
+              </button>
+            </label>
+          </radio-group>
+        </scroll-view>
+      </form>
+    </view>
+  </view>
+
+</view>
+
+
+
+<view wx:if="{{shopid == undefined || shopid == null ||shopid ==0}}">
+  <view style='width:100%;display:flex;justify-content:center;margin-top:400rpx;color:red'>先到首页选择店铺</view>
+</view>
+<view wx:else>
+  <view class="cant_move" style="position:fixed;">
+    <swiper class="padding" wx:if="{{isIn}}" autoplay="{{swiperAutoplay}}" interval="{{swiperInterval}}" bindchange="swiperChange">
+      <!-- <block wx:for="{{topimageList}}" wx:key="*this"> -->
+      <swiper-item>
+        <image class='top-image' style="height:100%" src="{{topimage}}?x-oss-process=image/resize,m_fill,h_150,w_365" />
+      </swiper-item>
+      <swiper-item wx:if="{{videoList.length > 0}}">
+        <video wx:if="{{is_video_show==1}}" id="sVideo" class='top-image' src="{{currentVideo}}" autoplay="true" bindended="videoEnded" object-fit="fill"></video>
+      </swiper-item>
+      <!-- </block> -->
+    </swiper>
+    <swiper wx:else autoplay="true" interval="8000" duration="500" style="height:300rpx">
+      <block wx:for="{{swiper_background}}" wx:key="*this">
+        <swiper-item>
+          <image class="swiper-img" style="height:100%" src="{{item}}" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="shopinfo_view">
+      <view class='shopinfo'>
+        <view class='oneline'>
+          <view class='shopname'>{{shopdetail.shop_name}}</view>
+          <view class='businessarea' style='margin-top:10rpx;'>{{shopdetail.area}}</view>
+        </view>
+        <view class='oneline' style='margin-top:10rpx;justify-content: space-between;'>
+          <view style="display: flex;flex-direction: row;">
+            <image class='star' src='{{starimage}}'></image>
+            <view class="tableButton" wx:if="{{wifiName && wifiPW}}" style="margin-left: 10rpx;height: 45rpx;width: 200rpx;text-align: center; border-radius: 10rpx;color: #FFF;background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/meal_buttom.png');background-size: 100% 100%; margin-top: 0;font-size: 25rpx;" bindtap="connectShopWIFI">连接WIFI</view>
+          </view>
+          <view>
+            <image class="collection" bindtap="collection" wx:if="{{isCollection}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/collection_on.png" />
+            <image class="collection" bindtap="collection" wx:else src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/collection_off.png" />
+          </view>
+        </view>
+        <view class="oneline">
+          <view class='text5' style='font-size:25rpx;font-weight:bold;margin: 0rpx;'>[{{shop_type_value}}]</view>
+        </view>
+        <view class='oneline' style='margin-top:0rpx'>
+          <view class='text1' wx:if="{{shopdetail.shop_id != 21404}}">[食安：10]</view>
+          <view class='text1' style='margin-left:10rpx' wx:if="{{shopdetail.shop_id != 21404}}">[人均消费：{{shopdetail.per_capita_price}}元/人]</view>
+          <view class='text1' style='margin-left:10rpx' wx:if="{{shopdetail.shop_id != 21404}}">[人气：{{shopdetail.popularity}}人/天]</view>
+          <view class='text1' style='margin-left:10rpx'>[评论：{{shopdetail.comment_num}}]</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class='scroll-view' scroll-y style='height:{{scroll_height}}rpx;margin-top:480rpx;' lower-threshold='1000' bindscrolltolower='sv_flesh' scroll-top="{{topNum}}">
+    <view class='shopinfo_view' style='margin-bottom:20rpx;'>
+      <view class='content oneline' bindtap='shopinfo' style="margin-top:15rpx">
+        <view style='margin-bottom: 6rpx;width:100%;margin-left: 10rpx;'>
+          <view class='oneline text'>
+            <view style="color:{{ operatingstate == '营业中' ? 'green' : 'red'}};" class='column'>{{operatingstate}}</view>
+            <view style='margin-left:10rpx'>营业时间：{{operatingTime}}</view>
+            <image class='title-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_right.png' style="margin-left: 10rpx"></image>
+
+          </view>
+          <view class='oneline'>
+            <view wx:for="{{serive}}" wx:key="unique">
+              <view class='text3' wx:if="{{index<5}}">[{{item}}]</view>
+            </view>
+          </view>
+        </view>
+        <image class='phone' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/tel.png' data-id="0" bindtap='calling'></image>
+      </view>
+      <view class='content oneline' style="border-bottom: 1rpx solid #ddd;border-top: 1rpx solid #ddd;">
+        <view class='location oneline' bindtap='map' style="margin-left:10rpx;display: flex;flex-direction: row;justify-content: space-between;">
+          <view class='oneline text' style='margin-top:5rpx;width:600rpx;line-height: 45rpx;'>{{shopdetail.shop_address}}</view>
+          <view style="font-size: 26rpx;display:flex;flex-direction: row;line-height: 40rpx;">
+            <view>导航</view>
+            <image class='title-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_right.png' style='margin-top:6rpx'></image>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{shopdetail.shop_id != 21404}}">
+        <view class='btn-bar'>
+          <view class='btn1' bindtap='book'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_1.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>线上点餐</view>
+          </view>
+          <view class='btn1' bindtap='qrscan'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_2.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>到店点餐</view>
+          </view>
+          <view class='btn1' bindtap='lobster'>
+            <view class='go-center'>
+              <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_3.png'></image>
+            </view>
+            <view class='btn-text'>超值优惠</view>
+          </view>
+
+          <!-- <view class='btn1' bindtap='helpCenter'>
+						<view class='go-center'>
+							<view class='btn-image-bg'>
+								<image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_8.png'></image>
+							</view>
+						</view>
+						<view class='btn-text'>公众号</view>
+					</view> -->
+
+          <view class='btn1' bindtap='toBooking1' data-index="0">
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_8.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>已购/赠送</view>
+          </view>
+
+          <view class='btn1' bindtap='facilities'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_5.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>店铺设施</view>
+          </view>
+
+        </view>
+        <view class='btn-bar' style='margin-top:20rpx;'>
+          <view class='btn1' bindtap='orders'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_6.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>订单</view>
+          </view>
+          <view class='btn1' bindtap='toBooking' data-index="1">
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_7.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>买单</view>
+          </view>
+
+
+
+          <!-- 暂时替换成自提外卖 -->
+          <!-- <view class='btn1' bindtap='TemAct'> -->
+
+
+          <view class='btn1' bindtap='platform'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_2.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>了解平台</view>
+          </view>
+
+          <view class='btn1' bindtap='toMenu1'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_9.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>查看菜谱</view>
+          </view>
+
+          <view class='btn1' bindtap='help'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_4.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>帮助</view>
+          </view>
+        </view>
+        <view class='btn-bar' style='margin-top:20rpx;margin-bottom: 30rpx;'>
+          <view class='btn1' bindtap='gomymessage'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_11.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>我的消息</view>
+          </view>
+          <view class='btn1' bindtap='tosaleData' data-index="1">
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_6.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>朋友互绑</view>
+          </view>
+
+          <view class='btn1' bindtap='assessment'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_4.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>点评</view>
+          </view>
+
+          <view class='btn1' bindtap='tel'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_4.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>客服中心</view>
+          </view>
+
+          <view class='btn1' bindtap='mine'>
+            <view class='go-center'>
+              <view class='btn-image-bg'>
+                <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_10.png'></image>
+              </view>
+            </view>
+            <view class='btn-text'>我的</view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{shopdetail.shop_id == 21404}}" style="display: flex;justify-content: space-around;">
+        <view class='btn1' bindtap='toTClub'>
+          <view class='go-center'>
+            <view class='btn-image-bg'>
+              <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_2.png'></image>
+            </view>
+          </view>
+          <view class='btn-text'>T馆简介</view>
+        </view>
+        <view class='btn1' bindtap='goToOrdersList'>
+          <view class='go-center'>
+            <view class='btn-image-bg'>
+              <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_1.png'></image>
+            </view>
+          </view>
+          <view class='btn-text'>我的订单</view>
+        </view>
+        <view class='btn1' bindtap='lobster'>
+          <view class='go-center'>
+            <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_3.png'></image>
+          </view>
+          <view class='btn-text'>超值优惠</view>
+        </view>
+        <view class='btn1' bindtap='assessment'>
+          <view class='go-center'>
+            <view class='btn-image-bg'>
+              <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_4.png'></image>
+            </view>
+          </view>
+          <view class='btn-text'>点评</view>
+        </view>
+        <view class='btn1' bindtap='mine'>
+          <view class='go-center'>
+            <view class='btn-image-bg'>
+              <image class='btn-image' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/index_10.png'></image>
+            </view>
+          </view>
+          <view class='btn-text'>我的</view>
+        </view>
+      </view>
+    </view>
+
+
+
+
+
+
+
+    <view class='centercontent_1' wx:if="{{couponList.length !=0 }}" style="padding:0rpx;margin-top: 25rpx;">
+      <view class='oneline coupon_title' wx:if="{{shopdetail.shop_id != 21404}}">
+        <view class='title text4' style="margin-left: 5%;color:black">超值优惠券</view>
+      </view>
+      <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;">
+        <distributionCard showButton="{{false}}" bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="1" isFoodOrCombo="{{false}}" foodList="{{couponList}}" style="margin-top: 10rpx;"></distributionCard>
+      </view>
+    </view>
+
+    <view class='shopinfo_view centercontent_5' wx:if="{{foodList.length != 0}}">
+      <view class='oneline taocan_title'>
+        <view class='title text4' style="margin-left: 5%;color:black">超值菜品</view>
+      </view>
+      <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;">
+        <distributionCard showButton="{{false}}" bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="2" isFoodOrCombo="{{true}}" foodList="{{foodList}}" style="margin-top: 10rpx;"></distributionCard>
+      </view>
+    </view>
+
+    <view class='shopinfo_view centercontent_5' wx:if="{{wineList.length != 0}}">
+      <view class='oneline taocan_title'>
+        <view class='title text4' style="margin-left: 5%;color:black">超值酒水</view>
+      </view>
+      <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;">
+        <distributionCard showButton="{{false}}" bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="3" isFoodOrCombo="{{true}}" foodList="{{wineList}}" style="margin-top: 10rpx;"></distributionCard>
+      </view>
+    </view>
+
+
+    <view class='shopinfo_view centercontent_5' wx:if="{{comboList.length != 0}}">
+      <view class='oneline taocan_title'>
+        <view class='title text4' style="margin-left: 5%;color:black">超值套餐</view>
+      </view>
+      <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;">
+        <distributionCard showButton="{{false}}" bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="4" isFoodOrCombo="{{true}}" foodList="{{comboList}}" style="margin-top: 10rpx;"></distributionCard>
+      </view>
+    </view>
+
+
+    <!-- <view class='separator' wx:if="{{menuList_specialty.length!=0}}" /> -->
+    <view class='centercontent_2' style="margin-top:  27rpx;" wx:if="{{menuList_specialty.length!=0}}">
+      <view class='oneline xd_title'>
+        <view class='title text4' style="margin-left: 5%;width:4000rpx;color:black">星盾折扣菜品</view>
+        <!-- <text style="color:black;font-size:26rpx;width: 400rpx;margin-right: 25rpx;" bindtap="toMenu1">更多</text> -->
+      </view>
+      <scroll-view class='scroll-view-x' scroll-x style='width: 100%;margin-left: 2%;height: 82%;margin-top:-5rpx;'>
+        <view class='oneline' style='display: inline-block;width: 50%;height: 100%;' wx:for="{{menuList_specialty}}" wx:key="unique" wx:for-index="idx">
+          <view class='vw'>
+            <image class='centerimage' src='{{item.big_dishes_img}}' data-index="{{idx}}" data-img="{{item.big_dishes_img}}" data-arry='{{menuList_specialty}}' data-type="cp" bindtap='jump'></image>
+            <view class="star_view">
+              <text class="view_text">{{item.dishes_name}}</text>
+              <text class="view_text1">月销量{{item.monthly_sales_volume}}份</text>
+            </view>
+
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+
+    <view class='centercontent_2' wx:if="{{menuList_new.length!=0}}" style="margin-top: 15rpx;">
+      <view class='oneline new_title'>
+        <view class='title text4' style="margin-left: 5%;width:4000rpx;color:black;">新菜品</view>
+      </view>
+      <scroll-view class='scroll-view-x' scroll-x style='width: 100%;margin-left: 2%;margin-top:-10rpx;height: 82%;'>
+        <view class='oneline' style='display: inline-block;width: 50%;height: 100%;' wx:for="{{menuList_new}}" wx:key="unique" wx:for-index="idx">
+          <view class='vw'>
+            <image class='centerimage' src='{{item.big_dishes_img}}' data-index="{{idx}}" data-img="{{item.big_dishes_img}}" data-arry='{{menuList_new}}' data-type="cp" data-type="cp" bindtap='taocanJump1'></image>
+            <view class="star_view">
+              <text class="view_text">{{item.dishes_name}}</text>
+              <text class="view_text1">月销量{{item.monthly_sales_volume}}份</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='centercontent_3' wx:if="{{menuList_recommend.length!=0}}">
+      <view class='oneline dc_title'>
+        <view class='title text4' style="margin-left: 5%;color:red;width:4000rpx;color:black;">大厨推荐</view>
+      </view>
+      <scroll-view class='scroll-view-x' scroll-x style='width: 100%;margin-left: 2%;margin-top: -15rpx;height: 82%;'>
+        <view class='oneline' style='display: inline-block;width: 50%;height: 100%;' wx:for="{{menuList_recommend}}" wx:for-index="idx" wx:key="unique">
+          <view class='vw'>
+            <image class='centerimage' src='{{item.big_dishes_img}}' data-index="{{idx}}" data-img="{{item.big_dishes_img}}" data-arry='{{menuList_recommend}}' data-type="cp" bindtap='taocanJump1' data-item="{{item}}"></image>
+            <view class="star_view">
+              <text class="view_text">{{item.dishes_name}}</text>
+              <text class="view_text1">月销量{{item.monthly_sales_volume}}份</text>
+            </view>
+
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class='centercontent_4' wx:if="{{menuList_discount.length!=0}}">
+      <view class='oneline tejia_title'>
+        <view class='title text4' style="margin-left: 5%;width:4000rpx;color:black">特价菜</view>
+      </view>
+      <scroll-view class='scroll-view-x' scroll-x style='width: 100%;margin-left: 2%;margin-top: -15rpx;height: 82%;'>
+        <view class='oneline' style='display: inline-block;width: 50%;height: 100%;' wx:for="{{menuList_discount}}" wx:key="unique" wx:for-index="idx">
+          <view class='vw'>
+            <image class='centerimage' src='{{item.big_dishes_img}}' data-index="{{idx}}" data-img="{{item.big_dishes_img}}" data-arry='{{menuList_discount}}' data-type="cp" bindtap='taocanJump1' data-item="{{item}}"></image>
+            <view class="star_view">
+              <text class="view_text">{{item.dishes_name}}</text>
+              <text class="view_text1">月销量{{item.monthly_sales_volume}}份</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+    <view class="padding2" wx:if="{{!isIn}}" style="background-image: url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/smp/20211030_20211030110641.png);">
+      <text style="font-size: 60rpx;color: #009AA2;margin-top: 100rpx;">温馨提示</text>
+      <text style="font-size: 60rpx;color: #009AA2;margin-top: 40rpx;">该店铺尚未入驻平台</text>
+    </view>
+
+    <view class='centercontent_1' wx:if="{{randomDishes.length!=0 && randomDishes!=null && isIn}}" style="margin-top:15rpx;">
+      <view class='oneline putong_title'>
+        <view class='title text4' style="margin-left: 5%;width:4000rpx;color:black">普通菜品</view>
+      </view>
+
+      <view wx:for="{{randomDishes}}" wx:for-item="item" data-id="{{item.dishes_id}}" style="display: flex;flex-direction: column;align-items: center;width: 100%;">
+        <view style="display: flex;flex-direction: column;width: 94%;" bindtap="taocanJump1" data-item="{{item}}">
+          <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;margin-bottom: 30rpx;">
+            <view style="height: 160rpx;width:200rpx;">
+              <image src='{{item.dishes_img}}' style="height:100%;width: 100%; border-radius: 30rpx;"></image>
+            </view>
+            <view style="display: flex;flex-direction: column;height: 160rpx;flex: 1;align-items: flex-end;">
+              <view style="height: 100%;width: 96%;border: 1rpx solid rgb(253,227,210);border-radius: 10rpx;background-color: rgb(254,250,245);display: flex;flex-direction: column;align-items: center;justify-content: center;">
+                <view style="height: 90%;width: 96%;display: flex;align-items: center;justify-content: center;flex-direction: column;">
+                  <view style="width: 100%;font-size: 28rpx;font-weight: bolder;">
+                    {{item.dishes_name}}
+                  </view>
+                  <view style="width: 100%;font-size: 26rpx;">
+                    [{{item.type_name}}]
+                  </view>
+                  <view style="width: 100%;font-size: 26rpx;display: flex;justify-content: space-between;">
+                    <view>
+                      {{filters.type(item.spec_type)}}
+                    </view>
+                    <view style="display: flex;">
+                      月销量：<view style="width: 70rpx;">{{item.monthly_sales_volume}}</view>
+                    </view>
+                  </view>
+                  <view style="width: 100%;font-size: 26rpx;display: flex;justify-content: space-between;font-size: 30rpx;color: rgb(255,153,0);font-weight: bolder;">
+                    <view>
+                      <text style="font-size: 40rpx;">￥{{item.dishes_price}}/</text>{{item.dishes_metering_type}}
+                    </view>
+                    <view style="display: flex;justify-content: center;">
+                      <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png" style="width:15px;height:15px"></image>
+                      <text style="color: #000;font-weight: 400; font-size: 26rpx;"> ：</text>
+                      <view style="color: #000;font-weight: 400; font-size: 26rpx;width: 70rpx;">{{item.praise_points}}</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+    <image style="border-radius: 50%; width: 80rpx;height: 80rpx;position: fixed;bottom: 0;right: 0;margin: auto 50rpx 50rpx auto;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/toTop.png' bindtap='goTop' class='goTop'>
+    </image>
+  </scroll-view>
+
+</view>
+
+
+<!-- 通过邀请函和分享页面进入到该小程序的弹窗 -->
+<view bindtap='showModalStatus' class='popup-window-bg' wx:if='{{isFromTreat}}'></view>
+<view class='popup-window-a' wx:if='{{isFromTreat}}'>
+  <view style="margin-top: 20rpx; margin-left: 20rpx; display: flex; flex-direction: row; justify-content: space-between;">
+    <view>尊敬的先生/女士：</view>
+    <image style="width: 40rpx; height: 40rpx; margin-right: 20rpx;" bindtap='showModalStatus' src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_black.png"/>
+  </view>
+  <!-- <image style='height:650rpx;width:100%;' src='{{invitation_image}}'></image> -->
+  <view style="width: 78%;margin-left: 11%;margin-top: 20rpx">您好！{{titles}}</view>
+  <view style="width: 78%;margin-left: 11%;margin-top: 48rpx" wx:if="{{sendContent != 'undefined' && sendContent != undefined && sendContent != null && sendContent != ''}}">
+    邀请附言: {{sendContent}}
+  </view>
+  <view style="width: 78%;margin-left: 11%;margin-top: 48rpx">
+    餐厅地址: {{shopdetail.shop_address}}。<span style="color: blue;" bindtap="map">导航</span>  
+  </view>
+  <view wx:if='{{isShowMenu == 0}}' style="width: 78%;margin-left: 11%;margin-top: 48rpx;font-size: 32rpx;"> 菜单:【{{showMenuContent}}】</view>
+  <view style="font-size: 32rpx;display: flex;justify-content: flex-end;margin-right: 20rpx;margin-top: 64rpx;margin-bottom: 20rpx;">
+    (请在<span style="color: blue;" bindtap="toMyMessage">我的消息</span>中查看详细信息)
+  </view>
+</view>
+
+<view wx:if="{{showModalStatus1}}" class='popup-window-bg'>
+  <view class='window' style="background:url({{background2}});background-size:100% 100%;-moz-background-size:100% 100%;">
+    <view class='window-item'>
+      <view class='window-item-title'>欢迎关注</view>
+      <view class='window-item-content'>申请授权</view>
+      <view class='window-item-content' style="width:90%;margin-left:5%;">现需获取您的昵称、头像、地区及性别。是否同意？</view>
+    </view>
+    <view class='btn-bar2'>
+      <button class='cancelBtn' bindtap='refused'>否</button>
+      <button class='confirmBtn' open-type="getUserInfo" lang="zh_CN" bindtap="getUserInfo">是</button>
+    </view>
+  </view>
+</view>
+
+
+<!-- 申请拼桌弹出模态框 -->
+<view bindtap='' catchtouchmove="true" class='popup-window-bg1' wx:if='{{!hidden}}'></view>
+<view style="border-radius:10rpx;top:35%;background:rgb(63,93,112);color:white" class='popup-window1' catchtouchmove="true" wx:if='{{!hidden}}'>
+  <view style="display:flex;flex-direction:column;width:80%;margin-left:60rpx;margin-top:10rpx;">
+    <view>对不起,该餐桌已被客人订用,用餐时间为:</view>
+    <view>{{filters.substringTime(eatdinnertime)}}您可以进行以下的选择:</view>
+  </view>
+  <view class='oneline' style='margin-top:20rpx;margin-bottom:40rpx;justify-content: space-around;'>
+
+    <view class='radio-groud-in ' data-index='0' bindtap='changeway' style="width:130rpx;">
+      <image class='radio1 ' src="{{way==0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='1' style="font-weight:bold;margin-left:10rpx;">拼桌</view>
+    </view>
+    <view class='radio-groud-in ' data-index='1' style="width:220rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='2' style="font-weight:bold;margin-left:10rpx;">够时间使用</view>
+    </view>
+    <view class='radio-groud-in ' data-index='2' style="width:150rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==2?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='3' style="font-weight:bold;margin-left:10rpx;">不使用</view>
+    </view>
+    <view class='radio-groud-in ' wx:if='{{hidden2}}' data-index='3' style="width:200rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='4' style="font-weight:bold;margin-left:10rpx;">订单详情</view>
+    </view>
+  </view>
+  <view style="border-bottom:solid 2rpx #e3e3e3;margin-bottom:10rpx;"></view>
+
+  <view class="box" wx:if='{{!hidden2}}' style="width:100%;flex-direction:column;justify-content:flex-start;border-top: 1rpx solid #000;">
+    <view wx:for="{{orderId_directy}}" wx:for-item='item' wx:for-index='index' class="box" style="width:99%;border: 1rpx solid #000;justify-content: space-around;">
+      <view style="font-size:25rpx;width:30%;text-align: center;">订单{{index+1}}</view>
+      <view style="font-size:25rpx;width: 30%;text-align: center;">{{item.tableName}}</view>
+      <button class="btn2" bindtap="{{item.userClaim==1 ? '' : 'bindOrder'}}" data-item="{{item}}" style="font-size:25rpx;height: 50rpx;line-height: 45rpx;width: 170rpx;margin: 5px 10px;{{item.userClaim==1 ? 'background-color:#949494' : ''}}">订单详情</button>
+    </view>
+  </view>
+
+  <view class='select-dishes' style="margin-left:280rpx;">
+    <view class='btn2' bindtap='confirm' style="margin-top: 12rpx;margin-bottom:12rpx;">确定</view>
+  </view>
+</view>
+
+
+
+<!-- 分享画板 -->
+<canvas type="2d" id="canvas" style="width:621px;height:1104px;position: fixed;left: -621px;top: -1104px;"></canvas>
+<view class="popup-window-bg12" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window12" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+  <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+    <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" bindtap="showBigImage" show-menu-by-longpress="true"></image>
+    <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+    <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+    <view style="width: 10%;">
+      <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+    </view>
+  </view>
+
+</view>
+
+
+<!-- 获取头像和名称 暂时隐藏-->
+<!-- <headPortrait bind:refreshAvatar="refreshAvatar" isShow="{{isShowGetAvatar}}"></headPortrait> -->

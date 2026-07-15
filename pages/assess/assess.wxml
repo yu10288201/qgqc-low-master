@@ -1,0 +1,56 @@
+<!--pages/assess/assess.wxml-->
+<view class='pageAll'>
+  <view class='shopName'>
+    <text>{{shop_name}}</text>
+  </view>
+
+ 
+  <view class='tapPick' style="padding-bottom: 10rpx;">
+
+    <view class='title'>对本次消费进行评价</view>
+    <!-- <block wx:for="{{list}}" wx:key="list"  >
+      <view class="{{item.tap==0?'tab_on':'tab'}}" style='color:{{color}}' bindtap="choose"  >
+        <text>{{item}}</text>
+      </view>
+    </block> -->
+    <button 
+      wx:for="{{riderCommentList}}" 
+      wx:for-item="item" 
+      wx:key="item.index"  
+      bindtap="checkboxChange" 
+      data-value="{{item.value}}" 
+      data-index="{{index}}"  
+      checked="{{item.selected}}"
+      class="btn {{item.selected ? 'btn-selected' : ''}}" >
+      {{item.title}}
+    </button>
+  </view>
+  <view class="ad_popError" wx:if="{{popErrorMsg}}">{{popErrorMsg}}</view>
+  <view class='textInput'>
+  
+     <textarea class="textarea-bg" placeholder-class="phcolor" placeholder="请输入内容" name="assess" bindinput="getDataBindTap" maxlength='{{font_max}}' auto-height />
+     <view class="clear"><text style="color: #ccc; font-size: 14px; float: right; margin-right: 2%;bottom:0;">{{current}} / {{max}} （最多可写300字）</text></view>
+  </view>
+  
+  <view class='image-view'>
+
+    <view class='imagePreview'>
+      <block wx:for="{{images}}" wx:key="*this">
+        <view class='images'>
+          <image class='img' src="{{item}}"  data-idx="{{index}}" bindtap='handleImagePreview' />
+          <view class="delete" bindtap="removeImage" data-idx="{{index}}"><image style="left: {{imageWidth / 2 - 10}}px;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/trash1.png"  /></view>
+        </view>
+      </block>
+
+      <view class='imageUpload'>
+        <image class='imageConfirm' name='uploadfile_ant' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Upload_image.png'  bindtap='chooseImage'/>
+      </view>
+    </view>
+  </view> 
+
+  
+  <button class='submit' open-type='getUserInfo' type="primary" bindtap="submitForm"  lang="zh_CN">
+    <text>提交评价</text>
+  </button>
+
+</view>

@@ -1,0 +1,132 @@
+var filters = {
+  week_data:function(value){
+    var a = value;
+    var b = ''
+    if(a=='1'){
+      b = '一'
+    }else if(a=='2'){
+      b = '二'
+    }else if(a=='3'){
+      b = '三'
+    }else if(a=='4'){
+      b = '四'
+    }else if(a=='5'){
+      b = '五'
+    }else if(a=='6'){
+      b = '六'
+    }else if(a=='7'){
+      b = '日'
+    }
+    return b
+  },
+  week_data2:function(value){
+    var shit = ['1,2,3,4,5,6,7','1,2,3,4,5,6','1,2,3,4,5','1,2,3,4','1,2,3','1,2','2,3,4,5,6,7','2,3,4,5,6','2,3,4,5','2,3,4','2,3','3,4,5,6,7','3,4,5,6','3,4,5','4,5','5,6,7','5,6','6,7']
+    if(shit.indexOf(value) != -1){
+      var day = value.substring(0,1).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六') + ' 至 周'+ value.substring(value.length-1,value.length).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六').replace('7','日')
+      return '周'+day+' 可用'
+    }
+    var value = value.split(',')
+    var day = ''
+    if(value.indexOf('1') != -1){
+      day += '一、'
+    }
+    if(value.indexOf('2') != -1){
+      day += '二、'
+    }
+    if(value.indexOf('3') != -1){
+      day += '三、'
+    }
+    if(value.indexOf('4') != -1){
+      day += '四、'
+    }
+    if(value.indexOf('5') != -1){
+      day += '五、'
+    }
+    if(value.indexOf('6') != -1){
+      day += '六、'
+    }
+    if(value.indexOf('7') != -1){
+      day += '日、'
+    }
+    // console.log(day)
+    return '周'+day.substring(0,day.length-1)+'可用'
+
+    //别人拉屎我也拉，我直接拉一大坨
+    // var a = value.split('~')[0];
+    // var c = value.split('~')[1];
+    // var b = ''
+    // var d = ''
+    // if(a=='1'){
+    //   b = '一'
+    // }else if(a=='2'){
+    //   b = '二'
+    // }else if(a=='3'){
+    //   b = '三'
+    // }else if(a=='4'){
+    //   b = '四'
+    // }else if(a=='5'){
+    //   b = '五'
+    // }else if(a=='6'){
+    //   b = '六'
+    // }else if(a=='7'){
+    //   b = '日'
+    // }
+
+    // if(c=='1'){
+    //   d = '一'
+    // }else if(c=='2'){
+    //   d = '二'
+    // }else if(c=='3'){
+    //   d = '三'
+    // }else if(c=='4'){
+    //   d = '四'
+    // }else if(c=='5'){
+    //   d = '五'
+    // }else if(c=='6'){
+    //   d = '六'
+    // }else if(c=='7'){
+    //   d = '日'
+    // }
+    // var e = '周'+b+'至周'+d+'可用'
+    // return e
+  },
+  Time:function(value){
+    var a = value.split('T')[0];
+    return a
+  },
+  people:function(a){
+    var b = ''
+    if(a != 27){
+      b = '[菜品]'
+    }else{
+      b = '[套餐]'
+    }
+    
+    return b
+  }
+
+}
+var substr = function(val) {
+
+  if (val.length == 0 || val == undefined) {
+  
+  return false;
+  
+  } else if (val.length > 8) {
+  
+  return val.substring(0,8) + "...";
+  
+  }else{
+  
+  return val;
+  
+  }
+  
+  }
+module.exports = {
+  week_data: filters.week_data,
+  week_data2:filters.week_data2,
+  Time:filters.Time,
+  people:filters.people,
+  substr:substr
+}

@@ -1,0 +1,30 @@
+var filters = {
+  toMult: function (value1, value2) {
+    var a = value1;
+    var b = value2;
+    return Number(a) * Number(b)
+  },
+
+  add: function (value1, value2) {
+    var a = value1;
+    var b = value2;
+    return Number(a) + Number(b)
+  },
+
+  distribution_mode : function(value){
+    var a = value;
+    if(a == 1){
+      return '配送'
+    }else if(a==2){
+      return '自提'
+    }else if(a == 3){
+      return '配送/自提'
+    }
+  }
+
+}
+module.exports = {
+  toMult: filters.toMult,
+  add : filters.add,
+  distribution_mode: filters.distribution_mode
+}

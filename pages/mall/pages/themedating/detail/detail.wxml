@@ -1,0 +1,133 @@
+<view class="container" wx:if="{{activity}}">
+  <!-- 版头图 -->
+  <video wx:if="{{headerImg && headerIsVideo}}" class="cover-img" src="{{headerImg}}" controls show-fullscreen-btn object-fit="cover" autoplay muted />
+  <image wx:elif="{{headerImg}}" class="cover-img" src="{{headerImg}}" mode="aspectFill" />
+
+  <!-- 活动基本信息 -->
+  <view class="card">
+    <view class="info-row">
+      <text class="info-key">活动名称：</text>
+      <text class="info-val">{{activity.title}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动地点：</text>
+      <text class="info-val">{{activity.location}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">开始时间：</text>
+      <text class="info-val">{{activity.activityDateStart}}</text>
+    </view>
+    <view class="info-row" wx:if="{{activity.activityDateEnd}}">
+      <text class="info-key">结束时间：</text>
+      <text class="info-val">{{activity.activityDateEnd}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动费用：</text>
+      <text class="info-val">男:{{activity.priceMale}}元 女:{{activity.priceFemale}}元</text>
+    </view>
+    <view wx:if="{{activity.promotionReward}}" class="info-row" style="padding: 0; border-bottom: none;">
+      <view class="commission-box">
+        <image class="commission-trophy" mode="scaleToFill" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/trophy1.png" />
+        <view class="commission-content">
+          <text class="commission-label">分享奖励: ￥{{activity.promotionReward}}元/次/人</text>
+        </view>
+        <view class="commission-share" bindtap="shareSelect">
+          <image style="height:65rpx; width:65rpx;" mode="scaleToFill" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/share100.png" />
+        </view>
+      </view>
+    </view>
+    <view class="info-row-col">
+      <text class="info-key">活动内容：</text>
+      <scroll-view scroll-y class="desc-scroll">
+        <view class="desc-text">{{activity.descriptionDetail || '空'}}</view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 媒体列表：视频在前，图片在后 -->
+  <view wx:if="{{mediaList.length}}" class="media-card">
+    <view wx:for="{{mediaList}}" wx:key="id" style="{{item.needGap ? 'margin-bottom:20rpx;' : ''}}">
+      <video
+        wx:if="{{item.mediaType === 1}}"
+        class="media-video"
+        src="{{item.url}}"
+        controls
+        show-fullscreen-btn
+        object-fit="contain"
+      />
+      <image
+        wx:else
+        class="media-img"
+        src="{{item.url}}"
+        mode="aspectFill"
+        data-url="{{item.url}}"
+        bindtap="previewMedia"
+      />
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-btns">
+    <view class="action-btn" bindtap="goPromotion">奖励规则</view>
+    <view class="action-btn" bindtap="goSignup">报名</view>
+    <view class="action-btn">客服</view>
+  </view>
+</view>
+
+<view wx:else class="loading-tip">加载中...</view>
+
+<!-- 分享弹窗遮罩 -->
+<view wx:if="{{shareDialog}}" style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" bindtap="closeShareDialog"></view>
+
+<!-- 分享弹窗 -->
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 600rpx;width: 700rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;" wx:if="{{shareDialog}}">
+  <view style="width:100%;display:flex;flex-direction:row;justify-content:flex-end;padding:16rpx 24rpx 0;box-sizing:border-box;">
+    <text style="font-size:40rpx;color:#999;line-height:1;" catchtap="closeShareDialog">✕</text>
+  </view>
+  <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+    <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+      <button open-type="share" class="share-b1">
+        <view class="share-edit-forward"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">直接发送</view>
+      </button>
+    </view>
+    <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+      <button catch:tap="toMallBaseArticleTemplateMain" class="share-b1">
+        <view class="share-edit-forward"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">编辑发送</view>
+      </button>
+    </view>
+    <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+      <button catch:tap="generatePosterClick_ToDetail" class="share-b1">
+        <view class="share-edit-forward"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">海报朋友圈</view>
+      </button>
+    </view>
+  </view>
+  <view style="width: 100%;height: 10rpx;background-color: #ccc;"></view>
+  <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+    <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+      <button catch:tap="generatePosterClick_ToResult" class="share-b1">
+        <view class="share-edit-forward"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">海报编辑页</view>
+      </button>
+    </view>
+  </view>
+  <view style="width: 100%;height: 10rpx;background-color: #ccc;"></view>
+  <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+    <view bindtap="shareTimeLine" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <view class="share-timeline"></view>
+      <view style="font-size: 30rpx;margin-top: 20rpx;">分享朋友圈</view>
+    </view>
+    <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+      <button catch:tap="toDingKe" class="share-b1">
+        <view class="share-dinxing-forward"></view>
+        <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">叮聊发送</view>
+      </button>
+    </view>
+    <view catch:tap="selectCustomerIsStaff" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+      <view class="share-cust"></view>
+      <view style="font-size: 30rpx;margin-top: 20rpx;">生成二维码</view>
+    </view>
+  </view>
+</view>

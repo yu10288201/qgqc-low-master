@@ -1,0 +1,35 @@
+<!--pages/SetMeal/SetMeal.wxml-->
+<view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%;z-index: 0;height: 225rpx;position: absolute;width: 100%;top: -1rpx;">
+
+  <view class="box">
+    <view class="box" style="margin-top:50rpx;background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/input.png');background-size: 100% 100%;width:70%;justify-content: flex-end;">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/sousuo.png' style="width:25rpx;height:25rpx;margin-left: 25rpx;"></image>
+      <input style="width:500rpx;margin-left: 25rpx;" placeholder="搜索"></input>
+    </view>
+  </view>
+  <view class="box" style="margin-top:25rpx">
+    <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/taocan.png' style="position:relative;width:380px;height:280px;">
+      <text style="position:absolute;top:12rpx;left:25rpx;font-size: 50rpx;font-weight:bold">超值优惠</text>
+    </image>
+  </view>
+  <scroll-view style="scroll-y width: 100%;">
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img1.png' style="width:95%;height:250rpx;"></image>
+    </view>
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img2.png' style="width:95%;height:250rpx;"></image>
+    </view>
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img3.png' style="width:95%;height:250rpx;"></image>
+    </view>
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img1.png' style="width:95%;height:250rpx;"></image>
+    </view>
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img2.png' style="width:95%;height:250rpx;"></image>
+    </view>
+    <view class="box">
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/setMeal/img3.png' style="width:95%;height:250rpx;"></image>
+    </view>
+  </scroll-view>
+</view>

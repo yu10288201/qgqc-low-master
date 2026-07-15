@@ -1,0 +1,49 @@
+<!--shopinfo.wxml-->
+
+<view class='page'>
+  <view class='title'>营业时间</view>
+  <view class='oneline timecontent'>
+    <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_time.png'></image>
+    <view class='littletitle'>周一至周日9:00-21:00 </view>
+  </view>
+</view>
+<view class='separator'></view>
+<view class='page'>
+  <view class='title'>服务设施及特色服务</view>
+  <view class='centercontent'>
+    <view class='oneline'>
+      <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_flower.png'></image>
+      <view class='littletitle'>服务设施</view>
+    </view>
+    <view style='margin-left:20px'>
+      <view>包厢</view>
+      <view class='text1'>共3个包厢，有个10人以上大包，最多可坐12人。大堂最大座可坐12人，支持预定。</view>
+    </view>
+    <view style='margin-top:10px;margin-left:20px'>停车场，无烟区，Wi-Fi,手机支付,自助点餐,自助结账,宝宝椅</view>
+  </view>
+  <view class='centercontent'>
+    <view class='oneline'>
+      <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_badge.png'></image>
+      <view class='littletitle'>特色服务</view>
+    </view>
+    <view style='margin-left:20px'>儿童小乐园，宠物托管</view>
+  </view>
+</view>
+<view class='separator' style='margin-top:20px;'></view>
+<view class='page'>
+  <view class='title'>交通地标</view>
+  <view>
+    <view class='bottomcontent'>
+      <view class='contentitem' style='width:90%'>魁奇西路地铁站B出口</view>
+      <view class='contentitem'>1300m</view>
+    </view>
+    <view class='bottomcontent'>
+      <view class='contentitem' style='width:90%'>番村公交站</view>
+      <view class='contentitem'>800m</view>
+    </view>
+    <view class='bottomcontent'>
+      <view class='contentitem' style='width:90%'>塘头小商品服装市场</view>
+      <view class='contentitem'>400m</view>
+    </view>
+  </view>
+</view>

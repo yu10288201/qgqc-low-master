@@ -1,0 +1,23 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#009AA2",
+  "navigationBarTitleText": "切瓜切菜",
+  "navigationBarTextStyle": "white",
+  "onReachBottomDistance": 300,
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-field": "@vant/weapp/field/index",
+    "s-popup_taste":"/components/popup_taste/popup_taste",
+    "s-shop-decribe-Img":"/components/shop-decribe-Img/index",
+    "s-remarkView":"/components/remarkView/index",
+    "s-remakNormalView":"/components/remakNormalView/remakNormalView",
+    "s-sideDishesView":"/components/sideDishesView/sideDishesView",
+    "s-multipleEatMethodView":"/components/multipleEatMethodView/multipleEatMethodView",
+    "s-selectMaterial":"/components/selectMaterial/index",
+    "s-remarkView_new":"/components/remarkView_new/index",
+    "s-multipleEatMethodAndWeightSideDishesView":"/components/multipleEatMethodAndWeightSideDishesView/multipleEatMethodAndWeightSideDishesView",
+    "s-specView": "/components/specView/specView",
+    "supercall": "/components/supercall/supercall"
+  }
+} 

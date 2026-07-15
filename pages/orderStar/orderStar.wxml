@@ -1,0 +1,10 @@
+<view class="orderStarPage">
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" /> 
+    <text style="color:white;margin-left: 20rpx;">商家入驻</text>
+  </view>
+  <view class="btn-mode">
+    <button class="btn-g" bindtap="toShopClaim">认领店铺</button>
+    <button class="btn" bindtap="shop_shopDetailInfo">新增店铺</button>
+  </view>
+</view>

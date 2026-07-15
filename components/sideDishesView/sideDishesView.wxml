@@ -1,0 +1,83 @@
+<!--components/sideDishesView/sideDishesView.wxml-->
+<!-- 这个是之前封装好，避免浪费，决定两用。一个是弹窗，一个是列表 -->
+<!-- 列表形式 -->
+<view class='box_table1' wx:if="{{isTable}}"> 
+  <!-- <view style="width: 100%;border: #e4e4e4 solid 2rpx;height: 15%;border-left: black solid 2rpx;border-right: black solid 2rpx;"> -->
+    <view style="width: 100%;height: 20%;border-left: black solid 2rpx;border-right: black solid 2rpx;">
+    <view class="tr1">
+      <view class="td1" >配菜名称</view>
+      <view class="td1" style='width: 20%;'>单价</view>
+      <view class="td1" style="width: 20%;">数量</view>
+      <view class="td1" style="width: 20%;">金额</view>
+    </view>
+  </view>
+  <scroll-view style='height: 80%;text-align: center;' scroll-y="true">
+    <view style="width:100%;" wx:if="{{SideDishList_choose.length!=0}}">
+      <checkbox-group bindchange="checkboxChange" >
+        <view wx:for="{{SideDishList_choose}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+          <!-- <view class='down-center' style='border-bottom:#ddd solid 2rpx;height: 60rpx;'> -->
+          <view class='down-center' style='height: 15%;'>
+            <view class="td1" >{{item.sideDishName}}</view>
+            <view class='td1' style="width: 20%;">{{item.sideDishdPrice * 0.01}}</view>
+            <input class="td1" style="width: 20%;" bindinput='changeBoxNum' type="number" data-index="{{index}}" data-item='{{item}}' value="{{item.orderDetailedNum ? item.orderDetailedNum:''}}"></input>
+            <view class="td1" style="width: 20%;">{{item.sideDishdPrice * 0.01 * item.orderDetailedNum}}</view>
+          </view>
+        </view>
+      </checkbox-group>
+    </view>
+    <view wx:if="{{SideDishList_choose.length==0}}" style="height: 100%;width: 100%;">
+      <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;color:#888">
+        <view>--未选择配菜--</view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 弹窗形式 -->
+<view class="container" wx:if="{{!isTable}}">
+  <view class="container-top">
+    <text style="height: 60rpx;width: 300rpx;float: left;margin-left: 20rpx;">{{dishesInfo.dishes_name}}</text>
+    <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='showpeicai'></image>
+    <text style="width: 200rpx;position: absolute;top: 70rpx;font-weight: normal;right: 100rpx;">{{eatMethodArray != null && eatMethodChooseIndex !== "" && eatMethodChooseIndex !== -1?eatMethodArray[eatMethodChooseIndex].em_name + " " + eatMethodArray[eatMethodChooseIndex].eating_method:'选择配菜'}}
+    </text>
+  </view>
+  <!-- 列表-->
+  <view class="container-table">
+    <form bindsubmit='table_ChangeSubmit' style='width:100%;height:100%'>
+      <scroll-view scroll-y='true' class="scroll-part">
+        <radio-group wx:if="{{SideDishList.length!=0}}">
+          <label style="width:30%;display: inline-block;margin:10rpx 10rpx" wx:for="{{SideDishList}}" wx:key="index"  >
+            <button data-index="{{index}}" bindtap="chooseSideDish" class="hallcheckbox {{item.checked ? 'yerrow_background':'grey_background'}}" style="{{item.checked ? 'color:#000':'color:#fff'}};display: flex;flex-direction: row;" >
+              <text class="red_dot"  wx:if="{{sideDishIndex==index && item.checked}}">●</text>
+              <view class="asd">{{item.sideDishName}}</view>
+              <text class="number" wx:if="{{item.orderDetailedNum!==0}}">{{item.orderDetailedNum}}</text>
+              <text class="price" >{{item.sideDishdPrice*0.01}}</text>
+            </button>
+          </label>
+        </radio-group>
+
+        <view class="modal-textarea" style="height: 100%;width: 100%;" wx:else>
+          <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;">
+            <view>--未设置配菜--</view>
+          </view>
+        </view>
+      </scroll-view>
+    </form>
+  </view>
+
+
+  <view class="container-bottom"> 
+    <view class='down-center' style='justify-content:space-between;width: 200rpx;'>
+      <i class="iconfont icon-jian plus-icon-off"  style="color:{{orderDetailedNum==0?'':'#ff9c35'}};font-size: 30px;" data-type="0"  bindtap="addOReduce"></i>
+      <view class='oneline'>
+        <view class='menucount' style="color:{{items.item_type==2?'green':''}}" bindtap="reduce">{{orderDetailedNum}}</view>
+      </view>
+      <i class="iconfont icon-jiahao2fill plus-icon-on" style="color:#ff9c35;font-size: 30px;" data-type="1" bindtap="addOReduce"></i>
+    </view>
+
+    <!-- 2020-11-18 多拼粥增加取消选择配菜按钮-->
+    <button class="btn_mid_y" bindtap="cancelSideDish" style="height:50rpx;line-height: 50rpx;display:{{sideDishIndex != -1?'':'none'}}">取消选择</button>
+    <button class="btn_mid_y" bindtap="submitSideDish" style="height:50rpx;line-height: 50rpx;" >确定</button>
+  </view>
+</view>
+

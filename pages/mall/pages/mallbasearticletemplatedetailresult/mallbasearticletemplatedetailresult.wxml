@@ -1,0 +1,120 @@
+<view wx:if="{{is_single==false&&is_from_ding==0&&wx_pyq_type!=4}}" style="position: fixed;top: 0;right: 0;width: 260rpx;">
+ <view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+  <view style="width: 10rpx;font-size: large;color: red;">
+    ↑
+  </view>
+  <view style="width: 160rpx;padding: 10rpx 10rpx;font-size: 26rpx;color: #fff;background-color: red;">
+      点击右上角三点分享朋友圈
+  </view>
+ </view>
+</view>
+
+<view class="content">
+    <!-- <view style="width: 100vw;display: flex;flex-direction: row;align-items: center;justify-content: center;margin: 10rpx 0rpx;">
+            <view style="width: 96%;font-weight: 900;font-size: 38rpx;word-break: keep-all;word-wrap: break-word;white-space: pre-line;">{{name}}</view>
+    </view> -->
+      <view wx:if="{{item.is_delete==0&&(only_title==false||index<=only_index)}}"  class="content_box" wx:for="{{article_template_detail_array}}"  wx:key="index" style="width:100%">
+        <view  class="content_box_content">
+         
+            <view style="flex: 1;display: flex;flex-direction: column;">
+              <view style="display: flex;flex-direction: row;align-items: flex-start;align-items: flex-start;margin-bottom: 32rpx;">
+                  
+               
+                <view style="width:96vw;" wx:if="{{item.item_type==1&&item.source_type==1}}" >
+                    <view style="width:100%;text-align: center;font-size: 32rpx;">
+                      <text wx:if="{{item.item_type==1||item.item_type==2}}" >{{item.item_description}}</text>
+                    </view>
+                    
+                    <image data-src="{{item.item_content}}" src="{{item.item_content}}" catchtap="showBigImg"  style="width: 96vw;" mode="widthFix"></image>
+                    
+                </view>
+
+                <view catchtap="toDetail" style="width:96vw;display: flex;align-items: center;justify-content: center;flex-direction: column;" wx:if="{{item.item_type==4&&item.source_type==2&&item.lstNine&&item.lstNine.length>0}}" >
+                  <view catchtap="toDetail"  style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;background-color: #52A76E;width: 96vw;padding: 10rpx 0rpx;">
+                      <view style="color:#fff;font-weight: 900;font-size: 32rpx;padding: 0 10rpx;">弹叮商城：</view> <view style="color:#aaa;font-size: 32rpx;background-color: #ddd;margin-right: 10rpx;padding: 0 10rpx;">广告</view>
+                  </view>
+                  <view style="width:90vw;">
+                    <view wx:if="{{item.lstNine&&item.lstNine.length>0}}" style="display: flex;width: 100%;flex-direction: row;align-items: center;justify-content: flex-start;flex-wrap: wrap;">
+                      <view   wx:for="{{item.lstNine}}" wx:for-item="nine_item" wx:for-index="nine_index" wx:key="nine_index" style="width: 216rpx;height: 216rpx;border: #F2F2F2 1rpx solid;padding: 1rpx;">
+                        <image catchtap="showNineImg" data-nine_array="{{item.lstNine}}"  data-src="{{nine_item.url}}" src="{{nine_item.url}}"  style="width: 100%;height: 100%;" mode="aspectFill"></image>
+                      </view>
+                    </view>
+                  </view>
+                  <view catchtap="toDetail" style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;background-color: #52A76E;width: 96vw;padding: 10rpx 0rpx;">
+                      <view style="color:#fff;font-size: 28rpx;flex:1;border-right: #fff 1rpx solid;padding-right: 2rpx;">{{cut_introduction}}</view> <view style="color:#fff;font-size: 32rpx;margin-right: 10rpx;padding: 0 10rpx;">了解更多></view>
+                  </view>
+                  
+                </view>
+               
+                <view wx:if="{{item.item_type==1&&item.source_type==2}}" style="width: 100%;display: flex;flex-direction: column;align-items: center;justify-content: center;margin-bottom: 10rpx;">
+                    <view catchtap="toDetail"  style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;background-color: #52A76E;width: 96vw;padding: 10rpx 0rpx;">
+                      <view style="color:#fff;font-weight: 900;font-size: 32rpx;padding: 0 10rpx;">弹叮商城：</view> <view style="color:#aaa;font-size: 32rpx;background-color: #ddd;margin-right: 10rpx;padding: 0 10rpx;">广告</view>
+                    </view>
+                    <image data-src="{{item.item_content}}" src="{{item.item_content}}" catchtap="toDetail"  style="width: 96vw;" mode="widthFix"></image>
+                    <view catchtap="toDetail" style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;background-color: #52A76E;width: 96vw;padding: 10rpx 0rpx;">
+                      <view style="color:#fff;font-size: 28rpx;flex:1;border-right: #fff 1rpx solid;padding-right: 2rpx;">{{cut_introduction}}</view> <view style="color:#fff;font-size: 32rpx;margin-right: 10rpx;padding: 0 10rpx;">了解更多></view>
+                    </view>
+                </view>
+
+                <view wx:if="{{item.item_type==2}}" style="width:96vw;">
+                  <view style="width:100%;text-align: center;font-size: 32rpx;">
+                      <text wx:if="{{item.item_type==1||item.item_type==2}}" >{{item.item_description}}</text>
+                    </view>
+                  <video wx:if="{{only_title==false}}" style="width:96vw;height: 400rpx;border-radius: 8rpx;z-index: 1;" src="{{item.item_content}}"></video>
+                  <image wx:if="{{only_title==true}}" data-src="{{item.item_content+video_first_img}}" src="{{item.item_content+video_first_img}}"  style="width: 96vw;" mode="widthFix"></image>
+                  
+                </view>
+               
+               <rich-text wx:if="{{item.item_type==3}}" style="width:96vw;" nodes="{{item.item_content}}"></rich-text>
+             
+              
+
+                  
+              </view>
+            
+            </view>
+
+          
+            
+        </view>
+
+      </view>
+
+      <view wx:if="{{article_template_main_item&&article_template_main_item.article_type==1&&only_title==true}}" style="color: #52A76E;font-weight: 900;font-size: large;">
+          查看全文，请点击“前往小程序”
+      </view>
+      <view wx:if="{{article_template_main_item&&article_template_main_item.article_type==2&&only_title==true}}" style="color: #52A76E;font-weight: 900;font-size: large;">
+          查看更多图片，请点击“前往小程序”
+      </view>
+      <view wx:if="{{article_template_main_item&&article_template_main_item.article_type==3&&only_title==true}}" style="color: #52A76E;font-weight: 900;font-size: large;">
+          观看视频，请点击“前往小程序”
+      </view>
+      <view wx:if="{{only_title==true}}" style="height: 50rpx;">
+
+      </view>
+</view>
+
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{dingDialog}}" bindtap="closeDingDialog">
+</view>
+
+<view style="position: fixed;right: 0;left: 0;bottom: 70rpx;margin: auto;height: 220rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #f2f2f2;" wx:if="{{dingDialog}}">
+ 
+      <view style="font-size: larger;padding: 20rpx;color:#F89600;font-weight: 900;">温馨提示</view>
+      <view  catch:tap="closeDingDialog" class="badgecontent-close"  data-index="{{index}}">X</view>
+
+    <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+      <view style="font-size: large;color:#F89600;margin-bottom: 10rpx;">您的叮聊中有 {{ding_not_read_count}} 条未读信息</view>
+      <view catch:tap="toDingKe" style="margin-top: 5rpx;margin-bottom: 10rpx;background-color: #52A76E;color: white;padding: 8rpx 20rpx;border-radius: 12rpx;font-size: 28rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+          立即阅读
+      </view>
+    </view>
+</view>
+
+ 	
+    
+
+	
+
+
+

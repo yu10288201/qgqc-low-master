@@ -1,0 +1,14 @@
+/* pages/search/search.wxss */
+
+
+@import "../../wxSearchView/wxSearchView.wxss";
+
+::-webkit-scrollbar{
+
+width: 0;
+
+height: 0;
+
+color: transparent;
+
+}

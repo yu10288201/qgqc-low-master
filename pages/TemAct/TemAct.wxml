@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="box" bindtap="comeback" style="position: absolute;width: 100rpx;height:100rpx;top: 30rpx;left:0rpx">
+    <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png' style="z-index: 50;height: 30rpx;width:20rpx"></image>
+  </view>
+  <!-- <view class='top'>
+    <view class='title'>
+      <view class='titleImg'>
+        <image class='titleImage' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_discount.png'></image>
+      </view>
+      <view class='titleItem'> -->
+  <!-- <text class='text'>点餐星餐饮平台·店铺管理</text> -->
+  <!-- <text class='text'>点餐星餐饮平台管理</text>
+      </view>
+    </view>
+  </view> -->
+
+  <view class='item'>
+
+    <!-- <view class='div' style='font-size:40rpx;font-weight:700;margin-left:-50rpx'>
+      {{shop_name}}
+    </view> -->
+    <view class='div'>
+      <view class='btn' bindtap="takeOut" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/TemAct/btn1.png');background-size: 100% 100%;"></view>
+    </view>
+    <view class="div" style="flex-direction: column;height:100%;width:80%;border: 1rpx dashed #FEF036;margin: 20rpx;padding:20rpx">
+      <view class='div'>
+        <view class='btn' bindtap="takeOut2" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/TemAct/btn2.png');background-size: 100% 100%; width:100%"></view>
+      </view>
+      <view class='div' style="margin-top: 10rpx;">
+        <view class='btn' bindtap="takeOut2" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/TemAct/btn3.png');background-size: 100% 100%; width:100%"></view>
+      </view>
+    </view>
+
+    <view class='div' style="margin-bottom:10rpx">
+      <view class='btn' bindtap="orders1" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/TemAct/btn4.png');background-size: 100% 100%;"></view>
+    </view>
+  </view>
+
+</view>

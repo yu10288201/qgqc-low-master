@@ -1,0 +1,29 @@
+<wxs module="filters" src="discount_info.wxs" />
+<view style="width: 100vw;height: 100vh;display: flex;flex-direction: column;align-items: center;justify-content: center;background: url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img8.png);background-size: 100% 100%;">
+  <view style="width:95%;height: 95%;display: flex;flex-direction: column;align-items: center;">
+    <view style="font-size: 40rpx;font-weight: bolder;">优惠信息</view>
+
+    <view style="margin-top: 20rpx;width: 100%;display: flex;background-color: #fefaf5;">
+      <view style="width: 70%;text-align: center;border: 1rpx #666 solid;border-top-left-radius: 20rpx;height: 70rpx;display: flex;align-items: center;justify-content: center;font-size: 36rpx;">优惠名称</view>
+      <view style="width: 30%;text-align: center;border: 1rpx #666 solid;border-left: none;border-top-right-radius: 20rpx;height: 70rpx;display: flex;align-items: center;justify-content: center;font-size: 36rpx;">活动截止日</view>
+    </view>
+    <view style="width: 100%;display: flex;background-color: #fefaf5;">
+      <scroll-view style="width: 100%;text-align: center;border: 1rpx #666 solid;height: 75vh;border-top: none;border-bottom-left-radius: 20rpx;border-bottom-right-radius: 20rpx;display: flex;flex-direction: column;" scroll-y bindscrolltolower="scrollBindtap" wx:if="{{shopDiscountNameList.length > 0}}">
+        <view style="width: 100%;display: flex;" wx:for="{{shopDiscountNameList}}" bindtap="changeIndex" data-index="{{index}}">
+          <view style="width: 70%;border-bottom: 1rpx #666 solid;border-right: 1rpx #666 solid;height: 100rpx;font-size: 34rpx;display: flex;align-items: center;justify-content: center;background-color: {{chooseIndex == index ? '#f3bb76' : ''}};color: {{chooseIndex == index ? '#fff' : ''}};">{{item.discount_name}}</view>
+          <view style="width: 30%;border-bottom: 1rpx #666 solid;height: 100rpx;font-size: 34rpx;display: flex;align-items: center;justify-content: center;background-color: {{chooseIndex == index ? '#f3bb76' : ''}};color: {{chooseIndex == index ? '#fff' : ''}};">
+            <view wx:if="{{item.object_detail && item.type_id == 1}}">{{filters.formatDate(item.object_detail.using_end_date,0)}}</view>
+            <view wx:if="{{item.object_detail && item.type_id == 2}}"></view>
+            <view wx:if="{{item.object_detail && item.type_id == 3}}">{{filters.formatDate(item.object_detail.using_end_date,0)}}</view>
+            <view wx:if="{{!item.object_detail}}"></view>
+          </view>
+        </view>
+      </scroll-view>
+      <view  wx:if="{{shopDiscountNameList.length == 0}}" style="width: 100%;height:75vh;display:flex;align-items: center;justify-content: center;border: 1rpx #666 solid;border-top: none;border-bottom-left-radius: 20rpx;border-bottom-right-radius: 20rpx;">暂无活动</view>
+    </view>
+    <view style="width: 100%;display: flex;justify-content: flex-end;margin-top: 30rpx;">
+      <button class="picBtn" style="margin-right: 60rpx;" bindtap="goToDetail">详情</button>
+      <button class="picBtn" style="margin: 0;" bindtap="returnBack">返回</button>
+    </view>
+  </view>
+</view>

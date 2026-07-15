@@ -1,0 +1,64 @@
+<view class='page'>
+	<view class="return_out">
+		<view class="return_img" bindtap="returnBack">
+			<image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" />
+		</view>
+		<text style="margin-left:30rpx;font-size: 36rpx;font-weight: 1000;">帮助中心</text>
+	</view>
+  
+    <view class="ren">
+			<image style="width: 100%;height: 100%;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/img2.png" />
+		</view>
+	<image class="top-image" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/bg2.png"></image>
+  <!--横向滑动导航栏 -->
+  <!-- <scroll-view scroll-x="true" class="tab-h" scroll-left="{{scrollLeft}}">
+    <view wx:for="{{allList}}" wx:for-index="hindex" class="tab-item {{currentTab==hindex?'active':''}}" data-current="{{hindex}}" bindtap="swichNav"><view style="display:flex;flex-direction:column;justify-content: center;align-items: center;">
+    {{item.helpInfoTitleName}}</view>
+  </scroll-view> --> 
+
+  <scroll-view scroll-x="true" class="tab-h" scroll-left="{{scrollLeft}}">
+		<view wx:for="{{allList}}" wx:for-index="hindex" class="tab-item {{currentTab==hindex?'active':''}}" data-current="{{hindex}}" bindtap="swichNav">
+			<view style="display:flex;flex-direction:column;justify-content: center;align-items: center;margin-bottom: 15rpx;">
+				<!-- <image style="width:70rpx;height:70rpx" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/img1.png"></image> -->
+				  <text class="top_text">{{item.helpInfoTitleName}}
+          </text>
+			</view>
+		</view>
+
+	</scroll-view>
+
+<!--滑动页面 -->
+	<!-- 全部信息遍历的第二完整版-->
+	<swiper current="{{currentTab}}" duration="300" bindchange="switchTab" style="height:{{winHeight}}rpx;margin-top:-25rpx">
+		<!--第一页获取全部帮助 的标题和内容 -->
+		<swiper-item >
+			<scroll-view scroll-y="true" class="scoll-h">
+				<!--显示内容 包括标题和内容 -->
+				<block wx:for="{{helpSecondList.helpInfoDetails}}" wx:for-item="helplist" wx:for-index="helplistid" wx:key="id">
+					<!-- todo  expList[i].expertList[y].title    -->
+					<view class="section">
+						<view class="view_box" data-id="{{helplistid}}" data-address="{{helplist.helpInfoAddress}}" bindtap="check">
+							<a class="reply">{{helplist.helpInfoFileName}}</a>
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</swiper-item>
+		<!--已完成 第二页开始显示所有的标题和内容 滑动窗口切换显示内容 -->
+		<swiper-item wx:for="{{helpbehindList}}" wx:for-item="ex" wx:for-index="exindex" wx:key="id">
+			<scroll-view scroll-y="true" class="scoll-h">
+				<!--显示内容 包括标题和内容 -->
+				<block wx:for="{{ex.helpInfoDetails}}" wx:for-item="exp" wx:for-index="expindex" wx:key="helpInfoDetailId">
+					<!-- <view>222</view> -->
+					<!--todo  expList[i].expertList[y].title-->
+					<view class="section">
+						<view class="view_box" data-cid="{{exindex}}" data-id="{{expindex}}" bindtap="check" data-address="{{exp.helpInfoAddress}}">
+							<a class="reply">{{exp.helpInfoFileName}}</a>
+							<!--运用catchtap做到冒泡按钮 -->
+						</view>
+					</view>
+				</block>
+			</scroll-view>
+		</swiper-item>
+	</swiper>
+</view>

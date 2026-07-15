@@ -1,0 +1,111 @@
+<!--pages/mine/mine.wxml-->
+<view class="page">
+
+  <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg4.png');background-size: 100% 100%;z-index: -10;height: 400rpx;position: absolute;width: 100%;top: -1rpx;">
+  </view>
+
+  <view  class="return_out" bindtap="returnBack">
+    <image class="return"   src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png"/>
+  </view>
+  <view class="top-mode">
+    <view style="width:100%;display:flex;align-items: center;height:100%">
+      <image class="userAvatarUrl" src="{{customerInfo.avatarUrl ? customerInfo.avatarUrl : 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132'}}" mode="cover"></image>
+      <view style='margin-top: 20%;margin-left: 3%;' clsss="userName" >{{customerInfo.name ? customerInfo.name : '微信用户'}}</view>
+      
+    <view class="ren">
+			<image style="width: 100%;height: 100%;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/tubiao.png" />
+		</view>
+    
+    </view>
+
+
+  </view>
+
+  <view class="intermediate">
+    <view class="head-mode" style="flex-wrap: wrap;display: flex;">
+      <view class='btn' bindtap='mymessage'>
+        <view class='go-center'>
+          <image class='btn-image' style="height: 90rpx;width: 90rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon1.png'></image>
+        </view>
+        <view class="text">我的消息</view>
+      </view>
+      <view class='btn'>
+        <view class='go-center' bindtap="tel">
+          <image class='btn-image' style="height: 90rpx;width: 90rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon3.png'></image>
+        </view>
+        <view class="text">联系客服</view>
+      </view>
+      <view class='btn'>
+        <view class='go-center' bindtap='help'>
+          <image class='btn-image' style="height: 90rpx;width: 90rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon4.png'></image>
+        </view>
+        <view class="text">帮助中心</view>
+      </view>
+      <view class='btn' bindtap='learnPlatform'>
+        <view class='go-center'>
+          <image class='btn-image' style="height: 90rpx;width: 90rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon1.png'></image>
+        </view>
+        <view class="text">了解平台</view>
+      </view>
+      <view class='btn' bindtap='goSetting'>
+        <view class='go-center'>
+          <image class='btn-image' style="height: 90rpx;width: 90rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon2.png'></image>
+        </view>
+        <view class="text">密码设置</view>
+      </view>
+      <view class='btn' wx:if="{{isHide}}">
+        <view bindtap='assessment' style="display: flex;flex-direction: column;" wx:if="{{isHide}}">
+          <view class='go-center'>
+            <image class='btn-image' style="height: 90rpx;width: 90rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon2.png'></image>
+          </view>
+          <view class="text">点评</view>
+        </view>
+      </view>
+      <view class='btn' wx:if="{{!isHide}}">
+        <view bindtap="personalSetting">
+          <view class='go-center'>
+            <image class='btn-image' style="height: 90rpx;width: 90rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon3.png'></image>
+          </view>
+          <view class="text">个人设置</view>
+        </view>
+      </view>
+    </view>
+
+    <view class='content1'  bindtap="VIPlevel" wx:if="{{isHide}}">
+      <image class='content-image' style='width:60rpx;height:60rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon5.png'></image>
+      <view class='content-text' style="margin-left: 40rpx;">会员等级</view>
+      <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon_right.png'></image>
+    </view>
+    <view class='content1' bindtap="discount" wx:if="{{isHide}}">
+      <image class='content-image' style='width:60rpx;height:60rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon6.png'></image>
+      <view class='content-text' style="margin-left: 40rpx;">预存管理</view>
+      <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon_right.png'></image>
+    </view>
+    <view class='content1' bindtap='tokens' wx:if="{{isHide}}">
+      <image class='content-image' style='width:60rpx;height:60rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon6.png'></image>
+      <view class='content-text' style="margin-left: 40rpx;">我的星盾</view>
+      <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon_right.png'></image>
+    </view>
+    <view class='content1' bindtap="consumptionDetail" wx:if="{{isHide}}">
+      <image class='content-image' style='width:60rpx;height:60rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon12.png'></image>
+      <view class='content-text' style="margin-left: 40rpx;">分销收入</view>
+      <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon_right.png'></image>
+    </view>
+    <view class='content1' bindtap="discountManagement" wx:if="{{isHide}}">
+      <image class='content-image' style='width:60rpx;height:60rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon12.png'></image>
+      <view class='content-text' style="margin-left: 40rpx;">优惠券</view>
+      <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/icon_right.png'></image>
+    </view>
+
+    <!-- <view class="bottom">
+      <image style="height:48rpx;width:48rpx" bindtap="toMain" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bottom_1.png'></image>
+      <image style="height:48rpx;width:48rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bottom_2.png'></image>
+    </view> -->
+    
+  </view>
+
+  <view style="width:100%;height:30%;margin-top: 50rpx;">
+      <image class='gb1' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg2.png'></image>
+  </view>
+
+</view>

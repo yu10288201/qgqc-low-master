@@ -1,0 +1,269 @@
+.tab-h {
+	/* border:4rpx solid #B0B0B0; */
+	margin: 10rpx;
+	margin-top: 325rpx;
+	height: 110rpx;
+	width: 100%;
+	box-sizing: border-box;
+	overflow: hidden;
+	line-height: 80rpx;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/bg5.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	font-size: 16px;
+	white-space: nowrap;
+	display: flex;
+	/* position: fixed; */
+	top: 0;
+	left: 0;
+	z-index: 99;
+}
+
+.top_text{
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/bg6.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	height:65rpx;
+	width:200rpx;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+.page{
+  position: fixed;
+width: 100%;
+height: 100%;
+background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/bg1.png');
+background-repeat: no-repeat;
+background-size: 100% 100%;
+
+}
+
+
+.top-image {
+  width: 100%;
+	height: 400rpx;
+	position: fixed;
+	z-index: -5;
+}
+
+.return_img{
+	width: 70rpx;
+	height: 70rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 15px;
+  width: 245rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+	justify-content: center;
+	z-index: 50rpx;
+}
+.ren{
+  position: fixed;
+  top: 100px;
+  left: 35px;
+  width: 200rpx;
+	height: 120rpx;
+	z-index: 100;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}
+
+
+
+.tab-item {
+	margin: 0 2%;
+	display: inline-block;
+	font-family: SimSun;
+	font-weight: 500;
+	width: 25%;
+	/* height: 65%; */
+  font-size:30rpx;
+	text-align: center;
+	margin-top:10rpx;
+}
+
+.tab-item.active {
+	color: #4675F9;
+	position: relative;
+	justify-content: center;
+}
+
+.tab-item.active:after {
+	content: "";
+	display: block;
+	height: 8rpx;
+	width: 100%;
+	background: #4675F9;
+	position: absolute;
+	bottom: 0;
+	left: 5rpx;
+	border-radius: 16rpx;
+}
+
+
+
+.item-ans {
+	width: 100%;
+	display: flex;
+	flex-grow: row no-wrap;
+	justify-content: space-between;
+	padding: 30rpx;
+	box-sizing: border-box;
+	height: 180rpx;
+	align-items: center;
+	border-bottom: 1px solid #F2F2F2;
+}
+
+.avatar {
+	width: 100rpx;
+	height: 100rpx;
+	position: relative;
+	padding-right: 30rpx;
+}
+
+.avatar .img {
+	width: 100%;
+	height: 100%;
+}
+
+.avatar .doyen {
+	width: 40rpx;
+	height: 40rpx;
+	position: absolute;
+	bottom: -2px;
+	right: 20rpx;
+}
+
+.expertInfo {
+	font-size: 12px;
+	flex-grow: 2;
+	color: #B0B0B0;
+	line-height: 1.5em;
+}
+
+.expertInfo .name {
+	font-size: 16px;
+	color: #000;
+	margin-bottom: 6px;
+}
+
+.askBtn {
+	width: 120rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	text-align: center;
+	font-size: 14px;
+	border-radius: 60rpx;
+	border: 1px solid #4675F9;
+	color: #4675F9;
+}
+
+.tab-content {
+	margin-top: 90rpx;
+}
+
+.scoll-h {
+	height: 100%;
+}
+
+.reply{
+  font-size: 30rpx;
+  margin-left: 10rpx;
+  /* color: #808080; */
+  border: 1rpx;
+ font-family: SimSun;
+ font-weight: 500;
+}
+
+
+.reply_box{ 
+	margin: 10rpx;
+  width: auto;
+  height: auto; 
+  background-color: #F7F7F7;
+  font-size: 0.8rem;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  border:4rpx solid #B0B0B0;
+  font-family: SimSun;
+  
+}
+
+.view_box{ 
+	/* border:4rpx solid #B0B0B0; */
+	margin-left: 10rpx;
+	margin-top: 10rpx;
+	margin-bottom: 10rpx;
+	
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+	height: 55rpx;
+	width: 90%;/*设置标题的宽度 */
+	text-align: left;
+	 display: flex;
+  align-items: center;
+	
+}
+
+/*button*/
+.button {
+  background-color: #519763;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: white;
+}
+
+.button2_box{ 
+	/* border:4rpx solid #B0B0B0; */
+	
+	border-bottom: 4rpx solid #B0B0B0;
+	border-right: 4rpx solid #B0B0B0;
+	border-top: 4rpx solid #B0B0B0;
+	
+	/* margin: 10rpx; */
+	margin-top: 10rpx;
+	margin-bottom: 10rpx;
+	margin-right: 10rpx;
+	
+	padding-right: 10rpx;
+	height: 70rpx;
+	width: 22%;/*设置标题的宽度 */
+	text-align: left;
+	 display: flex;
+  align-items: center;
+	
+}
+.section{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/help/btm1.png');
+	background-repeat: no-repeat;
+	background-size: 100% 90%;
+	margin-top: 5rpx;
+	width: 98%;
+	margin-left: 1%;
+
+}
+
+.text {
+  font-size: 40rpx;
+  font-weight: 700;
+}

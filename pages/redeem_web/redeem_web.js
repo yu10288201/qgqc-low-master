@@ -1,0 +1,73 @@
+// pages/redeem_web/redeem_web.js
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    url:"https://wx2.wxctrl.cn/index.php/exapi/check_user/37883?url=https://test.fsmbdlkj.com/wx_official/web/packet/packet.jsp",
+    // url:"http://www.yaoyaola.cn/index.php/exapi/check_user/37883?url=https://test.fsmbdlkj.com/wx_official/web/packet/packet.jsp&flag=0&",
+    openId: "",
+    unionId: ""
+  },
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    if (options.unionId!=null){
+      this.setData({
+        unionId: options.unionId
+      })
+    }
+    console.log()
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+})

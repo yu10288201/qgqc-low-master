@@ -1,0 +1,605 @@
+page {
+    height: 100%;
+}
+
+.fri{
+    width: 80rpx;
+    height: 80rpx;
+    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml,%3Csvg t='1666664510051' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='1185' width='200' height='200'%3E%3Cpath d='M352.814545 385.396364m-33.512727 0a33.512727 33.512727 0 1 0 67.025455 0 33.512727 33.512727 0 1 0-67.025455 0Z' fill='%2350B674' p-id='1186'%3E%3C/path%3E%3Cpath d='M502.690909 384.465455m-33.512727 0a33.512727 33.512727 0 1 0 67.025454 0 33.512727 33.512727 0 1 0-67.025454 0Z' fill='%2350B674' p-id='1187'%3E%3C/path%3E%3Cpath d='M576.232727 534.341818m-23.272727 0a23.272727 23.272727 0 1 0 46.545455 0 23.272727 23.272727 0 1 0-46.545455 0Z' fill='%2350B674' p-id='1188'%3E%3C/path%3E%3Cpath d='M694.458182 536.203636m-23.272727 0a23.272727 23.272727 0 1 0 46.545454 0 23.272727 23.272727 0 1 0-46.545454 0Z' fill='%2350B674' p-id='1189'%3E%3C/path%3E%3Cpath d='M512 0C229.003636 0 0 229.003636 0 512s229.003636 512 512 512 512-229.003636 512-512S794.996364 0 512 0z m-87.505455 630.225455c-26.996364 0-48.407273-5.585455-75.403636-11.17091l-75.403636 37.236364 21.410909-64.232727c-53.992727-37.236364-85.643636-85.643636-85.643637-145.221818 0-102.4 96.814545-182.458182 215.04-182.458182 105.192727 0 198.283636 64.232727 216.901819 150.807273-6.516364-0.930909-13.963636-0.930909-20.48-0.93091-102.4 0-182.458182 76.334545-182.458182 170.356364 0 15.825455 2.792727 30.72 6.516363 44.683636-7.447273 0-13.963636 0.930909-20.48 0.93091z m314.647273 75.403636l15.825455 53.992727-58.647273-32.581818c-21.410909 5.585455-42.821818 11.170909-64.232727 11.170909-102.4 0-182.458182-69.818182-182.458182-155.461818s80.058182-155.461818 182.458182-155.461818c96.814545 0 182.458182 69.818182 182.458182 155.461818 0 47.476364-31.650909 90.298182-75.403637 122.88z' fill='%2350B674' p-id='1190'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.timeline{
+    width: 80rpx;
+    height: 80rpx;
+    background-size: 100% 100%;
+    background-image: url("data:image/svg+xml,%3Csvg t='1666664616600' class='icon' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg' p-id='1333' width='200' height='200'%3E%3Cpath d='M668.392727 445.905455v-0.93091 0.93091zM446.836364 668.392727l0.930909 0.930909H446.836364h0.930909l-0.930909-0.930909z' fill='%2350B674' p-id='1334'%3E%3C/path%3E%3Cpath d='M512 0C229.003636 0 0 229.003636 0 512s229.003636 512 512 512 512-229.003636 512-512S794.996364 0 512 0z m100.538182 280.203636c20.48 8.378182 40.029091 20.48 57.716363 34.443637 7.447273 5.585455 14.894545 12.101818 21.41091 18.618182 15.825455 15.825455 28.858182 33.512727 40.02909 52.130909 2.792727 4.654545 5.585455 9.309091 7.447273 13.963636L612.538182 525.032727c0.930909-7.447273 0-244.829091 0-244.829091zM484.072727 262.516364c9.309091-0.930909 18.618182-1.861818 28.858182-1.861819 22.341818 0 44.683636 2.792727 65.163636 8.378182 5.585455 1.861818 10.24 2.792727 15.825455 4.654546v178.734545C588.334545 445.905455 418.909091 279.272727 418.909091 279.272727c20.48-8.378182 41.890909-13.963636 65.163636-16.756363z m-169.425454 92.16c5.585455-7.447273 12.101818-13.963636 18.618182-21.410909 15.825455-15.825455 33.512727-28.858182 52.130909-40.029091 4.654545-2.792727 9.309091-5.585455 13.963636-7.447273l126.603636 125.672727c-7.447273-0.930909-245.76 0-245.76 0 9.309091-19.549091 20.48-39.098182 34.443637-56.785454zM262.516364 539.927273c-0.930909-9.309091-1.861818-18.618182-1.861819-27.927273 0-22.341818 2.792727-43.752727 8.378182-65.163636 1.861818-5.585455 2.792727-10.24 4.654546-15.825455h178.734545C446.836364 435.665455 279.272727 605.090909 279.272727 605.090909c-8.378182-20.48-13.963636-41.890909-16.756363-65.163636zM353.745455 708.421818c-7.447273-5.585455-14.894545-12.101818-21.41091-18.618182-15.825455-15.825455-28.858182-33.512727-40.02909-52.130909-2.792727-4.654545-5.585455-9.309091-7.447273-13.963636l126.603636-125.672727c-0.930909 7.447273 0 245.76 0 244.829091-20.48-9.309091-39.098182-20.48-57.716363-34.443637z m186.181818 53.061818c-9.309091 0.930909-18.618182 1.861818-27.927273 1.861819-22.341818 0-44.683636-2.792727-65.163636-8.378182-5.585455-1.861818-10.24-2.792727-15.825455-4.654546V571.578182c4.654545 6.516364 175.010909 173.149091 175.010909 173.149091-21.410909 8.378182-42.821818 13.963636-66.094545 16.756363zM707.490909 670.254545c-5.585455 7.447273-12.101818 14.894545-18.618182 21.41091-15.825455 15.825455-33.512727 28.858182-52.130909 40.02909-4.654545 2.792727-9.309091 5.585455-13.963636 7.447273L496.174545 612.538182c7.447273 0.930909 245.76 0 245.76 0C733.556364 633.018182 722.385455 651.636364 707.490909 670.254545z m47.476364-93.090909c-1.861818 5.585455-2.792727 10.24-4.654546 15.825455H570.647273C577.163636 588.334545 744.727273 418.909091 744.727273 418.909091c8.378182 20.48 13.963636 41.890909 16.756363 65.163636 0.930909 9.309091 1.861818 18.618182 1.861819 27.927273 0 23.272727-2.792727 44.683636-8.378182 65.163636z' fill='%2350B674' p-id='1335'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.b1{
+    border: none;
+    line-height: unset;
+    background-color: #FFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.b1::after{
+    border: none;
+    height: auto;
+}
+
+.btn-bar {
+    display: flex;
+    width: 100%;
+}
+
+.btn-cancelBtn {
+    margin: 0%;
+    padding: 0;
+    background-color: rgba(255, 60, 0, 0.76);
+    width: 25%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    color: #ffffff;
+}
+
+.btn-confirmBtn {
+    margin: 0%;
+    padding: 0;
+    background-color: #2bca52;
+    width: 25%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    color: white;
+}
+
+.top-head {
+    /* background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/top-background.png'); */
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 400rpx;
+    background-size: 100% 70%;
+}
+
+.bg9 {
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/bg9.png');
+    width: 93%;
+    height: 320rpx;
+    background-size: 100% 100%;
+}
+
+.bg10 {
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/bg10.png');
+    width: 85%;
+    height: 235rpx;
+    background-size: 100% 100%;
+}
+
+.bg11 {
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/btn1.png');
+    width: 200rpx;
+    height: 60rpx;
+    background-size: 100% 100%;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    height: 80rpx;
+    width: 100%;
+    float: left
+}
+
+.selectCity {
+    width: 400rpx;
+    color: white;
+    display: flex;
+    padding-left: 5%
+}
+
+.search-input {
+    background: rgb(254, 250, 245);
+    border: 1rpx solid #fff;
+    color: #000;
+    display: flex;
+    width: 98%;
+    height: 50rpx;
+    background: rgb(254, 250, 245);
+    border-radius: 30rpx;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-input image {
+    height: 30rpx;
+    width: 30rpx;
+    align-self: center;
+}
+
+.search-input .placeholder-color {
+    color: #757575;
+}
+
+.weui-icon-clear {
+    position: absolute;
+    margin-left: 250rpx;
+}
+
+.search-view .index image {
+    height: 30rpx;
+    width: 44rpx;
+    align-self: center;
+}
+
+
+.wx {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    display: block;
+}
+
+.selectCity .location {
+    width: 40%;
+    height: 40rpx;
+    font-size: 28rpx;
+    flex-direction: row;
+    display: flex;
+
+}
+
+.selectCity .location .loca {
+    width: 80%;
+    height: 100%;
+    font-size: 28rpx;
+}
+
+.selectCity .location .loca view {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 30rpx;
+    white-space: nowrap;
+    text-align: center;
+    width: 95%;
+    margin: 0 auto;
+}
+
+.selectCity .location .locaImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 50rpx;
+}
+
+.selectCity .location .locaImg image {
+    width: 40rpx;
+    height: 30rpx;
+}
+
+.locate {
+    top: 50rpx;
+    color: white;
+}
+
+
+.top-head .locaImg image {
+    width: 30rpx;
+    height: 30rpx;
+}
+
+.top-head .top-img {
+    width: 99%;
+    padding-left: 0.5%;
+    height: 100%;
+}
+
+.funcs {
+    background-color: #fff;
+    width: 96%;
+    /* height: 25%; */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-left: 2%;
+}
+
+.funcs .func {
+    width: 20%;
+    text-align: center;
+    /* margin-bottom: 10rpx; */
+    /* margin-bottom: 2%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 125rpx;
+}
+
+.funcs .func image {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+}
+
+.funcs .func .name {
+    text-align: center;
+    color: black;
+    font-size: 24rpx;
+    font-weight: bold;
+}
+
+.invite-img {
+    /* width: 707.7rpx; */
+    width: 95%;
+    height: 325rpx;
+    margin-left: 2.5%;
+    margin-top: 10rpx;
+}
+
+.column-img {
+    width: 96%;
+    height: 85rpx;
+    margin-left: 2%;
+    margin-top: 1%;
+}
+
+.features_img {
+    width: 700rpx;
+    height: 425rpx;
+    margin-left: 3%;
+}
+
+.platform_img {
+    width: 708.4rpx;
+    height: 500rpx;
+    margin-left: 3%;
+}
+
+
+.device {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.device .QGQC {
+    width: 707rpx;
+    height: 252.7rpx;
+
+}
+
+.device .QGQC-1 {
+    margin-top: 2rpx;
+    width: 707rpx;
+    height: 289.1rpx;
+
+}
+
+/* 授权弹窗 */
+
+.window-bg {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+
+.window {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+
+    width: 94%;
+    height: 45%;
+    margin-top: 75%;
+    background: white;
+    border-radius: 15rpx;
+}
+
+.window-item {
+    height: 61%;
+    /* width: 80%; */
+    /* margin-left: 2%; */
+    align-items: center;
+
+}
+
+.window-item-title {
+    margin-top: 20rpx;
+    font-size: 70rpx;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    color: #ffed99;
+}
+
+.window-item-content {
+    font-size: 38rpx;
+    /* 宋体 */
+    font-family: SimSuncss;
+    color: #ffed99;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    margin-top: 40rpx;
+    align-items: center;
+}
+
+.btn-bar {
+    display: flex;
+    width: 100%;
+    margin-top: 50rpx;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancelBtn {
+    background-color: #44b549;
+    width: 35%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: bold;
+    color: white;
+}
+
+.btn1 {
+    border: 2rpx solid #c9c9c9;
+    border-radius: 15rpx;
+    margin: 50rpx 0rpx;
+    width: 75%;
+}
+
+.btn {
+    background-color: #44b549;
+    color: #fff;
+    width: 200rpx;
+    height: 85rpx;
+
+}
+
+.btn2 {
+    background-color: rgb(255, 153, 0);
+    font-weight: 1000;
+    color: #fff;
+    border-radius: 15rpx;
+    font-size: 25rpx;
+    height: 40rpx;
+    width: 100rpx;
+}
+
+.confirmBtn {
+    background-color: #44b549;
+    width: 35%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: bold;
+    color: white;
+}
+
+.swiper-img {
+    width: 100%;
+    height: 450rpx;
+}
+
+.popup-window-bg {
+    position: fixed;
+    left: 0rpx;
+    top: 0rpx;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-window {
+    background: #fff;
+    position: fixed;
+    top: 20%;
+    left: 7%;
+    width: 86%;
+    z-index: 10001;
+    border-radius: 5%;
+}
+
+.bck {
+    width: 100%;
+    height: 400rpx;
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+}
+
+.taocan {
+    /* height: 225rpx; */
+    width: 85%;
+    padding: 0rpx 25rpx;
+    background-color: #fff;
+    box-shadow: 1px 5px 5px 2px #dddddd;
+    border-radius: 7rpx;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+}
+
+.dian {
+    font-size: 30rpx;
+    width: 90%;
+    font-weight: 1000;
+    word-break: break-all;
+    /*允许在单词内换行*/
+    text-align: left;
+    /* line-height: 45rpx; */
+    text-overflow: -o-ellipsis-lastline;
+    /*css3中webkit内核提供的一个方法类似ellipsis*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /*自适应盒子*/
+    -webkit-line-clamp: 1;
+    /*此处为1行,如果是两行就改成2*/
+    -webkit-box-orient: vertical;
+}
+
+.jieshao {
+    font-size: 22rpx;
+    width: 67%;
+    /* font-weight: 1000; */
+    word-break: break-all;
+    /*允许在单词内换行*/
+    text-align: left;
+    /* line-height: 45rpx; */
+    text-overflow: -o-ellipsis-lastline;
+    /*css3中webkit内核提供的一个方法类似ellipsis*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    /*自适应盒子*/
+    -webkit-line-clamp: 1;
+    /*此处为1行,如果是两行就改成2*/
+    -webkit-box-orient: vertical;
+}
+
+.part_right {
+    width: 70%;
+    margin-left: 2%;
+    font-size: 16px;
+    background-color: rgb(254, 250, 245);
+    margin: 10px 0.5px 10px 5px;
+    padding: 10rpx;
+    border-radius: 5rpx;
+    border: 1rpx solid rgb(253, 227, 210);
+}
+
+.discount {
+    height: 35rpx;
+    display: flex;
+    margin-left: 8px;
+    color: rgb(255, 153, 0);
+    font-size: 25rpx;
+    border: 1rpx solid rgb(255, 153, 0);
+    justify-content: center;
+    align-items: center;
+    padding: 0rpx 10rpx
+}
+
+.test {
+    height: 100rpx;
+    width: 100rpx;
+    background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 90%;
+    right: 5%
+}
+
+.taocan_title {
+    height: 70rpx;
+    width: 95%;
+    margin-left: 2.5%;
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/bg1.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 15rpx;
+    margin-bottom: -15rpx;
+    margin-top: 10rpx;
+}
+
+.qianggou_title {
+    height: 70rpx;
+    width: 95%;
+    margin-left: 2.5%;
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/appimg/title_20211102104452.jpg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 15rpx;
+    margin-bottom: -15rpx;
+    margin-top: 10rpx;
+}
+
+.coupon_title {
+    height: 70rpx;
+    width: 95%;
+    margin-left: 2.5%;
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/bg2.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 15rpx;
+    margin-bottom: 5rpx;
+    margin-top: 10rpx;
+}
+
+.putong_title {
+    height: 70rpx;
+    width: 95%;
+    margin-left: 2.5%;
+    background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/bg7.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    padding-bottom: 15rpx;
+    margin-top: 10rpx;
+}
+
+.oneline {
+    display: flex;
+    align-items: center;
+}
+
+.text4 {
+    font-size: 32rpx;
+    color: white;
+}
+
+.popup-window1-bg {
+    position: fixed;
+    left: 0rpx;
+    top: 0rpx;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 997;
+    display: flex;
+    justify-content: center;
+}
+
+.popup-window1 {
+    /* background: white; */
+    position: fixed;
+    bottom: 0;
+    height: 85%;
+    width: 80%;
+    margin-left: 10%;
+    z-index: 998;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}

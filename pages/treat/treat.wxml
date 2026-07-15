@@ -1,0 +1,49 @@
+<view class='page'>
+  <view class='oneline' style='flex-wrap:wrap;font-size:35rpx'>
+   
+    <view class="shopName">{{shopname}}</view>
+    <text style="line-height: 2.0em;z-index: 100;">　　本人已订【{{shopname}}】的{{orderinfo.table_name}}号桌，诚邀您于{{date}}　{{hour}}时{{minute}}分前到达该房用餐，谢谢！</text>
+    <text style="line-height: 2.0em;z-index: 100;">餐厅位于：{{shop_address}}</text>
+  </view>
+  
+     <view class="ren">
+			<image style="width: 100%;height: 100%;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/treat/ren.png" />
+		</view>
+  <view style="background-color: rgb(242,250,248);padding: 15rpx;margin-top:20rpx">
+  <view style='font-size:32rpx;margin-left:40rpx'>附言：输入你要转达的内容</view>
+  <view class='content go-center'>
+    <textarea style='font-size:28rpx;background:#ffffff;margin:20rpx;border: 1rpx solid rgb(53,156,112);' bindinput="getcontent" value="{{sharetitle1}}"></textarea>
+  </view>
+  </view>
+  <view class='go-center' style='margin-top:50rpx'>
+    <view>发送菜单：</view>
+    <view class="radio-groud {{index == true?'show':'hide'}}" style='width:25%'>
+      <view class='oneline'>
+        <view class='radio-groud-in' data-index='0' bindtap='changeradio'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png'></image>
+          <view class='title'>是</view>
+        </view>
+        <view class='radio-groud-in' style='margin-left:20rpx' data-index='1' bindtap='changeradio'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'></image>
+          <view class='title'>否</view>
+        </view>
+      </view>
+    </view>
+    <view class="radio-groud {{index == false?'show':'hide'}}" style='width:25%'>
+      <view class='oneline'>
+        <view class='radio-groud-in' bindtap='changeradio' data-index='0'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'></image>
+          <view class='title'>是</view>
+        </view>
+        <view class='radio-groud-in'  style='margin-left:20rpx' bindtap='changeradio' data-index='1'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png'></image>
+          <view class='title'>否</view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <button class='btn' open-type="share" style='margin-top:30rpx;' type='primary'>发送给朋友</button>
+  <view style="display:flex;width:100%;justify-content: center;margin-top: 100rpx;">
+    <image style="width:60%;height:105rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/treat/bg.png'></image>
+  </view>
+</view>

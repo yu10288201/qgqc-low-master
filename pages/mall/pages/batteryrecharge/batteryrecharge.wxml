@@ -1,0 +1,69 @@
+<!--pages/mall_guide/mall_guide.wxml-->
+
+<view class="page-content" >
+ 
+ <view class="head">
+  <image style="width: 120rpx;height: 120rpx;" src="{{log_img}}"></image>
+  <view style="font-size: xx-large;margin-top: 0rpx;margin-bottom:40rpx;font-weight: bold;color: #fbf3d1;letter-spacing: 6rpx;color: rgb(244,0,8);">
+      欢迎光临弹叮商城平台
+  </view>
+</view>
+
+<view class="content">
+   <view class="content-content">
+      <view style="height: 100%;padding: 15rpx;border: 1rpx solid #f2f2f2;border-radius: 20rpx;display: flex;flex-direction: column;align-items: center;">
+      
+        <textarea disabled="disabled" style="width: 100%;flex:1;font-size: 38rpx;color: #f9f345;margin-top: 15rpx;letter-spacing: 6rpx;text-indent:2em;">
+           {{content_text}}
+        </textarea>
+         
+          <view style="margin-top: 10rpx;font-size: large;color: #fbf3d1;display: flex;flex-direction: row;">
+            详情请查阅平台的<view catch:tap="openRuleFile" style="color: blue;text-decoration:underline;">平台会员权益规则</view>
+          </view>
+       
+      </view>
+    
+        
+   </view>
+   
+</view>
+
+<view class="content" style="margin-top:20rpx;height: 100%;padding: 15rpx;border: 1rpx solid #f2f2f2;border-radius: 20rpx;display: flex;flex-direction: column;align-items: center;">
+  <view style="display: flex;flex-direction: row;align-items: center;justify-content: center;">
+    <image style="width: 75rpx;height: 75rpx;" src="{{xxm_log}}"></image>
+    <view style="margin-left: 20rpx;">
+      <text style="font-size: xx-large;margin-top: 0rpx;margin-bottom:40rpx;font-weight: bold;color: #fbf3d1;letter-spacing: 6rpx;color: rgb(244,0,8);">鲜仙米</text>
+    </view>
+  </view>
+  <view class="content-content">
+      <textarea disabled="disabled" style="width: 100%;flex:1;font-size: 38rpx;color: #f9f345;margin-top: 15rpx;letter-spacing: 6rpx;text-indent:2em;">
+           {{xxm_text}}
+        </textarea>
+  </view>
+  <view style="margin-top: 10rpx;font-size: large;color: #fbf3d1;display: flex;flex-direction: row;justify-content: flex-end;align-items: flex-end;width: 100%;">
+    <view catch:tap="toMallIndex" style="background-color:#f9f345;padding: 15rpx 0px;display: flex;flex-direction: row;align-items: center;justify-content: center;margin: 25rpx;border-radius: 30rpx;color: black;width: 240rpx;height: 30rpx;">
+      进入主界面
+      </view>
+      <view catch:tap="toMallXXMIndex" style="background-color:#f9f345;padding: 15rpx 0px;display: flex;flex-direction: row;align-items: center;justify-content: center;margin: 25rpx;border-radius: 30rpx;color: black;width: 140rpx;height: 30rpx;">
+                  鲜仙米
+      </view>
+  </view>
+</view>
+  <!-- <view class="footer">
+      <view style="margin-bottom: 0rpx;font-size: large;color: #fbf3d1;display: flex;flex-direction: row;">
+        <view catch:tap="toMallIndex" style="background-color:#f9f345;padding: 15rpx 0px;display: flex;flex-direction: row;align-items: center;justify-content: center;margin: 25rpx;border-radius: 30rpx;color: black;width: 600rpx;">
+                    进入主界面
+        </view>
+      </view>
+  </view>  -->
+</view>
+
+<!-- <view style="padding:10rpx;position: fixed;bottom:60rpx;right:15rpx;">
+ <view style="position: relative;display: flex;opacity: 0.9;">
+  <view catch:tap="toMallIndex" style="width:90rpx;height:90rpx;color: #fff;border-radius: 50%;border:2px solid #fbf3d1;;display: flex;align-items: center;justify-content: center;">
+    <view style="font-weight: bold;">
+      {{current_count}}秒
+    </view>
+  </view>
+ </view>
+</view> -->

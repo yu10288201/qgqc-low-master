@@ -1,0 +1,270 @@
+<!-- 分享画板 -->
+
+
+
+<canvas type="2d" id="canvas" style="width:621px;height:1104px;position: fixed;left: -621px;top: -1104px;"></canvas>
+<canvas type="2d" id="myQrcode" style="width:220px; height:220px; position: fixed; left: -220px; top: -220px;"></canvas>
+<view class="popup-window1-bg" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window1" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+    <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+        <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" bindtap="showBigImage" show-menu-by-longpress="true"></image>
+        <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+        <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+        <view style="width: 10%;">
+            <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+        </view>
+    </view>
+</view>
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{shareDialog}}" bindtap="closeShareDialog">
+</view>
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 300rpx;width: 600rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;" wx:if="{{shareDialog}}">
+    <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;align-items: center;flex: 1;">
+        <view data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <button open-type="share" class="b1">
+                <view class="fri"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    分享给朋友、群聊
+                </view>
+            </button>
+        </view>
+        <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;">
+        </view>
+        <view bindtap="generatePoster" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="timeline" ></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                分享到朋友圈
+            </view>
+        </view>
+    </view>
+</view>
+<!-- 没有手机号的就询问是否预订抖音套餐-->
+<view wx:if="{{showDYDialog}}" style="z-index: 3; position: fixed;margin: auto;top: 0;left: 0;right: 0;bottom: 0;width: 100vw;height: 100vh;background-color: #00000055;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    <view wx:if="{{!isFromDY && !DYMealArry}}" style="display: flex;flex-direction: column;align-items: center;justify-content: space-evenly;background-color: #FFF;border-radius: 10px;width: 70%;height: 300rpx;">
+        <view style="font-size: 16px;">
+            您是否在抖音预定了套餐呢?
+        </view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+            <button class='btn-cancelBtn' bindtap='closeDYDialog'>否</button>
+            <button class='btn-confirmBtn' bindtap='confirm'>是</button>
+        </view>
+    </view>
+    <view wx:if="{{isFromDY && !DYMealArry}}" style="display: flex;flex-direction: column;justify-content: space-evenly;align-items: center; background-color: #FFF;border-radius: 10px;width: 90%;height: 400rpx;">
+        <view style="font-size: 16px;">
+            请授权微信手机号查询预订套餐
+        </view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;margin-top: 0;">
+            <button class='btn-cancelBtn' bindtap='closeDYDialog'>取消</button>
+            <button class='btn-confirmBtn' bindgetphonenumber='confirmDYPhone' open-type="getPhoneNumber">授权</button>
+        </view>
+    </view>
+    <view wx:if="{{DYMealArry}}" style="display: flex;flex-direction: column;justify-content: space-between;align-items: center; background-color: #FFF;border-radius: 10px;width: 95%;min-height: 600rpx;max-height: 900rpx;">
+        <view style="height: 80rpx;width: 97.5%;font-size: 16px;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+            <view style="width: 60rpx;height: 60rpx;"></view>
+            <view>
+                抖音预订套餐列表
+            </view>
+            <image bindtap='closeDYDialog' src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png" style="width: 60rpx;height: 60rpx;"></image>
+        </view>
+        <scroll-view style="min-height: 350rpx;max-height: 750rpx; width: 96%;" scroll-y>
+            <view style="display: flex;width: 100%; flex-direction: column;justify-content: center;align-items: center;">
+                <block wx:for="{{DYMealArry}}" wx:for-index="idx" wx:for-item="item" wx:key="*this">
+                    <view style="margin-top: 10rpx; margin-bottom: 10rpx; display: flex;flex-direction: row;justify-content: center;align-items: center;box-shadow: #808080 0 0 5px 1px;width: 96%;border-radius: 24rpx;" bindtap="DYToDetail" data-item="{{item}}">
+                        <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;width: 96%;height: 176rpx;">
+                            <view style="border-radius: 24rpx;background-color: greenyellow;height: 150rpx;width: 150rpx;">
+                                <image style="width: 100%;height: 100%;border-radius: 24rpx;" src="{{item.coupon_id ? item.share_url ? item.share_url : 'https://mb.fsmbdlkj.com/IMG/切瓜切菜/logo.png' : item.pageUrl[0].pageURL}}">
+                                </image>
+                            </view>
+                            <view style="display: flex;flex-direction: column;flex: 1;height: 150rpx; margin-left: 20rpx;justify-content: space-between;">
+                                <view style="height: 105rpx;">
+                                    <view style="font-size: 32rpx;font-weight: bold;">{{item.coupon_id ? item.coupon_name : item.setMealName}}</view>
+                                    <view style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+                                        <view style="font-size: 26rpx;text-indent: 2em;color: #808080;font-weight: 400;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;flex: 1;">
+                                            {{item.coupon_id ? item.coupon_Scopeofapplication : item.setMealAbout}}</view>
+                                        <view style="border-radius: 5px;padding: 1px 3px 1px 3px;box-shadow: #808080 0 0 1px 1px; background-color: orange;color: #FFF;text-align: center;margin-left: 10rpx;">购买</view>
+                                    </view>
+                                </view>
+                                <view style="width: 100%;display: flex;align-items: flex-end; justify-content: space-between;margin-top: 10rpx;">
+                                    <view style="color: red;">
+                                        ￥{{item.coupon_id ? item.coupon_original : item.price}}/<text style="font-size: 26rpx;">{{item.coupon_id ? '张' : item.dishes_unit}}</text>
+                                    </view>
+                                    <text style="font-size: 26rpx;color: #808080;font-weight: 400;">预定时间: {{item.createDate}} {{item.createTime}}</text>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+        </scroll-view>
+        <!-- <view class='btn-bar' style="margin-bottom: 20rpx;width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;margin-top: 0;">
+            <button class='btn-cancelBtn' bindtap='closeDYDialog'>关闭</button>
+        </view> -->
+        <text style="height: 80rpx;font-size: 26rpx;color: #808080;display: flex;flex-direction: column;align-items: center;justify-content: center;">注: 已提交的订单可在 【我的订单】 查询</text>
+    </view>
+</view>
+
+<wxs module="filters" src="main.wxs"></wxs>
+
+
+<!-- 主页样式 -->
+<view style="height:100%;display: flex;flex-direction: column;justify-content: center;">
+    <view class="top-head" style="position:fixed;top:0;z-index:2;display:flex;flex-direction:column;align-items: center;">
+        <view class='search' style="flex-direction: row;justify-content: center;align-items: center;">
+            <image style="width:68rpx;height:80rpx;margin-right: 40rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/logob.png' />
+            <view style="width: 70%;" bindtap="fucClick" data-id="搜索">
+                <view class='search-input' style="display: flex;justify-content: space-between;">
+                    <input style="margin-left: 20rpx;" type="text" class='input' disabled="true" placeholder-class="placeholder-color" placeholder="请输入商家名称、菜品" value="{{wxSearchData.value}}" />
+                    <image style="margin-right: 15rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search.png' />
+                </view>
+            </view>
+        </view>
+        <swiper autoplay="true" interval="8000" duration="500" style="height:300rpx;width: 98%;">
+            <block wx:for="{{swiper_background}}" wx:key="*this">
+                <swiper-item style="width: 95%;">
+                    <image class="swiper-img" style="height:100%;width: 100%;" src="{{item}}" />
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+
+    <view class="wx" wx:if="{{show}}">
+        <official-account></official-account>
+    </view>
+
+    <scroll-view style='height:100vh;width: 100vw;' scroll-y="true" lower-threshold='1000' bindscrolltolower='sv_flesh' scroll-top='{{topNum}}'>
+        <view style="display: flex;flex-direction: column;align-items: center;width: 100%;">
+
+            <view class='funcs' style="background:rgb(255,255,252);box-shadow: 0rpx 5rpx 10rpx 8rpx #e4e4e4;margin-top: 390rpx;width: 95%;margin-left: 0;" id="page">
+                <view style="width: 100%;height: 100%;display: flex;flex-wrap: wrap;margin-top: 1%;margin-bottom: 1%;">
+                    <view class='func' wx:for="{{functions}}" wx:for-item='item' wx:key='item.id' bindtap='fucClick' data-id="{{item.id}}">
+                        <image src="{{item.url}}" mode="aspectFit"></image>
+                        <view class='name'>{{item.name}}</view>
+                    </view>
+                </view>
+            </view>
+            <image wx:if="{{img_Url == 1}}" class="invite-img" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/invite3.png" />
+
+            <image class="invite-img" bindtap="fucClick" data-id="搜索" style="height:125rpx;margin-top: 20rpx;width: 98%;margin-left: 0;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/sousuo1.png" />
+
+            <view class="box" style="width:100%;">
+                <view class="bg9 box" style="width: 96%;">
+                    <view class="bg10 box" style="justify-content: flex-start;flex-direction:column;padding-top:10rpx" bindtap="toMall_Guide">
+                        <image class="invite-img" style="height:60rpx;width:200rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/tips.png" />
+                        <text style="font-size: 26rpx;font-weight: 1000;padding: 20rpx 20rpx 20rpx 20rpx">点击：“搜索”大按钮或顶部的搜索输入框，就可以进入搜索页面，输入关键词后，点击分类按钮，就会很方便快捷地找到所需要的信息。</text>
+
+                    </view>
+                </view>
+            </view>
+
+            <view wx:if='{{couponList.length > 0}}' class='oneline coupon_title' style="margin-left: 0;margin-bottom: -15rpx;padding-left: 10rpx;">
+                <view class='title text4' style="margin-left: 5%;color:black;font-weight: 900;">超值优惠券</view>
+            </view>
+            <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if='{{couponList.length > 0}}'>
+                <distributionCard bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="1" isFoodOrCombo="{{false}}" foodList="{{couponList}}" style="margin-top: 10rpx;"></distributionCard>
+            </view>
+
+            <view class='oneline qianggou_title' wx:if='{{foodList.length > 0}}' style="margin-left: 0;">
+                <view class='title text4' style="margin-left: 5%;color:black;font-weight: 900;">超值菜品</view>
+            </view>
+            <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if='{{foodList.length > 0}}'>
+                <distributionCard bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="2" isFoodOrCombo="{{true}}" foodList="{{foodList}}" style="margin-top: 10rpx;"></distributionCard>
+            </view>
+
+            <view class='oneline qianggou_title' wx:if='{{wineList.length > 0}}' style="margin-left: 0;">
+                <view class='title text4' style="margin-left: 5%;color:black;font-weight: 900;">超值酒水</view>
+            </view>
+            <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if='{{wineList.length > 0}}'>
+                <distributionCard bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="3" isFoodOrCombo="{{true}}" foodList="{{wineList}}" style="margin-top: 10rpx;"></distributionCard>
+            </view>
+
+            <view class='oneline qianggou_title' wx:if='{{comboList.length > 0}}' style="margin-left: 0;">
+                <view class='title text4' style="margin-left: 5%;color:black;font-weight: 900;">超值套餐</view>
+            </view>
+            <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if='{{comboList.length > 0}}'>
+                <distributionCard bind:downRefresh="downRefresh" bind:onShare="shareSelect" id="distributionCard" data-iswhat="4" isFoodOrCombo="{{true}}" foodList="{{comboList}}" style="margin-top: 10rpx;"></distributionCard>
+            </view>
+
+
+
+            <view class='oneline putong_title' wx:if="{{randomDishes.length > 0}}" style="margin-left: 0;width: 98%;">
+                <view class='title text4' style="margin-left: 5%;width:4000rpx;color:black;font-weight: 900;">普通类型</view>
+            </view>
+            <view wx:for="{{randomDishes}}" wx:if="{{randomDishes.length > 0}}" style="margin-top: 8rpx;width: 100%;" wx:for-item='item' data-id="{{item.dishes_id}}">
+                <view class="box" style="width: 100%">
+                    <view class="taocan" bindtap="taocanJump2" style="width:100%" data-item="{{item}}">
+                        <view class="box" style="flex-direction: column;width:100%">
+                            <view class="box" style="width:100%">
+                                <!-- 图片区域 -->
+                                <view style="width:30%" class="box">
+
+                                    <image src='{{item.dishes_img}}' style="width:100%;height:150rpx;border-radius: 15rpx"></image>
+                                </view>
+                                <!-- 词条区域 -->
+                                <view class='box part_right'>
+                                    <view class="box" style="width:100%;flex-direction: column;align-items: flex-start;">
+                                        <view class="box" style="justify-content:flex-start;font-size: 25rpx;flex-direction: column;width:100%">
+                                            <view class="dian" style="width:100%;">{{item.dishes_name}}</view>
+                                            <view style="width: 100%;display: flex;justify-content: space-between;">
+                                                <view>{{item.shop_name}}</view>
+                                                <view class="box" style="justify-content:flex-start;">
+                                                    <view style="display:flex;flex-direction: row;justify-content: flex-end;">
+                                                        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png" style="width:15px;height:15px"></image> ：{{item.star}}
+                                                    </view>
+                                                </view>
+                                            </view>
+
+                                            <view style="width: 100%;display: flex;justify-content: space-between;">
+                                                <view>{{item.area}}</view>
+                                                <view class="box" style="justify-content:flex-start;">
+                                                </view>
+                                            </view>
+
+                                        </view>
+                                        <view style="width: 100%;display: flex;justify-content: space-between;">
+                                            <view class="box" style="justify-content:flex-start;">
+                                                <view style="font-size: 40rpx;color: rgb(255,153,0);font-weight: 1000;">￥<text style="color: green;" wx:if="{{item.vip_price!=0}}">{{item.vip_price}}/</text>{{item.dishes_price}}/</view>
+                                                <view style="font-size: 30rpx;color: rgb(255,153,0);font-weight: 1000;">{{item.dishes_metering_type}}</view>
+                                            </view>
+
+                                            <view class="box" style="justify-content:flex-start">
+                                                <view style="font-size: 22rpx;width: 170rpx;display: flex;flex-direction: row;justify-content: flex-end;">月销量：<view>{{item.monthly_sales_volume}}</view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
+            </view>
+
+            <view wx:if="{{isShowImage}}">
+                <image class="features_img" style="{{img_url==1 ? '':'margin-top:15rpx'}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/features_img1.png" />
+                <image class="platform_img" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/platform1.png" bindtap="aaa" />
+                <view class="device">
+                    <image class="QGQC" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/QGQC1.png" />
+                    <image class="QGQC-1" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/QGQC-2.png" />
+                    <image class="QGQC-1" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/QGQC-3.png" />
+                </view>
+
+                <view wx:if="{{showAuthorize}}" class='window-bg'>
+                    <view class='window' style="background:url({{background2}});background-size:100% 100%;-moz-background-size:100% 100%;">
+                        <view class='window-item'>
+                            <view class='window-item-title'>欢迎关注</view>
+                            <view class='window-item-content'>申请授权</view>
+                            <view class='window-item-content' style="width:90%;margin-left:5%;">现需获取您的昵称、头像、地区及性别。是否同意？</view>
+                        </view>
+                        <view class='btn-bar'>
+                            <button class='cancelBtn' bindtap='refused'>否</button>
+                            <button class='confirmBtn' open-type="getUserInfo" lang="zh_CN" bindtap="getUser">是</button>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <image style="border-radius: 50%; width: 80rpx;height: 80rpx;position: fixed;bottom: 0;right: 0;margin: auto 50rpx 50rpx auto;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/toTop.png' bindtap='goTop' class='goTop'>
+            </image>
+        </view>
+    </scroll-view>
+
+</view>

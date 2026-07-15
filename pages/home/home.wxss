@@ -1,0 +1,82 @@
+/* pages/index/index.wxss */
+.picTitle {
+
+  font-size: 30rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  width: 94%;
+  margin-left: 3%;
+}
+
+.picBtn {
+  line-height: 1.3rem;
+  text-align: center;
+  font-size: 25rpx;
+  font-weight: 700;
+  background-color: #519763;
+  color: white;
+}
+.picList {
+  margin-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 80%;
+  margin-left: 10%;
+  height: 170rpx;
+}
+
+.pic {
+  position: relative;
+  margin-left: 4%;
+  margin-bottom: 15rpx;
+}
+.video{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 100rpx;
+}
+.pic image {
+  width: 190rpx;
+  height: 120rpx;
+  /* margin-left: 20rpx; */
+}
+
+.pic .del {
+  position: absolute;
+  top: -11rpx;
+  right: -11rpx;
+  color: #fff;
+  border-radius: 50%;
+  width: 35rpx;
+  height: 35rpx;
+  z-index: 2;
+  line-height: 30rpx;
+  text-align: center;
+  /* background-color: #f00; */
+  background-color: green;
+}
+.picname {
+  font-size: 25rpx;
+}
+
+.pic .up {
+  position: absolute;
+  top: -11rpx;
+  left: -11rpx;
+  color: #fff;
+  border-radius: 50%;
+  width: 35rpx;
+  height: 35rpx;
+  z-index: 2;
+  line-height: 35rpx;
+  text-align: center;
+  font-size: 25rpx;
+  background-color: rgba(1, 153, 1, 0.712);
+}

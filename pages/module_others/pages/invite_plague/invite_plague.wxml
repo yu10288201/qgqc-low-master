@@ -1,0 +1,13 @@
+
+
+<!-- <view class="page">
+  <view class="wxPublic">
+    <view wx:if="{{!inviteShare}}" style="display: flex;flex-direction: row;justify-content: space-between;width: 50%;">
+      <view bindtap="jumpFocus">去关注</view>
+      <view bindtap="jumpRegister">去注册</view>
+      <view bindtap="jumpBuy">马上购买</view>
+    </view>
+  </view>
+</view> -->
+
+<web-view src="https://mp.weixin.qq.com/s/a78LpKK56Ta8s8ddUbzXaQ"></web-view>

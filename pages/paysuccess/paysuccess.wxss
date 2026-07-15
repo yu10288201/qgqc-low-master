@@ -1,0 +1,66 @@
+/* pages/paysuccess/paysuccess.wxss */
+.payscuccess{
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+.mine{
+  width: 100%;
+  height: 100rpx;
+  text-align: center;
+}
+.swiperview{
+  width: 100%;
+  height: 30vh;
+ 
+   border: 8rpx solid rgb(86, 134, 179);
+   border-radius: 6rpx;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.slide-image{
+  display: block;
+  width:100%;
+  height: 100%;
+ }
+ .car{
+   width: 100%;
+   text-align: center;
+   margin-top:40rpx;
+ }
+ 
+ 
+ #input{
+   display: inline-block;
+   width: 60%;
+   border: 2rpx solid #aaa;
+   border-radius: 6rpx;
+   vertical-align: middle;
+   text-align: center;
+   padding: 0 2rpx;
+   margin: 10rpx;
+ }
+ .carbtn{
+   width: 30%;
+   height: 50rpx;
+   vertical-align: middle;
+   margin: 8rpx;
+   display: inline-block;
+   line-height: 50rpx;
+ }
+ .yidianting{
+   width: 100%;
+   height: 30vh;
+   overflow: hidden;
+   position: absolute;
+   bottom: 20rpx;
+   border: 8rpx solid rgb(86, 134, 179);
+   border-radius: 6rpx;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+ }
+ .yimg{
+   width: 100%;
+   height: 100%;
+ }

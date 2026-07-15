@@ -1,0 +1,12 @@
+/* pages/module_others/pages/discount_info/discount_info.wxss */
+.picBtn {
+  /* line-height: 1.3rem; */
+  width: 185rpx;
+  text-align: center;
+  font-size: 25rpx;
+  font-weight: 700;
+  background: url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_green.png) no-repeat;
+  background-size: 100% 100%;
+  color: white;
+  margin-right: 5rpx
+}

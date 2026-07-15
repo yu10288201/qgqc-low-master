@@ -1,0 +1,28 @@
+/*assessment.wxss*/
+.content{
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 150px;
+  border-bottom: #E5E5E5 solid 1px;
+
+}
+.toptitle{
+  font-size: 20px;
+  border-bottom: gray solid 1px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.oneline{
+  display: flex;
+}
+.userimage{
+  width: 20px;
+  height: 20px;
+  margin: 20px;
+}
+.detail{
+  margin-top: 5px;
+  font-size: 13px;
+}

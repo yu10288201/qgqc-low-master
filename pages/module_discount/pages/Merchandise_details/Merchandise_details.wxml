@@ -1,0 +1,800 @@
+<wxs module="filters" src="addmul.wxs" />
+<wxs module="quote" src="../superValueOrderDetail/superValueOrderDetail.wxs"></wxs>
+
+<canvas type="2d" id="canvas" style="width:621px;height:1099px;position: fixed;left: -621px;top: -1099px;"></canvas>
+
+<canvas style="width: 200px; height: 200px;position: fixed;left: -621px;top: -1099px;" canvas-id="myQrcode"></canvas>
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{shareDialog}}" bindtap="closeShareDialog">
+</view>
+
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 600rpx;width: 700rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;" wx:if="{{shareDialog}}">
+    <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+      <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+           <button open-type="share" class="b1">
+                <view class="edit-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    直接发送					
+                </view>
+            </button>
+        </view>
+        <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+            <button catch:tap="toMallBaseArticleTemplateMain" class="b1">
+                <view class="edit-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    编辑发送					
+                </view>
+            </button>
+        </view>
+
+        <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+            <button catch:tap="generatePosterClick_ToDetail" class="b1">
+                <view class="edit-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                  海报朋友圈				
+                </view>
+            </button>
+        </view>
+    </view>
+    <view style="width: 100%;height: 10rpx;background-color: #ccc;"></view>
+
+
+    <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+    
+        <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+            <button catch:tap="generatePosterClick_ToResult" class="b1">
+                <view class="edit-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                  海报编辑页				
+                </view>
+            </button>
+        </view>
+    </view>
+
+    <view style="width: 100%;height: 10rpx;background-color: #ccc;"></view>
+    <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+        
+      <view bindtap="shareTimeLine" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="timeline"></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                分享朋友圈
+            </view>            
+        </view> 
+
+        <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+          
+            <button catch:tap="toDingKe" class="b1">
+                <view class="dinxing-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    叮聊发送					
+                </view>
+            </button>
+        </view>
+       
+		    <!--分割线-->
+  
+        <view catch:tap="selectCustomerIsStaff" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="cust"></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                生成二维码
+            </view>    
+            <!-- <view catch:tap="showQRCodeToMallGuide" style="font-size: 30rpx;margin-top: 20rpx;">
+                生成主维码
+            </view>           -->
+        </view> 
+	    	<!--分割线-->
+       
+               
+    </view>
+</view>
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{showCustomise}}" bindtap="closeCustomiseDialog">
+</view>
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 700rpx;width: 700rpx;background-color: #FFF;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999; padding: 20rpx" wx:if="{{showCustomise}}">
+  <scroll-view>
+    <view wx:for="{{infotips}}" >
+      <view style="display: flex; flex-direction: row;">
+        <checkbox style="margin-top: 10rpx;margin-bottom: 10rpx; width: 7%; margin-left: 1%;" data-id="{{index}}" checked="" bindtap="changeCustomise"/>
+        <view style="display: flex; flex-direction: column;">
+          <view style="font-weight: bolder;">{{item.title}}</view>
+          <image src="{{item.img}}" style="width: 300rpx; height: 300rpx;"/>
+          <view style="font-size: 28rpx">{{item.content}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view catchtouchmove="true" class="popup-window-bg" wx:if="{{showQR}}"></view>
+<view class='popup-window' style="display: flex;flex-direction: column;justify-content: space-around;" catchtouchmove="true" wx:if="{{showQR}}">
+	<canvas style="width:200px; height: 200px;" canvas-id='productQrcode'></canvas>
+	<view style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 41px;text-align: center;display: flex;align-items: center;width: 30%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' bindtap="closeQRCode">关闭</view>
+</view>
+
+<!--固定置顶条-->
+<view class="top">
+	<!--搜索条-->
+	<!--导航栏-->
+	<view class="bottom-row" >
+		<view class="{{currentTab == 'basics' ? 'active' : 'inactive'}}" data-tab="basics" bindtap="scrollToSection">商品</view>
+		<view class="{{currentTab == 'comments' ? 'active' : 'inactive'}}" data-tab="comments" bindtap="scrollToSection">评价</view>
+		<view class="{{currentTab == 'details' ? 'active' : 'inactive'}}" data-tab="details" bindtap="scrollToSection">详情</view>
+
+    <view class="{{currentTab == 'search' ? 'active' : 'inactive'}}" data-tab="search" bindtap="scrollToSection">
+      <image   style="width: 30rpx;height: 30rpx;margin-top: 4rpx;" src="{{search_svg}}" />
+    </view>
+    <view class="{{currentTab == 'shop' ? 'active' : 'inactive'}}" data-tab="shop" bindtap="scrollToSection">店铺</view>
+
+	</view>
+</view>
+
+<scroll-view scroll-y="{{!showAddtoCart}}" scroll-into-view="{{currentTab}}" bindscroll="scroll">
+	<view id="basics">
+		<!-- 商品图片 -->
+		<view class="model" style="margin-top:70rpx;">			
+			<swiper style="height:{{height}}px;width:100%;" indicator-dots="true" autoplay="true" interval="3000">
+				<block wx:for="{{multi_media}}" wx:key='index' style="width: 100%;">
+					<swiper-item style="width: 100%;" class="img_box">						
+						<image wx:if="{{item.multimedia_type == 1}}" style="height:{{height}}px; width:100%; border-radius: 30rpx;"  mode="aspectFill" src="{{item.url}}" />
+
+            <view wx:if="{{item.outfit_type==1}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+            上衣试衣
+          </view>
+          <view wx:if="{{item.outfit_type==2}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+              下衣试衣
+          </view>
+          <view wx:if="{{item.outfit_type==3}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+              连衣裙试衣
+          </view>
+          <view wx:if="{{item.outfit_type==4}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+              套装试衣
+          </view>
+
+            <!-- <view wx:if="{{item.outfit_type>0&&( search_outfit_type==0||(search_outfit_type==2&&item.outfit_type==2)||(search_outfit_type==1&&(item.outfit_type==1||item.outfit_type==3) ) )}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit"  class="img_box_absolute">试衣</view> -->
+
+            <view wx:if="{{item.multimedia_type == 2 && is_video_show==1}}" style="height:{{height}}px;border-radius: 30rpx;background-color: #000;overflow: hidden;"  >
+              <video  src="{{item.url}}"  objectFit="cover" style="height:{{height-20}}px;width: 75vw;" ></video>		
+            </view>										
+					</swiper-item>
+				</block>
+        
+      </swiper>	      
+    </view>   
+
+    <view style="display: flex; flex-direction: row; justify-content: center;">
+      <!-- <view style="font-size: 25rpx; color: gray; margin-top: 10rpx;">左滑看更多图片哦</view>		 -->
+    </view>
+
+    
+    <!--商品价格与名称-->
+		<view class="model" style="border-color: rgb(251,234,229); background-color: rgb(255,255,255);margin-top: 8rpx;"> 
+			<view style="display:flex;flex-direction:column;padding: 10rpx;" >
+        <view style="display:flex;flex-direction:row;padding: 10rpx;align-items: center;justify-content: space-between;"> 
+                    <view >
+                      <text style="color: #F89600; font-weight:900;font-size:45rpx;  margin-bottom: 0rpx;">￥{{product_price}}</text>
+                    </view>
+                    <view >
+                      <text style="color: #F89600; font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;">{{category_id==14?'一个月价':'券后价'}}: ￥{{customer_preferential_price}}</text>
+                    
+                    </view>
+                    <view >
+                      <text style="color: #F89600; font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;" wx:if="{{recharge_member_price > 0}}">{{category_id==14?'一个季度价':'充值会员价'}}: ￥{{recharge_member_price}}</text>
+                    </view>	
+                 
+                </view>
+                <view style="display:flex;flex-direction:row;padding: 10rpx;align-items: center;justify-content: space-between; margin-left: 8rpx;">
+                    <text style="color: rgb(134,76,2); font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;" wx:if="{{vip_member_price > 0}}">{{category_id==14?'半年期价':'vip会员价'}}: ￥{{vip_member_price}}</text>
+                    <text wx:if="{{use_star_commission>0}}" style="color: rgb(134,76,2); font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;">可使用星盾: {{use_star_commission}}</text>
+
+                    
+                    <text wx:if="{{is_merchant_procurement>0&&shop_price>0}}" style="color: rgb(134,76,2); font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;" >{{'采购价'}}: ￥{{shop_price}}</text>
+                    <text style="color: rgb(134,76,2); font-weight:900;font-size:30rpx;  margin-bottom: 20rpx;">销量: {{total_sales_count}}</text>
+             </view>
+
+				<view style="margin-left: 17rpx;">
+          <text style="font-size:34rpx;font-weight:700;color:#000000; margin-bottom: 20rpx; margin-top: 10rpx;">{{product_name}}</text>
+          <text class="properties" wx:if="{{cut_introduction!=''}}">[{{cut_introduction}}]</text> 
+          <text class="properties" wx:else="{{img_text_description!=''}}">[{{img_text_description}}]</text> 
+        </view>                       
+				
+			</view>            
+    </view>
+    
+		<!--商品转发提成信息-->
+		<view class="model" style="margin-top:20rpx; border-color: rgb(249,210,198); background-color: rgb(249,210,205); height: 110rpx;"> 
+			<view style="display:flex;flex-direction:row; justify-content: space-between;" > 
+				<view style="width: 15%;">
+					<image style="height:100rpx; width:66rpx; margin-top:5rpx; margin-left: 20rpx;"  mode="scaleToFill" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/trophy1.png"></image>
+				</view>
+				<view style="width: 85%; display:flex; flex-direction:row;">
+					<view style="display:flex;flex-direction:row;  border-radius: 35rpx; margin-top: 15rpx; width: 530rpx; height: 85rpx; background-color: #52A76E; color:white; justify-content: center; align-items: center;">
+          <view>
+            <text style="font-size: 28rpx; font-weight:700; margin-left: 10rpx;margin-right: 20rpx;">分销提成: </text>
+          </view> 
+          <view style="display: flex;flex-direction: column;align-items: flex-start;justify-content:center;flex: 1;">
+            <view wx:if="{{platform_cash_commission > 0}}">
+              <text style="font-size: 25rpx;font-weight:700; margin-right: 20rpx;">￥{{platform_cash_commission}}元</text>
+              <text style="font-size: 25rpx;font-weight:700;">[平台现金]</text>
+              </view>
+              <view wx:if="{{shop_cash_commission > 0}}">
+                <text style="font-size: 25rpx; font-weight:700;margin-right: 20rpx;">￥{{shop_cash_commission}}元</text>
+                <text style="font-size: 25rpx; font-weight:700;">[店铺现金]</text>
+              </view>
+              <view wx:if="{{platform_star_commission > 0}}">
+                <text  style="font-size: 25rpx;font-weight:700;margin-right: 20rpx;">{{platform_star_commission}}</text>
+                <text  style="font-size: 25rpx;font-weight:700;">{{category_id==14?'[平台米盾]':'[平台星盾]'}}</text>
+              </view>
+              <view wx:if="{{shop_star_commission > 0}}">
+                <text style="font-size: 25rpx; font-weight:700;margin-right: 20rpx; ">{{shop_star_commission}}</text>
+                <text style="font-size: 25rpx; font-weight:700; ">[店铺星盾]</text>
+              </view>
+            </view>
+          </view>         
+
+						
+            				
+					<view style="display:flex;flex-direction:column; margin-left:12rpx; margin-top: 15rpx; justify-content: center; align-items: center; margin-right: 20rpx;" data-item="{{item}}" bindtap="shareSelect">
+						<image style="height:60rpx; width:60rpx;"  mode="scaleToFill" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/share100.png"></image>	
+						<text style="font-size: 22rpx; color: grey; margin-bottom: 5rpx;">分享</text>
+					</view>
+				</view>
+			</view>            
+		</view>
+
+		<!--商品参数-->
+		<view class="model" style="background-color: rgb(254,250,245); padding-bottom: 20rpx">			 
+			<!-- <view wx:if="{{sku&&sku.length>1}}" class="sub_section" style="margin-top: 30rpx;" bindtap="showAddtoCart">              
+				<text class="sub_title">选择</text>	
+				<view class="property_group" style="width: 80%;">
+					
+          <text class="properties">"自定义选项"的名称</text>
+          <text class="properties">"规格"的名称</text>
+				</view>
+				<image style="height: 45rpx;width: 45rpx; margin-right: 15rpx;" src="{{m_right_img}}"/>						
+			</view>   -->
+			<view class="sub_section">              
+				<text class="sub_title">物流</text>
+				<text class="properties" style="width: 85%;">从 {{ship_from}} 发货</text>			
+			</view>     
+			<view class="sub_section">              
+				<text class="sub_title">保障</text>		
+				<view class="property_group" style="width: 85%;">
+					<text class="properties" wx:if="{{is_seven_without_reason == 1}}">七天无理由退货</text>
+          <text class="properties" wx:if="{{is_seven_without_reason == 0}}">不支持七天无理由退货</text>
+					<text class="properties" wx:if="{{is_provide_invoices == 1}}">提供发票</text>
+
+				</view>
+			</view>
+			<view class="sub_section" wx:if="{{param_img_url != null && param_img_url != ''}}" bindtap="show_param_img" data-src="{{param_img_url}}">              
+				<text class="sub_title">属性</text>		
+				<view class="property_group" style="width: 80%;">
+					<text class="properties">品牌，尺寸，型号等</text>					
+				</view>
+				<image style="height: 45rpx;width: 45rpx; margin-right: 15rpx;" src="{{m_right_img}}"/>
+			</view>	
+
+		</view>	
+	</view>
+
+	<!--商品评价-->
+	<view id="comments">
+		<view class="model" style="height: {{comments_num>0?450:100}}rpx" >
+			<view style="display: flex;flex-direction: row;" >
+        <text style="width:70%;" class="section_title">商品评价({{comments_num}})</text>         
+				<text wx:if="{{comments_num>0}}" style="width:30%; font-size: 23rpx; color:grey; margin-top: 35rpx;">下滑看更多评价</text>
+			</view>	
+			<view wx:if="{{comments_num>0}}" style="display: flex;flex-direction: column; margin-top: 20rpx;">  
+				<scroll-view scroll-y="true" style="height: 350rpx;">				
+					<view class="one_comment" wx:for="{{comments}}">
+						<view style="display: flex;flex-direction: row;">
+							<image style="height:60rpx; width:60rpx;"  mode="scaleToFill" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/sns_logo.png"/>
+							<text class="comment_name">匿名买家</text>
+							<text class="comment_date">{{item.create_time}}</text>	
+						</view>	
+						<text class="comment_content">{{item.comment}}</text>
+					</view> 
+				</scroll-view>		                  
+			</view>
+    </view>
+  </view>  
+
+  <!--店铺信息-->
+  <view class="model" catchtap="goToShop">
+    <view style="display: flex;flex-direction: row; margin-top: 30rpx; margin-bottom: 30rpx; margin-left: 30rpx;" >
+      <image class="head-image" src="{{shop_img?shop_img+'?x-oss-process=image/resize,m_fill,h_300,w_300':def_shop_img+'?x-oss-process=image/resize,m_fill,h_300,w_300'}}" mode="aspectFill" style="width: 30%"/>
+      <view style="display: flex;flex-direction: column; justify-content: space-between; margin-left: 12rpx;">        
+        <text class="content-title">{{shop_name}}</text>        
+        <view class="nextbtn">进店逛逛</view>        
+      </view>
+    </view>
+  </view>	
+
+	<!--商品详情-->
+	<view id="details" wx:if="{{description_img != null && description_img != []}}">
+		<view class="model">
+			<view class="section_title" style="margin-bottom: 30rpx;">商品详情</view> 
+      <view wx:if="{{img_text_description!=''}}" style="width: 92%;margin-bottom: 30rpx;" class="textarea-box border-green">
+          {{img_text_description}}
+      </view>
+      <view wx:for="{{description_img}}" wx:key="index" class="img_box">
+        <image style="z-index: 888;"  mode="widthFix" src="{{item.url}}" style="width: 100%;"/>
+        <view wx:if="{{item.outfit_type==1}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+            上衣试衣
+        </view>
+        <view wx:if="{{item.outfit_type==2}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+            下衣试衣
+        </view>
+        <view wx:if="{{item.outfit_type==3}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+            连衣裙试衣
+        </view>
+        <view wx:if="{{item.outfit_type==4}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">
+            套装试衣
+        </view>
+        
+        <!-- <view wx:if="{{item.outfit_type>0&&( search_outfit_type==0||(search_outfit_type==2&&item.outfit_type==2)||(search_outfit_type==1&&(item.outfit_type==1||item.outfit_type==3) ) )}}" data-outfit_type="{{item.outfit_type}}" data-goods_img_url="{{item.url}}" bindtap="toOutfit" class="img_box_absolute">试衣</view> 		 -->
+      </view>			 
+						      
+		</view>		
+	</view>         
+
+	<!-- 推荐商品-->
+	<view id="recommend">
+		<view class="model" style="margin-top:30rpx;">
+			<view class="section_title">店铺所有商品</view>
+			<view style="display:flex; flex-direction:row; flex-wrap:wrap; margin-bottom: 30rpx;">            
+				<view style="width: 40%; box-sizing: border-box; display:flex; flex-direction:column; flex-shrink:0; margin-top:30rpx; margin-left: 5%;" 
+					wx:for="{{other_products}}" wx:key="index" bindtap="toDetail" data-item="{{item}}">
+					<image src="{{item.multimedia_img_url}}" mode="scaleToFill" style="width:300rpx; height: 300rpx; border-radius: 20rpx;"></image>  
+					<text style="font-size: 25rpx; margin-top: 10rpx;">{{item.name}}</text>
+					<text style="color: #F89600;; font-weight:900; font-size:25rpx;">￥{{item.customer_price}}</text>
+					<text style="color: #52A76E; font-weight:900; font-size:25rpx;" wx:if="{{item.platform_cash_commission > 0 }}">分销提成：￥{{item.platform_cash_commission}}</text>
+          <text style="color: #52A76E; font-weight:900; font-size:25rpx;" wx:if="{{item.platform_cash_commission == 0 && item.platform_star_commission > 0}}">分销提成：{{item.platform_star_commission}}星盾</text>
+          <text style="color: #52A76E; font-weight:900; font-size:25rpx;" wx:if="{{item.shop_cash_commission > 0 }}">分销提成：￥{{item.shop_cash_commission}}</text>
+          <text style="color: #52A76E; font-weight:900; font-size:25rpx;" wx:if="{{item.shop_cash_commission == 0 && item.shop_star_commission > 0}}">分销提成：{{item.shop_star_commission}}星盾</text>
+				</view>     
+			</view>
+		</view>		
+	</view>    
+
+	<!--暂时用放一个空白块这个办法来解决最底部有一些部分显示不了的问题-->
+	<view class="model" style="margin-top:30rpx; border: #FFF;" >        
+		<view class="meal_rule" style="border: #FFF;" >
+			<text style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline}};-webkit-box-orient: vertical; color: #FFF;" id='xxx'>123
+			</text>            
+		</view>
+		<view class="meal_rule" style="border: #FFF;">
+			<text style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline}};-webkit-box-orient: vertical; color: #FFF;" id='xxx'>123
+			</text>            
+		</view>  
+		<view class="meal_rule" style="border: #FFF;">
+			<text style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline}};-webkit-box-orient: vertical; color: #FFF;" id='xxx'>123
+			</text>            
+		</view>        
+	</view>
+</scroll-view>    
+
+<!--底部固定导航栏-->
+<view style="display:flex; flex-direction:row; justify-content:space-between; position:fixed; bottom:0rpx; margin:length; width:100%; align-items:center; height: 110rpx; background-color: #FFF;">
+	<view style="width:45%; margin-bottom:20rpx; margin-left: 0rpx;">            
+		<view style="display:flex; flex-direction:row; margin-top: 14rpx;align-items: center;justify-content: space-between;width: 100%;">
+		
+		 <view style="display:flex; flex-direction:column; justify-content: center; align-items: center; margin-left: 40rpx; margin-top: 5rpx;" bindtap="goToCart">
+				<view style="position: relative;">
+            <view wx:if="{{mall_bill_shopping_cart_total_number>99}}" class="badgecontent">99+</view>
+            <view wx:elif="{{mall_bill_shopping_cart_total_number>0}}" class="badgecontent">{{mall_bill_shopping_cart_total_number}}</view>
+            <image src="{{shopping_cart_img}}" mode="scaleToFill" class="left_corner_img"/>
+        </view>
+        <text class="left_corner" style="margin-left: 10rpx;">购物车</text>
+			</view>
+
+			<view style="display:flex; flex-direction:column; justify-content: center; align-items: center; margin-left: 45rpx;" catch:tap="customerService">
+				<image src="{{customer_service_img}}" mode="scaleToFill" class="left_corner_img" style="margin-top: 5rpx;"/>
+				<text class="left_corner" style="margin-top: 5rpx;">客服</text>
+			</view>
+      <view style="display:flex; flex-direction:column; justify-content: center; align-items: center; margin-left: 45rpx;" catch:tap="insertMallBaseGoodsCollect">
+				<image src="{{shoucang_img}}" mode="scaleToFill" class="left_corner_img" style="margin-top: 5rpx;"/>
+				<text class="left_corner" style="margin-top: 5rpx;">收藏</text>
+			</view>	
+		</view>	           
+	</view>         
+	<view style="margin-bottom:45rpx; margin-top: 44rpx; margin-right: 30rpx; display:flex; flex-direction:row" >
+    <view wx:if="{{(scan_staff_goods_id>0&&is_staff_special_commission>0)||(card_is_in_activity==1)}}" class="tap0" >加入购物车</view>
+    <view wx:else="" class="tap1" bindtap="showAddtoCart">加入购物车</view>
+		<view class="tap2" bindtap="showDirectBuy">立即购买</view>           
+	</view>        
+</view>
+
+
+<!--获取头像-->
+<headPortrait bind:refreshAvatar="refreshAvatar" isShow="{{isShowGetAvatar}}"></headPortrait> 
+
+<!-- 分享画板 -->
+<canvas type="2d" id="canvas" style="width:621px;height:1099px;position: fixed;left: -621px;top: -1099px;"></canvas>
+<view class="popup-window1-bg" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window1" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+    <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+        <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" show-menu-by-longpress="true"></image>
+        <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+        <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+        <view style="width: 10%;">
+            <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{showAddtoCart}}" class="dialog_overlay" bindtap="hideAddtoCart"></view>
+
+<!-- 选择规格加入购物车的弹出框-->
+<view wx:if="{{showAddtoCart}}" class="dialog_wrapper" catchtouchmove="preventDefault">
+  <view  catch:tap="hideAddtoCart" class="badgecontent-close"  data-index="{{index}}">X</view>
+  <view style="display: flex;flex-direction: column;width: 100vw;height: 100vh;">
+   
+    <view style="display: flex;flex-direction: column;flex:1;width: 100%;overflow: auto;">
+
+      <view style="display: flex;flex-direction: column;">
+        <view style="display: flex; flex-direction: row; align-items: center;">		
+              <image style="height:150rpx; width:150rpx;margin-top: 6rpx;margin-left:6rpx"  mode="scaleToFill" src="{{sku_img_url ? sku_img_url+'?x-oss-process=image/resize,m_fill,h_150,w_150' : multimedia_url+'?x-oss-process=image/resize,m_fill,h_150,w_150'}}" bindtap="showBigImage"/>	
+              <view style="display: flex; flex-direction: column; margin-right: 30rpx;flex:1">	
+                <view style="display: flex; flex-direction: row;">
+                  <text style="color: #F89600; font-weight:700;font-size:45rpx; margin-left:20rpx;">￥{{product_price}}</text>
+                  
+                  <view wx:if="{{category_id==14}}">
+                    <text wx:if="{{b_14_sel_spec_name=='零售'}}" style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx; margin-top: 15rpx;">零售价￥{{product_price}}</text>
+                    <text wx:if="{{b_14_sel_spec_name=='一个月'}}" style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx; margin-top: 15rpx;">一个月价￥{{sku_preferential_price?sku_preferential_price:customer_preferential_price}}</text>
+                    <text wx:if="{{b_14_sel_spec_name=='一个季度'}}" style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx; margin-top: 15rpx;">一个季度价￥{{sku_recharge_price?sku_recharge_price:recharge_member_price}}</text>
+                    <text wx:if="{{b_14_sel_spec_name=='半年期'}}" style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx; margin-top: 15rpx;">半年期价￥{{sku_vip_price?sku_vip_price:vip_member_price}}</text>
+
+                  </view>
+                  <view wx:if="{{category_id!=14}}">
+                    <text style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx; margin-top: 15rpx;">券后价￥{{sku_preferential_price?sku_preferential_price:customer_preferential_price}}</text>
+                  </view>
+
+                </view>
+            <view wx:if="{{category_id!=14}}">
+                  <text  style="color: #F89600; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_recharge_price > 0 || recharge_member_price > 0}}">充值会员价￥{{sku_recharge_price?sku_recharge_price:recharge_member_price}}</text>
+                <text style="color: rgb(134,76,2); font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_vip_price > 0 || vip_member_price > 0}}">vip会员价￥{{sku_vip_price?sku_vip_price:vip_member_price}} </text>  
+
+            </view>
+                    
+            <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_platform_cash_commission > 0 || platform_cash_commission > 0}}">分销提成：￥{{sku_platform_cash_commission ? sku_platform_cash_commission : platform_cash_commission}}【平台现金】</text>
+            <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_shop_cash_commission > 0 || shop_cash_commission > 0}}">分销提成：￥{{sku_shop_cash_commission ? sku_shop_cash_commission : shop_cash_commission}}【店铺现金】</text>
+            <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_platform_star_commission > 0 || platform_star_commission > 0}}">分销提成：{{sku_platform_star_commission ? sku_platform_star_commission : platform_star_commission}}个{{category_id==14?'【平台米盾】':'【平台星盾】'}}</text>
+            <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_shop_star_commission > 0 || shop_star_commission > 0}}">分销提成：{{sku_shop_star_commission ? sku_shop_star_commission : shop_star_commission}}个{{category_id==14?'【店铺米盾】':'【店铺星盾】'}}</text>
+            <view  style="background-color: #f2f2f2;display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;">
+              
+              <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_use_star_commission >0}}">可用星盾：{{sku_use_star_commission}}个</text>
+              <!-- <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:else=""></text> -->
+
+              <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{is_merchant_procurement >0&&sku_shop_price>0}}">商家采购价：{{sku_shop_price}}</text>
+              <text style="color: #52A76E; font-weight:700;font-size:28rpx; margin-left:30rpx;" wx:if="{{sku_sales_count >0}}">销量：{{sku_sales_count}}</text>
+            </view>
+          </view>
+        </view>
+
+
+        
+        
+      </view>
+
+      <view wx:if="{{product_color != null && product_color.length != 0}}" style="display: flex; flex-direction: column;flex: 1;overflow: auto;">	
+          <text class='option_name'>自定义可选项：</text>
+          <scroll-view style="flex:1; margin-left: 0rpx; margin-top: 0rpx;overflow: auto;" scroll-y="true">
+              <view class="{{color_word_count>16?'option_layout_col':'option_layout'}}">			
+                <text wx:for="{{product_color}}" class="{{selectedColor == item.name ? 'selected_option' : 'not_selected_option'}}" bindtap='selectColor' data-color="{{item.name}}">{{item.name}}</text>			
+              </view>
+          </scroll-view>
+        </view>
+
+
+        <view wx:if="{{product_spec != null && product_spec.length != 0}}" style="display: flex; flex-direction: column;flex: 3;overflow: auto;">		
+            <text wx:if="{{category_id==14}}" class='option_name' >订购期限：</text>
+            <text wx:if="{{category_id!=14}}"class='option_name' >可选规格：</text>
+            <scroll-view style="flex:1; margin-left: 0rpx; margin-top: 0rpx;overflow: auto;width:100vw;" scroll-y="true">
+              <view style="width: 96%;" class="{{spec_word_count>10?'option_layout_col':'option_layout'}}">			
+                <text wx:for="{{product_spec}}" class="{{selectedSpec == item.name ? 'selected_option' : 'not_selected_option'}}" bindtap='selectSpec' data-spec="{{item.name}}" >{{item.name}}</text>			
+              </view>
+            </scroll-view>
+        </view>
+
+
+        <view wx:if="{{selectedGift&& selectedGift.length != 0}}" style="width: 100%;display: flex; flex-direction: column;flex:2;overflow: auto;">		
+          <view style="width: 100%;height: 100%;display: flex;flex-direction: column;">
+            <text wx:if="{{selectedSKUEntity}}" class='option_name' >赠送礼品：</text>
+              
+            <scroll-view style="flex:1; margin-left: 0rpx; margin-top: 0rpx;overflow: auto;" scroll-y="true">
+              <view style="width: 100%;display: flex; flex-direction: column;">
+                    <view style="width: 88%;margin-left: 20rpx;">	
+                      <view class="gift_box">
+                        <view class="gift_detail">
+                          <view>
+                            <text class="gift_title">礼品总数：</text>{{selectedSKUEntity.gift_count}}
+                          </view>
+                          <view>
+                            <text class="gift_title" >总金额：</text>{{selectedSKUEntity.gift_amount}}元
+                          </view>
+                        </view>
+                      </view>	
+                      <view  wx:for="{{selectedGift}}" class="gift_box"  >
+                      <view style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;">
+                        {{item.gift_goods_name}}
+                        <view data-item="{{item}}" catch:tap="toGiftDetail" class="tap1gift" bindtap="showAddtoCart">详情</view>
+                      </view>
+                      
+                        <view class="gift_detail">
+                          <view>
+                            <text class="gift_title">单价：</text>{{item.gift_sku_price}}元
+                          </view>
+                          <view>
+                            <text class="gift_title">数量：</text>{{item.gift_number}}
+                          </view>
+                          <view>
+                            <text class="gift_title" >金额：</text>{{item.gift_sku_price*item.gift_number}}元
+                          </view>
+                        </view>
+                      </view>	
+                      	
+                    </view>
+
+                    
+
+              </view> 
+            </scroll-view>
+          </view>
+        </view>
+
+
+
+        <view wx:if="{{category_id==14&&b_14_sel_spec_name!=''&&b_14_sel_spec_name!='零售'}}" style="display: flex; flex-direction: column;">		
+        <text class='option_name' >配送周期：</text>
+        <view class="option_layout" style="font-size: 29rpx;margin-top: 15rpx;">			
+            <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+              <input type="digit" value="{{delivery_day_str}}" bindinput="delivery_day_strChange" placeholder="" style="width: 120rpx;border: 1rpx solid #ccc;border-radius: 10rpx;margin: 0 10rpx;font-size: 29rpx;"/>
+              天 <view style="margin-left: 10rpx;background-color: #f2f2f2;border-radius: 10rpx;padding: 0 15rpx;">合计配送<text style="color: #52A76E;font-weight: 900; margin:0 10rpx;">{{delivery_count}}</text>次</view>
+            </view>
+        </view>
+      </view>
+
+    
+  <view wx:if="{{category_id==14&&b_14_sel_spec_name!=''&&b_14_sel_spec_name!='零售'}}" style="display: flex; flex-direction: column;">		
+        <text class='option_name' >每次配送数量：</text>
+        <view class="option_layout" style="font-size: 29rpx;margin-top: 15rpx;">			
+            <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+              <input type="digit" value="{{delivery_weight_str}}" bindinput="delivery_weight_strChange"placeholder="" style="width: 120rpx;border: 1rpx solid #ccc;border-radius: 10rpx;margin: 0 10rpx;"/>
+              斤
+            </view>
+        </view>
+      </view>
+      <view wx:if="{{category_id==14&&b_14_sel_spec_name=='零售'}}" style="display: flex; flex-direction: column;">		
+        <text class='option_name' >数量：</text>
+        <view class="option_layout" style="font-size: 29rpx;margin-top: 15rpx;">			
+            <view style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+              <input type="digit" value="{{selectedQuantityStr}}" bindinput="selectedQuantityStrChange"placeholder="" style="width: 120rpx;border: 1rpx solid #ccc;border-radius: 10rpx;margin: 0 10rpx;"/>
+              斤
+            </view>
+        </view>
+      </view>
+
+
+		
+
+    <view wx:if="{{category_id==14&&b_14_sel_spec_name!=''}}" style="align-items: center; display: flex; flex-direction: row;" >        
+			<text class="option_name">数量：{{selectedQuantity}}</text>
+		</view>
+		<view wx:if="{{category_id==14}}" style="align-items: center; display: flex; flex-direction: row;" >        
+      <text class="option_name" style="color:#F89600;">金额合计：{{selectedRiceAmount}} 元</text>
+      
+		</view>
+		<view wx:if="{{category_id==14}}" style="align-items: center; display: flex; flex-direction: row;" >        
+      <text class="option_name" style="color:#52A76E;margin-right: 10rpx;">分销提成合计：{{selectedRiceStar}} 米盾</text>
+     
+		</view>
+
+
+    
+
+
+        
+    
+    </view>
+
+    <view style="height:120rpx;width: 100%;display: flex; flex-direction:row; align-items: center;">
+      
+    </view>
+  </view>
+  <view style="height: 120rpx;position:fixed; bottom:0rpx; width:100%;height: 120rpx; display: flex; flex-direction:row; align-items: center;">
+      <view wx:if="{{category_id!=14}}" style="align-items: center; display: flex; flex-direction: row;align-items: center;height: 120rpx;justify-content: center;width: 50%;" >        
+        <text class="option_name" style="margin-top: 0rpx;">数量：</text>
+        <view style="display: flex;flex-direction: row;align-items: center; height: 80rpx;">
+          <image src="https://mb.fsmbdlkj.com/wx_official/web/images/image/delete.png" class='{{minusStatus}}' style="height: 80rpx;width: 80rpx;transform: scale(1.2);" type='number' bindtap='bindMinus'></image>
+          <text style="width: 70rpx;text-align: center;">{{selectedQuantity}}</text>
+          <image src="https://mb.fsmbdlkj.com/wx_official/web/images/image/add.png" style="height: 80rpx;width: 80rpx;transform: scale(1.2);" bindtap='bindPlus'></image>
+        </view>			
+      </view>
+      <button class='tap1' style="width: 40%; border-radius: 40rpx;" bindtap='addToCart' wx:if="{{!directBuy}}">加入购物车</button>
+      <button class='tap1' style="width: 40%; border-radius: 40rpx;" bindtap='directBuy' wx:if="{{directBuy}}">确     定</button>
+  </view>
+</view>
+
+<!-- 底部弹窗 转发叮聊 -->
+<view wx:if="{{b_ding_main_show}}" style="height: 100%;z-index: 99999;"  class="popup-dlg-background-mask" >
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 98vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="flex:1;"></view>
+    <view style="width: 98%;margin-bottom: 10rpx;">
+      <view style="font-weight: 800;font-size: 34rpx;">
+        选择叮客
+      </view>
+    </view>
+    <view style="width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+      <view style="flex: 1;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+        <view style="flex: 1;"> 
+          <input model:value="{{ding_key_word}}" placeholder="   搜索叮客" style="width: 100%; font-size: 25rpx;"/>
+        </view>
+      </view>
+      <view style="margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+          <view catch:tap="clearDingKeyWord" class="bottom_btn" style="margin-right: 10rpx;background-color: #FF5722;" >
+            清空
+          </view>
+          <view  catch:tap="selectAllDingMsgRecordDingKeFromMemberInfo" class="bottom_btn" style="margin-right: 20rpx;">
+            搜索
+          </view>
+      </view>
+
+    </view>
+    
+    <scroll-view scroll-y="true" style="height:80vh;overflow: scroll;overflow: auto;" bindscrolltolower="scrollToLowerArticleMain"  scorll-top="{{scoll_top}}" >
+      <block wx:if="{{dingYouList.length > 0}}">
+        <view wx:for="{{dingYouList}}" data-item="{{item}}" bindtap="changeDingSelect" data-index="{{index}}" style="height: 140rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;" wx:key="index">
+					<view style="width: 90rpx;height: 140rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <image wx:if="{{item.is_select==1}}" style="width: 60rpx;height: 60rpx;" src="{{ding_select_img}}">
+              </image>
+              <image wx:if="{{item.is_select==0}}" style="width: 58rpx;height: 58rpx;" src="{{ding_not_select_img}}">
+              </image>
+          </view>
+          <view style="width: 80rpx;height: 100%;display: flex;justify-content: center;align-items: center;">
+                        <view style="position: relative;">
+                            <image style="height: 80rpx;width: 80rpx;border-radius: 12rpx;" src="{{item.avatar_url?item.avatar_url:def_avatar_url}}" />
+                        </view>
+						
+					</view>
+					<view style='margin-left: 10rpx;border-bottom: #eeeeee 1rpx solid;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: flex-start;justify-content: space-evenly;{{index==0?"border-top: #eeeeee 1rpx solid;":";"}}'>
+						<view style="margin-left: 20rpx;display: flex;justify-content: space-between;align-items: center;width: 100%;height: 70rpx;">
+							<view style="margin-top: 20rpx;font-weight: 400;font-size: 32rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.customer_name}}
+							</view>
+          
+							
+						</view>
+						<view style="display: flex;justify-content: flex-start;align-items: center;width: 100%;height: 70rpx;">
+							<view wx:if="{{item.lstDingMsgRecord&&item.lstDingMsgRecord.length>0&&item.lstDingMsgRecord[0].msg_type==1}}" style="margin-bottom: 20rpx;font-size: 26rpx;width: 550rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.lstDingMsgRecord[0].msg}}
+							</view>
+						</view>
+
+					</view>
+          
+
+          
+				</view>
+
+			</block>
+      </scroll-view>
+    <view style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end;width: 100%;padding: 10rpx 0rpx;">
+
+      <view catchtap="showOrHideBDingMainShow" data-show="{{false}}" class="bottom_btn" style="background-color: #FF5722;margin-right: 100rpx;">关闭</view>
+      <view catchtap="sendMsgExec" class="bottom_btn" style="margin-right: 20rpx;">发送</view>
+    </view>	
+   
+	</view>
+</view>
+
+<!--分享朋友圈-->
+<view wx:if="{{is_fenxiangpengyouquan==1}}" style="position: fixed;top: 0;right: 0;width: 260rpx;z-index: 99999;" >
+ <view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+  <view style="width: 10rpx;font-size: large;color: red;">
+    ↑
+  </view>
+  <view catch:tap="hideFenXiangPengYouQuan" style="width: 160rpx;padding: 10rpx 10rpx;font-size: 26rpx;color: #fff;background-color: red;">
+      点击右上角三点分享朋友圈
+  </view>
+ </view>
+</view>
+
+
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{is_in_activity_dlg_show==1}}" bindtap="closeIsInActivityDlgShow">
+</view>
+
+<view style="position: fixed;right: 0;left: 0;bottom: 30%;margin: auto;height: 420rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #f2f2f2;" wx:if="{{is_in_activity_dlg_show==1}}">
+ 
+      <view style="font-size: larger;padding: 20rpx;color:#F89600;font-weight: 900;">欢迎您参与抢礼品活动</view>
+      <view  catch:tap="closeIsInActivityDlgShow" class="badgecontent-close" >X</view>
+
+    <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+      <view style="font-size: large;color:#F89600;margin-bottom: 10rpx;width: 100%;margin-left: 1em;font-weight: bold;">请按以下步骤操作:</view>
+      <text decode='true' style="font-size: large;color:#F89600;margin-bottom: 10rpx;word-break: break-all;text-align: left;text-indent:2em;margin: 0rpx 20rpx;">"立即购买" -&gt; 选择"用作礼品" -&gt; "确定" -&gt; 进入"确认订单"页面(如果还没填写收货地址就填写) -&gt; "提交支付" -&gt; "返回首页"</text>
+      
+     
+    </view>
+</view>
+
+
+
+
+
+
+
+<!-- 底部弹窗 已完成模板查询 -->
+<view wx:if="{{b_article_template_main_show}}" style="height: 100%;"  class="popup-dlg-background-mask">
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 92vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="flex:1;"></view>
+    <view style="width: 98%;margin-bottom: 10rpx;">
+      <view style="font-weight: 800;font-size: 34rpx;">
+        已有模板
+      </view>
+    </view>
+    <view style="width:98%;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+        <view style="flex: 1;"> 
+          <input model:value="{{s_template_key_word}}" placeholder="   搜索已完成模板" style="width: 100%; font-size: 25rpx;"/>
+        </view>
+    </view>
+    <view style="width:98%;margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+        <view catch:tap="clearSTemplateKeyWord" class="bottom_btn" style="background-color: #FF5722;margin-right: 50rpx;">
+          清空
+        </view>
+
+        <!--data-article_type="2"-->
+        <view data-article_type="2" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 30rpx;">
+          图片
+        </view>
+        <view data-article_type="3" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 30rpx;">
+          视频
+        </view>
+        <view data-article_type="0" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 20rpx;">
+          搜索
+        </view>
+    </view>
+    <view class='form_tittle'>
+			<view class='th-head' style="text-align: center;width:24%;">
+				<text class='text' style="font-size: 26rpx;">创建日期</text>
+			</view>
+			<view class='th-center' style="text-align: center;width:10%;">
+				<text class='text' style="font-size: 26rpx;">类型</text>
+			</view>
+      <view class='th-center' style="text-align: center;width:56%;">
+				<text class='text' style="font-size: 26rpx;">标题</text>
+			</view>
+			<view class='th-end' style="text-align: center;width:10%;">
+				<text class='text' style="font-size: 26rpx;">次数</text>
+			</view>
+		</view>
+    <scroll-view scroll-y="true" style="height:65vh;overflow: scroll;overflow: auto;" bindscrolltolower="scrollToLowerArticleTemplateMain" >
+        <view class='for' wx:for='{{s_article_template_main_array}}' wx:key='index' data-index='{{index}}' catch:tap='itemClickArticleTemplateMain'>
+          <view class='td-head' style='width:24%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+          {{item.create_date_str}}
+          </view>
+          <view class='td-center' style='width:10%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text wx:if="{{item.article_type==1}}">文章</text>
+            <text wx:if="{{item.article_type==2}}">图片</text>
+            <text wx:if="{{item.article_type==3}}">视频</text>
+          </view>	
+          <view class='td-center' style='width:56%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+           {{item.name}}
+          </view>		
+          <view class='td-end' style='width:10%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+            {{item.use_count}}
+          </view>
+        </view>
+      </scroll-view>
+    <view style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end;width: 100%;padding: 10rpx 0rpx;">
+     
+   
+      <view catch:tap="hideBArticleTemplateMainShow" class="bottom_btn" style="background-color: #FF5722;margin-right: 50rpx;">
+          关闭
+        </view>
+      <view catchtap="confirmArticleTemplateMain" class="bottom_btn" style="margin-right: 50rpx;">确定</view>
+    </view>	
+	</view>
+</view>
+
+
+

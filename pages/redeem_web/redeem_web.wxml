@@ -1,0 +1,2 @@
+<!--pages/redeem_web/redeem_web.wxml-->
+<web-view src="{{url}}?unionId={{unionId}}&flag=0"></web-view>

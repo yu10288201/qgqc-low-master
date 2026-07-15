@@ -1,0 +1,46 @@
+/* pages/Coupon_code/Coupon_code.wxss */
+.top{
+  z-index: 9;
+  display:flex;
+  position: fixed;
+  width:100%;
+  height:62rpx;
+  background-color:#009AA2;
+  justify-content:center; 
+  top:0;
+}
+.search-view{
+  letter-spacing:10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 72rpx;
+  width: 96%;
+  font-size: 30rpx;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  background-color:#ffffff;
+  border-top-left-radius:16rpx;
+  border-top-right-radius:16rpx;
+}
+
+.couponCode{
+  display: flex;
+  flex-direction: column;
+  font-size: 30rpx;
+  margin-top: 90rpx;
+  width: 94%;
+  margin-left: 3%;
+}
+.picture{
+  margin-top: 20rpx;
+  width: 94%;
+  margin-left: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.picture image{
+  width: 70%;
+  height: 440rpx;
+}

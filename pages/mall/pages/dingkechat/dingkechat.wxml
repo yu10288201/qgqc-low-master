@@ -1,0 +1,215 @@
+<view class="return_out" style="height: {{return_out_height}}px;top: {{return_out_top}}px;border-bottom: #eeeeee 1rpx solid;" bindtap="returnBack">
+  <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+  <view>{{otherInfo.customer_name}}</view>
+  <view class="return" style="color:#FFF">0</view>
+</view>
+<scroll-view bindtap="showKeyboardDown" 
+style="background-color: #ededed;margin-top: {{pageTop}}px;height: {{keyboardUp ? pageHeight - keyboardHeight : pageHeight}}px;width: 100%;" scroll-y="true" 
+scroll-into-view="{{pageId}}" 
+bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
+<view wx:if="{{isOldLoading==true}}" class="box" >
+  <view class="loading1"></view>
+</view>
+<view id="s1" style="height: 20rpx;"></view>
+<view id="s2" style="height: 1rpx;"></view>
+
+  <view style="display: flex;width: 100%;justify-content: center;align-items: center;flex-direction: column;" wx:for="{{recordList}}" wx:key="index">
+    <view style="margin-bottom: 10rpx;margin-top: 10rpx;">
+      <text style="font-size: 26rpx;color: #aeaeae;">{{item.send_time}}</text>
+    </view>
+    <view style="width: 95%;display: flex;justify-content: flex-start;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:if="{{item.sender_code==otherInfo.customer_code}}">
+      <!--对方消息和头像-->
+      <image wx:if="{{otherInfo.avatar_url&&otherInfo.avatar_url!=''}}" class="avatar" mode="scaleToFill" src="{{otherInfo.avatar_url}}"></image>
+      <image wx:else class="avatar" mode="scaleToFill" src="{{def_avatar_url}}"></image>
+      <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;">
+        <view wx:if="{{item.msg_type==1||item.msg_type==3||item.msg_type==5}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-right-color: #fff;top: 20rpx;left: 0;"></view>
+        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: white;margin-left: 35rpx;border-radius: 10rpx;padding: 0rpx 20rpx;word-break: break-all;display: flex;align-items: center;justify-content: center;">
+          <view wx:if="{{item.msg_type==1}}">
+                {{item.msg}}
+          </view>
+          <view data-item="{{item}}" bindtap="playAudio" style="background-color: #fff;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
+                <view   class="voiceLeftImg" ></view><view style="margin-right: {{item.duration*5}}rpx;">{{item.duration}}″</view>
+          </view>
+        </view>
+        
+        <view wx:if="{{current_pay_audio_id==item.id}}">
+                  <view wx:if="{{current_pay_audio_id==item.id}}" class="play">
+                    <!-- <text>播</text> -->
+                    <view class="ripple-play"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation1-play':''}}"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation2-play':''}}"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation3-play':''}}"></view>
+                  </view>
+        </view>
+
+        <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;margin-left: 35rpx;border-radius: 10rpx;word-break: break-all;">
+          
+          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:if="{{item.msg_type==2}}">
+            <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
+          </view>
+
+          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:elif="{{item.msg_type==4}}">
+            <video 
+                src="{{item.msg}}"
+                class="list-video"
+            >
+            </video>
+          </view>
+
+        </view>
+
+        <view wx:if="{{item.msg_type==5}}" catch:tap="toPage" data-item="{{item}}" style="max-width: 77%;width:77%;background-color: white;margin-left: 35rpx;border-radius: 10rpx;padding: 0rpx 20rpx;word-break: break-all;display: flex;align-items: center;justify-content: center;">
+            <view   style="width:100%;display: flex;flex-direction: column;padding: 20rpx 0rpx;align-items: center;justify-content: center;">
+                <view style="width: 100%;font-size: 36rpx;">{{item.msg}}</view>
+                <view style="width: 100%;margin-top: 10rpx;" wx:if="{{item.lstDingMsgCard&&item.lstDingMsgCard.length>0}}">
+                  <image style="width: 100%;height: 350rpx;" mode="scaleToFill" src="{{item.lstDingMsgCard[0].img_url}}"></image>
+                </view> 
+            </view>
+        </view>
+
+
+      </view>
+    </view>
+
+    <view style="width: 95%;display: flex;justify-content: flex-end;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:else>
+    <!--客人消息和头像-->
+      <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;justify-content: flex-end;">
+        <view wx:if="{{current_pay_audio_id==item.id}}">
+                  <view wx:if="{{current_pay_audio_id==item.id}}" class="play">
+                    <!-- <text>播</text> -->
+                    <view class="ripple-play"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation1-play':''}}"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation2-play':''}}"></view>
+                    <view class="ripple-play {{current_pay_audio_id==item.id?'rippleAnimation3-play':''}}"></view>
+                  </view>
+         </view>
+
+        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: #89d961;margin-right: 35rpx;border-radius: 10rpx;padding: 0rpx 20rpx;word-break: break-all;display: flex;align-items: center;justify-content: center;">
+          <view wx:if="{{item.msg_type==1}}">
+            {{item.msg}}
+          </view>
+          <view data-item="{{item}}" bindtap="playAudio"  style="background-color: #89d961;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
+            <view style="margin-left: {{item.duration*5}}rpx;">{{item.duration}}″</view><view   class="voiceRightImg" ></view>
+          </view>
+          <view wx:else="">
+            {{item.msg}}
+          </view>
+        </view>
+        <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;border-radius: 10rpx;margin-right: 20rpx;word-break: break-all;">
+          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:if="{{item.msg_type==2}}">
+            <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
+          </view>
+
+          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:elif="{{item.msg_type==4}}">
+            <video 
+                src="{{item.msg}}"
+                class="list-video"
+            >
+            </video>
+          </view>
+          <view wx:else="">
+            {{item.msg}}
+          </view>
+        </view>
+
+        <view catch:tap="toPage" data-item="{{item}}" wx:if="{{item.msg_type==5}}" style="max-width: 77%;width: 77%; background-color: #fff;margin-right: 35rpx;border-radius: 10rpx;padding: 0rpx 20rpx;word-break: break-all;display: flex;align-items: center;justify-content: center;z-index: 999;">
+            <view   style="width:100%;display: flex;flex-direction: column;padding: 20rpx 0rpx;align-items: center;justify-content: center;">
+              <view style="width: 100%;font-size: 36rpx;">{{item.msg}}</view>
+              <view style="width: 100%;margin-top: 10rpx;" wx:if="{{item.lstDingMsgCard&&item.lstDingMsgCard.length>0}}">
+                <image style="width: 100%;height: 350rpx;" mode="scaleToFill" src="{{item.lstDingMsgCard[0].img_url}}"></image>
+              </view> 
+            </view>
+        </view>
+
+
+        
+
+        <!-- <view wx:if="{{item.msg_type==5}}" style="max-width: 77%;width:77%;border-radius: 10rpx;background-color: #89d961;margin-right: 35rpx;word-break: break-all;background-color: #fff;">
+          
+          <view   style="width:100%;display: flex;flex-direction: column;padding: 15rpx 15rpx;align-items: center;justify-content: center;background-color: aqua;">
+            <view style="width: 100%;font-size: 36rpx;background-color: #6f6f6f;">{{item.msg}}</view>
+            <view style="width: 100%;margin-top: 10rpx;" wx:if="{{item.lstDingMsgCard&&item.lstDingMsgCard.length>0}}">
+              <image style="width: 100%;height: 350rpx;" mode="scaleToFill" src="{{item.lstDingMsgCard[0].img_url}}"></image>
+            </view> 
+          </view>
+        
+        </view> -->
+
+
+        <view wx:if="{{item.msg_type==1||item.msg_type==3||item.msg_type==5}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-left-color: #89d961;top: 20rpx;right: 0;"></view>
+        <view wx:if="{{item.msg_type==5}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-left-color: #fff;top: 20rpx;right: 0;"></view>
+      </view>
+
+      <image wx:if="{{meInfo.avatar_url&&item.avatar_url!=''}}" class="avatar" mode="scaleToFill" src="{{meInfo.avatar_url}}"></image>
+      <image wx:else class="avatar" mode="scaleToFill" src="{{def_avatar_url}}"></image>
+
+    </view>
+
+  </view>
+  
+</scroll-view>
+<view class="{{keyboardUp || utilUp ? 'keyboardUp' : keyboardDownClass }}" style="--keyboardHeight--:{{utilUp ? 200+tabBarHeight : keyboardHeight}}px;--tabBarHeight--:{{tabBarHeight}}px;background-color: #f7f7f7;position: fixed;bottom: {{tabBarHeight}}px;width: 100%;display: flex;flex-direction: row;align-items: flex-end; border-top: #eeeeee 1rpx solid; font-size: 26rpx;min-height: 50px;">
+  <view class="{{keyboardType ? 'voiceTypeImg' : 'textTypeImg'}}" bindtap="changeKeyboardType"></view>
+  <view style="margin-bottom: 20rpx;display: {{!keyboardType ? 'none' : 'flex'}};flex-direction: column;justify-content: center;align-items: center;flex: 1;background-color: #FFF;border-radius: 5px;min-height: 66rpx;">
+    <textarea bindkeyboardheightchange="getKeyboardHeight" confirm-type="send" adjust-position="{{false}}" fixed="{{true}}" auto-height="{{true}}" show-confirm-bar="{{false}}" bindblur="showKeyboardDown" bindconfirm="addSendRecord" style="width: 96%;font-size: 30rpx;" value="{{msg}}" bindinput="msgChange" >
+        </textarea>
+  </view>
+  <view style="margin-bottom: 10rpx;display: {{keyboardType ? 'none' : 'flex'}};flex-direction: column;justify-content: center;align-items: center;flex: 1;background-color: #FFF;border-radius: 5px;min-height: 66rpx;" hover-class="longtapRecord" hover-start-time="50" hover-stay-time="400" bindlongtap="recordStart" bindtouchend="recordEnd">
+    <text style="font-size: 30rpx;font-weight: 600;">按住 说话</text>
+  </view>
+  <view class="emojiImg"></view>
+  <view wx:if="{{msg==''}}" class="moreImg" bindtap="utilChange"></view>
+  <view wx:if="{{msg!=''}}" class="sendBtn" bindtap="btnSendRecord">发送</view>
+</view>
+<view class="{{utilUp ? 'utilUp' : utilDownClass}}" style="--tabBarHeight--:{{tabBarHeight}}px;background-color: #f7f7f7;position: fixed;bottom: -200px;width: 100%;display: flex;flex-direction: row;align-items: center;justify-content: space-between;flex-wrap: wrap; border-top: #eeeeee 1rpx solid; font-size: 26rpx;height: 200px;">
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;" bindtap="chooseMedia" data-id="0">
+    <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;">
+      <view style="height: 50rpx;width: 50rpx;margin: 0;" class="imageImg"></view>
+    </view>
+    <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">图片</view>
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;" bindtap="chooseMedia" data-id="1">
+    <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;">
+      <view style="height: 50rpx;width: 50rpx;margin: 0;" class="videoImg"></view>
+    </view>
+    <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">视频</view>
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
+    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
+    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
+  </view>
+</view>
+<view style="background-color: #f7f7f7;height: {{tabBarHeight}}px;width: 100%;position: fixed;bottom: 0;"></view>
+
+
+
+
+<view wx:if="{{is_recording}}" style="position: absolute;top:0rpx;left:0rpx;width: 100%;height: 80%;z-index: 999999;display: flex;flex-direction: column;align-items: center;justify-content: flex-end;">
+    <view class="recode">
+      <text>录音</text>
+      <view class="ripple"></view>
+      <view class="ripple {{is_recording?'rippleAnimation1':''}}"></view>
+      <view class="ripple {{is_recording?'rippleAnimation2':''}}"></view>
+      <view class="ripple {{is_recording?'rippleAnimation3':''}}"></view>
+    </view>
+</view>

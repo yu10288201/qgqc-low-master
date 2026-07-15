@@ -1,0 +1,43 @@
+<!--pages/new_invite/new_invite.wxml-->
+
+<view class="page">
+
+  <view class="background_part"></view>
+
+<view style="display: flex; flex-direction: column;align-content: space-between;">
+  <view>
+    <view class="oneline" >
+      <button wx:if="{{isShowRegister}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;"  bindtap="showRegister">邀请有奖</button>
+      <button wx:if="{{isShowFocus}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;"  bindtap="showFocus">邀请有奖</button>
+      <button wx:if="{{isShare}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;"  open-type="share" >邀请有奖</button>
+
+      <!-- <button wx:if="{{isShowRegister}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;margin-left: 72rpx;"  bindtap="showRegister">分销奖励</button>
+      <button wx:if="{{isShowFocus}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;margin-left: 72rpx;"  bindtap="showFocus">分销奖励</button>
+      <button wx:if="{{isShare}}" class="font_size" style="width: 280rpx;color:#000; height: 100%;border: none;margin-left: 72rpx;"  bindtap="todistributionReward">分销奖励</button> -->
+      <view style="display: flex;flex-direction: column;align-items: center;margin-left: 72rpx;">
+        <view class="font_size" bindtap="check">邀请收益规则</view>
+      </view>
+    </view>
+    <!-- <view style="display: flex;flex-direction: column;align-items: center;margin-top: 60rpx;">
+      <view class="font_size" bindtap="check">邀请收益规则</view>
+    </view> -->
+  </view>
+
+  <view style="display: flex;flex-direction: column; align-items: center;margin-top: 100rpx;">
+    <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/appimg/qgqclogo_20211109172143.png" style="width: 60rpx;height: 60rpx;"/>
+    <view class="bottomword" style="font-size: 16rpx;">切瓜切菜</view>
+    <view class="bottomword" style="margin-top: 10rpx;font-size: 24rpx;">切瓜切菜 • 数字化生态餐饮平台</view>
+    <view class="bottomword" style="font-size: 20rpx;">Cut melon cut vegetables Digital Catering platform</view>
+  </view>
+</view>
+  
+</view>
+<!-- 红包页面 -->
+<!-- <view wx:if="{{whetherWin}}" class="background_part">
+
+  <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/slogan.png" class="img_1"></image>
+  <view class="treasure">
+    <text class="money">{{money}} 元</text>
+  </view>
+  <button class="buttom_1" bindtap="toRedeem">领取红包</button> -->
+  <!-- <web-view class="buttom_1" src="https://www.baidu.com/">领取红包</web-view> -->

@@ -1,0 +1,21 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#009AA2",
+  "navigationBarTitleText": "订单详情",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "s-shop-decribe-Img":"/components/shop-decribe-Img/index",
+    "s-popup_taste":"/components/popup_taste/popup_taste",
+    "s-remakNormalView":"/components/remakNormalView/remakNormalView",
+    "s-sideDishesView":"/components/sideDishesView/sideDishesView",
+    "s-multipleEatMethodView":"/components/multipleEatMethodView/multipleEatMethodView",
+    "s-multipleEatMethodViewAndWeight":"/components/multipleEatMethodViewAndWeight/multipleEatMethodViewAndWeight",
+    "s-remarkView":"/components/remarkView/index",
+    "s-selectMaterial":"/components/selectMaterial/index",
+    "s-multipleEatMethodAndWeightSideDishesView":"/components/multipleEatMethodAndWeightSideDishesView/multipleEatMethodAndWeightSideDishesView",
+    "s-remarkView_new":"/components/remarkView_new/index",
+    "supercall": "/components/supercall/supercall"
+  }
+}

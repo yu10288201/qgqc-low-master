@@ -1,0 +1,563 @@
+/* pages/order/order.wxss */
+.top{
+  z-index: 9;
+  display:flex;
+  position: fixed;
+  width:100%;
+  height:62rpx;
+  background-color:#009AA2;
+  justify-content:center; 
+  top:0;
+}
+.search-view{
+  letter-spacing:10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 72rpx;
+  width: 96%;
+  font-size: 30rpx;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  background-color:#ffffff;
+  border-top-left-radius:16rpx;
+  border-top-right-radius:16rpx;
+}
+
+.meal_dishes{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+  width: 96%;
+  margin-left: 2%;
+  margin-bottom: 10rpx;
+  align-items: center;
+}
+
+.model{
+  display: flex;
+  flex-direction: row;
+  border-radius: 10rpx;
+  width: 94%;
+  margin-left: 3%;
+  filter: drop-shadow( 0rpx 4rpx 8rpx #dadada);
+  background: #ffffff;
+}
+.menu_image{
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20rpx;
+  width: 24%;
+  margin-left: 2%;
+}
+.menu_image image{
+  border-radius: 10rpx;
+  width: 100%;
+  height: 150rpx;
+}
+.menu_right{
+  font-size: 24rpx;
+  margin-top: 14rpx;
+  margin-bottom: 20rpx;
+  width: 76%;
+}
+.model_title{
+  margin-left: 10rpx;
+  margin-top: 14rpx;
+  font-size: 24rpx;
+}
+.model_title text{
+  padding-left: 6rpx;
+  padding-right: 6rpx;
+  color: #F89600;
+  border: 0.5rpx solid #F89600;
+}
+.menu_time{
+  width: 100%;
+  font-size: 24rpx;
+}
+.price{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 16%;
+}
+.price text{
+  font-size: 28rpx;
+  /* margin-top: 40%; */
+}
+
+.num{
+  display: flex;
+  flex-direction: row;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+  align-items: center;
+  width: 94%;
+  margin-left: 3%;
+}
+/* .num text{
+} */
+.image{
+  margin-left: 4%;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  width: 36rpx;
+  height: 36rpx;
+}
+.stepper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  width:50%;
+  height:60rpx;
+}
+/*加号和减号*/
+.stepper image {
+  width: 85rpx;
+  height: 85rpx;
+  float: right;
+  display: flex;
+}
+/*数值*/
+.stepper input {
+  width: 80rpx;
+  height: 70rpx;
+  float: right;
+  text-align: center;
+  font-size: 28rpx;
+}
+/*普通样式*/
+.stepper .normal {
+  background: #ffffff;
+  color:black;
+}
+/*禁用样式*/
+.stepper .disable {
+  background: #ffffff;
+  color: #ccc;
+}
+
+.tap{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 6%;
+  background: #f4f4f4;
+  align-items: center;
+  justify-content: center;
+  background: #F89600;
+  color: #ffffff;
+}
+.tap text{
+  letter-spacing:4rpx;
+  font-weight: 900;
+}
+
+
+/*弹框样式*/
+
+.modal-box {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.4);
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+}
+ 
+.modal-content {
+  background: #fff;
+  width: 600rpx;
+  margin: 42% auto 0;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ebebec;
+}
+ 
+.content-title {
+  height: 100rpx;
+  text-align: center;
+  font-size: 1.2rem;
+  padding-top: 10rpx;
+}
+ 
+.content-text {
+  padding:50px 0;
+  text-align: center;
+}
+ 
+.modal-btns {
+  width: 600rpx;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.dialog-btn {
+  border-radius: 0;
+  background: #fff;
+  height: 100rpx;
+  width: 100%;
+}
+ 
+.dialog-btn::after {
+  border: none;
+  border-radius: 0;
+}
+ 
+.cancel {
+  color: #ccc;
+}
+ 
+.confirm {
+  border-left: 1px solid #ebebec;
+  color: #60d048;
+}
+
+.modelview{
+  background: #ffffff;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 100;
+}
+.ticket{
+  margin-top: 20rpx;
+  margin-left: 2%;
+  display: flex;
+  /*row 横向  column 列表  */
+  flex-direction: column;
+  width: 96%;
+  filter: drop-shadow( 4rpx 6rpx 2rpx #dadada);
+  background-image: radial-gradient(circle at 358rpx 110rpx ,transparent 0%, transparent 18rpx,#ffd5cb 18rpx, #fcfbf9 100%);
+  background-position: 363rpx;
+}
+
+
+.ticket_title{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+  margin-top: 1%;
+  width: 90%;
+}
+.ticket_title image{
+  width: 26rpx;
+  height: 26rpx;
+}
+.ticket_title text{
+  font-size: 30rpx;
+  font-weight: 900;
+}
+.menu_right_view{
+  margin-top: 2rpx;
+  display:flex;
+  align-items: center;
+  flex-direction: row;  
+}
+.menu_right_view image{
+  margin-left: 1rpx;
+  width: 26rpx;
+  height: 26rpx;
+}
+.menu_right_view text{
+ font-size:24rpx;
+  font-weight:300;
+}
+.detail{
+  margin-left: 12%;
+  text-align: center;
+  justify-content: center;
+  font-weight: 900;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  width: 12%;
+  background: #F89600;
+  color: #ffffff;
+}
+.rush{
+  height: 41rpx;
+  margin-left: 12%;
+  text-align: center;
+  justify-content: center;
+  font-weight: 900;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  width: 12%;
+  background: #F89600;
+  color: #ffffff;
+}
+
+checkbox .wx-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+radio .wx-radio-input{
+  width: 36rpx;
+  height: 36rpx;
+  margin-top: 10rpx;
+}
+
+.popup-window-bg {
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+.window-bg {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+.popup-window {
+  background: white;
+  position: fixed;
+  top: 15%;
+  left: 7%;
+  width: 86%;
+  z-index: 1000;
+  border-radius: 5%;
+  font-size: 29rpx;
+}
+
+.window-item {
+  padding: 20rpx;
+  height: 40rpx;
+  border-bottom: gray solid 2rpx;
+}
+.window-item-content {
+  font-size: 38rpx;
+  /* 宋体 */
+  font-family:SimSuncss; 
+  color: #ffed99;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx; 
+  align-items: center;
+}
+.window-item-title {
+  margin-top: 20%;
+  font-size: 70rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  color: #ffed99;
+}
+.window {
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+
+  width: 94%;
+  height: 45%;
+  margin-top: 50%;
+  background: white;
+  border-radius: 15rpx;
+}
+.btn-bar {
+  display: flex;
+  width: 100%;
+  margin-top: 60%;
+}
+.cancelBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.confirmBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.listButton{
+  background:url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_green.png") no-repeat;
+  border-radius: 20px;
+  background-size: 100% 100%;
+  line-height: 50rpx;
+  width: 300rpx;
+  font-size: 30rpx;
+  height: 60rpx;
+  border: none;
+  text-align: center;
+  line-height: 54rpx;
+  font-weight: bolder;
+  color:#fff;
+  border: 0;
+  margin: 0;
+}
+
+.part2-title {
+    border-bottom: black solid 2rpx;
+    height: 43rpx;
+    font-size: 28rpx;
+    font-weight: bold;
+  }
+
+  .note {
+    width: 90%;
+    height: 100rpx;
+    margin-left: 5%;
+    margin-top: 20rpx;
+  }
+  .remark-top {
+    height: 50rpx;
+    margin-left: 10px;
+    font-weight:bold;
+    font-size:30rpx;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+  }
+
+
+
+
+
+
+.pop-remark-dlg{
+    background-size: 100% 100%;
+    overflow:hidden;
+    position:fixed;
+    top:100rpx;
+    background-color: #fff;
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+
+.popupView{
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    font-size: 26rpx;
+  }
+  
+  .popupView-window {
+    background: white;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+.container {
+    width: 94%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid #000;
+    padding:0;
+    margin: 10px;
+  }
+  
+  .container-top {
+    font-size: 32rpx;
+    width: 100%;
+    height: 60rpx;
+    /* align-items: center;
+    justify-content: center;
+    display: flex; */
+    font-weight: bold; 
+    
+  }
+  
+  .container-table {
+    width: 100%;
+    height: 80%;
+  }
+  
+  .scroll-part{
+    width:98%;
+    height:100%;
+    background-color: #fff;
+    border-top: 1rpx solid black;
+    border-bottom: 1rpx solid black;
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 2%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+  }
+  
+  .hallcheckbox {
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 27rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0rpx;
+    flex-direction: column;
+    box-shadow: 6rpx 6rpx 12rpx 6rpx #D3D3D3;
+  }
+  
+  .red_background {
+    background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/red.png');
+    background-size: 100% 100%;
+  }
+  
+  .yerrow_background {
+    /* background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/yerrow.png');
+    background-size: 100% 100%; */
+    background-color: rgb(255, 255, 65);
+  }
+  
+  .green_background {
+    /* background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/green.png');
+    background-size: 100% 100%; */
+    background-color: rgb(94, 181, 129);
+  }
+  
+  .asd{
+    font-size:28rpx;
+  }
+  
+  .container-bottom{
+    width: 100%;
+    height: 10%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  
+  

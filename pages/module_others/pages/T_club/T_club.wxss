@@ -1,0 +1,17 @@
+/* pages/module_others/pages/T_club/T_club.wxss */
+.listButton{
+    background:url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_green.png") no-repeat;
+    border-radius: 20px;
+    background-size: 100% 100%;
+    line-height: 50rpx;
+    width: 400rpx;
+    font-size: 34rpx;
+    height: 75rpx;
+    border: none;
+    text-align: center;
+    line-height: 70rpx;
+    font-weight: bolder;
+    color:#fff;
+    border: 0;
+    margin: 0;
+  }

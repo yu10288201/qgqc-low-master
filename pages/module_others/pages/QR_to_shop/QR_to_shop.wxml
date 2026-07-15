@@ -1,0 +1,37 @@
+<view class="page">
+    <view style="display: flex;flex-direction: column;align-items: center;height: 100vh;width: 100vw;">
+        <view style="width: 100%;">
+            <image style="width: 100%;height: 380rpx;"src="{{shopdetail.shop_img}}" />
+        </view>
+        <view style="display: flex;flex-direction: row;width: 100%;justify-content: flex-start;align-items: center;">
+            <view style="font-size: 22px;font-weight: bolder;margin-left: 20rpx;margin-bottom: 20rpx;margin-top: 10rpx;">
+                {{shopName}}
+            </view>
+        </view>
+        <view style="display: flex;flex-direction: column;align-items: center;justify-content: center; border-radius: 20rpx;width: 95%;background-color: rgb(253, 250, 245);color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);height: 100px;">
+            <view style="width: 95%;">
+                <official-account ></official-account>
+            </view>
+        </view>
+        <view class="middle" style="margin-top: 20rpx">
+            <!-- <text class="middle_text1">关注公众号好处多多!</text> -->
+            <!-- <text class="middle_text2">点击"关注"可获以下奖励：</text> -->
+        </view>
+        <view style="width: 95%;">
+            <view style="background-color: rgb(253, 250, 245);width: 100%;color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);text-indent: 48rpx;border-radius: 20rpx;margin-top: 10rpx;">
+                <view style="margin: 10rpx 20rpx;font-size: 16px;">
+                    <view style="margin-top: 15rpx;font-weight: bolder;">欢迎来到“切瓜切菜数字化生态餐饮平台”</view>
+                    <view style="margin-top: 15rpx;font-weight: bolder;">关注“切瓜切菜”公众号可以获得：</view>
+                    <view style="margin-top: 15rpx;">★ 加入平台商家的所有餐品都会设置一个关注公众号的优惠价；</view>
+                    <view style="margin-top: 15rpx;">★ 一次关注公众号可享受所有商家的关注优惠价且长期有效；</view>
+                    <view style="margin-top: 15rpx;margin-bottom: 15rpx;">★ 关注公众号还可以及时精准的接收您所关注商家的优惠信息。</view>
+                </view>
+            </view>
+        </view>
+            <view style="display: flex;flex-direction: column;justify-content: flex-end;align-items: center;flex: 1;width: 100%;">
+            <view bindtap="connectShopWIFI" wx:if="{{wifiName && wifiPW}}" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/buttom_background.png') no-repeat;background-size: 100% 100%;color: #FFF;font-size: 16px;font-weight: bolder;width: 280rpx;height: 50rpx;text-align: center;line-height: 50rpx;margin-bottom: 30rpx;">连接店铺WIFI</view>
+            <view bindtap="toShop" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/meal_buttom.png') no-repeat;background-size: 100% 100%;color: #FFF;font-size: 18px;font-weight: bolder;width: 80%;height: 100rpx;text-align: center;line-height: 75rpx;margin-bottom: 20rpx;">点我进入店铺主页</view>
+        </view>
+
+    </view>
+</view>

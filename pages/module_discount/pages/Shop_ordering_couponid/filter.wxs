@@ -1,0 +1,129 @@
+var filters = {
+    toFix: function (value) {
+      return Math.round(value*1000)/100
+    },
+    Time:function(value){
+      var a = value.split('T')[0];
+      return a
+    },
+    
+    people:function(value,value2){
+      var a = value
+      var b = ''
+      var c = value2
+      if(c == '2'){
+        b = '[菜品]'
+      }else{ 
+        switch(a){
+          case 1:
+          b = '[单人]';
+          break;
+          
+          case 2:
+          b = '[双人]'
+          break;
+          
+          case 3:
+          b = '[3~4人]'
+          break;
+          
+          case 5:
+          b = '[5~6人]'
+          break;
+          
+          case 7:
+          b = '[7~8人]'
+          break;
+          
+          case 9:
+          b = '[9~10人]'
+          break;
+          
+          case 11:
+          b = '[10人以上]'
+          break;
+
+        }
+      }
+      return b
+    },
+    usefulDate:function(value){
+      var a = value
+      var b = ''
+      switch(a){
+
+        case 1:
+        b = '一';
+        break;
+        
+        case 2:
+        b = '二'
+        break;
+        
+        case 3:
+        b = '三'
+        break;
+        
+        case 4:
+        b = '四'
+        break;
+        
+        case 5:
+        b = '五'
+        break;
+        
+        case 6:
+        b = '六'
+        break;
+        
+        case 7:
+        b = '日'
+        break;
+      }
+      return b
+    },
+    toFix2: function (value) {
+      return value != null ? parseFloat(value.toFixed(2)) : ''//此处2为保留两位小数
+    },
+    getDistance:function(value){
+      var a = parseFloat(value) 
+      return parseFloat(a.toFixed(1))+'km'
+    }
+}
+var sub = function(val) {
+  if (val == undefined || val.length == 0 ) {
+    return;
+  }
+  if (val.length > 17) {
+    if(val.substring(val.length-2, val.length) =='\r\n'){
+      return val.substring(0, val.length-6) +'big';
+    }else{
+    return val.substring(0, val.length-4) +'big';
+    }
+  } else {
+    return val;
+  }
+}
+
+var formatDate = function (datetime) {
+  var date = getDate(datetime);
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  return [year, month, day].map(formatNumber).join('-');
+}
+var formatNumber = function (n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+
+module.exports = {
+  formatDate: formatDate,
+  sub:sub,
+  Time:filters.Time,
+  toFix: filters.toFix,toNumber: filters.toNumber,
+  people:filters.people,
+  usefulDate:filters.usefulDate,
+  getDistance:filters.getDistance,
+  toFix2:filters.toFix2
+}

@@ -1,0 +1,148 @@
+<view class="return_out" style="height: {{return_out_height}}px;top: {{return_out_top}}px;border-bottom: #eeeeee 1rpx solid;" bindtap="returnBack">
+	<image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+	<view>客户沟通</view>
+	<!-- <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" /> -->
+	<view class="return" style="color:#FFF">0</view>
+</view>
+<!-- <view style="margin-top: {{swiperTop}}px;height: {{swiperHeight}}px;width: 100%;"> -->
+<swiper style="margin-top: {{swiperTop}}px;height: {{swiperHeight}}px;width: 100%;" current="{{pageIndex}}" bindchange="pageChangeEvent">
+	<swiper-item style="height: 100%;width: 100%;">
+		<scroll-view style="height: 100%;width: 100%;" scroll-y>
+			<block wx:if="{{msgList.length > 0}}">
+        <view wx:for="{{msgList}}" data-item="{{item}}" bindtap="chatWithCustDetail" style="height: 140rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;"
+        wx:if="{{item.customer_name != '未知'}}">
+					<view style="width: 140rpx;height: 100%;display: flex;justify-content: center;align-items: center;">
+                        <view style="position: relative;">
+                            
+                            <view wx:if="{{item.lstWechatMsgRecord&&item.lstWechatMsgRecord.length>0&&item.lstWechatMsgRecord[0].is_not_read_count>99}}" class="badgecontent">99+</view>
+                            <view wx:elif="{{item.lstWechatMsgRecord&&item.lstWechatMsgRecord.length>0&&item.lstWechatMsgRecord[0].is_not_read_count>0}}" class="badgecontent">{{item.lstWechatMsgRecord[0].is_not_read_count}}</view>
+                            <image style="height: 100rpx;width: 100rpx;border-radius: 12rpx;" src="{{item.avatar_url}}" />
+                        </view>
+						
+
+					</view>
+					<view style="border-bottom: #eeeeee 1rpx solid;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: flex-start;justify-content: space-evenly;">
+						<view style="display: flex;justify-content: space-between;align-items: center;width: 100%;height: 70rpx;">
+							<view style="margin-top: 20rpx;font-weight: 400;font-size: 32rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.customer_name}}
+							</view>
+							<view style="padding: 0 20rpx;font-size: 26rpx;color: #aeaeae;">
+								{{item.time}}
+							</view>
+						</view>
+						<view style="display: flex;justify-content: flex-start;align-items: center;width: 100%;height: 70rpx;">
+							<view style="margin-bottom: 20rpx;font-size: 26rpx;width: 550rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.lstWechatMsgRecord[0].msg}}
+							</view>
+						</view>
+					</view>
+				</view>
+			</block>
+		</scroll-view>
+	</swiper-item>
+	<swiper-item style="height: 100%;width: 100%;">
+		通讯录
+	</swiper-item>
+    <swiper-item style="height: 100%;width: 100%;">
+		绑客
+	</swiper-item>
+	<swiper-item style="height: 100%;width: 100%;">
+	    
+		<scroll-view style="height: 100%;width: 100%;" scroll-y>
+				<view style="height: 140rpx;margin-top: 10rpx;margin-left: 10rpx;padding-top: 10rpx;padding-bottom: 10rpx;border-bottom-width: 15rpx;" class="flex-row flex-center bottom-line">
+					<button  class="me_avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+						<image class="me_avatar" src="{{avatarUrl}}"></image>
+  					</button> 
+					<view class="flex-column" style="flex: 1;justify-content: space-between;height: 100%;padding-left: 10rpx;" >
+						
+						<view class="flex-row" >
+                            <view wx:if="{{nickname&&nickname!=''}}" style="font-weight: bold;">{{nickname}}</view>
+                            <view wx:else class="flex-row">
+                                
+                                <input type="nickname" style="margin-top: 8rpx;"  placeholder="请输入昵称" model:value="{{tmp_nick_name}}"/>
+							    <view class="flex-row flex-center saveBtn" bindtap="saveNickName">设置昵称</view>
+                            </view>
+						</view>
+						<view class="flex-row" style="height: 60rpx;">
+							<view wx:if="{{phone&&phone!=''}}" class="flex-row flex-center" style="height: 100%;">{{phone}}</view>
+							<button wx:else class="flex-row flex-center" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style="width: 200rpx;height: 100%;font-size: small;">获取手机号</button>
+						</view>
+
+					</view>
+				</view>	
+                <view class="me_list">
+                    <view class="me_list_head" >
+						<image class="me_service_img"  />
+					</view>
+                    <view class="me_list_middle">
+                            
+                            <view class="me_list_content">
+                            服务
+                            </view>
+                            <view class="me_list_last">
+                                <image class="me_list_last_img" />
+                            </view>
+                    </view>
+                </view>
+                <view class="me_list">
+                    <view class="me_list_head" >
+						<image class="me_collect_img"  />
+					</view>
+                    <view class="me_list_middle">
+                            
+                            <view class="me_list_content">
+                            收藏
+                            </view>
+                            <view class="me_list_last">
+                                <image class="me_list_last_img" />
+                            </view>
+                    </view>
+                </view>
+                <view class="me_list">
+                    <view class="me_list_head" >
+						<image class="me_set_img"  />
+					</view>
+                    <view class="me_list_middle">
+                            
+                            <view class="me_list_content">
+                            设置
+                            </view>
+                            <view class="me_list_last">
+                                <image class="me_list_last_img" />
+                            </view>
+                    </view>
+                </view>
+               
+				
+		
+		</scroll-view>
+	</swiper-item>
+</swiper>
+
+
+<view style="background-color: #f7f7f7;position: fixed;bottom: 0;width: 100%;display: flex;flex-direction: row;align-items: center;border-top: #eeeeee 1rpx solid; font-size: 26rpx;height: {{50 + tabBarHeight}}px;">
+	<view bindtap="pageChangeEvent" data-current="0" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
+        <view style="position: relative;">
+            <view wx:if="{{total_is_not_read_count>99}}" class="badgecontent">99+</view>
+            <view wx:elif="{{total_is_not_read_count>0}}" class="badgecontent">{{total_is_not_read_count}}</view>
+            <view class="{{pageIndex == 0 ? 'onlymefillImg' : 'onlymeImg'}}">
+        
+            </view>
+        </view>
+        
+
+		<view style="color: {{pageIndex == 0 ? '#0099A2' : '#000'}};">叮客</view>
+	</view>
+	<view bindtap="pageChangeEvent" data-current="1" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
+		<view class="{{pageIndex == 1 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
+		<view style="color: {{pageIndex == 1 ? '#0099A2' : '#000'}};">通讯录</view>
+	</view>
+    <view bindtap="pageChangeEvent" data-current="2" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
+		<view class="{{pageIndex == 2 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
+		<view style="color: {{pageIndex == 2 ? '#0099A2' : '#000'}};">叮友</view>
+	</view>
+	<view bindtap="pageChangeEvent" data-current="3" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
+		<view class="{{pageIndex == 3 ? 'meFillImg' : 'meImg'}}"></view>
+		<view style="color: {{pageIndex == 3 ? '#0099A2' : '#000'}};">我</view>
+	</view>
+</view>

@@ -1,0 +1,16 @@
+<!--pages/Coupon_code/Coupon_code.wxml-->
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+	<view class='search-view'>
+		<!-- <image src="http://img3.imgtn.bdimg.com/it/u=2064794736,2436845779&fm=26&gp=0.jpg"></image> -->
+		<text style="margin-left:20rpx">100元代金券</text>
+	</view>
+</view>
+
+<view class="couponCode">
+<text>券码：</text>
+<text style="font-weight:900;font-size:32rpx;margin-top:20rpx">4328 5481 5672</text>
+</view>
+<view class="picture">
+<image src='../../images/ma.jpg'></image>
+<image style="height:160rpx;width:80%;margin-top:20rpx" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=4019383308,3260487712&fm=26&gp=0.jpg"></image>
+</view>

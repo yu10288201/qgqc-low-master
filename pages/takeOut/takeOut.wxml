@@ -1,0 +1,217 @@
+<view class="page">
+  <wxs module="filters" src="takeOut.wxs"></wxs>
+  <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/navbar2.png');background-size: 100% 100%;z-index: 0;height: 500rpx;position: absolute;width: 110%;top:{{ windowHeight>=775 ? '-150rpx' : '-250rpx'}};">
+  </view>
+  <view class="box" bindtap="comeback" style="position: absolute;width: 100rpx;height:100rpx;top: 30rpx;left:0rpx">
+    <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png' style="z-index: 50;height: 30rpx;width:20rpx"></image>
+  </view> 
+  <view class='go-center' style="margin-top:{{ windowHeight>=775 ? '215rpx' : '115rpx'}};color:#fff;z-index: 100;font-weight: 900;font-size: 40rpx;color:rgb(90, 65, 35)">
+  <text>{{shopdetail.shop_name}}</text><test>——外卖套餐</test></view>
+  <view class='part' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/bg1.png');background-size: 100% 100%; z-index: 100;margin-bottom:5rpx;width: 90%;">
+    <!--用餐日期时间选择-->
+    <view class='oneline toTop'>
+      <view class='text'>　点餐人：</view>
+      <input class="section" style='min-height:36rpx;font-size:26rpx;width:20%' type="text" bindblur='bookusername' value='{{username}}'></input>
+      <view class='span-star' wx:if="{{username.length==0||username==undefined}}">*</view>
+      <view class='oneline' style='width:40%;margin-left:5%'>
+
+        <view style='width:100%'>
+          <view class='oneline radio-groud' style='width:100%;'>
+            <view class='radio-groud-in' data-index='0' bindtap='changeradio'>
+              <image class='radio' src="{{index == 0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/000.png'}}"></image>
+              <view style='font-size:26rpx;margin-left:15rpx'>先生</view>
+            </view>
+            <view class='radio-groud-in' data-index='1' bindtap='changeradio'>
+              <image class='radio' src="{{index == 1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/000.png'}}"></image>
+              <view style='font-size:26rpx;margin-left:15rpx'>女士</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class='oneline toTop'>
+      <view class='text'>电话号码：</view>
+      <input class="section" style='min-height:36rpx;font-size:26rpx;width:30%' maxlength='11' type="number" bindblur="phonenumber" value='{{phonenumber}}'></input>
+      <view class='span-star' wx:if="{{phonenumber.length==0||phonenumber==undefined}}">*</view>
+    </view>
+
+    <view class='oneline toTop'>
+      <view class='text'>　　地址：</view>
+      <input class="section" style='min-height:36rpx;font-size:26rpx;width:70%;display:block'  type="text" bindblur="address" value='{{address}}'></input>
+      <view class='span-star' wx:if="{{address.length==''||address==undefined}}">*</view>
+    </view>
+
+
+    <view class='oneline toTop'>
+      <view class='text'>用餐日期：</view>
+      <picker class='picker1' mode="date" value="{{date}}" start="{{nowdate}}" end="{{afterdate}}" bindchange="bindDateChange">
+        <view class="section ">
+          <view class='right '>{{date}}</view>
+          <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+        </view>
+      </picker>
+      <view class='span-star' wx:if="{{date.length==0||date==undefined||atime.length==0||atime==undefined}}">*</view>
+    </view>
+    <view class='oneline toTop'>
+      <!--用餐时间选择-->
+      <view class='oneline' style='width:50%'>
+
+        <view class='text'>用餐时间： </view>
+        <picker style='width:50%' mode="time" value="{{time}}" bindchange="bindTimeChange">
+          <view class="section oneline">
+            <view class='right'>{{time}}</view>
+            <!--原本是time -->
+            <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+          </view>
+        </picker>
+        <view class='span-star' wx:if="{{time.length==0||time==undefined}}">*</view>
+      </view>
+
+    </view>
+
+    <view class='oneline toTop'>
+      <!--用餐时间选择-->
+      <view class='oneline' style='width:50%'>
+
+        <view class='text'>配送方式： </view>
+        <picker style='width:50%' mode="selector" range="{{delivery_arry}}" value="{{delivery}}" bindchange="bindDeliveryChange">
+          <view class="section oneline">
+            <view class='right'>{{delivery}}</view>
+            <!--原本是time -->
+            <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+          </view>
+        </picker>
+        <view class='span-star' wx:if="{{time.length==0||time==undefined}}">*</view>
+      </view>
+
+    </view>
+
+    <view class='go-center'>
+      <view class='prompt' style="{{operatingstate=='营业中'?'color:green':'color:red'}}">{{operatingstate}}</view>
+      <view class='oneline prompt' style='margin-left:40rpx'>营业时间：{{operatingTime}}</view>
+    </view>
+  </view>
+
+  <!-------套餐框--------->
+  <view class="box" style="justify-content:flex-start;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/bg2.png');background-size: 100% 100%;margin-bottom:0rpx;margin-top:10rpx;width: 95%;height:50%;flex-direction: column;">
+
+    <scroll-view class='scroll-view-x' scroll-y style="height:95%;width:90%;margin-left: 4rpx;margin-top:3%">
+
+
+      <view class='content-list' style="border-bottom: 2rpx solid #000" wx:for="{{set_meal}}" wx:key="unique" wx:for-index="index" wx:for-item="item">
+        <view class='list-image-box' style="display:flex;flex-direction:column;height:160rpx;">
+          <image class="list-image" src='{{item.dishes_img}}' bindtap=""></image>
+        </view>
+        <view style='width:100%;margin-left: 2%;'>
+          <view class='oneline2'>
+            <view class='issue-name'>
+              <view class='oneline'>
+                <view class="{{item.dishes_statu==3?'text-title-off':'text-title-on'}}">{{item.dishes_name}}</view>
+
+                <view class='out-take' wx:if="{{item.sales_category==2||item.sales_category==1}}">外卖</view>
+              </view>
+              <view class='oneline' style="margin-top:7rpx">
+                <view class='text2' style='width:60%;'>月销量:{{item.monthly_sales_volume}}</view>
+                <view class='text2 box' style='width:40%;'>{{filters.distribution_mode(item.takeOutStyle)}}</view>
+              </view>
+              <view class='oneline' style="margin-top:4rpx">
+                <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}"></image>
+                <view class='text2' style='margin-top:4rpx;/*margin-right:50rpx*/'>：{{item.praise_points}}</view>
+                <view wx:if="{{item.dishes_recommend}}" style='margin-left:10rpx;color:#FF0000;font-size:20rpx' data-index="{{index}}" bindtap='showRecommended'>特别推介>></view>
+                <view wx:else style='width:110rpx'></view>
+
+              </view>
+            </view>
+            <view class='content-list-right' style="display: flex; flex-direction: column; align-items: flex-end;justify-content: flex-start;">
+              <view class='btn1' style='background:orange;height:36rpx;width:90rpx;margin-top:20rpx;margin-left:30rpx;' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}'
+                data-index="{{index}}" bindtap='dishesInfo'>详 情</view>
+              <view class='text1' wx:if="{{item.dishes_discount==1}}" data-index="{{index}}" bindtap='showdiscount'>优惠>></view>
+              <view class='text1' wx:else></view>
+              <view>
+                <!-- 加一个计数框 -->
+                <view class='text2' style='display:flex;justify-content:center;' wx:if="{{item.dishes_statu==3}}">已下架</view>
+                <view class='text2' style='display:flex;justify-content:center;' wx:elif="{{item.dishes_statu==0}}">售完</view>
+              </view>
+            </view>
+          </view>
+
+
+          <view class='oneline' style='font-size:24rpx;color:rgb(180,100,50);'>
+            <view style='width:20%;margin-left:5rpx'>{{item.dishes_price}}元/{{item.dishes_metering_type}}</view>
+            <view class="box" style="width:60%;justify-content: center;">
+              <view  style="font-size:25rpx">数量 :</view>
+              <view>
+                <input class="input" type="number" style="margin-left:10rpx" bindinput="toNum" data-index="{{index}}"></input>
+              </view>
+            </view>
+            <view class="box" style="width:20%;justify-content: flex-stare;">
+              <view>金额:</view>
+              <view>{{filters.toMult(item.dishes_number,item.dishes_price)}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </scroll-view>
+  </view>
+  <!--------------大厅--------------->
+
+  <view class='oneline1' style="margin-bottom: 25rpx;">
+    <view class='box'>
+      <view class='btn' style="background:{{locationindex==2&&hadchangetable==false? hui : btn4}};background-size:100% 100%;color:#000;height:80rpx;width:300rpx;margin-top: 20rpx" data-model='1' bindtap='toOrder'>选好了</view>
+    </view>
+  </view>
+</view>
+
+ <!-- 单规格菜品介绍弹窗- -->
+  <view bindtap='dishesInfo' class='popup-window-bg' wx:if='{{showModalStatus4}}'></view>
+  <view class='popup-window' wx:if='{{showModalStatus4}}'>
+    <view class='' style="height:100%">
+      <view style='margin:30rpx;'>
+        <!-- 方法暂时改成成selectInfo 原来是 closeWindow-->
+        <image style='width:40rpx;height:40rpx;float:right;position: absolute;right: 20px;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png' bindtap='closeWindow'></image>
+        <view class='oneline'>
+          <image class='popup-window-image' src='{{image}}'></image>
+          <view style='margin-left:20rpx;font-size:28rpx;font-weight:bold'>
+            <view>{{foodname}}</view>
+            <view class='text'>月销量:{{monthly_sales_volume}}</view>
+            <view class='oneline' style="margin-top:4rpx">
+              <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}"></image>
+              <view class='text' style='margin-top:4rpx;margin-right:50rpx'>：{{praise_points}}</view>
+            </view>
+            <view class='oneline' style='font-size:24rpx;color:rgb(218,133,95);'>
+              <view class='oneline' style='margin-left:5rpx'>{{foodprices}}元/{{foodspecifications}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <!-- <form style='margin-top:20rpx'> -->
+      <view class=' note '>
+        <label style='font-size:26rpx;font-weight:bold'>菜品介绍</label>
+        <textarea maxlength="{{1000}}" disabled='true' placeholder='点餐星菜品介绍' value='{{dishes_introduce}}' bindblur='remarks' class='note-text'></textarea>
+      </view>
+      <view class=' note '>
+        <view style='font-size:26rpx;font-weight:bold'>客人备注</view>
+        <textarea cursor-spacing="100" fixed placeholder='如有口味要求，请输入备注' value='{{remark}}' bindinput='addremarks' class='note-text'></textarea>
+      </view>
+      <!-- </form> -->
+      <view class='select-dishes' style="margin-left:280rpx;">
+        <view class='btn1' bindtap='closeWindow2' style="margin-bottom:20rpx;">确定</view>
+      </view>
+    </view>
+  </view>
+
+
+  <view wx:if="{{showAuthorize}}" class='window-bg'>
+  <view class='window' style="background:url({{background2}});background-size:100% 100%;-moz-background-size:100% 100%;">
+    <view class='window-item'>
+      <view class='window-item-title'>欢迎关注</view>
+      <view class='window-item-content'>申请授权</view>
+      <view class='window-item-content' style="width:90%;margin-left:5%;">现需获取您的手机号码。是否同意？</view>
+    </view>
+    <view class='btn-bar'>
+      <button class='cancelBtn' bindtap='refused'>否</button>
+      <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+    </view>
+  </view>
+</view>

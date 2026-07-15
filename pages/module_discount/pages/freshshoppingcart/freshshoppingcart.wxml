@@ -1,0 +1,147 @@
+<view class="page" style="padding-bottom: 50rpx;">
+	<view style="border: 2rpx solid #dadada;width: auto;border-radius:20rpx;margin-top:20rpx;margin-left:20rpx;margin-right:20rpx;padding: 10rpx;"
+		wx:for="{{lstShoppingCart}}" wx:for-item="shop" >
+		<checkbox style="margin-top: 10rpx; margin-bottom: 10rpx; font-weight: 700; margin-left: 1%; font-size: 32rpx;" data-shop_id="{{shop.shop_id}}" 
+			bindtap="shopCheckedChange" checked="{{shop.int_check}}">
+			{{shop.shop_name}}
+		</checkbox>
+		<!--明细总包-->
+		<view wx:for="{{shop.lstMallBillShoppingCart}}" wx:for-item="detail" wx:for-index="detail_index" wx:key="detail">		
+			<view class="content-box flex-row">				
+				<checkbox style="margin-top: 10rpx;margin-bottom: 10rpx; width: 7%; margin-left: 1%;" data-shop_id="{{detail.shop_id}}" data-shoppingchartid="{{detail.id}}" 
+					checked="{{detail.int_check}}" bindtap="detailCheckdChanged"/>
+				
+				<image class="head-image" src="{{detail.goods_multimedia_url}}" mode="aspectFill" bindtap='bigimg2' 
+					data-src="{{detail.goods_multimedia_url}}" style="width: 30%;"/>
+				<view class="flex-column" style="flex:1;">
+          <view >
+            <view class="content-title">
+						  <text>{{detail.goods_name}}</text>
+					  </view>
+          </view>
+          <view>
+             <view style="font-size: 28rpx; color: gray;" wx:if="{{detail.color!='默认颜色' && detail.spec!='默认规格'}}">
+                <text wx:if="{{detail.color!='' && detail.spec!=''}}">{{detail.color}}, {{detail.spec}}</text>
+                <text wx:if="{{detail.color!='' && detail.spec==''}}">{{detail.color}}</text>
+                <text wx:if="{{detail.color=='' && detail.spec!=''}}"> {{detail.spec}}</text>
+                <text wx:if="{{detail.color=='' && detail.spec==''}}"> &nbsp;</text>  
+              </view>
+          </view>
+      
+          <view class="flex-row" style="width: 100%;flex:1;">
+     
+            <view class="flex-column" style="justify-content: space-between; margin-left: 12rpx; width: 60%;height: 100%;">
+					
+              <!-- <view style="font-size: 28rpx; color: gray;" wx:if="{{detail.color!='默认颜色' && detail.spec!='默认规格'}}">
+                <text wx:if="{{detail.color!='' && detail.spec!=''}}">{{detail.color}}, {{detail.spec}}</text>
+                <text wx:if="{{detail.color!='' && detail.spec==''}}">{{detail.color}}</text>
+                <text wx:if="{{detail.color=='' && detail.spec!=''}}"> {{detail.spec}}</text>
+                <text wx:if="{{detail.color=='' && detail.spec==''}}"> &nbsp;</text>  
+              </view> -->
+              <view style="margin-bottom: 10rpx;flex:1;">	
+                          
+                <view style="display:flex; flex-direction:column; margin-top: 10rpx;justify-content: end;height: 100%;">
+                  <text class="content-notice" style="color: #F89600; font-weight: bolder; font-size: 33rpx; margin-top: 5rpx;margin-bottom: 10rpx;">￥{{detail.price}}</text>
+
+                  <text wx:if="{{detail.category_id!=14&&detail.buy_one_give_more_id==1}}" class="content-notice" style="color: #F89600; font-size: 28rpx;">买1送多价 ￥{{detail.price}}</text>
+                 
+
+                  <text wx:if="{{detail.category_id!=14&&detail.buy_one_give_more_id==0}}" class="content-notice" style="color: #F89600; font-size: 28rpx;">{{detail.actual_price_name}} ￥{{detail.actual_price}}</text>
+                  
+                  <text wx:if="{{detail.category_id==14}}" class="content-notice" style="color: #F89600; font-size: 28rpx;">{{detail.spec+'价'}} ￥{{detail.actual_price}}</text>
+
+
+                </view>           
+              </view>
+
+            </view>
+            <view class="flex-column" style="justify-content: space-between; width: 40%; align-items: center;height: 100%;">
+              <view style="display: flex;flex-direction: row;align-items: center; justify-content: space-between;margin-bottom: 20rpx;width: 100%;">
+                <image wx:if="{{detail.category_id!=14}}" src="https://mb.fsmbdlkj.com/wx_official/web/images/image/delete.png" style="height: 50rpx;width: 50rpx;transform: scale(1.2);" 
+                  data-id="{{detail.id}}" bindtap='bindMinus'></image>
+                <text style="width: 70rpx;text-align: center;">{{detail.number}}</text>
+                <image wx:if="{{detail.category_id!=14}}" src="https://mb.fsmbdlkj.com/wx_official/web/images/image/add.png" style="height: 50rpx;width: 50rpx;transform: scale(1.2);" 
+                  data-id="{{detail.id}}" bindtap='bindPlus'></image>
+              </view>
+              <view class="listButton" style="width: 100%;">
+                <view  catch:tap="deleteOneItem" data-id="{{detail.id}}" style="width: 100%; margin-right: 1%;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+                删除
+                </view>   
+              </view>	
+                      
+            </view>
+          
+          </view>
+
+        </view>
+        
+			</view>	
+      <view wx:if="{{detail.lstGift&&detail.lstGift.length>0}}" style="padding: 0rpx 15rpx;">
+          <text class='option_name' >赠送礼品：</text>
+          <view style="width: 100%;">			
+            <view   wx:for="{{detail.lstGift}}" class="gift_box" data-item="{{item}}" >
+            {{item.gift_goods_name}}
+              <view class="gift_detail">
+                <view>
+                  <text class="gift_title">单价：</text>{{item.gift_sku_price}}元
+                </view>
+                <view>
+                  <text class="gift_title">数量：</text>{{item.gift_number}}
+                </view>
+                <view>
+                  <text class="gift_title" >金额：</text>{{item.gift_sku_price*item.gift_number}}元
+                </view>
+              </view>
+
+            </view>			
+          </view>
+      </view>		
+		</view>
+    </view>
+
+ 	<view style="display: flex;flex-direction: column;" wx:if="{{lstShoppingCart.length==0}}">
+		<view style="width:100%;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+			<view style="width: 120rpx;height: 120rpx;margin-top: 200rpx;">
+			<image style="height: 120rpx;width: 120rpx;" src="{{img_shoppingcart}}">
+			</image>
+			</view>
+			<text style="color: #777575;margin-top: 20rpx; font-size: 26rpx;">购物车竟然是空的</text>       
+		</view>            
+    </view>
+
+    <view style="display:flex; flex-direction: row; margin-top:30rpx; align-items: center; justify-content: center;" >		
+		<text style="font-size: 25rpx; color:rgb(255, 106, 105); font-weight: bold;"> -- 你可能还喜欢 -- </text>
+	</view>
+	<view style="display:flex; flex-direction:row; flex-wrap:wrap; margin-bottom: 30rpx;">            
+		<view style="width: 40%; box-sizing: border-box; display:flex; flex-direction:column; flex-shrink:0; margin-top:30rpx; margin-left: 5%;" 
+			wx:for="{{other_products}}" wx:key="index" bindtap="toDetail" data-item="{{item}}">
+			<image src="{{item.multimedia_img_url}}" mode="scaleToFill" style="width:300rpx; height: 300rpx; border-radius: 20rpx;"></image>  
+			<text style="font-size: 25rpx; margin-top: 10rpx;">{{item.name}}</text>
+			<text style="color: #F89600; font-weight:900; font-size:25rpx;">￥{{item.customer_price}} </text>
+			<text style="color: #52A76E; font-weight:900; font-size:25rpx;">分销提成：￥{{item.platform_cash_commission}}</text>
+		</view>     
+	</view>
+
+	<!--加一大块空白来解决padding不work的问题-->
+	<view style="height:200rpx;width:100%;">
+		<view style="height:200rpx;width:100%;"></view>
+	</view>
+
+	<!--底部固定导航栏-->
+	<view style="display:flex; flex-direction:row; position:fixed; bottom:0rpx; margin:length; width:100%; align-items:center; justify-content: space-between; height: 120rpx; background-color: #FFF;">
+		<view style="margin-left: 40rpx;">          
+			<checkbox style="font-size: 28rpx;" checked="{{all_int_check}}" bindtap="allCheckedChange">全选</checkbox>
+		</view>			       
+		<view style="margin-right: 30rpx; display:flex; flex-direction:row" >
+      <view style="font-size: 23rpx; color: #666; margin-top: 20rpx;margin-right: 15rpx; margin-top: 25rpx;">共{{total_item_number}}件</view>      
+			<view style="font-size: 28rpx; margin-top: 20rpx;">合计:</view>
+			<view style="font-size: 35rpx; color: #F89600; margin-top: 15rpx;">￥{{total_amount}}</view>
+			<!-- <view class="tap" bindtap="gotoFreshShoppingBill">结算</view>            -->
+      <view class="tap" bindtap="gotoFreshShoppingBill">结算</view> 
+		</view>	      
+	</view>
+
+</view>
+
+
+

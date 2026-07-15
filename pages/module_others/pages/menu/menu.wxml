@@ -1,0 +1,2052 @@
+<!--pages/menu/menu.wxml-->
+<wxs src="./Computed.wxs" module="Computed" />
+<wxs module="Menu">
+  function getCartListTotal(cartList) {
+    var total = 0
+    var total1 = 0
+    cartList.forEach(function (item) {
+      if (item.spec_type == 100 || item.spec_type == 101) {
+        total1 = total1 + (item.sum1 ? item.sum1 : 0)
+      } else {
+        total = total + (item.sum)
+      }
+    })
+    return { "total": toFixed(total), "total1": toFixed(total1) }
+  }
+
+  function getCartListCount(cartList) {
+    if (!cartList) { return '' }
+    var count = 0
+    cartList.forEach(function (item) {
+      // if (item.item_type != 1) {
+      // 	if (item.countNum) {
+      // 		count = parseInt(item.countNum) + count
+      // 	} else {
+      if ((item.dishes_spec_type == 8 || item.dishes_spec_type == 2)) {
+        if (item.en_index || item.em_index) {
+          count = (item.en_index.length || item.em_index.length) + count
+        } else {
+          count = parseInt(item.item_number) + count
+        }
+      } else {
+        count = parseInt(item.number) + count
+      }
+      // 	}
+      // }
+      // if ((item.dishes_spec_type == 0 || item.dishes_spec_type == 21 || item.dishes_spec_type == 23 || item.dishes_spec_type == 25
+      // 	|| item.dishes_spec_type == 26 || item.dishes_spec_type == 27) && item.specal_type != 6 && item.item_type == 1) {
+      // 	count = parseInt(item.item_number) + count
+      // }
+    })
+    return count
+  }
+  function getCountNum(cartList, id) {
+    if (cartList.length && id) {
+      var countNum = 0
+      cartList.forEach(function (item) {
+        if (item.dishes_id === id) {
+          if (((item.dishes_spec_type == 8) || item.dishes_spec_type == 2) && item.dishes_status != 20) {
+            if (item.en_index || item.em_index) {
+              countNum += (item.en_index.length || item.em_index.length)
+            } else {
+              countNum += parseInt(item.item_number)
+            }
+          } else {
+            countNum = countNum + parseInt(item.number)
+          }
+        }
+      })
+      return countNum === 0 ? '' : countNum
+    } else {
+      return ''
+    }
+  }
+  function getCountNum2(cartList, id) {
+    if (cartList.length && id) {
+      var countNum = 0
+      cartList.forEach(function (item) {
+        if (item.uuid === id) {
+          countNum = countNum + parseInt(item.number)
+        }
+      })
+      return countNum === 0 ? '' : countNum
+    } else {
+      return ''
+    }
+  }
+  function toFixed(num, len) {
+    if (len == undefined) {
+      len = 2
+    }
+    return parseFloat(num).toFixed(len)
+  }
+  function getTotalBySum(cartList, id) {
+    var total = 0
+    cartList.forEach(function (item) {
+      // if (id === item.dishes_id && item.dishes_status != 20) {
+      if (id === item.dishes_id) {
+        total = total + item.sum
+      }
+    })
+    return total > 0 ? total.toFixed(2) : ''
+  }
+  function getTotalBySumS(cartList, id) {
+    var total = 0
+    cartList.forEach(function (item) {
+      if (id === item.dishes_id) {
+        total = total + item.sum
+      }
+    })
+    return total
+  }
+  function getDishesStatus(cartList, id) {
+    var f = false
+    cartList.forEach(function (item) {
+      if (id === item.dishes_id && item.dishes_status == 9) {
+        f = true
+      }
+    })
+    return f;
+  }
+  function getDishesPrice(cartList, id) {
+    var msg = ''
+    var type = ''
+    if (cartList.length && id) {
+      cartList.forEach(function (item) {
+        if (item.dishes_id === id) {
+          if (item.dishes_spec_type == 8 && item.dishes_status != 20) {
+            if ((item.en_index && item.en_index[0].em_name == '全部位') || (item.lstOrderEmBlockEating && item.lstOrderEmBlockEating[0].em_block_name == '全部位')) {
+              type = item.dishes_metering_type ? item.dishes_metering_type : item.spec_type
+              msg = item.dishes_price
+            } else {
+              msg = '分部位'
+            }
+          } else {
+            msg = item.dishes_price
+            type = item.dishes_metering_type ? item.dishes_metering_type : item.spec_type
+          }
+        }
+      })
+      return type != '' ? (msg + "\n\n元/" + type) : msg
+    } else {
+      return ''
+    }
+  }
+  function quxiao(cartList, id) {
+    if (cartList.length && id) {
+      var msg = ''
+      cartList.forEach(function (item) {
+        if (item.dishes_id === id) {
+          if (item.item_type == 1) {
+            msg = '已取消'
+          }
+        }
+      })
+    }
+    return msg
+  }
+  function plus(cartList, id) {
+    if (cartList.length && id) {
+      var beforeCount = 0
+      var afterCount = 0
+      cartList.forEach(function (item) {
+        if (item.dishes_id === id) {
+          if (!item.id && item.dishes_status != 20) {
+            afterCount += parseInt(item.number)
+          }
+        }
+      })
+    }
+    return afterCount > 0
+  }
+  module.exports = {
+    getCountNum: getCountNum,
+    getCountNum2: getCountNum2,
+    toFixed: toFixed,
+    getCartListCount: getCartListCount,
+    getCartListTotal: getCartListTotal,
+    getTotalBySum: getTotalBySum,
+    getDishesPrice: getDishesPrice,
+    quxiao: quxiao,
+    plus: plus
+    , getDishesStatus: getDishesStatus
+    , getTotalBySumS: getTotalBySumS
+  }
+</wxs>
+<wxs module="filters" src="menu.wxs"></wxs>
+<wxs module="permission" src="../../../../utils/jurisdiction.wxs" />
+<supercall id="supercall" bind:callBZ="callBZ" bind:callFWY="callFWY" wx:if="{{toMenu != 100}}"></supercall>
+<view class="popupView-window">
+  <view id="c">
+    <!-- 多拼粥弹窗 -->
+    <van-popup show="{{show}}" custom-style="height: 90%;width: 90%;top: 47%;" bind:close="onClose" round="{{true}}">
+      <view class="popupView" style="align-items: center;height:100%;">
+        <!-- 商品信息 -->
+        <s-shop-decribe-Img bind:closePopupView="closePopupView" style="width: 92%;margin-top: 20rpx;" goodModel="{{goodModel}}" xdswidth="{{xdswidth}}" bind:currentBackGoodModel="currentBackGoodModel" />
+        <!-- 食材选择 -->
+        <scroll-view scroll-y='true' class="page_view" style="height:80%">
+          <view style="height:30%">
+            <view id="a" style="height:100%;width:95%;margin-left:15rpx;margin-top:13rpx">
+              <s-selectMaterial porridgeObject="{{porridgeObject}}" porridgeObjectList="{{porridgeObjectList}}" style="width: 92%;height: 20%;" bind:selPorridgeBackObject="selPorridgeBackObject" dishes="{{dishes}}" bind:closeMaterial="closeMaterial" />
+            </view>
+            <!-- 菜品介绍 -->
+            <view id="f" wx:if="{{!shrinkIntrIntroduction}}" style="height:88%;width:95%;margin-top:3%;margin-left:15rpx;margin-bottom:30rpx;border:solid 2rpx #888">
+              
+              <view style='font-size:26rpx;font-weight:bold'>菜品介绍：</view>
+              <scroll-view style="background-color:#e5e5e5;height:87%">
+                <text disabled='true' class='textarea' style="font-size: 24rpx;height:150rpx" value='{{goodsIntroduce}}'></text>
+              </scroll-view>
+            </view>
+            <view id="b" wx:if="{{dishes.sideDishes!=0}}" style="height:100%;width:95%;margin-top:3%;margin-left:15rpx;margin-bottom:12rpx">
+              
+              <s-multipleEatMethodAndWeightSideDishesView SideDishList="{{SideDishList}}" eatMethodRemark="{{eatMethodRemark}}" eatMethodTastesRemark="{{eatMethodTastesRemark}}" dishesInfo="{{dishes}}" dishes_type="{{dishes_type}}" eatMethodArray="{{eatMethodArray}}" tasteList="{{tasteList}}" quickRemarkList="{{quickRemarkList}}" eatMethodChooseIndex="{{eatMethodChooseIndex}}" SideDishList_choose="{{SideDishList_choose}}" bind:submitA="submitSpecAndTaste" bind:showpeicai="showpeicaiAndTaste" model:sideDishIndex="{{sideDishIndex}}" isTable="{{true}}" />
+            </view>
+            <view class="oneline" style="width: 100%;justify-content: space-around;margin: 30rpx 0 30rpx 0;">
+              <view class='btn_small_d' wx:if="{{shrinkIntrIntroduction}}" style='width:120rpx;' bindtap='showIntroduction'>
+                菜品介绍</view>
+              <view class='btn_small_d' style='width:120rpx;' bindtap='chooseMaterial'>选择食材</view>
+              <view class='btn_small_d' style='width:206rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicaiAndTaste'>选择配菜和口味
+              </view>
+              <view wx:if="{{dishes.sideDishes==0&&dishes.flavor==1}}" class='btn_small_d' style='width:120rpx;' bindtap='chooseTaste'>
+                选择口味</view>
+            </view>
+            <!-- 客人备注 -->
+            <!--2020-11-19 多拼粥重写备注框 -->
+            <view id="d" style="width:95%;margin-left:15rpx;margin-top:14rpx">
+              <s-remarkView_new readOnly="{{false}}" lock="{{lock}}" onHide="{{showRemarkList || showTaste || showMaterial || showpeicai || showMultipleEatMethodView}}" remarkTitle="客人备注：" style="width: 92%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" spec_type="{{spec_type1}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+            </view>
+            <!-- 确认保存、修改保存 -->
+            <view class='oneline' style='height: 7%;font-size:26rpx;flex-direction: row-reverse;justify-content:space-around;width:100%;margin-top: 70rpx;'>
+              <view class='btn_small_d' style='width:150rpx;' bindtap='addToCartMorePoridge'>确定</view>
+            </view>
+          </view>
+        </scroll-view>
+        <view style="height:10rpx;width:100%;border-top:2rpx"></view>
+      </view>
+    </van-popup>
+  </view>
+
+  <!-- 多规格菜品 选择弹窗-选择规格 -->
+  <van-popup id="duo" show="{{showModalStatus}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <view style='margin:30rpx 30rpx 0 30rpx;border-bottom: 1px solid gray;'>
+      <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img}}' bindtap='closeWindow'></image>
+      <view class='oneline'>
+        <image class='popup-window-image' src='{{dishes.dishes_img}}'></image>
+        <view style='margin-left:20rpx;font-size:28rpx;font-weight:bold'>
+          <view>{{dishes.dishes_name}}</view>
+          <!--<view class='text' style="margin-top: 10rpx;">月销量:998</view>-->
+          <view style="width: 350rpx;justify-content: space-between;display: flex;margin-top: 10rpx;font-size: 26rpx;">
+            <text class='text'>总份数：{{dishesNumber}}份</text>
+            <text class='text'>总金额：{{dishesMoney}}元</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <scroll-view scroll-y style="height: 87%;">
+
+      <!-- 在茶位米饭的规格下-->
+      <view class='popup-window-table' wx:if="{{dishes.sideDishes==0 && dishes.specal_type==1}}" style="height:27%">
+        <view class='table-title'>
+          <view class='th' style='width:20%'>规格</view>
+          <view class='th' style='width:15%'>单价</view>
+          <view class='th' style='width:15%'>金额</view>
+          <view class='td-big' style='font-weight:bold;width:30%'>数量</view>
+          <view class='td-big' style="width:20%;"></view>
+        </view>
+        <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{ dishes.sideDishes!=0 ? '75%' : '100%'}}; width: 100%;">
+          <view wx:for="{{dishesSpecArry}}" wx:key="index" wx:for-item="item" wx:for-index="index" style="border-top: 0.5px solid #c9c9c9;border-bottom: 0.5px solid #c9c9c9">
+            <view class='tr'>
+              <view class='td' style='width:20%'>{{item.spec_name}}</view>
+              <view class='td' style='width:15%'>{{item.spec_price}}</view>
+              <view class='td' style='width:15%'>{{item.spec_price*item.number}}</view>
+              <view class='td-big' style="width:30%;">
+                <i class="iconfont icon-jian icon-li-circle font20" style="color:{{item.number<=0?'':'#ff9c35'}}" data-index="{{index}}" bindtap='reduceCountDishes'></i>
+                <view class='table-chooesNum go-center'>{{item.number}}</view>
+                <i class="iconfont icon-jiahao2fill activity-color font20" data-index="{{index}}" bindtap='addCountDishes'></i>
+              </view>
+              <view style='width:20%;align-items: center;display: flex;justify-content: center;'>
+                <view class='btn_small_y' style="height:36rpx;width:100rpx" data-dishesid="{{item.dishes_id}}" data-dishesspec="{{item}}" data-index="{{index}}" bindtap='addHeadMultiple'>按人头</view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 在不是茶位米饭的规格下 -->
+      <view class="top" style="margin-top:20rpx;height: 280rpx;border-bottom:#b3b3b3 solid 1rpx;flex-wrap:wrap;margin-left:5%;width:90%">
+        <scroll-view scroll-y class="tableRoll" style="height:80%;margin-left:20rpx;margin-top:6rpx" scroll-with-animation>
+          <view class="btn3">
+            <view class="{{specBtnChooseIndex==index?'.btn3_choose':'.btn3_box'}}" style="display:flex;flex-direction:column;" wx:for="{{dishesSpecArry}}" wx:key="index" data-item="{{item}}" data-index="{{index}}" bindtap="clickSpecBtn">
+              <view class="guige" style="flex:2;margin-top:22rpx;">{{item.spec_name}}</view>
+              <view class="guige_price" style=" flex:1;font-size: 24rpx;justify-content: space-between;width: 120rpx;margin: 0 0 10rpx 0;padding: 0 10rpx 0 10rpx; flex-direction: row-reverse">
+                <text hidden="{{!item.inline_price || item.inline_price == 0}}" style="{{specBtnChooseIndex==index ? 'color: #754a1f' : 'color: #009900'}}">{{item.inline_price}}</text>
+                <text>{{item.spec_price}}</text>
+                <text hidden="{{item.vip_price == 0}}" style="{{specBtnChooseIndex==index ? 'color: #754a1f' : 'color: #000'}}">{{item.vip_price}}</text>
+
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+        <view class="shurukuang" style="display:flex;margin-top:-16rpx;width:100%">
+          <input bindinput="bindinputSpecNum" value="{{inputSpecNum}}" type="digit" style="width:16%;margin-left:50%;border:1rpx solid #ccc;height:52rpx;line-height:52rpx;margin-top:5rpx;text-align:center" placeholder="数量"></input>
+          <view bindtap="clickSpecSubmit" class="btn_small_y" style="width:130rpx;height: 48rpx;margin-left:30rpx">确定
+          </view>
+        </view>
+      </view>
+
+      <view class='note' style='height: 211rpx;margin-top: 20rpx;'>
+        <s-specView choosedishesSpecArry="{{choosedishesSpecArry}}" choosedishesSpecIndex="{{choosedishesSpecIndex}}" bind:chooseDishesSpec="chooseDishesSpec"></s-specView>
+      </view>
+
+      <view class='note' wx:if="{{dishes.sideDishes!=0}}" style='height: 270rpx;margin-top: 20rpx;margin-bottom:20rpx;'>
+
+        <s-multipleEatMethodAndWeightSideDishesView SideDishList="{{SideDishList}}" SideDishList_choose="{{sideDishList_choose}}" dishes_type="{{dishes_type}}" eatMethodChooseIndex="{{choosedishesSpecIndex}}" bind:submitSideDish="submitSideDish" eatMethodArray="{{eatMethodArray}}" bind:changeBoxNum="changeBoxNum" isTable="{{true}}" />
+      </view>
+
+      <form wx:if="{{!shrinkIntrIntroduction}}" style='margin-top:20rpx'>
+        <view class='note' style="{{dishes.sideDishes!=0 ? 'height:15%' : 'height:20%'}}">
+          <label style='font-size:30rpx;font-weight:bold'>菜品介绍</label>
+          <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></text>
+          <textarea wx:else maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></textarea>
+        </view>
+      </form>
+
+      <view class="oneline" style="width: 100%;justify-content: space-around;margin-top:20rpx;">
+        <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>
+          菜品介绍
+        </view>
+
+        <view class='btn_small_y' wx:if="{{dishes.sideDishes!=0}}" style='width:200rpx;height:50rpx' bindtap='showpeicaiAndTaste'>选择配菜和口味</view>
+        <view class='btn_small_y' wx:if="{{dishes.sideDishes==0&&dishes.flavor==1}}" style='width:150rpx;height:50rpx' bindtap='showpeicaiAndTaste'>选择口味</view>
+      </view>
+
+      <view class='note' style='height: 422rpx;margin-top: 20rpx;'>
+        <s-remarkView_new readOnly="{{false}}" onHide="{{showRemarkList || showTaste || showpeicai || showMultipleEatAndSpecView}}" remarkTitle="客人备注：" style="width: 92%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+      </view>
+
+      <view style="display:flex;align-items: center;justify-content: center;justify-content: space-around;padding-bottom: 10px;">
+        <view class='btn_small_y' style='width:150rpx;' bindtap='addToCartBySpecType'>确定</view>
+
+      </view>
+
+    </scroll-view>
+  </van-popup>
+
+  <!-- 口味选择弹窗 -->
+  <van-popup show="{{showTaste}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-popup_taste bind:submitTaste="submitTaste" dishesInfo="{{dishes}}" bind:closeTaste="chooseTaste" tasteList="{{tasteList}}" />
+  </van-popup>
+
+  <!-- 多拼粥 食材选择弹窗 -->
+  <van-popup show="{{showMaterial}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-selectMaterial porridgeObject="{{porridgeObject}}" porridgeObjectList="{{porridgeObjectList}}" goodModel="{{goodModel}}" isTable="{{false}}" bind:selPorridgeBackObject="selPorridgeBackObject" bind:closeMaterial="closeMaterial" bind:submitMaterial="submitMaterial" />
+  </van-popup>
+
+  <!-- 常用备注选择弹窗 -->
+  <van-popup show="{{showRemarkList}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-remakNormalView wx:if="{{showRemarkList}}" quickRemarkList="{{quickRemarkList}}" dishesInfo="{{dishes}}" bind:hideModal="hideModal" bind:quickRemarkConfirm="quickRemarkConfirm" />
+  </van-popup>
+
+  <!-- 多种做法选择弹窗 -->
+  <van-popup show="{{showMultipleEatMethodView}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-multipleEatMethodView wx:if="{{showMultipleEatMethodView}}" bind:submitEatMethod="submitEatMethod" xdswidth="{{xdswidth}}" em_arry="{{em_arry}}" partsName="{{partsName}}" dishesInfo="{{dishes}}" needRemain="{{needRemain}}" isTable="{{false}}" isType10="{{dishes.spec_type == 10 ? true: false}}" bind:showMultipleEatMethodView="showMultipleEatMethodView" model:eatMethodArrayNumber="{{eatMethodArrayNumber}}" model:eatMethodArraySum="{{eatMethodArraySum}}" EatmethodAndSpec="{{dishes.spec_type == 10 ? EatmethodAndSpec: ''}}" />
+  </van-popup>
+
+  <!-- 多规格多做法选择弹窗 -->
+  <van-popup show="{{showMultipleEatAndSpecView}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-multipleEatMethodView wx:if="{{showMultipleEatAndSpecView}}" id="s-multipleEatMethodView" xdswidth="{{xdswidth}}" bind:submitEatMethod="submitEatMethod" em_arry="{{em_arry}}" partsName="{{partsName}}" dishesInfo="{{dishes}}" needRemain="{{needRemain}}" isTable="{{false}}" isType10="{{dishes.spec_type == 10 ? true: false}}" bind:showMultipleEatAndSpecView="showMultipleEatAndSpecView" EatmethodAndSpec="{{dishes.spec_type == 10 ? EatmethodAndSpec: ''}}" />
+  </van-popup>
+
+  <!-- 配菜选择弹窗 -->
+  <van-popup show="{{showpeicai}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-sideDishesView SideDishList="{{SideDishList}}" dishesInfo="{{dishes}}" SideDishList_choose="{{SideDishList_choose}}" bind:submitSideDish="submitSideDish" bind:showpeicai="showpeicai" isTable="{{flase}}" id="sideDishList_peicai" />
+  </van-popup>
+
+  <!-- 配菜和口味选择弹窗 -->
+  <van-popup show="{{showpeicaiAndTaste}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+    <s-multipleEatMethodAndWeightSideDishesView SideDishList="{{SideDishList}}" eatMethodRemark="{{eatMethodRemark}}" eatMethodTastesRemark="{{eatMethodTastesRemark}}" dishesInfo="{{dishes}}" dishes_type="{{dishes_type}}" eatMethodArray="{{eatMethodArray}}" tasteList="{{tasteList}}" quickRemarkList="{{quickRemarkList}}" eatMethodChooseIndex="{{eatMethodChooseIndex}}" SideDishList_choose="{{sideDishList_choose}}" bind:submitA="submitSpecAndTaste" bind:showpeicai="showpeicaiAndTaste" model:sideDishIndex="{{sideDishIndex}}" isTable="{{flase}}" />
+  </van-popup>
+
+  <!-- 菜品介绍弹窗 -->
+  <van-popup show="{{showIntroduction}}" custom-style="{{dishes.spec_type==10?'height:80%':(dishes.spec_type==9 || dishes.spec_type==91)?'height:80%':'height:20%'}};width: 90%;" closeable="{{true}}" bind:close="showIntroduction" round="{{true}}">
+    <s-remarkView spec_type="{{dishes.spec_type}}" readOnly="{{true}}" remarkTitle="菜品介绍：" remarkValue="{{goodsIntroduce}}" isIntroduction="{{true}}" />
+  </van-popup>
+
+</view>
+
+<view style='width:100%'>
+  <!-- 左侧菜单 -->
+  <view class="list-left-menu" style='margin-top: 70rpx; padding: 0; height:{{windowHeight - 35 - marginBottom - 40}}px; display: flex; flex-direction: column;justify-content: start;'>
+    <view class='goindex-btn' bindtap='goindex'>
+      <image style='width:40rpx;height:30rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_left_white.png'></image>
+      <view style='color:#fff'>首页</view>
+    </view>
+    <!-- 左侧菜单-滚动 -->
+    <scroll-view class="list-left-menu-scroll" scroll-y style='height:{{windowHeight - 35 - marginBottom - 40 - 40}}px;'>
+      <!-- 在切瓜切菜的一级菜单上不再显示超值菜品和临时菜品，也不再显示超级套餐，所以把原来的套餐改成普通套餐，底下的二级菜单只保留普通套餐，把超级套餐去掉-->
+      <block wx:for="{{menuList}}" wx:key="index">
+        <view wx:if="{{item.class_i_id !='4434' && item.class_i_id !='4421' && item.mainType != '超值菜品' && item.mainType != '临时菜品' && item.mainType != '套餐'}}" 
+            class="list-menu-name {{c1Idx==index?'list-left-menu-box-selected':'list-left-menu-box-unselect'}}" data-c1-idx="{{index}}" bindtap="tapClassify1">{{item.mainType}}</view>
+        <view wx:if="{{item.mainType == '套餐'}}" 
+            class="list-menu-name {{c1Idx==index?'list-left-menu-box-selected':'list-left-menu-box-unselect'}}" data-c1-idx="{{index}}" bindtap="tapClassify1">普通套餐</view>          
+        <view wx:if="{{c1Idx==index && showsecond}}" class="classify2__wrp">
+          <block wx:for="{{item.class1s}}" wx:key="index">
+            <view class="second" style="background:{{c2Idx==index?'orange':'#b6a16a'}}" data-c2-idx="{{index}}" bindtap="tapClassify2" wx:if="{{item.type_name != '超值套餐'}}">{{item.type_name}}</view>
+            <!-- 在套餐底下的超级套餐不要显示，但是在已购/赠送底下的超级套餐需要显示，所以增加这一行，66666就是代表是已购赠送的，要加回来-->
+            <view class="second" style="background:{{c2Idx==index?'orange':'#b6a16a'}}" data-c2-idx="{{index}}" bindtap="tapClassify2" wx:elif="{{item.parent_type_id == '66666'}}">{{item.type_name}}</view>
+          </block>
+        </view>
+      </block>
+      
+    </scroll-view>
+  
+  </view>
+  <!--搜索栏-->
+  <view class="query-list">
+    <button class="btn_small_green" style="width:140rpx;margin-left: 5rpx;margin-right: 0px;height: 55rpx;line-height: 55rpx;margin-bottom: 10rpx;" bindtap="queryQR">扫码点菜</button>
+    <input class="query-input" bindinput="queryInput1" confirm-type="search" bindconfirm="queryInput1" value="{{queryData}}" placeholder="输入关键词进行查询"></input>
+    <button class="btn_small_green" style="margin-right: 0rpx;margin-bottom:10rpx" bindtap="queryReset">清空</button>    
+  </view>
+
+
+  <!--三级菜单-->
+  <scroll-view scroll-x="{{true}}" class="third-list">
+   
+  </scroll-view>
+
+  <!-- 右侧菜单 -->
+  <scroll-view scroll-y="true" scroll-into-view='{{maodian}}' class='scroll' scroll-top="{{scrollTop}}" style="height:{{windowHeight - 35 - marginBottom - 40 - 40}}px;width:100%;margin-top:134rpx;margin-bottom:{{marginBottom}}rpx;" bindtouchstart='bindtouchstart' bindtouchend='bindtouchend'>
+    <block wx:if="{{haveSale && c1Idx == 0}}">
+      <wxs module="saleMenuWXS">
+        function week(num) {
+          var arr = ["日", "一", "二", "三", "四", "五", "六"]
+          return arr[num]
+        }
+        module.exports = {
+          week: week
+        }
+      </wxs>
+      <!-- wx:for="{{menuList[c1Idx].class1s[c2Idx].class2[c3Idx].dishesInfs}}" -->
+      <view id="dishes{{item.dishes_id}}" wx:for="{{menu}}" wx:key="index" class="content-list" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" bindtap="showSellOff">
+        <view style="display: flex;flex-direction: row;width: 100%; pointer-events: {{saleMenuWXS.week(item.weekend) != today ? 'none' : ''}};position: relative;">
+          <view wx:if="{{saleMenuWXS.week(item.weekend) != today}}" style="background-color: rgba(0, 0, 0, 0.2);position: absolute;width: 100%;height: 100%;"></view>
+          <view class='list-image-box' style="display:flex;flex-direction:column;height:{{item.dishes_controller!='' ? '175':'160'}}rpx;">
+            <image class="list-image item {{item.show ? 'active': ''}}" src="{{item.dishes_img}}" data-bigimage='{{item.big_dishes_img}}' bindtap="{{isActive? '':'photo'}}"></image>
+
+            <image wx:if="{{item.dishes_controller!=''&&item.class_i_id!='4416'}}" style="height:60rpx;width:90rpx;" bindtap="video_play" data-src="{{item.dishes_controller}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/video.png" data-video_name="{{item.dishes_name}}"></image>
+          </view>
+          <view style='width:80%'>
+            <view class='oneline'>
+              <view class="{{item.dishes_statu==3?'text-title-off':'text-title-on'}}" style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                [{{saleMenuWXS.week(item.weekend)}}]{{item.dishes_name}}</view>
+              <view class='out-take' wx:if="{{item.sales_category==2||item.sales_category==1}}">外卖</view>
+            </view>
+            <view class='oneline' wx:if="{{item.spec_type!=5}}">
+              <view class='issue-name'>
+                <!-- <view style="position: relative;width: 40rpx;height: 40rpx;float: right;top: 64rpx;right: 100rpx;">
+									<image wx:if="{{item.dishes_controller!=''&&item.class_i_id!='4416'}}" style="height:60rpx;width:90rpx;" bindtap="video_play" data-src="{{item.dishes_controller}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/video.png" data-video_name="{{item.dishes_name}}"></image>
+								</view> -->
+                <view class='oneline' style="margin-top:7rpx">
+                  <view class='text' style='width:180rpx;'>月销量:{{item.monthly_sales_volume}}</view>
+                  <view wx:if="{{item.spec_type!=0||item.weighing!=0}}">
+                    <view>
+                      <view wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0 && Menu.getCountNum(cartList, item.dishes_id)<2&&item.spec_type!=8&&item.weighing==1}}" class='go-center'>
+                        <view class='choosesize-cancel' data-item='{{item}}' bindtap='cancelWindiow'>取消</view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <view class='oneline' style="margin-top:4rpx">
+                  <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+                  </image>
+                  <view class='text' style='margin-top:4rpx;/*margin-right:50rpx*/'>：{{item.praise_points}}</view>
+                  <view class='btn_small_y' style="height:36rpx;width:90rpx;margin-top:10rpx;margin-left: 25%;" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" bindtap='addHead' wx:if="{{!item.dishes_recommend&&item.specal_type==1&&(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27)&&(menuList[c1Idx].mainType=='茶位米饭'&&item.dishes_metering_type=='位')}}">
+                    按人头</view>
+                  <view wx:else style='width:110rpx'></view>                 
+                  
+                </view>
+                
+                <view class='oneline text' style="width:112%">
+                  
+                  <view>操作类型:</view>
+                  <view>{{filters.specTypeName(item.specal_type==6?7:item.spec_type)}}</view>
+                </view>
+              </view>
+
+              <view class='content-list-right'>
+                <view class='text1' wx:if="{{Menu.quxiao(cartList,item.dishes_id)}}">{{Menu.quxiao(cartList,item.dishes_id)}}</view>
+                <view style="display:flex;">
+                  <view style="width:40rpx">
+                    <image wx:if="{{((item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)) && (item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27 || item.spec_type==100)}}" bindtap="" style="width:100%;margin-top:20rpx;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class='muenBtn' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' style="background:{{item.dishes_statu===0?'#bfbfbf':''}}" data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'dishesInfo'}}" wx:if="{{item.specal_type == 6}}">详
+                    情
+                    
+                  </view>
+                  <!-- 规格类型判断 -->
+                  <view class='btn_small_y' style="height:40rpx;width:120rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}};" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'dishesInfo'}}" wx:if="{{(item.spec_type==0||item.spec_type == 21 ||item.spec_type == 23 ||item.spec_type == 25 || item.spec_type == 26 || item.spec_type == 27) && item.specal_type !=6}}">
+                    详 情</view>
+                  <view class='btn_mid_Brownish_green' style="height:40rpx;width:120rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}};" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'dishesInfo'}}" wx:elif="{{item.spec_type == 100 || item.spec_type == 101}}">
+                    详 情</view>
+                </view>
+
+
+                <view wx:if="{{item.spec_type==0&&item.weighing==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27}}">
+                  <view wx:if="{{item.specal_type!=6 && toMenu != 100}}" class='down-center' style='margin-top:20rpx'>
+                    
+                    <i class="iconfont icon-jian {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on-reduce '}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on-reduce'}}" style="color:{{(Menu.getCountNum(cartList, item.dishes_id)&&Menu.plus(cartList,item.dishes_id))?'#ff9c35':'gray'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'reduceDish'}}"></i>
+
+                    <view class='menucount'>
+                      <view class='menucount' style="color:{{items.item_type==2?'green':''}}">
+                        {{Menu.getCountNum(cartList, item.dishes_id)}}
+                      </view>
+                    </view>
+
+                    <i class="iconfont icon-jiahao2fill {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on'}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-item="{{item}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'addDish'}}"></i>
+                  </view>
+
+                  <view class='text' style='display:flex;justify-content:center;' wx:if="{{item.dishes_statu==3}}">已下架
+                  </view>
+                  <view class='text' style='display:flex;justify-content:center;' wx:elif="{{item.dishes_statu==0}}">售完
+                  </view>
+                </view>
+
+                <view wx:else>
+                  <view class="box-bottom-view" bindtap="dishesInfo" data-index="{{index}}" data-item='{{item}}' wx:if="{{(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27) && item.spec_type!=7 && item.weighing==0 }}">
+                    <view class="choosesize-on" style='display:flex; justify-content:center;margin-top:4rpx'>
+                      <view class="box" wx:if="{{item.dishes_statu==3}}">已下架</view>
+                      <view class="box" wx:elif="{{item.dishes_statu==0}}">售完</view>
+                    </view>
+                  </view>
+
+                  <view wx:elif="{{item.spec_type==100 || item.spec_type==101}}" class="box-bottom-view" style="margin-top: 10px;">
+                    <i class="iconfont icon-jian {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on-reduce '}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on-reduce'}}" style="color:{{(Menu.getCountNum2(cartList, item.uuid)&&Menu.plus(cartList,item.dishes_id))?'#ff9c35':'gray'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-id="{{item.uuid}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'reduceDish2'}}"></i>
+                    go-center
+                    <view class='menucount'>
+                      <view class='menucount' style="color:{{items.item_type==2?'green':''}}">
+                        {{Menu.getCountNum2(cartList, item.uuid)}}
+                      </view>
+                    </view>
+
+                    <i wx:if="{{item.showAdd}}" class="iconfont icon-jiahao2fill plus-icon-off"></i>
+                    <i wx:else class="iconfont icon-jiahao2fill {{Menu.getCountNum2(cartList, item.uuid) >= 1 ? 'plus-icon-off' : 'plus-icon-on'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-item="{{item}}" data-id="{{item.uuid}}" bindtap="{{Menu.getCountNum2(cartList, item.uuid) >= 1? '' : 'addDishNew'}}">
+                    </i>
+                  </view>
+
+                  <view wx:elif="{{item.spec_type==8}}" class="box-bottom-view" bindtap="{{permission.judge('60',levellist)? 'jump':(isActive || item.dishes_statu===0)?'':'toOrderProcessing'}}" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+                    <view style="width:40rpx">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_Brownish_red" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                      <view class="box-bottom">来料加工</view>
+                    </view>
+                  </view>   
+
+                  <!-- 如果是普通套餐210，点详情跳转到商品详情页面-->
+                  <view wx:elif="{{item.spec_type==210}}" class="box-bottom-view" bindtap="dishesInfo" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+                    <view style="width:40rpx">
+                        <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_Brownish_green" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                        <view class="box-bottom">详 情</view>
+                    </view>
+                  </view>               
+
+                  <view wx:elif="{{item.spec_type==2}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'toOrderProcessing'}}" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+                    <view style="width:40rpx">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_small_djl" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                      <view class="box-bottom">多计量</view>
+                    </view>
+                  </view>
+
+                  <view wx:elif="{{((item.spec_type==1 || item.spec_type == 22 || item.spec_type == 24) &&item.weighing!=1) || item.spec_type==6}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'selectInfo_guige_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+                    <view style="width:40rpx;">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_y" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                      <view class="box-bottom">选规格</view>
+                    </view>
+                  </view>
+
+                  <view wx:elif="{{item.spec_type==4 || item.spec_type==3  || item.spec_type==10}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':item.spec_type==10?'selectInfo_booking_newType10':'selectInfo_booking_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+
+                    <view style="width:40rpx">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_small_brown" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                      <view class="box-bottom">多做法</view>
+                    </view>
+                  </view>
+
+
+                  <view wx:elif="{{item.spec_type==9 || item.spec_type==91}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'selectInfo_guige_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+
+                    <view style="width:40rpx">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_d" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                      <view class="box-bottom">选拼菜品</view>
+                    </view>
+                  </view>
+
+                  <view wx:elif="{{item.spec_type==10}}" class="box-bottom-view">
+                    <view style="width:40rpx">
+                      <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_y" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;">
+                      <view class="box-bottom">多规格</view>
+                    </view>
+                  </view>
+
+                  <view wx:else style='display:flex; justify-content:flex-end;margin-bottom:10rpx;padding-right:8rpx;' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{item.weighing==1 && item.spec_type!=6?'selectInfo_booking_new':'selectInfo_guige_new'}}">
+
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" style="width:40rpx;display:flex;align-items:center;height:50rpx;" src='{{text_img}}'></image>
+                    <view class="{{item.spec_type==1 ||item.spec_type==22 || item.spec_type==24 || item.spec_type==6 || item.spec_type==8 ?'choosesize-on':'choosesize-off'}}" style='display:flex; justify-content:center;margin-top:4rpx' wx:if="{{item.specal_type!=6}}">
+                      <view wx:if="{{item.spec_type==7}}">加配菜</view>
+                      <view wx:elif="{{item.dishes_statu==3}}">已下架</view>
+                      <view wx:elif="{{item.dishes_statu==0}}">售完</view>
+                      <view wx:else>未知</view>{{item.spec_type}}
+                    </view>
+                  </view>
+
+                  <view class='oneline'>
+                    <view style='width:90%'>
+                      <view style='display:flex; justify-content:flex-end;margin-top:20rpx;padding-right:24rpx;'>
+                        <!-- 第二次加菜的加号 再加一份-->
+                        <block wx:if="{{item.spec_type!=8&&item.spec_type!=2}}">
+                          <i wx:if="{{(item.weighing&&Menu.getCountNum(cartList, item.dishes_id)>0)&& item.spec_type!=6 && item.spec_type!=10}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{(item.spec_type == 8 || item.spec_type == 2)?'toOrderProcessing':'selectInfo_booking_new'}}"></i>
+                        </block>
+
+                        <block wx:if="{{item.spec_type==8||item.spec_type==2}}">
+                          <i wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" class="iconfont icon-jiahao2fill {{item.spec_type==2?'djlactivity-color':'activity-color'}} font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{(item.spec_type == 8 || item.spec_type == 2)?'toOrderProcessing':'selectInfo_booking_new'}}"></i>
+                        </block>
+
+                        <!-- 第二次加菜的加号 再加一份-->
+                        <view wx:if="{{countarry.length!=0}}">
+                          <block wx:for="{{countarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                            <!-- 多规格的再加一份 -->
+                            <i wx:if="{{(items.dishes_id==menu[index].dishes_id)&&(item.spec_type==1 || item.spec_type==22 || item.spec_type==24)}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="selectInfo_guige_new"></i>
+                            <!--&&menu[index].sideDishes!=0-->
+                            <!-- 多拼粥的再加一份 -->
+                            <i wx:if="{{(items.dishes_id==menu[index].dishes_id)&&(item.spec_type==9 || item.spec_type==91)}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' style="color:#d19453" bindtap="selectInfo_guige_new"></i>
+                          </block>
+                        </view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view class='oneline' style="flex-direction: column;" wx:if="{{item.spec_type==5}}">
+              <!-- 规格类型判断 -->
+              <view style='width:100%;margin-top:20rpx;align-items: center;margin-left: 6rpx;justify-content: flex-start;' class='oneline'>
+                <view class="{{item.dishes_statu==3?'text-title-off':'text-title-on'}}" style="width:45%">
+                    {{item.dishes_code}}{{item.dishes_name}}</view>
+                <view style="width:40rpx">
+                  <image wx:if="{{(!(item.remark=='') && item.remark)||(!(item.tastes=='') && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" src='{{text_img}}'></image>
+                </view>
+                <view class='btn_small_y' style="height:40rpx;width:120rpx;background:{{!temporaryCode ? 'url('+ tempImg + ') no-repeat' :''}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" bindtap='dishesInfo'>详 情</view>
+              </view>
+              <view style="display:flex;flex-direction: column;">
+                <view class='oneline'>
+                  <view class='out-take' wx:if="{{item.sales_category==2||item.sales_category==1}}">外卖</view>
+                </view>
+                <view class='oneline' style="margin-top:7rpx">
+                  <view class='text' style="width:180rpx;color: {{item.spec_type == 100 || item.spec_type == 101 ? '#FFF' : ''}};">月销量:{{item.monthly_sales_volume}}</view>
+                  
+                  <view wx:if="{{item.spec_type!=0||(item.weighing!=0 && item.spec_type!=6)}}">
+                    <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                      <view wx:if="{{items.dishes_id==item.dishes_id}}" class='go-center'>
+                        <view class='choosesize-cancel' wx:if="{{item.weighing==1}}" data-item='{{item}}' bindtap='cancelWindiow'>取消</view>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+                <view class='oneline' style="margin-top:4rpx">
+                  <view class='oneline' style='width:115rpx'>
+                    <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+                    </image>
+                    <view class='text' style='margin-top:4rpx;/*margin-right:50rpx*/'>：{{item.praise_points}}</view>
+                  </view>
+                  <form bindsubmit="formsubmit" style="width:325rpx">
+                    <view style="display:flex;width:100%;align-items: center;justify-content:flex-end;">
+                      <view style="font-size:24rpx">预订：</view>
+                      <view wx:if="{{item.thisMenuBoolean==1}}">
+                        <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                          <view wx:if="{{items.dishes_id==item.dishes_id}}">
+                            <view class='oneline'>
+
+                              <input class='input' placeholder-class='placeholder-class' maxlength='4' type='digit' name='weight_money2' style="margin:0rpx;width:50rpx;" value="{{items.weight_ceiling}}"></input>
+                              <view style="font-size:24rpx;margin-left:10rpx;margin-right:10rpx">
+                                {{item.dishes_metering_type}}</view>
+                            </view>
+                          </view>
+                        </view>
+                      </view>
+                      <view wx:else>
+                        <view class='oneline'>
+
+                          <input class='input' placeholder-class='placeholder-class' maxlength='4' type='digit' name='weight_money2' style="margin:0rpx;width:50rpx;"></input>
+                          <view style="font-size:24rpx;margin-left:10rpx;margin-right:10rpx">{{item.dishes_metering_type}}
+                          </view>
+                        </view>
+                      </view>
+
+                      <view class='select-dishes' style="margin:0rpx;">
+                        <button class='btn_small_y' data-dishesid="{{item.dishes_id}}" data-index="{{index}}" style='padding:0rpx;height:36rpx;width:90rpx;' formType="submit"> 确定 </button>
+                      </view>
+
+
+                    </view>
+                  </form>
+                </view>
+              </view>
+            </view>
+
+            <view class='oneline' style='font-size:24rpx;color:orange' wx:if="{{item.spec_type==6}}">
+              <view wx:for="{{countarry}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+                <view wx:if="{{item.dishes_id==items.dishes_id}}" class='oneline'>
+                  <view style='width:140rpx' class="go-center">预订：{{items.countnum}}{{item.dishes_metering_type}}</view>
+                </view>
+              </view>
+            </view>
+
+            <!-- 单规格数量金额 -->
+            <block wx:if="{{(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27) && item.weighing==0 && item.specal_type !=6}}">
+              <block wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length}}">
+                <block wx:for="{{Computed.showCount2Single(cartList, item.dishes_id)[1]}}" wx:for-index="addDishIdx" wx:key="index">
+                  <view class='oneline' style='font-size:24rpx;color:orange;font-weight:bold'>
+                    <view style='width:30%;margin-left:5rpx'>
+                      <span style="color: #8E2323">{{item.dishes_price}}</span>/{{item.dishes_metering_type == 0 ?'份':
+                      item.dishes_metering_type|| item.spec_name == 0 ? '份' :item.spec_name}}
+                    </view>
+
+                    <view class='oneline' style='width:80%;' wx:if="{{item.specal_type!=6}}">
+                      <view style='width:50%;margin-left:-30%;display:flex;flex-direction:row-reverse;'>
+                        <block wx:if="{{addDishIdx+1===1}}">
+                          <view class='go-center' style='width:160rpx'>
+                            <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}">{{Computed.showCount2Single(cartList,
+                              item.dishes_id)[0].number}}<text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1][0].number>0}}">+</text></text>{{Computed.showCount2Single(cartList,
+                            item.dishes_id)[1][0].number}}
+                            <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}" decode="{{true}}">=&nbsp;{{Computed.totalDgg(Computed.showCount2Single(cartList,
+                              item.dishes_id)[0].number , Computed.showCount2Single(cartList,
+                              item.dishes_id)[1][0].number)}}</text>
+                          </view>
+                        </block>
+                        <block wx:else>
+                          <view class='go-center' style='width:160rpx'>
+                            {{Computed.computedCount2Single(cartList, item.dishes_id, addDishIdx)}}<text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1][addDishIdx].number>0}}">+</text>{{Computed.showCount2Single(cartList,
+                            item.dishes_id)[1][addDishIdx].number}}
+                            <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}" decode="{{true}}">=&nbsp;{{Computed.totalDgg(Computed.computedCount2Single(cartList,
+                              item.dishes_id, addDishIdx),Computed.showCount2Single(cartList,
+                              item.dishes_id)[1][addDishIdx].number)}}</text>
+                          </view>
+                        </block>
+                      </view>
+
+                      <view style='width:50%;margin-left:-5%;display:flex;flex-direction:row-reverse;'>
+                        <view class='go-center' style='width:110%'>
+                          <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length-1==addDishIdx}}" style="margin-left:70rpx;">￥{{Computed.computedTotal2Single(cartList,
+                            item.dishes_id)}}元</text>
+                        </view>
+                      </view>
+
+                    </view>
+                    <view wx:if="{{item.specal_type == 6}}">
+                      <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}">{{Computed.showCount2Single(cartList,
+                        item.dishes_id)[0].number}}</text>
+                      <text wx:else>{{item.number}}</text>
+                      <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length-1==addDishIdx}}" style="margin-left:50rpx">总金额：￥{{Computed.newsum(cartList, item.dishes_id)}}元</text>
+
+                    </view>
+                  </view>
+                </block>
+              </block>
+              <view wx:else class='oneline' style='font-size:24rpx;color:orange;font-weight:bold'>
+                <view style='width:30%;margin-left:5rpx'>
+                  <view><span style="color: #8E2323">{{item.everyday_price}}</span>/{{item.dishes_metering_type || item.spec_name}}</view>
+                </view>
+
+                <view class='oneline' style='width:80%;'>
+                  <view style='width:50%;margin-left:-30%;display:flex;flex-direction:row-reverse;'>
+                    <view class='go-center' style='width:160rpx'>
+                      {{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}
+                    </view>
+                  </view>
+
+                  <view style='width:50%;margin-left:-5%;display:flex;flex-direction:row-reverse;'>
+                    <view wx:if="{{Computed.computedTotal2Single(cartList, item.dishes_id)!=0}}" class='go-center' style='width:110%'>
+                      <text>总金额：￥{{Computed.computedTotal2Single(cartList, item.dishes_id)}}元</text>
+                    </view>
+                  </view>
+
+                </view>
+              </view>
+            </block>
+
+            <view class='oneline' style='font-size:26rpx;font-weight:bold;color:orange' wx:elif="{{((item.spec_type==1 || item.spec_type==22 || item.spec_type==24 || item.specal_type == 6)&&item.weighing==0) ||item.spec_type==6 || item.spec_type==7 || item.spec_type==9 || item.spec_type==91}}">
+              <view style='width:180rpx;'>
+                <span style="color: #8E2323">{{item.everyday_price}}</span>/{{item.dishes_metering_type}}
+              </view>
+
+              <view wx:for="{{countarry}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+                <view wx:if="{{item.dishes_id==items.dishes_id}}" class='oneline'>
+                  <!-- class="go-center" -->
+                  <view style='width:40rpx' wx:if="{{item.spec_type!=6}}">{{items.countnum}}</view>
+                  <view style='width:40rpx' wx:else>实称：0{{item.dishes_metering_type}}</view>
+                  <!-- style='width:140rpx;flex-direction:row-reverse' -->
+                  <view wx:if="{{item.spec_type!=6}}" class='oneline' style="margin-left: 40rpx;">
+                    总金额：￥{{items.countprice}}元</view>
+                  <view style='width:140rpx;flex-direction:row-reverse' wx:else class='oneline'>0元</view>
+                </view>
+              </view>
+            </view>
+
+            <!--210处理-->
+            <!-- <view class='oneline' style='font-size:26rpx;font-weight:bold;color:orange' wx:elif="{{item.spec_type==210}}">
+                <view style='width:180rpx;'>
+                    <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span><span>{{item.dishes_price}}/</span>
+                    <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type}}
+                </view>                
+            </view>           -->
+            
+
+            <view class='oneline' style='width:78%;font-size:26rpx;font-weight:bold' wx:elif="{{item.spec_type==8||item.spec_type==2}}">
+              <view style='width:100%' class='oneline'>
+                <view>
+                  <view style='width:450rpx;display:flex' class='oneline'>
+                    <view wx:if="{{Menu.getDishesPrice(cartList, item.dishes_id)!='' && item.weighingByLocation==1}}" style='width:40%;' class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}">
+                      {{Menu.getDishesPrice(cartList,item.dishes_id)}}</view>
+                    <view wx:else style='width:40%;' class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}">
+                      <span style="color: #8E2323">{{item.everyday_price}}</span>/{{item.dishes_metering_type}}
+                    </view>
+                    <view class='oneline' style='width:75%;'>
+                      <view wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:40%;color:orange;justify-content:center;display:flex'>
+                        {{Menu.getCountNum(cartList, item.dishes_id)}}</view>
+                      <view wx:if="{{Menu.getTotalBySum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                        ￥{{Menu.getTotalBySum(cartList, item.dishes_id)}}元</view>
+                      <!--  -->
+                      <view wx:elif="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                        ￥{{Menu.getTotalBySumS(cartList, item.dishes_id)}}元</view>
+
+                      <view wx:if="{{Menu.getDishesStatus(cartList, item.dishes_id)}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                        ￥0元</view>
+
+                      <!-- <view wx:if="{{Computed.newsum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+												￥{{Computed.newsum(cartList, item.dishes_id)}}元</view> -->
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view class='oneline' style='width:78%;font-size:24rpx;' wx:elif="{{item.weighing==1&&item.spec_type!=5}}">
+              <view style='width:100%;font-weight:bold;font-size:26rpx' class='oneline'>
+                <view class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}" style='width:180rpx;'>
+                  <span style="color: #8E2323">{{item.everyday_price}}</span>/{{item.dishes_metering_type}}
+                </view>
+                <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                  <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline' style='width:340rpx;'>
+                    <view style='margin-top: 8rpx;width:30%;color:orange;justify-content:center;display:flex'>
+                      {{items.number}}</view>
+                    <view style='margin-top: 8rpx;width:70%;color:orange;justify-content:center;display:flex'>
+                      总金额:￥{{filters.toFix(items.sum)}}元</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <!-- 单规格称重 -->
+            <view class='oneline' style='width:78%;font-size:24rpx;' wx:elif="{{item.spec_type==5}}">
+              <view style='width:100%' class='oneline'>
+                <view class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}" style='width:180rpx;'>
+                  <span style="color: #8E2323">{{item.everyday_price}}</span>/{{item.dishes_metering_type}}
+                </view>
+
+                <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                  <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline' style='width:340rpx;'>
+                    <view style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                      {{items.number}}</view>
+                    <view style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                      ￥{{filters.toFix(items.sum)}}元</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view class='oneline' style='width:78%;font-size:24rpx;' wx:if="{{item.spec_type==5}}">
+              <view style='width:100%;justify-content: flex-end' class='oneline'>
+                <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                  <view wx:if="{{items.dishes_id==item.dishes_id && items.sideDishesSum>0}}" class='oneline box' style='width:340rpx;justify-content: flex-end'>
+                    <view style='margin-top: 8rpx;margin-right:7%;color:orange;justify-content:center;display:flex'>
+                      总价：￥{{filters.toFix(items.sideDishesSum)}}元</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <!-- 单规格称重下单是的人员和时间 -->
+            <view class='oneline' style='width:78%;font-size:24rpx;' wx:if="{{item.spec_type==5}}">
+              <view style='width:100%' class='oneline'>
+                <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                  <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline'>
+                    <view style='margin-top: 8rpx;width:100%;color:orange;justify-content:center;display:flex'>
+                      {{items.operator}}：{{items.operation_time}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <!-- wx:for="{{menuList[c1Idx].class1s[c2Idx].class2[c3Idx].dishesInfs}}" -->
+      <view id="dishes{{item.dishes_id}}" wx:for="{{menu}}" wx:key="index" class="content-list" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" bindtap="showSellOff" style="background-color: {{item.scan == true ? '#ddc8b58e' : '#FFFFFF'}};">
+
+        <view class='list-image-box' style="display:flex;flex-direction:column;height:{{item.dishes_controller!='' ? '175':'160'}}rpx;">
+
+          <image class="list-image item {{item.show ? 'active': ''}}" src="{{item.dishes_img}}" data-bigimage='{{item.big_dishes_img}}' bindtap="{{isActive? '':'photo'}}"></image>
+
+          <image wx:if="{{item.dishes_controller!=''&&item.class_i_id!='4416'}}" style="height:60rpx;width:90rpx;" bindtap="video_play" data-src="{{item.dishes_controller}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/video.png" data-video_name="{{item.dishes_name}}"></image>
+        </view>
+        <view style='width:80%'>
+          <view class='oneline'>
+            <view class="{{item.dishes_statu==3?'text-title-off':'text-title-on'}}" style="word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                {{item.dishes_code}}{{item.dishes_name}}</view>
+            <view class='out-take' wx:if="{{item.sales_category==2||item.sales_category==1}}">外卖</view>
+          </view>
+          <view class='oneline' wx:if="{{item.spec_type!=5}}">
+            <view class='issue-name'>
+              <!-- <view style="position: relative;width: 40rpx;height: 40rpx;float: right;top: 64rpx;right: 100rpx;">
+								<image wx:if="{{item.dishes_controller!=''&&item.class_i_id!='4416'}}" style="height:60rpx;width:90rpx;" bindtap="video_play" data-src="{{item.dishes_controller}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/video.png" data-video_name="{{item.dishes_name}}"></image>
+							</view> -->
+              
+              <view class='oneline' style="margin-top:7rpx">
+                <view class='text' style="width:180rpx;color: {{item.spec_type == 100 || item.spec_type == 101 ? '#FFF' : ''}};">月销量:{{item.monthly_sales_volume}}</view>
+
+                <view wx:if="{{item.spec_type!=0||item.weighing!=0}}">
+                  <!-- <view wx:if="{{item.spec_type!=8}}" wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+										<view
+											wx:if="{{items.name == item.dishes_name && items.dishes_id==item.dishes_id && item.weighing==1 && item.spec_type!=5}}"
+											class='go-center'>
+											<view class='choosesize-cancel' data-item='{{item}}' bindtap='cancelWindiow'>取消</view>
+										</view>
+									</view> -->
+                  <view>
+                    <view wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0 && Menu.getCountNum(cartList, item.dishes_id)<2&&item.spec_type!=8&&item.weighing==1}}" class='go-center'>
+                      <view class='choosesize-cancel' data-item='{{item}}' bindtap='cancelWindiow'>取消</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class='oneline' style="margin-top:4rpx">
+                <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+                </image>
+                <view class='text' style='margin-top:4rpx;/*margin-right:50rpx*/'>：{{item.praise_points}}</view>
+                <view class='btn_small_y' style="height:36rpx;width:90rpx;margin-top:10rpx;margin-left: 25%;" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" bindtap='addHead' wx:if="{{!item.dishes_recommend&&item.specal_type==1&&(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27)&&(menuList[c1Idx].mainType=='茶位米饭'&&item.dishes_metering_type=='位')}}">
+                  按人头</view>
+                <view wx:else style='width:110rpx'></view>               
+                
+              </view>
+              
+              <view class='oneline text' style="width:112%">
+                <view>操作类型:</view>
+                <view>{{filters.specTypeName(item.specal_type==6?7:item.spec_type)}}</view>
+              </view>
+            </view>
+
+            <view class='content-list-right'>
+              <view class='text1' wx:if="{{Menu.quxiao(cartList,item.dishes_id)}}">{{Menu.quxiao(cartList,item.dishes_id)}}</view>
+              <view style="display:flex;">
+                <view style="width:40rpx">
+                  <image wx:if="{{((item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)) && (item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27 || item.spec_type==100)}}" bindtap="" style="width:100%;margin-top:20rpx;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                </view>
+                <view class='muenBtn' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' style="background:{{item.dishes_statu===0?'#bfbfbf':''}}" data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'dishesInfo'}}" wx:if="{{item.specal_type == 6}}">详
+                  情                  
+                </view>
+                <!-- 规格类型判断 -->
+                <view class='btn_small_y' style="height:40rpx;width:120rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}};" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'dishesInfo'}}" wx:if="{{(item.spec_type==0||item.spec_type == 21 ||item.spec_type == 23 ||item.spec_type == 25 || item.spec_type == 26) && item.spec_type != 27 && item.specal_type !=6}}">
+                  详 情</view>
+                <view class='btn_small_y' style="height:40rpx;width:120rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}};" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="choosePackage" wx:elif="{{item.spec_type == 27}}">
+                  详 情</view>
+                <view class='btn_mid_Brownish_green' style="height:40rpx;width:120rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}};" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="dishesInfo" wx:elif="{{item.spec_type == 100 || item.spec_type == 101}}">
+                  详 情</view>  
+              </view>
+
+              <!--210 加减号去掉-->
+              <view wx:if="{{item.spec_type==0&&item.weighing==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26}}">
+                <view wx:if="{{item.specal_type!=6 && toMenu != 100}}" class='down-center' style='margin-top:20rpx'>                  
+                  <i class="iconfont icon-jian {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on-reduce '}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on-reduce'}}" style="color:{{(Menu.getCountNum(cartList, item.dishes_id)&&Menu.plus(cartList,item.dishes_id))?'#ff9c35':'gray'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'reduceDish'}}"></i>
+
+                  <view class='menucount'>
+                    <view class='menucount' style="color:{{items.item_type==2?'green':''}}">
+                      {{Menu.getCountNum(cartList, item.dishes_id)}}
+                    </view>
+                  </view>
+
+                  <i class="iconfont icon-jiahao2fill {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on'}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-item="{{item}}" data-id="{{item.dishes_id}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'addDish'}}"></i>
+                </view>
+
+                <view class='text' style='display:flex;justify-content:center;' wx:if="{{item.dishes_statu==3}}">已下架
+                </view>
+                <view class='text' style='display:flex;justify-content:center;' wx:elif="{{item.dishes_statu==0}}">售完
+                </view>
+              </view>             
+
+
+              <view wx:else>
+                <view class="box-bottom-view" bindtap="dishesInfo" data-index="{{index}}" data-item='{{item}}' wx:if="{{(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26 || item.spec_type==27) && item.spec_type!=7 && item.weighing==0 }}">
+                  <view class="choosesize-on" style='display:flex; justify-content:center;margin-top:4rpx'>
+                    <view class="box" wx:if="{{item.dishes_statu==3}}">已下架</view>
+                    <view class="box" wx:elif="{{item.dishes_statu==0}}">售完</view>
+                  </view>
+                </view>
+
+                <view wx:elif="{{item.spec_type==100 || item.spec_type==101}}" class="box-bottom-view" style="margin-top: 10px;">
+                  <i class="iconfont icon-jian {{item.dishes_statu==3?'plus-icon-off':'plus-icon-on-reduce '}} {{item.dishes_statu==0?'plus-icon-off':'plus-icon-on-reduce'}}" style="color:{{(Menu.getCountNum2(cartList, item.uuid)&&Menu.plus(cartList,item.dishes_id))?'#ff9c35':'gray'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-id="{{item.uuid}}" bindtap="{{(isActive || item.dishes_statu===0)?'':'reduceDish2'}}"></i>
+
+                  <view class='menucount'>
+                    <view class='menucount' style="color:{{items.item_type==2?'green':''}}">
+                      {{Menu.getCountNum2(cartList, item.uuid)}}
+                    </view>
+                  </view>
+
+                  <i wx:if="{{item.showAdd}}" class="iconfont icon-jiahao2fill plus-icon-off"></i>
+                  <i wx:else class="iconfont icon-jiahao2fill {{Menu.getCountNum2(cartList, item.uuid) >= 1 ? 'plus-icon-off' : 'plus-icon-on'}}" data-dishesid="{{item.dishes_id}}" data-index="{{index}}" data-id="{{item.uuid}}" bindtap="{{Menu.getCountNum2(cartList, item.uuid) >= 1? '' : 'addDishNew'}}">
+                  </i>
+                </view>
+
+
+                <view wx:elif="{{item.spec_type==8}}" class="box-bottom-view" bindtap="{{permission.judge('60',levellist)? 'jump':(isActive || item.dishes_statu===0)?'':'toOrderProcessing'}}" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+
+                  <view style="width:40rpx">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_mid_Brownish_red" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                    <view class="box-bottom">来料加工</view>
+                  </view>
+                </view>      
+
+                <!-- 如果是普通套餐210，点详情跳转到商品详情页面-->
+                  <view wx:elif="{{item.spec_type==210}}" class="box-bottom-view" bindtap="dishesInfo" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+                    <view style="width:40rpx">
+                        <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                    </view>
+                    <view class="btn_mid_Brownish_green" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                        <view class="box-bottom">详 情</view>
+                    </view>
+                  </view>         
+
+                <view wx:elif="{{item.spec_type==2}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'toOrderProcessing'}}" data-index="{{index}}" data-item='{{item}}' data-num='2'>
+                  <view style="width:40rpx">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_small_djl" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                    <view class="box-bottom">多计量</view>
+                  </view>
+                </view>
+
+                <view wx:elif="{{((item.spec_type==1 || item.spec_type == 22 || item.spec_type == 24) &&item.weighing!=1) || item.spec_type==6}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'selectInfo_guige_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+                  <view style="width:40rpx;">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_mid_y" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                    <view class="box-bottom">选规格</view>
+                  </view>
+                </view>
+
+                <view wx:elif="{{item.spec_type==4 || item.spec_type==3  || item.spec_type==10}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':item.spec_type==10?'selectInfo_booking_newType10':'selectInfo_booking_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+
+                  <view style="width:40rpx">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_small_brown" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                    <view class="box-bottom">多做法</view>
+                  </view>
+                </view>
+
+
+                <view wx:elif="{{item.spec_type==9 || item.spec_type==91}}" class="box-bottom-view" bindtap="{{(isActive || item.dishes_statu===0)?'':'selectInfo_guige_new'}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}'>
+
+                  <view style="width:40rpx">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_mid_d" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;background:{{item.dishes_statu===0?'#bfbfbf':''}}">
+                    <view class="box-bottom">选拼菜品</view>
+                  </view>
+                </view>
+
+                <view wx:elif="{{item.spec_type==10}}" class="box-bottom-view">
+                  <view style="width:40rpx">
+                    <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" data-item='{{item}}' data-index='{{index}}' src='{{text_img}}'></image>
+                  </view>
+                  <view class="btn_mid_y" style="display:flex; justify-content:center;margin-top:4rpx;width: 120rpx;height: 40rpx;">
+                    <view class="box-bottom">多规格</view>
+                  </view>
+                </view>
+
+                <view wx:else style='display:flex; justify-content:flex-end;margin-bottom:10rpx;padding-right:8rpx;' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-num='2' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{item.weighing==1 && item.spec_type!=6?'selectInfo_booking_new':'selectInfo_guige_new'}}">
+
+                  <image wx:if="{{(item.remark!='' && item.remark)||(item.tastes!='' && item.tastes)}}" style="width:40rpx;display:flex;align-items:center;height:50rpx;" src='{{text_img}}'></image>
+                  <view class="{{item.spec_type==1 ||item.spec_type==22 || item.spec_type==24 || item.spec_type==6 || item.spec_type==8 ?'choosesize-on':'choosesize-off'}}" style='display:flex; justify-content:center;margin-top:4rpx' wx:if="{{item.specal_type!=6}}">
+                    <view wx:if="{{item.spec_type==7}}">加配菜</view>
+                    <view wx:elif="{{item.dishes_statu==3}}">已下架</view>
+                    <view wx:elif="{{item.dishes_statu==0}}">售完</view>
+                    <view wx:else>未知</view>{{item.spec_type}}
+                  </view>
+                </view>
+
+                <view class='oneline'>
+                  <view style='width:90%'>
+                    <view style='display:flex; justify-content:flex-end;margin-top:20rpx;padding-right:24rpx;'>
+                      <!-- 第二次加菜的加号 再加一份-->
+                      <block wx:if="{{item.spec_type!=8&&item.spec_type!=2}}">
+                        <i wx:if="{{(item.weighing&&Menu.getCountNum(cartList, item.dishes_id)>0)&& item.spec_type!=6 && item.spec_type!=10}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{(item.spec_type == 8 || item.spec_type == 2)?'toOrderProcessing':'selectInfo_booking_new'}}"></i>
+                      </block>
+
+                      <block wx:if="{{item.spec_type==8||item.spec_type==2}}">
+                        <i wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" class="iconfont icon-jiahao2fill {{item.spec_type==2?'djlactivity-color':'activity-color'}} font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="{{(item.spec_type == 8 || item.spec_type == 2)?'toOrderProcessing':'selectInfo_booking_new'}}"></i>
+                      </block>
+
+                      <!-- 第二次加菜的加号 再加一份-->
+                      <view wx:if="{{countarry.length!=0}}">
+                        <block wx:for="{{countarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                          <!-- 多规格的再加一份 -->
+                          <i wx:if="{{(items.dishes_id==menu[index].dishes_id)&&(item.spec_type==1 || item.spec_type==22 || item.spec_type==24)}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' bindtap="selectInfo_guige_new"></i>
+                          <!--&&menu[index].sideDishes!=0-->
+                          <!-- 多拼粥的再加一份 -->
+                          <i wx:if="{{(items.dishes_id==menu[index].dishes_id)&&(item.spec_type==9 || item.spec_type==91)}}" class="iconfont icon-jiahao2fill activity-color font20" data-num='1' data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" data-item='{{item}}' style="color:#d19453" bindtap="selectInfo_guige_new"></i>
+                        </block>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class='oneline' style="flex-direction: column;" wx:if="{{item.spec_type==5}}">
+            <!-- 规格类型判断 -->
+            <view style='width:100%;margin-top:20rpx;align-items: center;margin-left: 6rpx;justify-content: flex-start;' class='oneline'>
+              <view class="{{item.dishes_statu==3?'text-title-off':'text-title-on'}}" style="width:45%">
+                {{item.dishes_code}}{{item.dishes_name}}</view>
+              <view style="width:40rpx">
+                <image wx:if="{{(!(item.remark=='') && item.remark)||(!(item.tastes=='') && item.tastes)}}" bindtap="" style="width:100%;display:flex;align-items:center;height:50rpx;" src='{{text_img}}'></image>
+              </view>
+              <view class='btn_small_y' style="height:40rpx;width:120rpx;background:{{!temporaryCode ? 'url('+ tempImg + ') no-repeat' :''}}" data-dishes_statu='{{item.dishes_statu}}' data-spec_type='{{item.spec_type}}' data-weighing='{{item.weighing}}' data-dishesid='{{item.dishes_id}}' data-index="{{index}}" bindtap='dishesInfo'>详 情</view>
+            </view>
+            <view style="display:flex;flex-direction: column;">
+              <view class='oneline'>
+                <view class='out-take' wx:if="{{item.sales_category==2||item.sales_category==1}}">外卖</view>
+              </view>
+              <view class='oneline' style="margin-top:7rpx">
+                <view class='text' style='width:180rpx;'>月销量:{{item.monthly_sales_volume}}</view>
+                
+                <view wx:if="{{item.spec_type!=0||(item.weighing!=0 && item.spec_type!=6)}}">
+                  <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                    <view wx:if="{{items.dishes_id==item.dishes_id}}" class='go-center'>
+                      <view class='choosesize-cancel' wx:if="{{item.weighing==1}}" data-item='{{item}}' bindtap='cancelWindiow'>取消</view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view class='oneline' style="margin-top:4rpx">
+                <view class='oneline' style='width:115rpx'>
+                  <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+                  </image>
+                  <view class='text' style='margin-top:4rpx;/*margin-right:50rpx*/'>：{{item.praise_points}}</view>
+                </view>
+                <form bindsubmit="formsubmit" style="width:325rpx">
+                  <view style="display:flex;width:100%;align-items: center;justify-content:flex-end;">
+                    <view style="font-size:24rpx">预订：</view>
+                    <view wx:if="{{item.thisMenuBoolean==1}}">
+                      <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                        <view wx:if="{{items.dishes_id==item.dishes_id}}">
+                          <view class='oneline'>
+
+                            <input class='input' placeholder-class='placeholder-class' maxlength='4' type='digit' name='weight_money2' style="margin:0rpx;width:50rpx;" value="{{items.weight_ceiling}}"></input>
+                            <view style="font-size:24rpx;margin-left:10rpx;margin-right:10rpx">
+                              {{item.dishes_metering_type}}</view>
+                          </view>
+                        </view>
+                      </view>
+                    </view>
+                    <view wx:else>
+                      <view class='oneline'>
+
+                        <input class='input' placeholder-class='placeholder-class' maxlength='4' type='digit' name='weight_money2' style="margin:0rpx;width:50rpx;"></input>
+                        <view style="font-size:24rpx;margin-left:10rpx;margin-right:10rpx">{{item.dishes_metering_type}}
+                        </view>
+                      </view>
+                    </view>
+
+                    <view class='select-dishes' style="margin:0rpx;">
+                      <button class='btn_small_y' data-dishesid="{{item.dishes_id}}" data-index="{{index}}" style='padding:0rpx;height:36rpx;width:90rpx;' formType="submit"> 确定 </button>
+                    </view>
+
+
+                  </view>
+                </form>
+              </view>
+            </view>
+          </view>
+
+          <view class='oneline' style='font-size:24rpx;color:orange' wx:if="{{item.spec_type==6}}">
+            <view wx:for="{{countarry}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+              <view wx:if="{{item.dishes_id==items.dishes_id}}" class='oneline'>
+                <view style='width:140rpx' class="go-center">预订：{{items.countnum}}{{item.dishes_metering_type}}</view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 单规格数量金额 -->
+          <block wx:if="{{(item.spec_type==0 || item.spec_type==21 || item.spec_type==23 || item.spec_type==25 || item.spec_type==26) && item.weighing==0 && item.specal_type !=6}}">
+            <block wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length}}">
+              <block wx:for="{{Computed.showCount2Single(cartList, item.dishes_id)[1]}}" wx:for-index="addDishIdx" wx:key="index">
+                <view class='oneline' style='font-size:24rpx;color:orange;font-weight:bold'>
+                  <view style='width:30%;margin-left:5rpx'>
+                    <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' :
+                      ''}}</span>{{item.dishes_price}}/<span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' :
+                      ''}}</span>{{item.dishes_metering_type == 0 ?'份':
+                    item.dishes_metering_type|| item.spec_name == 0 ? '份' :item.spec_name}}
+                  </view>
+
+                  <view class='oneline' style='width:80%;' wx:if="{{item.specal_type!=6}}">
+                    <view style='width:50%;margin-left:-30%;display:flex;flex-direction:row-reverse;'>
+                      <block wx:if="{{addDishIdx+1===1}}">
+                        <view class='go-center' style='width:160rpx'>
+                          <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}">{{Computed.showCount2Single(cartList,
+                            item.dishes_id)[0].number}}<text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1][0].number>0}}">+</text></text>{{Computed.showCount2Single(cartList,
+                          item.dishes_id)[1][0].number}}
+                          <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}" decode="{{true}}">=&nbsp;{{Computed.totalDgg(Computed.showCount2Single(cartList,
+                            item.dishes_id)[0].number , Computed.showCount2Single(cartList,
+                            item.dishes_id)[1][0].number)}}</text>
+                        </view>
+                      </block>
+                      <block wx:else>
+                        <view class='go-center' style='width:160rpx'>
+                          {{Computed.computedCount2Single(cartList, item.dishes_id, addDishIdx)}}<text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1][addDishIdx].number>0}}">+</text>{{Computed.showCount2Single(cartList,
+                          item.dishes_id)[1][addDishIdx].number}}
+                          <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}" decode="{{true}}">=&nbsp;{{Computed.totalDgg(Computed.computedCount2Single(cartList,
+                            item.dishes_id, addDishIdx),Computed.showCount2Single(cartList,
+                            item.dishes_id)[1][addDishIdx].number)}}</text>
+                        </view>
+                      </block>
+                    </view>
+
+                    <view style='width:50%;margin-left:-5%;display:flex;flex-direction:row-reverse;' wx:if="{{xdswidth}}">
+                      <view class='go-center' style='width:110%'>
+                        <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length-1==addDishIdx}}" style="margin-left:70rpx;">￥{{Computed.computedTotal2Single(cartList,
+                          item.dishes_id)}}元</text>
+                      </view>
+                    </view>
+
+                    <view style='width:50%;margin-left:-5%;display:flex;flex-direction:row-reverse;' wx:else>
+                      <view class='go-center' style='width:110%'>
+                        <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length-1==addDishIdx}}" style="margin-left:70rpx;">￥{{Computed.computedTotal2Single(cartList,
+                          item.dishes_id)}}元</text>
+                      </view>
+                    </view>
+
+                  </view>
+                  <view wx:if="{{item.specal_type == 6}}">
+                    <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}">{{Computed.showCount2Single(cartList,
+                      item.dishes_id)[0].number}}</text>
+                    <text wx:else>{{item.number}}</text>
+                    <text wx:if="{{Computed.showCount2Single(cartList, item.dishes_id)[1].length-1==addDishIdx}}" style="margin-left:50rpx">总金额：￥{{Computed.newsum(cartList, item.dishes_id)}}元</text>
+
+                  </view>
+                </view>
+              </block>
+            </block>
+            <view wx:else class='oneline' style='font-size:24rpx;color:orange;font-weight:bold'>
+              <view style='width:30%;margin-left:5rpx'>
+                <view><span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{item.dishes_price}}/
+                  <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type || item.spec_name}}
+                </view>
+              </view>
+
+              <view class='oneline' style='width:80%;'>
+                <view style='width:50%;margin-left:-30%;display:flex;flex-direction:row-reverse;'>
+                  <view class='go-center' style='width:160rpx'>
+                    {{Computed.showCount2Single(cartList, item.dishes_id)[0].number}}
+                  </view>
+                </view>
+
+                <view style='width:50%;margin-left:-5%;display:flex;flex-direction:row-reverse;'>
+                  <view wx:if="{{Computed.computedTotal2Single(cartList, item.dishes_id)!=0}}" class='go-center' style='width:110%'>
+                    <text>总金额：￥{{Computed.computedTotal2Single(cartList, item.dishes_id)}}元</text>
+                  </view>
+                </view>
+
+              </view>
+            </view>
+          </block>
+
+          <view class='oneline' style='font-size:26rpx;font-weight:bold;color:orange' wx:elif="{{item.spec_type==210||item.spec_type==211||item.spec_type==220}}">
+
+                <view style='width:180rpx;'>
+                    <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span><span>{{item.dishes_price}}/</span>
+                    <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type}}
+                </view>
+                <view wx:if="{{set_meal_array.length>0}}" wx:for="{{set_meal_array}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+                <view wx:if="{{item.dishes_id==items.dishes_id&&item.spec_type==items.spec_type}}" class='oneline'>  
+                    <view style='width:20rpx'>
+                        {{items.item_number}}
+                    </view>
+                    </view>
+                </view>
+                <view wx:if="{{set_meal_array.length>0}}" wx:for="{{set_meal_array}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+                    <view wx:if="{{item.dishes_id==items.dishes_id&&item.spec_type==items.spec_type}}" class='oneline'>  
+                        <view  class='oneline' style="margin-left: 20rpx;">
+                        总金额：￥{{items.sum}}元
+                        </view>
+                    </view>
+                </view>
+            </view>
+          <view class='oneline' style='font-size:26rpx;font-weight:bold;color:orange' wx:elif="{{((item.spec_type==1 || item.spec_type==22 || item.spec_type==24 || item.specal_type == 6)&&item.weighing==0) ||item.spec_type==6 || item.spec_type==7 || item.spec_type==9 || item.spec_type==91 || item.spec_type==27 || item.spec_type==100 || item.spec_type==101}}">
+            <view style='width:180rpx;' wx:if="{{item.spec_type != 100 && item.spec_type != 101}}">
+              <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>
+              {{item.dishes_price}}/
+              <span style="color: #009900">
+                {{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>
+              {{item.dishes_metering_type}}
+            </view>
+
+            <view style='width:180rpx;' wx:elif="{{item.spec_type == 100 || item.spec_type == 101}}">
+              <span style="color: #bfbfbf">
+                {{item.ticketPrice}}/{{item.dishes_unit}}</span>
+            </view>
+
+            <view wx:for="{{countarry}}" wx:key="index" wx:for-index="indexs" wx:for-item="items" class='oneline'>
+              <view wx:if="{{item.dishes_id==items.dishes_id}}" class='oneline'>
+                <!-- class="go-center" -->
+                <view style='width:40rpx' wx:if="{{item.spec_type!=6}}">{{items.countnum}}</view>
+                <view style='width:40rpx' wx:else>实称：0{{item.dishes_metering_type}}</view>
+                <!-- style='width:140rpx;flex-direction:row-reverse' -->
+                <view wx:if="{{item.spec_type!=6}}" class='oneline' style="margin-left: 40rpx;">
+                  总金额：￥{{items.countprice}}元</view>
+                <view style='width:140rpx;flex-direction:row-reverse' wx:else class='oneline'>0元</view>
+              </view>
+            </view>
+          </view>
+
+          <view class='oneline' style='width:78%;font-size:26rpx;font-weight:bold' wx:elif="{{item.spec_type==8||item.spec_type==2}}">
+            <view style='width:100%' class='oneline'>
+              <view>
+                <view style='width:450rpx;display:flex' class='oneline'>
+                  <view wx:if="{{Menu.getDishesPrice(cartList, item.dishes_id)!='' && item.weighingByLocation==1}}" style='width:40%;' class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}">
+                    {{Menu.getDishesPrice(cartList,item.dishes_id)}}</view>
+                  <view wx:else style='width:40%;' class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}">
+                    <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{item.dishes_price}}/
+                    <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type}}
+                  </view>
+                  <view class='oneline' style='width:75%;'>
+                    <view wx:if="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:40%;color:orange;justify-content:center;display:flex'>
+                      {{Menu.getCountNum(cartList, item.dishes_id)}}</view>
+                    <view wx:if="{{Menu.getTotalBySum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                      ￥{{Menu.getTotalBySum(cartList, item.dishes_id)}}元</view>
+                    <!--  -->
+                    <view wx:elif="{{Menu.getCountNum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                      ￥{{Menu.getTotalBySumS(cartList, item.dishes_id)}}元</view>
+
+                    <view wx:if="{{Menu.getDishesStatus(cartList, item.dishes_id)}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                      ￥0元</view>
+
+                    <!-- <view wx:if="{{Computed.newsum(cartList, item.dishes_id)>0}}" style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+											￥{{Computed.newsum(cartList, item.dishes_id)}}元</view> -->
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class='oneline' style='width:78%;font-size:24rpx;' wx:elif="{{item.weighing==1&&item.spec_type!=5}}">
+            <view style='width:100%;font-weight:bold;font-size:26rpx' class='oneline'>
+              <view class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}" style='width:180rpx;'>
+                <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{item.dishes_price}}/
+                <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type}}
+              </view>
+              <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline' style='width:340rpx;'>
+                  <view style='margin-top: 8rpx;width:30%;color:orange;justify-content:center;display:flex'>
+                    {{items.number}}</view>
+                  <view style='margin-top: 8rpx;width:70%;color:orange;justify-content:center;display:flex'>
+                    总金额:￥{{filters.toFix(items.sum)}}元</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 单规格称重 -->
+          <view class='oneline' style='width:78%;font-size:24rpx;' wx:elif="{{item.spec_type==5}}">
+            <view style='width:100%' class='oneline'>
+              <view class="{{item.dishes_statu==3?'price-text-off':'price-text-on'}}" style='width:180rpx;'>
+                <span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{item.dishes_price}}/
+                <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.dishes_metering_type}}
+              </view>
+
+              <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline' style='width:340rpx;'>
+                  <view style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                    {{items.number}}</view>
+                  <view style='margin-top: 8rpx;width:60%;color:orange;justify-content:center;display:flex'>
+                    ￥{{filters.toFix(items.sum)}}元</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class='oneline' style='width:78%;font-size:24rpx;' wx:if="{{item.spec_type==5}}">
+            <view style='width:100%;justify-content: flex-end' class='oneline'>
+              <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                <view wx:if="{{items.dishes_id==item.dishes_id && items.sideDishesSum>0}}" class='oneline box' style='width:340rpx;justify-content: flex-end'>
+                  <view style='margin-top: 8rpx;margin-right:7%;color:orange;justify-content:center;display:flex'>
+                    总价：￥{{filters.toFix(items.sideDishesSum)}}元</view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <!-- 单规格称重下单是的人员和时间 -->
+          <view class='oneline' style='width:78%;font-size:24rpx;' wx:if="{{item.spec_type==5}}">
+            <view style='width:100%' class='oneline'>
+              <view wx:for="{{weightarry}}" wx:for-index="indexs" wx:for-item="items" wx:key="index">
+                <view wx:if="{{items.dishes_id==item.dishes_id}}" class='oneline'>
+                  <view style='margin-top: 8rpx;width:100%;color:orange;justify-content:center;display:flex'>
+                    {{items.operator}}：{{items.operation_time}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </view>
+    </block>
+    <view style="height:100rpx;"></view>
+  </scroll-view>
+
+  <view wx:if="{{showAdv}}" style="background-color: white;position: fixed;bottom:{{checkmenu==1?'0':'80rpx'}};width: 100%;height: 212rpx;margin-left: 150rpx;">
+    <video wx:if="{{is_video_show==1}}" id="sVideo" bindended="startVideo" show-play-btn="false" show-center-play-btn="false" controls="false" autoplay="true" object-fit="fill" style="width: 472rpx;height:186rpx;margin-left: 50rpx;margin-top: 14rpx;" src="{{sVideo}}"></video>
+    <image style='position: absolute;width:50rpx;height:50rpx;margin-left:13rpx;margin-top: 16rpx;' src='{{i_close_img}}' bindtap='closeWindow'></image>
+  </view>
+
+  <!-- 沽清选择食材弹出框 -->
+  <view wx:if='{{isShowModal}}'>
+    <view class='mask_layer' />
+    <view class='modal_box'>
+      <view class="title">请选择要沽清的食材</view>
+      <view class='content'>
+        <checkbox-group bindchange="checkboxChange">
+          <checkbox wx:for="{{foods_material}}" wx:key="index" value="{{item.stuff_id}}" checked="{{isChecked}}" data-index="{{index}}">{{item.scname}}</checkbox>
+        </checkbox-group>
+      </view>
+      <view class='modal_btn'>
+        <view bindtap='modal_click_Hidden' class='cancel'>取消</view>
+        <view bindtap='bindSure' class='Sure'>确定</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作菜单  style="margin-bottom: {{marginBottom}}rpx;" -->
+  <view class="operate-bar" wx:if="{{toMenu != 100}}">
+    <view class='gouwuche'>
+      <view style='padding:10rpx;display:flex;align-items: center'>
+        <view wx:if="{{cartList.length===0}}">
+          <image class='gouwuche-icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_cailanzi_off.png' bindtap="showCartList" id="s1"></image>
+        </view>
+        <view wx:else>
+          <image class='gouwuche-icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_cailanzi_on.png' bindtap="goBalance_new_new_new" id="s2" data-isfromcartimg="1">
+            <!-- 暂时注掉 -->
+            <!-- <span wx:if="{{cartList.length>0}}" class="number-msg">{{Menu.getCartListCount(cartList)}}</span> -->
+            <!-- <span class="number-msg" wx:if="{{cartList.length!=0}}">{{cupNumber}}</span> -->
+            <!-- 购物车的份数显示 -->
+            <span wx:if="{{cartList.length>0}}" class="number-msg">{{Menu.getCartListCount(cartList)}}</span>
+          </image>
+        </view>
+        <view class='gouwuche-price' style='color:white;font-size:32rpx' wx:if="{{cartList.length>0}}">¥
+          <text wx:if="{{Menu.getCartListTotal(cartList, item.dishes_id).total>0&&Menu.getCartListTotal(cartList, item.dishes_id).total1<=0}}">{{Menu.getCartListTotal(cartList, item.dishes_id).total}}
+          </text>
+          <text wx:elif="{{Menu.getCartListTotal(cartList, item.dishes_id).total>0&&Menu.getCartListTotal(cartList, item.dishes_id).total1>0}}">{{Menu.getCartListTotal(cartList, item.dishes_id).total}}+<text style="color: #bfbfbf;">{{Menu.getCartListTotal(cartList, item.dishes_id).total1}}</text>
+          </text>
+          <text wx:else>
+            <text style="color: #bfbfbf;">{{Menu.getCartListTotal(cartList, item.dishes_id).total1}}</text>
+          </text>
+        </view>
+        <view class='gouwuche-price' wx:else> </view>
+        <!-- <view class='gouwuche-price' style='color:white;font-size:32rpx'
+					wx:if="{{sumMonney!=0||(sumMonney==0&&cupNumber!=0)}}">¥ {{filters.toFix(sumMonney)}} 元</view> -->
+
+        <view class="gouwuche-price " style="color:{{sumMonney!=0?'#FFFFFF':'#a9a9a9'}}" wx:if="{{locationid>0}}">
+          位置:{{locationname}}</view>
+      </view>
+    </view>
+    <view class="submit-btn {{cartList.length>0?'activity-color-bg':'color-lightgray'}}" bindtap='goBalance_new_new_new' style="padding-bottom: {{marginBottom}}rpx;" data-isfromcartimg="0">
+      <view class="submit-btn-label">选好了
+      </view>
+    </view>
+  </view>
+  <!-- <view style="position: fixed;bottom: 0;width: 100%;height: {{marginBottom}}rpx;display: flex;flex-direction: row;z-index: 9999;">
+		<view style="width: 80%;height: 100%;background-color: #353535;">
+		</view>
+		<view style="width: 20%;height: 100%;background-color: lightgray;">
+		</view>
+	</view> -->
+</view>
+
+<!-- 选择弹窗-选择规格  称重多规格专用-->
+<view bindtap='selectInfo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{showModalStatus3}}'></view>
+<view class='popup-window' catchtouchmove="aaa" id="wighing_detail_sideDishe" wx:if='{{showModalStatus3}}'>
+  <view style='margin:30rpx;'>
+    <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img}}' bindtap='closeWindow'></image>
+    <view class='oneline'>
+      <image class='popup-window-image' src='{{dishes.dishes_img}}'></image>
+      <view style='margin-left:20rpx;font-size:28rpx;font-weight:bold'>
+        <view>{{guige_name}}</view>
+        <view>预定: {{guige_Num}}{{dishes.dishes_metering_type}}</view>
+        <view>实称: 0{{dishes.dishes_metering_type}}</view>
+      </view>
+    </view>
+  </view>
+  <view class='popup-window-table' style="height:27%">
+    <view class='table-title'>
+      <view class="th" style='width:10%'></view>
+      <view class='th' style='width:45%'>规格名称</view>
+      <view class='th' style='width:20%'>单价</view>
+      <view class='th' style='width:25%'>总价</view>
+    </view>
+
+    <scroll-view scroll-y="true" class='scroll' style="width:100%;height: 90%;margin-bottom: 0rpx;">
+      <view wx:for="{{dishesSpecArry}}" wx:key="index" wx:for-item="item" wx:for-index="index" style="border-top: 0.5px solid #c9c9c9;border-bottom: 0.5px solid #c9c9c9">
+        <view class='tr' data-item='{{item}}' data-index='{{index}}' bindtap="choose_guige">
+          <view class='td' style='width:10%'>
+            <image class='radio' src="{{czgg.spec_id==item.spec_id?radio_on_img:radio_off_img}}"></image>
+          </view>
+          <view class='td' style='width:45%'>{{item.spec_name}}</view>
+          <view class='td' style='width:20%'>{{item.spec_price}}</view>
+          <view class='td' style='width:25%'>0</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <s-sideDishesView wx:if="{{dishes.sideDishes!=0}}" style="height: 27%;margin-bottom: 3%;width: 92%;margin-left: 4%;" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:changeBoxNum="changeBoxNum" bind:submitSideDish="submitSideDish" isTable="{{true}}" />
+
+  <form style='margin-top:20rpx' wx:if="{{!shrinkIntrIntroduction}}">
+    <view class='note' style='height: 20%'>
+      <label style='font-size:30rpx;font-weight:bold'>菜品介绍</label>
+      <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></text>
+      <textarea wx:else maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></textarea>
+    </view>
+  </form>
+
+  <view class="oneline" style="width: 100%;justify-content: space-around;">
+    <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>菜品介绍
+    </view>
+    <view class='btn_small_y' style='width:150rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicai'>选择配菜</view>
+    <view class='btn_small_y' style='width:150rpx;' bindtap='chooseTaste'>选择口味</view>
+  </view>
+
+  <form style='margin-top:20rpx'>
+    <view class='note' style='height:25%;margin-top:30rpx'>
+      <label style='font-size:30rpx;font-weight:bold;justify-content: space-between;align-items: center;display: flex;'>
+        <text>客人备注：</text>
+        <image style='height: 64rpx;width: 64rpx;margin-left: 5rpx;padding: 5px;' data-type="0" bindtap="showRemarkList_new" src='{{menu_img}}'></image>
+      </label>
+      <view wx:if="{{tastesRemark!=''}}" style="width:100%;background:#e5e5e5;font-size:26rpx">
+        <text>口味：{{tastesRemark}}</text>
+      </view>
+      <text fixed wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" cursor-spacing="100" placeholder='如有口味要求，请输入备注' value='{{quickRemark}}' bindinput='remarks' class='note-text' style="height: 60%;"></text>
+      <textarea fixed wx:else cursor-spacing="100" placeholder='如有口味要求，请输入备注' value='{{quickRemark}}' bindinput='remarks' class='note-text' style="height: 60%;"></textarea>
+    </view>
+    <view style="display:flex;align-items: center;justify-content: center;">
+      <view class='btn_small_y' style='height:36rpx;width:90rpx;margin-bottom:30rpx' bindtap='addToCart2'>确定</view>
+    </view>
+  </form>
+
+</view>
+
+<!-- 菜品介绍弹窗 单规格 -->
+<view bindtap='dishesInfo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{showModalStatus4}}'></view>
+<view class='popup-window' catchtouchmove="aaa" id="single_detail_sideDishe" wx:if='{{showModalStatus4}}'>
+  <!-- 加个滚动条，能让备注内容滚动 -->
+  <scroll-view scroll-y="true" style="height:100%">
+    <view style='margin:30rpx;'>
+      <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img}}' bindtap='closeWindow'></image>
+      <view class='oneline'>
+        <image class='popup-window-image' src='{{dishes.dishes_img}}'></image>
+        <view class="odd-dialog-total__wrp" style='margin-left:20rpx;font-size:28rpx;font-weight:bold'>
+          <view wx:if="{{haveSale && c1Idx == 0 && dishes.everyday_price > 0}}">[{{saleMenuWXS.week(dishes.weekend)}}]{{dishes.dishes_name}}</view>
+          <view wx:else>{{dishes.dishes_name}}</view>
+          <view class='text'>月销量:{{dishes.monthly_sales_volume}}</view>
+          <view class='oneline' style="margin-top:4rpx">
+            <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+            </image>
+
+            <view class='text' style='margin-top:4rpx;margin-right:50rpx'>：{{dishes.praise_points}}</view>
+
+          </view>
+          <view wx:if="{{dishes.spec_type != 100 && dishes.spec_type != 101}}" class='oneline odd-dialog-total' style='font-size:30rpx;color:orange;width: 118%;'>
+            <view class='oneline' style='margin-left:5rpx' wx:if="{{haveSale && c1Idx == 0 && dishes.everyday_price > 0}}">
+              <span style="color: #8E2323">{{dishes.everyday_price}}</span>/{{dishes.dishes_metering_type}}
+            </view>
+            <view class='oneline' style='margin-left:5rpx' wx:else>
+              <span style="color: #754a1f">{{dishes.vip_price != 0 ? dishes.vip_price + '/' : ''}}</span>{{dishes.dishes_price}}/
+              <span style="color: #009900">{{dishes.inline_price && dishes.inline_price != 0 ? dishes.inline_price + '/' : ''}}</span>{{dishes.dishes_metering_type}}
+            </view>
+            <!-- 单规格弹窗份数 -->
+            <view wx:if="{{Menu.getCountNum(cartList, dishes.dishes_id)>0}}">{{Menu.getCountNum(cartList,
+              dishes.dishes_id)}}</view>
+            <view wx:if="{{Menu.getCountNum(cartList, dishes.dishes_id)>0}}">
+              总金额:￥{{Menu.toFixed(Menu.getCountNum(cartList, dishes.dishes_id)*dishes.dishes_price)}}元</view>
+          </view>
+
+        </view>
+      </view>
+    </view>
+
+    <s-sideDishesView style="width:92%;margin-left:4%;height:20%" wx:if="{{dishes.sideDishes!=0}}" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:changeBoxNum="changeBoxNum" bind:submitSideDish="submitSideDish" isTable="{{true}}" />
+
+    <view wx:if="{{!shrinkIntrIntroduction && (dishes.spec_type == 100 || dishes.spec_type == 101)}}" style="width: 95%;display: flex;justify-content: flex-end;">
+      <view class='btn_small_y' style="height:50rpx;width:150rpx;" bindtap="goToSetMealDetail">{{dishes.spec_type == 101 ? '菜品详情' : '套餐详情'}}</view>
+    </view>
+
+    <view class='note' wx:if="{{!shrinkIntrIntroduction && (dishes.spec_type != 100 && dishes.spec_type != 101)}}" style='margin-top:20rpx' style="{{dishes.sideDishes!=0 ? 'height:25%' : 'height:35%'}}">
+      <label style='font-size:30rpx;font-weight:bold'>菜品介绍</label>
+      <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></text>
+      <textarea wx:else maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;padding: 10rpx 10rpx 10rpx 10rpx; width: 96%"></textarea>
+    </view>
+
+    <view class="oneline" style="width: 100%;justify-content: space-around;">
+      <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>菜品介绍
+      </view>
+      <view class='btn_small_y' style='width:150rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicai'>选择配菜</view>
+      <!-- <view class='btn_small_y' style='width:150rpx;' bindtap="{{readOnly ? 'showNoOpen':'chooseTaste'}}">选择口味</view> -->
+    </view>
+
+    <!-- 客人备注 -->
+    <!-- 2020-11-20 单规格备注重写-->
+    <view class='note' style='height: 30%;'>
+      <s-remarkView_new readOnly="{{false}}" onHide="{{showRemarkList || showTaste || showpeicai || showMultipleEatAndSpecView}}" remarkTitle="客人备注：" style="width: 92%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+    </view>
+
+    <view style="display:flex;align-items: center;justify-content: center;margin-top: 10rpx;height: 10%;">
+      <view class='btn_small_y' style="height:50rpx;width:150rpx;{{dishes.sideDishes!=0 ? 'margin-top:15rpx' : ''}}" data-remark-idx="{{curDishIdx}}" bindtap="{{dishes.sideDishes!=0 ? 'addToCart5' :'save_remark'}}">
+        {{dishes.sideDishes!=0 ? '添加菜品':'确定'}}</view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 菜品介绍弹窗 单规格称重 慎重起见分离出来 -->
+<view bindtap='dishesInfo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{showModalStatus6}}'></view>
+<view class='popup-window' catchtouchmove="aaa" id="single_detail_weigh_sideDishe" wx:if='{{showModalStatus6}}'>
+  <view style='margin:30rpx;'>
+    <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img}}' bindtap='closeWindow'></image>
+    <view class='oneline'>
+      <image class='popup-window-image' src='{{dishes.dishes_img}}'></image>
+      <view style='margin-left:20rpx;font-size:28rpx;font-weight:bold'>
+        <view>{{dishes.dishes_name}}</view>
+        <view class='text'>月销量:{{dishes.monthly_sales_volume}}</view>
+        <view class='oneline' style="margin-top:4rpx">
+          <image style='width:30rpx;height:30rpx' src="{{item.dishes_statu==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png'}}">
+          </image>
+
+          <view class='text' style='margin-top:4rpx;margin-right:50rpx'>：{{dishes.praise_points}}</view>
+
+        </view>
+        <view class='oneline' style='font-size:30rpx;color:orange'>
+          <view class='oneline' style='margin-left:5rpx'>{{dishes.dishes_price}}元/{{dishes.dishes_metering_type}}</view>
+        </view>
+
+      </view>
+      <!-- 如果有多个相同的菜品，显示按钮选择需要修改的菜品 -->
+      <view style='margin-left:20rpx;font-size:28rpx;font-weight:bold;display: flex;align-items: center;'>
+
+        <view wx:if="{{newList.length>1}}" class='btn_small_y' style="height:50rpx;width:150rpx;" bindtap="chooseDishes">选择菜品</view>
+      </view>
+    </view>
+  </view>
+
+  <s-sideDishesView style="width:92%;margin-left:4%;height:20%" wx:if="{{dishes.sideDishes!=0}}" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:changeBoxNum="changeBoxNum" bind:submitSideDish="submitSideDish" isTable="{{true}}" />
+
+  <view class='note' wx:if="{{!shrinkIntrIntroduction}}" style='margin-top:20rpx' style="{{dishes.sideDishes!=0 ? 'height:25%' : 'height:35%'}}">
+    <label style='font-size:30rpx;font-weight:bold'>菜品介绍</label>
+    <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></text>
+    <textarea wx:else maxlength="{{1000}}" disabled='true' placeholder='切瓜切菜菜品介绍' value='{{dishes.dishes_introduce}}' bindinput='remarks' class='note-text' style="height: 70%;"></textarea>
+  </view>
+
+  <view class="oneline" style="width: 100%;justify-content: space-around;">
+    <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>菜品介绍
+    </view>
+    <view class='btn_small_y' style='width:150rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicai'>选择配菜</view>
+    <view class='btn_small_y' style='width:150rpx;' bindtap="{{readOnly ? 'showNoOpen':'chooseTaste'}}">选择口味</view>
+  </view>
+
+  <!-- 客人备注 -->
+  <!-- 2020-11-20 单规格备注重写-->
+  <view class='note' style='height: 30%;'>
+    <s-remarkView_new readOnly="{{false}}" onHide="{{showRemarkList || showTaste || showpeicai || showMultipleEatAndSpecView}}" remarkTitle="客人备注：" style="width: 92%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+  </view>
+
+  <view style="display:flex;align-items: center;justify-content: center;margin-top: 10rpx;height: 10%;">
+    <view class='btn_small_y' style="height:50rpx;width:150rpx;{{dishes.sideDishes!=0 ? 'margin-top:15rpx' : ''}}" bindtap="{{dishes.sideDishes!=0 ? (dishes.spec_type==5 ? 'addToCart6':'addToCart5') :(dishes.spec_type==5 ? 'addToCart6':'save_remark')}}">
+      确定</view>
+  </view>
+</view>
+
+
+<!-- 菜单篮子里面的详情,选择弹窗-称重-->
+<!-- 下单时的多种吃法弹窗,一个菜品多种做法或吃法 -->
+<!-- 2020-12-08 可能是海鲜的,跟来料加工界面一致-->
+<!-- 废弃-->
+<view bindtap='showhowtodo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{showModalStatus2&&!display}}'></view>
+<view class='popup-window' catchtouchmove="aaa" id="multipleEatMethod_detail_sideDishe_1" wx:if='{{showModalStatus2&&!display}}'>
+  <view style='margin:20rpx;width:95%;height:{{remark_height}};display: flex;flex-direction: column;justify-content: space-between'>
+
+    <view class="top-bottom" style="margin-bottom:14rpx">
+      <image style='z-index:9; width:60rpx;height:60rpx;position:relative;right:-90%;top:0rpx;' src='{{i_close_img}}' bindtap='closeWindow'></image>
+      <!--<text class="title1" style="top:15rpx;">称重多做法</text>-->
+      <view class="incoming" style="margin-top: 0rpx;height:200rpx">
+        <view class="frame">
+          <text>名称：</text>
+          <view style="font-size:30rpx;width:60%">{{dishes.dishes_name}}</view>
+        </view>
+        <view class="frame">
+          <view style="display: flex; width:50%;margin-bottom: 10rpx;">
+            <text>单价：</text>
+            <view style="margin-right:2%;">{{dishes.dishes_price}}元/{{dishes.dishes_metering_type}}</view>
+          </view>
+          <view style="display: flex; width:50%">
+            <text>重量：</text>
+            <input style="width:40%;margin-right:4%" value="{{measurementValueInput && measurementValueInput != 0?measurementValueInput:''}}" placeholder-class="place-color" type='digit' bindinput="measurementValueInput" placeholder="输入数量"></input>
+            <text>斤</text>
+          </view>
+        </view>
+        <view class="frame">
+          <view style="display: flex;width:50%;margin-bottom: 10rpx;">
+            <text>金额：</text>
+            <text style="font-weight:normal;margin-right:2%;">{{measurementValueInput * dishes.dishes_price}}</text>
+            <text>元</text>
+          </view>
+          <view style="display: flex; width:50%;">
+            <text>总金额：</text>
+            <text style="font-weight:normal;margin-right:2%;">{{dishesMoney}}</text>
+            <text>元</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <scroll-view scroll-y='true' class="page_view" style="height:{{page_view_height-20}}rpx">
+
+      <text class="title1" style="top: 0rpx;z-index:1">选择做法</text>
+      <!-- 做法 -->
+      <view class="practice" style="height:350rpx">
+        <view class="table" style="margin-top:30rpx;height:300rpx">
+          <view style="height:100%">
+            <s-multipleEatMethodView bind:submitEatMethod="submitEatMethod" bind:showMultipleEatMethodView="showMultipleEatMethodView" needRemain="{{needRemain}}" xdswidth="{{xdswidth}}" eatMethodArray="{{eatMethodArray}}" isTable="{{true}}" isType10="{{dishes.spec_type == 10 ? true: false}}" EatmethodAndSpec="{{dishes.spec_type == 10 ? EatmethodAndSpec: ''}}">
+
+            </s-multipleEatMethodView>
+          </view>
+        </view>
+      </view>
+
+      <text class="title1" style="top: -12rpx;z-index:1">选择配菜</text>
+      <view class="ingredient" style="height:340rpx">
+        <!--style="height: 23%;margin-bottom: 3%;width: 99%;margin-left: 0%;"-->
+        <view class="table" wx:if="{{dishes.sideDishes!=0}}" style="height:145px;margin-top:15px">
+          <s-sideDishesView wx:if="{{dishes.sideDishes!=0}}" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:submitSideDish="submitSideDish" bind:changeBoxNum="changeBoxNum" isTable="{{true}}" />
+        </view>
+      </view>
+
+      <view wx:if="{{!shrinkIntrIntroduction}}" style="margin-left:2%;width: 96%;margin-bottom: 0;">
+        <s-remarkView readOnly="{{true}}" wx:if="{{!shrinkIntrIntroduction}}" remarkTitle="菜品介绍：" remarkValue="{{dishes.dishes_introduce}}" isIntroduction="{{true}}" onHide="{{showRemarkList || showTaste || showMaterial || showpeicai || showMultipleEatMethodView}}" />
+      </view>
+
+      <view class="oneline" style="width: 100%;justify-content: space-around;position:relative;top:-27rpx">
+        <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>
+          菜品介绍
+        </view>
+        <view class='btn_small_y' style='width:150rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicai'>选择配菜
+        </view>
+        <view class='btn_small_y' style='width:150rpx;' bindtap='chooseTaste'>选择口味</view>
+      </view>
+
+      <!-- 客人备注 -->
+      <!--2020-11-19 重写备注框 -->
+      <view style="margin-left:2%;width: 96%;">
+        <s-remarkView_new readOnly="{{false}}" onHide="{{showRemarkList || showTaste || showMaterial || showpeicai || showMultipleEatMethodView}}" remarkTitle="客人备注：" style="width: 100%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+      </view>
+      <view class='oneline' style='margin-top:20rpx;font-size:26rpx;flex-direction: row-reverse;justify-content:space-around;width:100%'>
+        <view class='btn_small_y' wx:if="{{selectInfovv_flag}}" style='width:150rpx' bindtap='addToCart4'>确定</view>
+        <view class='btn_small_y' wx:else style='width:150rpx' bindtap='addToCart3'>确定</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 一个菜品多种做法或吃法 -->
+<!-- 下单时的计件弹窗,一个菜品多种做法或吃法 -->
+<!-- 来料加工的弹框 -->
+<view class='popup-window-bg' catchtouchmove="aaa" bindtap='showhowtodo' wx:if='{{showModalStatus2&&display}}'></view>
+<view class='popup-window' id="multipleEatMethod_detail_sideDishe_jijian" catchtouchmove="aaa" wx:if='{{showModalStatus2&&display}}'>
+  <view style='margin:20rpx;width:95%;height:100%'>
+    <view style="border: 2rpx solid #888;border-radius:5rpx;">
+      <image style='width:60rpx;height:60rpx;float:right;position:absolute;right:30rpx;top:30rpx;' src='{{i_close_img}}' bindtap='closeWindow'></image>
+      <view class='oneline'>
+        <image style="width:120rpx;height:120rpx" src='{{dishes.dishes_img}}'></image>
+        <view style='font-size:26rpx;font-weight:bold;margin-left:15rpx'>
+          <view class='oneline' style='font-size:30rpx;padding:8rpx 0rpx'>{{dishes.dishes_name}}</view>
+          <view class='oneline' style='padding:8rpx 0rpx' wx:if="{{!(dishes.sideDishes ==1 && dishes.spec_type==4)}}">
+            <view>预订：</view>
+            <input class='input' placeholder-class='placeholder-class' maxlength='4' value='{{inputvalue}}' type='digit' bindinput='keyinput'></input>
+            <view>{{dishes.dishes_metering_type}}</view>
+          </view>
+
+          <view class='oneline' style='padding:8rpx 0rpx'>
+            <view>单价：{{dishes.dishes_price}}元/{{dishes.dishes_metering_type}}</view>
+            <view style="margin-left:60rpx;display:flex;flex-direction: column;">
+              <view>金额:{{dishes.dishes_price*inputvalue }}元</view>
+              <view wx:if="{{dishes.spec_type == 4 && inputvalue}}">
+                总金额:{{(dishes.dishes_price + sum_position)*filters.num(inputvalue) }}元</view>
+              <view wx:if="{{dishes.spec_type == 4 && !inputvalue}}">总金额:0元</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- 做法 -->
+    <view class='popup-window-table' style="font-size:26rpx;font-weight:bold;margin-top:10rpx;border:2rpx solid #888;border-radius:5rpx;height:30%">
+      <view class='oneline' style='width:100%;height:60rpx;'>
+        <view class='allcenter' style='width:100%'>
+          <view class='btn1' style="width:150rpx;" data-index='2' bindtap='selecthowtodo'>多种吃法</view>
+        </view>
+      </view>
+      <view class="table1">
+        <view class="tr1">
+          <view class="td1" style='width:13%'></view>
+          <view class="td1" wx:if="{{dishes.spec_type!=4}}">部位</view>
+          <view class="td1" style="{{dishes.spec_type==4 ? 'width:50%' : ''}}">名称</view>
+          <view class="td1" style="{{dishes.spec_type==4 ? 'width:37%' : 'width: 23%'}}">加收</view>
+        </view>
+      </view>
+      <scroll-view style="height:60%;" scroll-y="true">
+        <view style="width:100%;border-top: {{green_show0 ? 'green solid 2rpx' : 'transparent solid 2rpx'}};border-bottom:{{green_show0 ? 'green solid 2rpx' : 'transparent solid 2rpx'}};">
+          <view wx:for="{{whole}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+            <view class='down-center'>
+              <view class='oneline' data-index='{{index}}' data-name='{{item.eating_method}}' data-emname='{{item.em_name}}' data-emcount='{{item.count}}' data-emnumber='{{item.number}}' data-item='{{item}}' bindtap="{{result_em?'choose_whole':''}}" style='width:100%'>
+                <view class='td1' style='width:13%'>
+                  <image class='radio' src="{{en_index[0].id==item.id?radio_on_img:radio_off_img}}"></image>
+                </view>
+                <view class="td1" wx:if="{{dishes.spec_type!=4}}">{{item.em_name}}</view>
+                <view class='td1' style="{{ dishes.spec_type==4 ? 'width:50%' : ''}}">{{item.eating_method}}</view>
+                <view class="td1" style="{{ dishes.spec_type==4 ? 'width:37%' : 'width: 23%'}}">{{item.money}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view style="width:100%;border-top:green solid 2rpx;">
+
+          <view wx:for="{{parts}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+            <view class='down-center' style="border-top: {{(index>0 && item.number!=parts[index-1].number) ? 'green solid 2rpx;' : '' }}">
+              <view class='oneline' data-index='{{index}}' data-name='{{item.eating_method}}' data-emname='{{item.em_name}}' data-emcount='{{item.count}}' data-emnumber='{{item.number}}' data-item='{{item}}' bindtap="{{result_en?'choose_part':''}}" style='width:100%'>
+                <view class='td1' style='width:13%'>
+                  <image class='radio' src="{{em_index[item.number-1]==index?radio_on_img:radio_off_img}}"></image>
+                </view>
+                <view class="td1">{{item.em_name}}</view>
+                <view class='td1'>{{item.eating_method}}</view>
+                <view class="td1" style="width: 23%;">{{item.money}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view wx:if="{{dishes.sideDishes!=0}}" style="height: 23%;margin-bottom: 3%;width: 99%;margin-left: 0%;">
+      <s-sideDishesView wx:if="{{dishes.sideDishes!=0}}" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:submitSideDish="submitSideDish" bind:changeBoxNum="changeBoxNum" isTable="{{true}}" />
+    </view>
+
+    <view wx:if="{{!shrinkIntrIntroduction}}" style="border: 2rpx solid #888;margin-top: 8rpx;border-radius:5rpx;height: 20%;">
+      <view style='font-size:26rpx;font-weight:bold;height:20%;display: flex;'>菜品介绍：</view>
+      <textarea style="font-size:24rpx;height:70%;width: 100%" disabled='true' cursor-spacing="100" fixed class='textarea' value='{{dishes.dishes_introduce}}'></textarea>
+    </view>
+    <view class="oneline" style="width: 100%;justify-content: space-around;">
+      <view class='btn_small_y' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>菜品介绍
+      </view>
+      <view class='btn_small_y' style='width:150rpx;' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicai'>选择配菜</view>
+      <view class='btn_small_y' style='width:150rpx;' bindtap='chooseTaste'>选择口味</view>
+    </view>
+
+    <view style="border: 2rpx solid #888;margin-top: 8rpx;border-radius:5rpx;height: 20%;">
+      <view style='font-size:26rpx;font-weight:bold;justify-content: space-between;align-items: center;display: flex;height:20%;'>
+        <text>客人备注：</text>
+        <image style='height: 64rpx;width: 64rpx;margin-left: 5rpx;padding: 5px;' data-type="0" bindtap="showRemarkList_new" src='{{menu_img}}'></image>
+      </view>
+      <view wx:if="{{tastesRemark!=''}}" style="width:100%;background:#e5e5e5;font-size:26rpx">
+        <text>口味：{{tastesRemark}}</text>
+      </view>
+      <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatMethodView}}" style="font-size:24rpx;height:150rpx;" cursor-spacing="100" fixed class='textarea' placeholder='如有口味要求，请输入备注' value='{{quickRemark}}' bindinput='remarks'></text>
+      <textarea wx:else style="font-size:24rpx;height: 70%;width: 100%;margin-top: 0rpx;" cursor-spacing="100" fixed class='textarea' placeholder='如有口味要求，请输入备注' value='{{quickRemark}}' bindinput='remarks'></textarea>
+    </view>
+
+    <view class='oneline' style='margin-top:20rpx;font-size:26rpx;flex-direction: row-reverse;justify-content:space-around;width:100%'>
+      <view class='btn_small_y' wx:if="{{selectInfovv_flag}}" style='width:150rpx' bindtap='addToCart4'>确定</view>
+      <view class='btn_small_y' wx:else style='width:150rpx' bindtap='addToCart3'>确定</view>
+    </view>
+
+  </view>
+</view>
+
+<!-- 多规格多做法弹框，建议一个做法一个弹框，不然需求经常变动会搞死人-->
+<!-- 下单时的多种吃法弹窗,一个菜品多种做法或吃法 -->
+<view bindtap='showhowtodo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{showModalStatus5 &&!display}}'></view>
+<view class='popup-window' catchtouchmove="aaa" id="multipleEatMethod_detail_sideDishe" wx:if='{{showModalStatus5&&!display}}'>
+  <view style='margin:20rpx;width:95%;height:100%;display: flex;flex-direction: column;justify-content: space-between'>
+
+    <view style="border: 2rpx solid #888;height: 15%;width:98%;margin-left:3rpx">
+      <image style='width:60rpx;height:60rpx;float:right;position:absolute;right:32rpx;top:30rpx;margin-top: 20rpx;' src='{{i_close_img}}' bindtap='closeWindow'></image>
+      <view class='oneline' style="height: 100%">
+        <image style="width:120rpx;height:120rpx;padding: 30rpx 0rpx 0rpx 10rpx" src='{{dishes.dishes_img}}'></image>
+        <view style='font-size:26rpx;font-weight:bold;margin-left:15rpx;height: 100%;width:70%'>
+          <view class='oneline' style='font-size:30rpx;padding:8rpx 0rpx'>{{dishes.dishes_name}}</view>
+          <view class='oneline' style="padding: 10rpx 0rpx;align-items: baseline;">
+
+            <text style="width:50%">总数量：{{eatMethodArrayNumber}}</text>
+            <text>总金额：{{eatMethodArraySum}}</text>
+          </view>
+
+        </view>
+      </view>
+    </view>
+    <scroll-view scroll-y="true" style="height:83%;margin-left:2rpx">
+      <!-- 做法 -->
+      <view style="height:30%;width:98%;margin-left:2rpx">
+        <s-multipleEatMethodView bind:submitEatMethod="submitEatMethod" style="height:25%;margin-top: 2%;" bind:showMultipleEatAndSpecView="showMultipleEatAndSpecView" needRemain="{{needRemain}}" xdswidth="{{xdswidth}}" eatMethodArray="{{eatMethodArray}}" em_arry="{{em_arry}}" eamChoose="{{eamChoose}}" dishesInfo="{{dishes}}" isTable="{{true}}" isType10="{{dishes.spec_type == 10 ? true: false}}" binddmev="dmev" bindclickEatAndMethod="clickEatAndMethod" EatmethodAndSpec="{{dishes.spec_type == 10 ? EatmethodAndSpec: ''}}" />
+      </view>
+      <view wx:if="{{dishes.sideDishes!=0}}" style="height: 30%;margin-bottom: 3%;width: 98%;margin-left: 2rpx;margin-top: 2%;">
+        <s-sideDishesView wx:if="{{dishes.sideDishes!=0}}" SideDishList="{{SideDishList}}" SideDishList_choose="{{SideDishList_choose}}" bind:submitSideDish="submitSideDish" bind:changeBoxNum="changeBoxNum" isTable="{{true}}" />
+      </view>
+
+      <view wx:if="{{!shrinkIntrIntroduction}}" style="border: 2rpx solid #888;margin-top: 20rpx;width:98%;margin-bottom:2%">
+        <view style='font-size:26rpx;font-weight:bold'>菜品介绍：</view>
+        <text wx:if="{{showRemarkList || showTaste || showpeicai || showMultipleEatAndSpecView}}" style="font-size:24rpx;height:150rpx;" disabled='true' cursor-spacing="100" fixed class='textarea' value='{{dishes.dishes_introduce}}'></text>
+        <textarea style="font-size:24rpx;height:150rpx;" disabled='true' cursor-spacing="100" fixed class='textarea' value='{{dishes.dishes_introduce}}'></textarea>
+      </view>
+
+      <view class="oneline" style="width: 100%;justify-content: space-around;">
+        <view class='btn_small_brown' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;' bindtap='showIntroduction'>菜品介绍
+        </view>
+
+        <view class='btn_small_brown' style='width:150rpx;' wx:if="{{dishes.sideDishes==0&&dishes.flavor==1}}" bindtap='chooseTaste'>选择口味
+        </view>
+
+        <view class='btn_small_brown' style='width:200rpx;height:50rpx' wx:if="{{dishes.sideDishes!=0}}" bindtap='showpeicaiAndTaste'>选择配菜和口味</view>
+      </view>
+
+      <!-- 多做法客人备注 -->
+      <!--2020-11-19 多做法重写备注框 -->
+      <view style="margin-top: 3%;border-radius:5rpx;width:98%;margin-left:2rpx">
+        <s-remarkView_new readOnly="{{false}}" spec_type="{{dishes.spec_type}}" onHide="{{showRemarkList || showTaste || showpeicai || showMultipleEatAndSpecView}}" remarkTitle="客人备注：" style="width: 92%;" tastesRemark="{{tastesRemark}}" remarkValue="{{remark}}" bind:hideRemark="hideRemark" bind:remarkBack="remarkBack" bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}" />
+      </view>
+
+      <view class='oneline' style='margin-top:20rpx;font-size:26rpx;flex-direction: row-reverse;justify-content:space-around;width:100%'>
+        <view class='btn_small_brown' wx:if="{{selectInfovv_flag}}" style='width:150rpx' bindtap='addToCart4'>确定</view>
+        <view class='btn_small_brown' wx:else style='width:150rpx' bindtap="{{dishes.spec_type == 10 ? 'addToCartBySpecAndMethod':'addToCart3'}}">确定</view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 选择菜品弹窗 -->
+<view class='popup-window-bg' wx:if="{{showChooseDishesModel}}" style="flex-direction:column;z-index:999">
+  <view class='popup-window-dishes' style="height:auto;align-items: center;" wx:if="{{showChooseDishesModel}}">
+    <text style="font-size:32rpx;width:100%;color:red;margin-left: 20rpx;margin-top:25px;font-weight:bold;">选择菜品：</text>
+    <view class="modal-title dishes-mod-1" style="width:90%;height:60%;margin-bottom: 25rpx;">
+      <scroll-view scroll-y='true' style='width:100%;height: 300rpx;' class="dishes_scroll">
+        <label class="radio dishes-lab" data-type="0" bindtap="chooseChangeDishes" wx:for="{{newList}}" data-index="{{index}}" data-item="{{item}}" style="border-bottom: 0.5px solid green;padding-bottom: 2px;width:100%;height:auto;">
+          <view class="box" style="border-right:1rpx solid green;width:20%;height:80rpx;margin-bottom: -2rpx;">
+            <radio value="r1" checked="{{index == chooseDishesIndex ? 'true':''}}" />
+          </view>
+          <view class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+            <text style="font-size:32rpx;">{{item.disher_weight_ceiling}}斤</text>
+          </view>
+          <view class="box" style="width:50%;height:80rpx;margin-bottom: -2rpx;">
+            <text style="font-size:32rpx;">{{item.name}}</text>
+          </view>
+        </label>
+      </scroll-view>
+    </view>
+
+    <image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 10px;top:10px' src='{{i_close_img_url}}' bindtap='chooseDishes'></image>
+
+  </view>
+</view>
+
+
+<!-- 视频简介弹窗 -->
+<view bindtap='videoInfo' catchtouchmove="aaa" class='popup-window-bg' wx:if='{{video_open}}'></view>
+<view class='popup-window' catchtouchmove="aaa" wx:if='{{video_open}}' style="height: auto;padding: 0 0 40rpx;top: 20%;">
+  <view style="height:600rpx">
+    <image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 20px;top:20px' src='{{i_close_img}}' bindtap='closeWindow_video'></image>
+    <view class="video_text" style="margin-top:5%">{{video_name}}</view>
+    <view class="video_text">视频简介:</view>
+    <view class="video_style">
+      <video wx:if="{{is_video_show==1}}" src="{{video_src}}"></video>
+    </view>
+  </view>
+</view>
+
+<!-- 购物车菜篮子 -->
+<view class="drawer_screen" bindtap="showCartList" id="s3" data-statu="close" wx:if="{{showCart}}"></view>
+<view class="cartlist-float" wx:if="{{showCart}}">
+  <view style='background:#F0F0F0;height:60rpx'>
+    <label class='label-cart-bar'>
+      <label style='padding:10rpx;color:orange;font-weight:bold'>已选菜品</label>
+    </label>
+    <label class='icon-clear' bindtap='clearCartList'>
+      <i class="iconfont icon-lajitong"></i>
+      <label class="label-clear">清空菜品篮</label>
+    </label>
+  </view>
+
+</view>
+
+<!-- 特别推荐页面 -->
+<view class='popup-window-bg ' wx:if="{{showRecommended}}" bindtap='showRecommended'></view>
+<view class='popup-window ' wx:if="{{showRecommended}}">
+  <view style='margin:15rpx '>
+    <view class='oneline '>
+      <image style='width:200rpx;height:200rpx; ' src='{{dishes.dishes_img}} '></image>
+      <view style='margin-left:15rpx; '>
+        <view style='margin-top:15rpx;font-size:35rpx '>{{dishes.dishes_name}}</view>
+        <view style='margin-top:15rpx;font-size:35rpx '>{{dishes.dishes_price}}元/{{dishes.dishes_metering_type}}</view>
+        <view class='down-center '>
+          <image style='width:30rpx;height:30rpx' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png '></image>
+          <view style='font-size:35rpx '>：{{dishes.praise_points}}</view>
+        </view>
+      </view>
+    </view>
+    <scroll-view scroll-y style="height: 275rpx;margin-top:15rpx;margin-bottom:20rpx;font-size:35rpx" wx:if="{{dishes.dishes_introduce!=''}}">{{dishes.dishes_introduce}}</scroll-view>
+    <view wx:else style="height: 275rpx;margin-top:15rpx;margin-bottom:20rpx;font-size:35rpx">此菜品暂时没有介绍</view>
+  </view>
+</view>
+
+<!-- 优惠页面 -->
+<view class='popup-window-bg ' wx:if="{{showdiscount}}" bindtap='showdiscount'></view>
+<view class='popup-window ' wx:if="{{showdiscount}}">
+  <view class='go-center down-center' style='height:300rpx;margin-bottom:100rpx'> 此菜品目前买一送一</view>
+</view>
+
+<!-- 缺菜品页面 -->
+
+<view class='popup-window-bg ' wx:if="{{showlack}}" bindtap='showlack'></view>
+<view class='popup-window ' wx:if="{{showlack}}">
+  <view>尊敬的客户：</view>
+  <view>您订单菜品中的下列菜品已卖完，请重新选择别的菜品，给您造成的不便，敬请谅解，谢谢！</view>
+  <!-- 缺少的菜品的列表 -->
+  <view></view>
+</view>

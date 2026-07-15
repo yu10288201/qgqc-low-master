@@ -1,0 +1,84 @@
+page {
+  background-color: #f5f5f5;
+}
+
+.container {
+  padding: 20rpx 30rpx 40rpx;
+}
+
+.my-card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+}
+
+.my-card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 16rpx;
+  padding-left: 14rpx;
+  border-left: 6rpx solid #52A76E;
+}
+
+.card-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 14rpx;
+}
+
+.card-label {
+  font-size: 28rpx;
+  color: #777;
+  flex-shrink: 0;
+}
+
+.card-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.price-text {
+  color: #f3333e;
+  font-weight: bold;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.btn-pay {
+  font-size: 30rpx;
+  color: #fff;
+  background-color: #07C160;
+  border-radius: 30rpx;
+  padding: 8rpx 28rpx;
+}
+
+.empty-tip {
+  text-align: center;
+  color: #aaa;
+  font-size: 28rpx;
+  margin-top: 100rpx;
+}
+
+.list-end {
+  text-align: center;
+  color: #ccc;
+  font-size: 24rpx;
+  padding: 30rpx 0;
+}
+
+.list-loading {
+  text-align: center;
+  color: #aaa;
+  font-size: 24rpx;
+  padding: 20rpx 0;
+}

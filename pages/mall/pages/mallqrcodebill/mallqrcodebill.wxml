@@ -1,0 +1,271 @@
+<!--固定置顶条-->
+<view style="display: flex;flex-direction: column;padding: 0; margin: 0;width: 100vw;height: 100vh;">
+  <view style="width: 100%;text-align: center;">
+    <text style="font-size: 30rpx;font-weight: bold;">{{shop_name}}</text>
+  </view>
+  <view style="width: 100%;margin-bottom: 10rpx;margin-top: 20rpx;font-size: 29rpx;">
+    <text style="font-size: 29rpx;font-weight: bold;margin-right: 20rpx;margin-left: 3%;">当前订单号:</text>{{code}}
+  </view>
+  
+  <view class="top" >
+        
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 240rpx;text-align: right;">平台代金券余额:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{platform_total_color_global_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 240rpx;text-align: right;">平台星盾余额:</text>
+              <text  style="background-color: #fff;font-size: 29rpx;" >{{platform_total_star*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+
+           </view>
+          </view>
+        </view>
+     
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 240rpx;text-align: right;">店铺代金券余额:</text>
+              <text  style="background-color: #fff;font-size: 29rpx;" >{{shop_total_color_global_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 240rpx;text-align: right;">店铺星盾余额:</text>
+              <text  style="background-color: #fff;font-size: 29rpx;" >{{shop_total_star*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+     
+
+        
+        <!--导航栏-->
+  </view>
+  <view class="top">
+        <view style="margin-top:5rpx; margin-left:10rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 280rpx;text-align: right;">消费总金额:</text>
+              <input model:value="{{customer_total_amount_str}}" style="background-color: #fff;width: 220rpx;border:1rpx solid #ccc;border-radius: 10rpx;;font-size: 29rpx;" />
+              <text style="margin-left: 10rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+
+        <view style="margin-top:5rpx; margin-left:10rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 0rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 280rpx;text-align: right;">星盾抵扣金额(整数):</text>
+              <input type="number" model:value="{{deduction_star_amount_str}}" style="background-color: #fff;width: 220rpx;border:1rpx solid #ccc;border-radius: 10rpx;font-size: 29rpx;" />
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+
+           </view>
+          </view>
+        </view>
+
+        <view wx:if="{{platform_total_color_global_voucher+shop_total_color_global_voucher>0}}" style="margin-top:5rpx; margin-left:10rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 280rpx;text-align: right;">密码:</text>
+              <input wx:if="{{buyer_password_ok==1}}" type="password" model:value="{{buyer_password}}" style="background-color: #fff;width: 220rpx;border:1rpx solid #ccc;border-radius: 10rpx;font-size: 20rpx;color: #52A76E;" />
+              <input wx:if="{{buyer_password_ok==0}}" type="password" model:value="{{buyer_password}}" style="background-color: #fff;width: 220rpx;border:1rpx solid #ccc;border-radius: 10rpx;font-size: 20rpx;" />
+              <view catch:tap="genBillMainParamPre" style="height: 52rpx; color: white;background-color:#52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 30rpx; font-size: 29rpx;margin-left: 20rpx;">
+                确定
+                </view>
+
+           </view>
+          </view>
+        </view>
+
+      <view wx:if="{{platform_total_color_global_voucher+shop_total_color_global_voucher==0}}" style="margin-top:10rpx;margin-bottom: 10rpx; margin-left:20rpx;margin-right:20rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row-reverse;align-items: center;;width: 100%;">
+                <view catch:tap="genBillMainParamPre" style="height: 52rpx; color: white;background-color:#52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 30rpx; font-size: 29rpx;">
+                确定
+                </view>
+
+           </view>
+          </view>
+        </view>
+        
+        
+        <!--导航栏-->
+  </view>
+
+    <view wx:if="{{shop_total_color_global_voucher+shop_total_star+platform_total_color_global_voucher+platform_total_star==0}}" class="top" >
+       <view style="font-weight: bold;font-size: 29rpx;color: #FFB800;margin-top: 10rpx;margin-bottom: 10rpx;margin-left: 40rpx;">
+        无可用代金券和星盾
+       </view>
+      
+       
+    </view>
+  
+
+  <view wx:if="{{deduction_platform_color_global_total_voucher+deduction_platform_star+deduction_shop_color_global_total_voucher+deduction_shop_star>0}}" class="top">
+        
+        <view wx:if="{{deduction_platform_color_global_total_voucher>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">平台代金券抵扣:</text>
+              <text  style="background-color: #fff;font-size: 29rpx;" >{{deduction_platform_color_global_total_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+
+        <view wx:if="{{deduction_platform_star>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">平台星盾抵扣:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{deduction_platform_star*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+     
+        <view wx:if="{{deduction_shop_color_global_total_voucher>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">店铺代金券抵扣:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{deduction_shop_color_global_total_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+        <view  wx:if="{{deduction_shop_star>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">店铺星盾抵扣:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{deduction_shop_star*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+     
+
+        
+        <!--导航栏-->
+  </view>
+
+  <view wx:if="{{deduction_platform_color_global_total_voucher+deduction_platform_star+deduction_shop_color_global_total_voucher+deduction_shop_star>0}}" class="top">
+        
+        <view wx:if="{{deduction_platform_color_global_total_voucher>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">平台代金券扣后余额:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{platform_total_color_global_voucher-deduction_platform_color_global_total_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+
+        <view wx:if="{{deduction_platform_star>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">平台星盾扣后余额:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{(platform_total_star-deduction_platform_star)*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+     
+        <view wx:if="{{deduction_shop_color_global_total_voucher>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">店铺代金券扣后余额:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{shop_total_color_global_voucher-deduction_shop_color_global_total_voucher}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+        <view wx:if="{{deduction_shop_star>0}}" style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">店铺星盾扣后余额:</text>
+              <text  style="background-color: #fff;;font-size: 29rpx;" >{{(shop_total_star-deduction_shop_star)*0.1}}</text>
+              <text style="margin-left: 20rpx;font-size: 29rpx;">元</text>
+           </view>
+          </view>
+        </view>
+     
+
+        
+        <!--导航栏-->
+  </view>
+
+
+<!--查询结果-->
+<view class='form' style='flex:1;display: flex;flex-direction: column;overflow: auto;'>
+
+</view>
+
+<view class="bottom-bar">
+       <view style="flex:1;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;">
+        <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>本次还需支付现金:</text>
+                    <text style="margin-left: 10rpx;margin-right: 10rpx;color:darkorange;font-weight: 900;font-size: 28rpx;">{{total_amount}}</text>
+                  <text>元</text>
+              </view>
+       </view>
+      <view wx:if="{{show_insert_btn==true}}" catch:tap="insertQrCodeMallBillMain" class="bottom-button" style="margin-right: 20rpx;">
+        确认
+      </view>
+      <view wx:if="{{show_insert_btn==false}}"  class="bottom-button" style="margin-right: 20rpx;">
+        已抵扣
+      </view>
+  </view>
+</view>
+
+
+<view class="dialog_wrapper" wx:if="{{b_query_shop_items_show}}">
+  <view style="height: 100%;z-index: 99999999;width: 100%;">
+          <view  style='flex:1;display: flex;flex-direction: column;overflow: auto;padding-top: 20rpx;'>
+            <scroll-view wx:if="{{query_shop_items.length>0}}" scroll-y='true' style='width:100%;flex:1;overflow: auto;'
+            bindscrolltolower="scrollToLower">
+              <view style="margin-bottom: 15rpx;" wx:for='{{query_shop_items}}' wx:key='index' data-index='{{index}}' catch:tap='itemQueryClick'>         
+
+                  <view style="background-color: #FFF;width: 100%;border-bottom: #f2f2f2 2rpx solid;padding-bottom: 5rpx;">{{(1+index)+' '+item.shop_name}}</view>
+
+              </view>
+
+            </scroll-view>
+
+          <!--按钮-->
+          
+
+        </view>
+
+  </view>
+
+</view>
+
+
+
+
+
+
+
+
+
+
+
+ 
+  
+
+
+
+
+

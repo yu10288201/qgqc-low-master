@@ -1,0 +1,132 @@
+<view class="page">
+  <view style="width: 100%;margin-top: {{topHeight}}rpx;">
+    <view class="return_out" bindtap="refused">
+      <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" />
+    </view>
+  </view>
+
+  <view class="top-mode">
+    <view class="top-mode" bindtap="login">
+      <image class="userAvatarUrl" src="{{avatarUrl}}"></image>
+      <view class="userName">{{nickName ? nickName : ''}}</view>
+    </view>
+  </view>
+
+  <view class="register-mode">
+    <form bindsubmit='bindsubmit'>
+      <view class="div" style="display: flex;flex-direction: row;justify-content: flex-end;width: 600rpx;margin-top: 50rpx;">
+        <view style="height: 60rpx;width: 60rpx;background-color: red;border-radius: 45rpx;color: white;text-align: center;line-height: 60rpx;" bindtap="refused">X</view>
+      </view>
+      <view class="div">
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_1.png"></image>
+        <view class="text">城市：</view>
+        <view class='itemRight' style="height: 50rpx;">
+          <picker class='cityPicker' style="height: 50rpx;display: flex;flex-direction: row;justify-content: space-between;" name='city' mode="region" bindchange="bindCityChange" bindcancel="bindCancelCity" value='{{cityValue}}' disabled="{{isRegister}}">
+            <view class="cityPickerView" style="border-radius: 25rpx;display: flex;flex-direction: row;justify-content: flex-end;">
+              <text style="width: 300rpx;overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{cityValue}}</text>
+              <text style="color: #AFA9A9;">▼</text>
+            </view>
+          </picker>
+          <image class="star" wx:if="{{!isRegister}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+
+        </view>
+      </view>
+
+      <view class='div'>
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_2.png"></image>
+        <text class='text'>姓名/昵称：</text>
+        <input name='name' disabled="{{isRegister}}" class='nameInput' value='{{nameValue}}' placeholder-class='pc' placeholder="请输入" bindinput='nameBindinput'></input>
+        <image class="star" wx:if="{{!isRegister}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+      </view>
+
+      <radio-group name="gender" bindchange="genderBindchange">
+        <view class='div'>
+          <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_3.png"></image>
+          <text class='text'>性别：</text>
+          <label class="gender" wx:for="{{genderItems}}" wx:key="index">
+            <checkbox value="{{item.value}}" checked="{{item.checked}}" disabled="{{isRegister}}" />
+            <view>{{item.value}}</view>
+          </label>
+          <image class="star" wx:if="{{!isRegister}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+        </view>
+      </radio-group>
+
+      <view class='div'>
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_4.png"></image>
+        <text class='text'>手机号码：</text>
+        <input name='phone' class='phoneInput' type='number' value='{{phoneNumberValue}}' placeholder-class='pc' placeholder="限制11位" maxlength='11' bindinput='phoneBindinput' disabled="{{isRegister || isGetPhone}}"></input>
+        <text class='phoneButton' wx:if="{{alreadySend}}">{{second + "s"}}</text>
+        <image class="star" wx:if="{{!isRegister}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+      </view>
+
+      <view class='div'>
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_6.png"></image>
+        <view class='text'>出生日期：</view>
+        <picker mode="date" name='birthday' value="{{birthday}}" end="{{today}}" value='{{birthday}}' bindchange="changeDate" disabled="{{isRegister}}" style="display: flex;flex-direction: row;justify-content: space-between;">
+          <view class='birthday' style="width: 268rpx;">
+            <view style="display: flex;flex-direction: row;justify-content: space-between;width: 88%;margin: 0 auto;">
+              <view>{{birthday}}</view>
+              <text style="color: #AFA9A9;">▼</text>
+            </view>
+          </view>
+        </picker>
+      </view>
+
+      <view class='div'>
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_7.png"></image>
+        <text class='text'>密码：</text>
+        <input name='password' password="true" disabled="{{isRegister}}" value='{{passwordValue}}' class='passwordInput' placeholder-class='pc' placeholder="限制8位" maxlength='8' cursor-spacing="50" bindinput='passwordBindinput'></input>
+        <image class="star" wx:if="{{!isRegister}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+      </view>
+
+      <view class='div' wx:if="{{!isRegister}}">
+        <image class="logos" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/register_8.png"></image>
+        <text class='text'>确认密码：</text>
+        <input name='confirmPassword' password="true" value='{{confirmPasswordValue}}' class='passwordInput' placeholder-class='pc' placeholder="请输入" maxlength='8' cursor-spacing="50" bindinput='confirmPasswordBindinput'></input>
+        <image class="star" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/star.png"></image>
+      </view>
+
+
+      <view class='div'>
+        <button class='registerButton' wx:if="{{isRegister}}">您已注册</button>
+        <button class='registerButton' wx:else form-type='submit'>注　册</button>
+      </view>
+      <view class='div' wx:if="{{isRegister}}">
+        注册时间：{{registration_time}}
+      </view>
+    </form>
+  </view>
+
+  <view wx:if="{{!isRegister}}" style="display: flex;flex-direction: row;width: 100%;justify-content: center;">
+    <checkbox-group bindchange="agreeProtocol">
+      <checkbox value="1"></checkbox>
+    </checkbox-group>
+    <view style="background-color: rgba(255,255,255,0.8);">
+      <view>我已阅读并同意相关服务条款和隐私政策</view>
+      <text style="color: #1296db;" bindtap="check">《{{fileName}}》</text>
+    </view>
+  </view>
+
+  <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/register/slogan.png" style="width:350rpx;height:27.3rpx;margin-top: 20rpx;"></image>
+</view>
+
+<!-- 获取头像 -->
+<headPortrait bind:refreshAvatar="refreshAvatar" isShow="{{isShowGetAvatar}}"></headPortrait>
+
+
+<!-- 获取手机号码 -->
+<view wx:if="{{showAuthorize}}" class='window-bg'>
+  <view class='window' style="background-size:100% 100%;-moz-background-size:100% 100%;">
+    <view class='window-item'>
+      <view style="width:100%;height:20%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+        <view style="font-size: 25px;width: 100%;font-weight: bolder;">欢迎注册"切瓜切菜"平台</view>
+        <view class='window-item-content' style="color: #ffffff">申请授权</view>
+      </view>
+      <view class='window-item-content'><text style="text-align: center;">申请授权\n\n注册需要获取您的手机号码\n是否同意?</text></view>
+      <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+        <button class='cancelBtn' bindtap='refused'>否</button>
+        <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+      </view>
+    </view>
+  </view>
+</view>

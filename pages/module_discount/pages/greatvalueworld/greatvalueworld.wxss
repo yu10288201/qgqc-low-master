@@ -1,0 +1,69 @@
+/* pages/greatvalueworld/greatvalueworld.wxss */
+
+.page {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  /* background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/greatvalueworld/background.png'); */
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/greatvalueworld/bg1.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.top-image {
+  width: 100%;
+  height: 85%;
+}
+
+.btn-view {
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  /* margin-top: 5%; */
+  /* margin-top: 140%; */
+  position: absolute;
+  bottom: 40rpx;
+}
+
+.btn {
+  /* background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/greatvalueworld/button.png'); */
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/greatvalueworld/btn1.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* background-color: rgb(100,183,133); */
+  width: 525rpx;
+  line-height: 80rpx;
+  height: 75rpx;
+  color: rgb(244,218,188);
+  border: none;
+  margin-top: 30rpx;
+  display: flex;
+  font-size: 40rpx;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50rpx;
+  box-shadow: 2px 4px 10px rgb(80,80,80);
+}
+
+.btn::after {
+  border: none;
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 15px;
+  width: 40rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}
+

@@ -1,0 +1,323 @@
+<!--固定置顶条-->
+<view style="display: flex;flex-direction: column;padding: 0; margin: 0;width: 100vw;height: 100vh;">
+
+  <view class="top">
+        <!--搜索条件-->
+        <view style="margin-top:20rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;align-items: center;"> 
+            <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">日期:</text>
+            <picker mode="date" value="{{begin_date}}" bindchange="bindBeginDateChange">
+              <view class="date-picker">
+                <text style='margin-left: 10rpx;'>{{begin_date}}</text>              
+                <text style='color:gray;margin-right: 10rpx;'>▼</text>
+              </view>
+            </picker>
+            <text style="margin:0 20rpx;font-size: 29rpx;">至</text>
+            <picker mode="date" value="{{end_date}}" bindchange="bindEndDateChange" >
+              <view class="date-picker" >
+                <text style='margin-left: 10rpx;'>{{end_date}}</text>
+              <text style='color:gray;margin-right: 10rpx;'>▼</text>
+              </view>
+            </picker>
+          </view>
+        </view>
+        
+        <view style="margin-top:15rpx; margin-left:20rpx;margin-right:20rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           
+           <view style="display: flex;flex-direction: row;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">商家:</text>
+              <view class="shop-picker">
+                <input model:value="{{query_shop_name}}" style="background-color: #fff;font-size: 29rpx;flex:1;" />
+                <view catch:tap="btnShopSelectClick" style="height: 42rpx;background-color: #eee;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 20rpx; font-size: 28rpx;margin-right: 10rpx;">
+                  <image style="width: 32rpx;height: 32rpx;margin-top: 5rpx;margin-right: 5rpx;" src="{{downSVGIcon}}"/>选择
+          </view>
+              </view>
+              
+           </view>
+          </view>
+        </view>
+
+        <view style="margin-top:15rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;">收益:</text>
+                <picker   bindchange="bindQueryBenefitPickerChange" value="{{index}}" range="{{query_benefit_array}}" style="background-color: #fff;width: 530rpx;">
+                        <view class="income-picker"  style="width: 100%;font-size: 29rpx;display: flex;flex-direction: row;align-items: center;justify-content: space-around;">
+                            <view style="flex: 1;height: 100%;font-size: 29rpx;padding-left: 10rpx;">
+                                {{query_benefit_name}}
+                            </view>
+                            <view class="flex-column flex-center" style="width: 40rpx;">
+                                <image style="width: 32rpx;height: 32rpx;margin-top: 5rpx;margin-right: 5rpx;" src="{{downSVGIcon}}"/>
+                            </view>
+                        </view>
+                </picker>
+                
+           </view>
+
+          </view>
+        </view>
+        
+
+        <!--搜索按钮-->
+        <view style="margin-bottom:15rpx;margin-top:15rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;padding: 0rpx 5rpx;">
+          <view catch:tap="reSetData" style="height: 52rpx; color: white;background-color:coral;;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 29rpx;">
+            清空
+          </view>
+          <view catch:tap="selectData" style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 29rpx;margin-left: 30rpx;">
+            查询
+          </view>
+        </view>
+
+        
+        <!--导航栏-->
+  </view>
+
+  <view style="margin-top:20rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;color: #52A76E;font-size: 29rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>提成现金总数:</text>
+                  <text>{{cash_commission_total}}元</text>
+              </view>
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>星盾总数:</text>
+                  <text>{{star_commission_total}}个</text>
+              </view>
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余数:</text>
+                  <text>{{total_star_balance}}个</text>
+              </view>
+          </view>
+  </view>
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;margin-bottom: 20rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>购物返佣代金券总数:</text>
+                  <text>{{in_color_global_voucher_total}}元</text>
+              </view>            
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余额:</text>
+                  <text>{{total_color_global_voucher}}元</text>
+              </view>
+          </view>
+  </view>
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;margin-bottom: 0rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>待提成现金:</text>
+                  <text>{{buy_to_give_cash}}元</text>
+              </view>            
+      
+          </view>
+  </view>
+
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;margin-bottom: 0rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>待提成平台现金:</text>
+                  <text>{{buy_to_give_platform_cash}}元</text>
+              </view>            
+      
+          </view>
+  </view>
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;margin-bottom: 20rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>待提成店铺现金:</text>
+                  <text>{{buy_to_give_shop_cash }}元</text>
+              </view>            
+      
+          </view>
+  </view>
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;color: #52A76E;font-size: 29rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>分销提成平台现金总数:</text>
+                  <text>{{platform_cash_commission_total}}元</text>
+              </view>
+          </view>
+  </view>
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;color: #52A76E;font-size: 29rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>分销提成店铺现金总数:</text>
+                  <text>{{shop_cash_commission_total}}元</text>
+              </view>
+          </view>
+  </view>
+
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;color: #52A76E;font-size: 29rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>分销提成平台星盾总数:</text>
+                  <text>{{platform_star_commission_total}}个</text>
+              </view>
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余数:</text>
+                  <text>{{platform_star_balance}}个</text>
+              </view>
+          </view>
+  </view>
+
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;color: #52A76E;font-size: 29rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>分销提成店铺星盾总数:</text>
+                  <text>{{shop_star_commission_total}}个</text>
+              </view>
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余数:</text>
+                  <text>{{shop_star_balance}}个</text>
+              </view>
+          </view>
+  </view>
+
+  
+  
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>购物返佣平台代金券总数:</text>
+                  <text>{{platform_in_color_global_voucher_total}}元</text>
+              </view>
+             
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余额:</text>
+                  <text>{{platform_total_color_global_voucher}}元</text>
+              </view>
+          </view>
+  </view>
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>购物返佣店铺代金券总数:</text>
+                  <text>{{shop_in_color_global_voucher_total}}元</text>
+              </view>
+             
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>余额:</text>
+                  <text>{{shop_total_color_global_voucher}}元</text>
+              </view>
+          </view>
+  </view>
+
+   <!-- <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>给员工待提成现金:</text>
+                  <text>{{buy_to_give_staff_cash}}元</text>
+              </view>
+          </view>
+   </view> -->
+   
+   <!-- <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;display: flex;flex-direction: row; align-items: center;justify-content: center;font-weight: 600;font-size: 29rpx;color: #52A76E;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text>待提成现金:</text>
+                  <text>{{buy_to_give_cash}}元</text>
+              </view>
+          </view>
+  </view> -->
+ 
+  
+<!--查询结果-->
+<view class='form' style='flex:1;display: flex;flex-direction: column;overflow: auto;'>
+    <view class='form_tittle'>
+      <view class='th-head' style="text-align: center;width:25%;">
+        <text  class='text'>日期</text>
+      </view>
+      <view class='th-center' style="text-align: center;width:40%;">
+        <text class='text' >商家</text>
+      </view>
+      <view class='th-center' style="text-align: center;width:20%;">
+        <text class='text' >收益项</text>
+      </view>
+      <view class='th-end' style="text-align: center;width:15%;">
+        <text class='text'>数量</text>
+      </view>
+    </view>
+    <scroll-view scroll-y='true' style='width:100%;flex:1;overflow: auto;'
+    bindscrolltolower="scrollToLower">
+      <view wx:if="{{benefit_array&&benefit_array.length>0}}" class='for' wx:for='{{benefit_array}}' wx:key='index' data-index='{{index}}'>
+        <view class='td-head' style='width:25%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text>{{item.benefit_date}}</text>
+        </view>
+
+        <view class='td-center' style='width:40%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text >{{item.shop_name}}</text>
+        </view>
+        <view class='td-center' style='width:20%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text>{{item.benefit_name}}</text> 
+        </view>				
+        <view class='td-end' style='width:15%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text>{{item.benefit_amount}} </text>
+        </view>
+      </view>
+      <view wx:if="{{benefit_array&&benefit_array.length==0}}" style="display: flex;flex-direction: row;align-items: center;justify-content: center;width: 100%;padding: 10rpx 20rpx;font-size: 29rpx;font-weight: bold;">
+              无收益记录
+      </view>
+     
+
+    </scroll-view>
+
+  <!--按钮-->
+  
+
+</view>
+
+<!-- <view class="bottom-bar">
+     <view style="flex:1;"></view>
+    <view catch:tap="toDetail" class="bottom-button">
+      详细数据
+    </view>
+</view> -->
+</view>
+
+
+<view class="dialog_wrapper" wx:if="{{b_query_shop_items_show}}">
+  <view style="height: 100%;z-index: 99999999;width: 100%;">
+          <view  style='flex:1;display: flex;flex-direction: column;overflow: auto;padding-top: 20rpx;'>
+            <scroll-view wx:if="{{query_shop_items.length>0}}" scroll-y='true' style='width:100%;flex:1;overflow: auto;'
+            bindscrolltolower="scrollToLower">
+              <view style="margin-bottom: 15rpx;" wx:for='{{query_shop_items}}' wx:key='index' data-index='{{index}}' catch:tap='itemQueryClick'>         
+
+                  <view style="background-color: #FFF;width: 100%;border-bottom: #f2f2f2 2rpx solid;padding-bottom: 5rpx;">{{(1+index)+' '+item.shop_name}}</view>
+
+              </view>
+
+            </scroll-view>
+
+          <!--按钮-->
+          
+
+        </view>
+
+  </view>
+
+</view>
+
+
+
+
+
+
+
+
+
+
+
+ 
+  
+
+
+
+
+

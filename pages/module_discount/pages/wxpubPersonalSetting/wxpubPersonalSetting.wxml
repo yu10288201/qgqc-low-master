@@ -1,0 +1,53 @@
+<view style="height: 5vh;line-height: 5vh;width: 100%;background-color: #f9f3e9;display: flex;justify-content: center;font-weight: 800;font-family:KaiTi;">关注商家</view>
+
+<view style="width: 100%;display: flex;flex-direction: column;align-items: center;">
+  <view style="display: flex;justify-content: flex-start;width: 100%;padding:10rpx 0 0 50rpx;">
+    <text style="font-weight:500;">商家名称：</text>
+    <input bindinput='inputName' style="border: 2rpx solid #d6d6d6;border-radius: 10rpx;text-align: center;" />
+    <button class="btn" bindtap="selectShopByName">查询</button>
+  </view>
+  <view style="display: flex;flex-direction: column;width: 100%;margin-top: 50rpx;align-items: center;">
+    <view style="display: flex;border: 2rpx solid #d6d6d6;width: 80%;justify-content: center;align-items: center;height: 60rpx;background-color: #f9f3e9;">
+      <view>商家名称</view>
+    </view>
+    <scroll-view scroll-y="true" style="width: 80%;height: 50vh;margin-bottom: 50rpx;border: 2rpx solid #d6d6d6;border-top: 0;" bindscrolltolower="reachBottom">
+      <view wx:for="{{shopList}}" style="border-bottom: 2rpx solid #d6d6d6;display: flex;align-items: center;position: relative;height: 60rpx;">
+        <checkbox-group style="position: absolute;left: 20rpx;top: 4rpx" data-index="{{index}}" data-item="{{item}}" bindchange="updateSelectShop">
+          <checkbox value="1" checked="{{item.isFocus == 1 ? true: false}}"></checkbox>
+        </checkbox-group>
+        <view style="width: 100%;text-align: center;font-size: 28rpx;">{{item.shop_name}}</view>
+
+        <!-- {{}} -->
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<view style="height: 5vh;line-height: 5vh;width: 100%;background-color: #f9f3e9;display: flex;justify-content: center;font-weight: 800;font-family:KaiTi;">每日接收信息量</view>
+
+<view style="width: 100%;display: flex;flex-direction: column;align-items: center;">
+  <view style="display: flex;justify-content: flex-start;width: 100%;padding:10rpx 0 0 50rpx;">
+    <text style="font-weight:500;">每天接收总量：</text>
+    <input value="{{receiveDailySum}}" type="number" bindinput="inputReceiveCount" style="width: 100rpx;border: 2rpx solid #d6d6d6;border-radius: 10rpx;text-align: center;margin-right: 10rpx;" />条
+  </view>
+
+  <view style="display: flex;justify-content: flex-start;width: 100%;padding:10rpx 0 0 50rpx;">
+    <text style="font-weight:500;">每天接收时间：</text>
+    <picker mode="time" value="{{receiveStartTime}}" start="00:00" end="23:59" bindchange="bindTimeChange1">
+      <view class="picker" style="width: 160rpx;height: 44rpx;border: 2rpx solid #d6d6d6;border-radius: 10rpx;text-align: center;">
+       {{receiveStartTime}}
+      </view>
+    </picker>
+    <text decode="emsp">&emsp;~&emsp;</text>
+    <picker mode="time" value="{{receiveEndTime}}" start="00:00" end="23:59" bindchange="bindTimeChange2">
+      <view class="picker" style="width: 160rpx;height: 44rpx;border: 2rpx solid #d6d6d6;border-radius: 10rpx;text-align: center;">
+       {{receiveEndTime}}
+      </view>
+    </picker>
+  </view>
+</view>
+
+<view style="width: 100%;display: flex;justify-content: center;margin-top: 60rpx;">
+  <button class="btn" style="width: 208rpx;height: 60rpx;line-height: 60rpx;" bindtap="saveAll">保存设置</button>
+</view>
+

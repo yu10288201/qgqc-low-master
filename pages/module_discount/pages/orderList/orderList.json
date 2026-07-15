@@ -1,0 +1,9 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#52A76E",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "切瓜切菜[订单列表]",
+  "usingComponents": {
+    "headPortrait": "/components/headPortrait/headPortrait"
+  }
+}

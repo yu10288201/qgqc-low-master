@@ -1,0 +1,121 @@
+<!--固定置顶条-->
+<view class="top">
+	<!--搜索条-->
+	<view style="margin-bottom:15rpx;margin-top:30rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+		<view style="flex: 1;"> 
+			<input model:value="{{shop_name}}" placeholder="   搜索店铺" style="width: 100%; font-size: 25rpx;"/>
+		</view>
+		<view catch:tap="searchClick" style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 25rpx;">
+			搜 索
+		</view>
+	</view>
+</view>
+<!--加一块空白-->
+<view style="height:100rpx;width:100%;">
+	<view style="height:100rpx;width:100%;"></view>
+</view>
+	
+<view style="border: 2rpx solid #dadada;width: auto;border-radius:20rpx;margin-top:20rpx;margin-left:20rpx;margin-right:20rpx;padding: 10rpx;"
+	wx:for="{{shop_list}}" wx:for-item="shop" >
+	<view style="margin-top: 10rpx; margin-bottom: 10rpx; margin-left: 1%; display: flex; flex-direction: row; justify-content: space-between;">
+		<text style="font-weight: 700; font-size: 32rpx;">{{shop.shop_name}}</text>
+		<text class="status" >明星商家</text>
+	</view>
+	<!--明细总包-->
+	<view  >	
+		<view class="content-box flex-row" >			
+			<image class="head-image" src="{{shop.shop_img?shop.shop_img+'?x-oss-process=image/resize,m_fill,h_300,w_300':def_shop_img+'?x-oss-process=image/resize,m_fill,h_300,w_300'}}" mode="aspectFill" style="width: 30%"/>
+			<view class="flex-column" style="justify-content: space-between;margin-left: 12rpx; width: 70%">
+        <view style="display: flex;flex-direction: column;align-items: flex-end;justify-content: space-around;height: 180rpx;" >
+          <view style="display: flex; flex-direction: row; justify-content: space-between;align-items: center;width: 100%;">
+            <view style="font-size: 28rpx; color: gray;">
+                <text >￥{{shop.qgqc_staff_recharge_income}}元</text>
+            </view>  
+            <view class="nextbtn-green" bindtap="showShareDialog" data-type="1" data-item="{{shop}}" >充值会员分享</view>
+          </view> 
+          <view style="display: flex; flex-direction: row; justify-content: space-between;align-items: center;width: 100%;">
+            <view style="font-size: 28rpx; color: gray;">
+              <text >￥{{shop.qgqc_staff_vip_income}}元</text>
+            </view>  
+            <view class="nextbtn-red"  bindtap="showShareDialog" data-type="2" data-item="{{shop}}">VIP会员分享</view>
+          </view>        
+                   
+          
+        </view>
+			</view>
+		</view>
+
+		<!-- <view wx:if="{{detail_index==(shop.lstDetail.length-1)}}" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+			<view class="content-notice" style="margin-left: 20rpx; margin-right: 20rpx; font-weight: 900;">实付款￥{{shop.total_amount}}</view>
+			<view style="display:flex; flex-direction: row; justify-content: flex-end; margin-bottom: 20rpx; margin-top: 10rpx;">
+				<view class="nextbtn"  bindtap="showShareDialog" data-type="1" data-item="{{shop}}">充值分享</view>
+        <view class="nextbtn"  bindtap="showShareDialog" data-type="2" data-item="{{shop}}">VIP分享</view>
+			</view>				
+		</view> -->
+
+	</view>
+</view>
+
+
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{share_dialog}}" bindtap="closeShareDialog">
+</view>
+
+
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 300rpx;width: 600rpx;background-color: #f2f2f2;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;border: solid 1rpx #333;" wx:if="{{share_dialog}}">
+    <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;align-items: center;flex: 1;">
+        <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <button open-type="share" style="background-color:#f2f2f2 ;">
+              <view class="fri"></view>
+                <view style="font-size: 30rpx;margin-top: 2rpx;height: 60rpx;">
+                    转发朋友
+                </view>
+            </button>
+        </view>
+        <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;">
+        </view>
+        <view bindtap="showQRCode" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="timeline"></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                生成二维码
+            </view>            
+        </view> 
+        <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;">
+        </view>
+        <view bindtap="generatePoster" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="timeline"></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                分享到朋友圈
+            </view>            
+        </view>        
+    </view>
+</view>
+
+<view class='popup-window2' style="display: flex;flex-direction: column;justify-content: space-around;border: solid 1rpx #333;" catchtouchmove="true" wx:if="{{showQR}}">
+    <canvas style="width:200px; height: 200px;" canvas-id='rechargeQrcode'></canvas>
+    <view style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 41px;text-align: center;display: flex;align-items: center;width: 30%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' bindtap="closeQRCode">关闭</view>
+</view>
+
+<!-- 分享画板 -->
+<canvas type="2d" id="canvas" style="width:621px;height:999px;position: fixed;left: -621px;top: -999px;"></canvas>
+<canvas style="width: 200px; height: 200px;position: fixed;left: -621px;top: -999px;" canvas-id="myQrcode"></canvas>
+<view class="popup-window1-bg" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window1" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+    <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+        <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" show-menu-by-longpress="true"></image>
+        <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+        <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+        <view style="width: 10%;">
+            <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+        </view>
+    </view>
+</view>
+
+
+ 	
+    
+
+	
+
+
+

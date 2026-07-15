@@ -1,0 +1,24 @@
+<!--pages/paysuccess/paysuccess.wxml-->
+<view class='paysuccess'>
+  <!-- <view class='mine'>这里放公司的东西</view> -->
+  <swiper class='swiperview' interval='3000' autoplay="true" circular="true" indicator-dots="{{imgUrls}}" 
+  indicator-color="#666" indicator-active-color="red">
+    <block wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image"/>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class='car'>
+     <view class='title'>领取一点停优惠券</view>
+     <!-- <label class="label" for="input">车牌号:</label> -->
+     <input id='input' placeholder="请输入车牌号" maxlength='16' focus='true' />
+     <view>
+       <button class='carbtn' type="primary"   bindtap="get">领 取</button>
+       <button class='carbtn' type="primary"   bindtap="backBtn">返回</button>
+     </view>
+  </view>
+  <view class='yidianting'>
+    <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/demo.jpeg" class='yimg'></image>
+  </view>
+</view>

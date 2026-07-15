@@ -1,0 +1,14 @@
+// 给wxml调用的，处理字符过长替换 “...”
+var substring = function (text, textLength) {
+  if (text.length == 0 || text == undefined) {
+    return;
+  }
+  else if (text.length > textLength) {
+    return text.substring(0, textLength) + '...';
+  } else {
+    return text;
+  }
+}
+module.exports = {
+  substring: substring
+}

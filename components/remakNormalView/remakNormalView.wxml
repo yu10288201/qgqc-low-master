@@ -1,0 +1,35 @@
+<!--components/remakNormalView/remakNormalView.wxml-->
+<!-- 常用备注弹框 -->
+<view class="container">
+  <view class="container-top">
+    <!-- <text style="margin-left: 40%;">{{dishesInfo.dishes_name}}</text>
+    <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='hideModal'></image> -->
+    <text style="height: 60rpx;width: 300rpx;float: left;margin-left: 20rpx;">{{dishesInfo.dishes_name}}</text>
+    <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='hideModal'></image>
+    <text style="width: 140rpx;position: absolute;top: 70rpx;font-weight: normal;right: 100rpx;">常用备注</text>
+  </view>
+  <!-- 列表-->
+  <view class="container-table">
+    <form bindsubmit='table_ChangeSubmit' style='width:100%;height:100%'>
+      <scroll-view scroll-y='true' class="scroll-part">
+        <radio-group wx:if="{{quickRemarkList.length!=0}}">
+          <label style="width:21%;display: inline-block;margin:10rpx 10rpx" wx:for="{{quickRemarkList}}" wx:key="index" data-index="{{index}}" bindtap="chooseRemark">
+            <button class="hallcheckbox {{item.checked ? 'yerrow_background':'green_background'}}" style="{{item.checked ? 'color:#000':'color:#fff'}}">
+              <view class="asd">{{item.value}}</view>
+            </button>
+          </label>
+        </radio-group>
+        
+        <view class="modal-textarea" style="height: 100%;width: 100%;" wx:else>
+          <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;">
+            <view>--未设置常用备注--</view>
+          </view>
+        </view>
+      </scroll-view>
+    </form>
+  </view>
+  <view class="container-bottom"> 
+    <button class="btn_mid_y" bindtap="quickRemarkConfirm" style="height:50rpx;line-height: 50rpx;">确定</button>
+  </view>
+</view>
+

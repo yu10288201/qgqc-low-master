@@ -1,0 +1,447 @@
+<view class="page">
+  <!-- 表格（含活动名称行） -->
+  <view class="table-wrap">
+    <!-- 活动名称行 -->
+    <view class="activity-row">
+      <text class="activity-label">活动名称：</text>
+      <picker style="flex:1;" mode="selector" range="{{activityList}}" range-key="title" value="{{activityIndex}}" bindchange="onActivityChange">
+        <view class="activity-picker">
+          <text class="activity-picker-text">{{activityList.length > 0 ? activityList[activityIndex].title : '请选择活动'}}</text>
+          <text class="activity-picker-arrow">▼</text>
+        </view>
+      </picker>
+    </view>
+    <!-- 表头 -->
+    <view class="table-row table-head">
+      <text class="col-no" style="border-right-color:#b89a7a;">编号</text>
+      <text class="col-name" style="border-right-color:#b89a7a;">昵称</text>
+      <text class="col-gender" style="border-right-color:#b89a7a;">性别</text>
+      <text class="col-invite" style="border-right:none;">邀请</text>
+      <text class="col-reply-invite" style="padding-right:1rpx;">回复</text>
+      <text class="col-invited" style="border-right:none;">被邀请</text>
+      <text class="col-reply">回复</text>
+    </view>
+    <!-- 数据行，最多10行内部滚动 -->
+    <scroll-view scroll-y class="table-scroll">
+      <view class="table-row {{selectedIndex == index ? 'row-selected' : ''}}" wx:for="{{tableList}}" wx:key="index" bindtap="onSelectRow" data-index="{{index}}">
+        <text class="col-no" style="{{item.isSelf ? 'font-weight:bold; color:#c8924a;' : ''}}">{{item.no}}</text>
+        <scroll-view scroll-x class="col-name" style="text-align:center; {{item.isSelf ? 'font-weight:bold;' : ''}}">
+          <text style="white-space:nowrap; font-size:26rpx; color:{{item.isSelf ? '#c8924a' : '#333'}}; padding:14rpx 0; {{item.isSelf ? 'font-weight:bold;' : ''}}">{{item.name}}</text>
+        </scroll-view>
+        <text class="col-gender">{{item.gender === 1 ? '男' : item.gender === 2 ? '女' : '—'}}</text>
+        <view class="col-invite">
+          <view class="circle {{item.inviteSelected ? 'circle-done' : ''}}" bindtap="onInvite" data-index="{{index}}"></view>
+        </view>
+        <view class="col-reply-invite">
+          <view class="rect {{item.inviteSelected && item.hisReplyStatus === 1 ? 'rect-accept' : item.inviteSelected && item.hisReplyStatus === 2 ? 'rect-reject' : item.inviteSelected && !item.hisReplyStatus ? 'rect-pending-invite' : ''}}" bindtap="onReplyInvite" data-index="{{index}}"></view>
+        </view>
+        <view style="width:2rpx; background-color:#aaa; align-self:stretch; flex-shrink:0; margin-left:-2rpx;"></view>
+        <view class="col-invited">
+          <view class="triangle" style="border-bottom-color: {{item.invitedSelected ? '#52A76E' : '#ccc'}}" bindtap="onInvited" data-index="{{index}}"></view>
+        </view>
+        <view class="col-reply">
+          <view class="rect {{item.invitedSelected && item.myReplyStatus === 1 ? 'rect-accept' : item.invitedSelected && item.myReplyStatus === 2 ? 'rect-reject' : item.invitedSelected ? 'rect-pending' : ''}}" bindtap="onReply" data-index="{{index}}"></view>
+        </view>
+      </view>
+      <!-- 空状态 -->
+      <view wx:if="{{tableList.length === 0}}" class="table-empty">
+        <text>暂无数据</text>
+      </view>
+    </scroll-view>
+    <!-- 底部操作行 -->
+    <view class="table-footer">
+      <view class="footer-btn" bindtap="onShowGuide">操作说明</view>
+      <view style="display:flex;flex-direction:row;gap:20rpx;">
+        <view class="footer-btn" bindtap="onChat">乔信</view>
+        <view class="footer-btn" bindtap="onDetail">详情</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作说明弹窗 -->
+  <view wx:if="{{showGuideModal}}" class="modal-mask" catchtap="onCloseGuide">
+    <view class="modal-box" catchtap="stopPropagation">
+      <text class="modal-close" bindtap="onCloseGuide">✕</text>
+      <text class="modal-title">操作说明</text>
+      <view class="guide-row">
+        <view class="circle circle-done" style="flex-shrink:0;"></view>
+        <text class="guide-text">圆形（绿色）：已发出邀请</text>
+      </view>
+      <view class="guide-row">
+        <view class="circle" style="flex-shrink:0;"></view>
+        <text class="guide-text">圆形（空）：未邀请，点击发送邀请</text>
+      </view>
+      <view class="guide-row">
+        <view class="triangle" style="border-bottom-color:#52A76E; flex-shrink:0;"></view>
+        <text class="guide-text">三角形（绿色）：对方邀请了你</text>
+      </view>
+      <view class="guide-row">
+        <view class="triangle" style="flex-shrink:0;"></view>
+        <text class="guide-text">三角形（灰色）：对方未邀请你</text>
+      </view>
+      <view class="guide-row">
+        <view class="rect rect-accept" style="flex-shrink:0;"></view>
+        <text class="guide-text">矩形（绿色）：对方已接受</text>
+      </view>
+      <view class="guide-row">
+        <view class="rect rect-reject" style="flex-shrink:0;"></view>
+        <text class="guide-text">矩形（红色）：对方已拒绝</text>
+      </view>
+      <view class="guide-row">
+        <view class="rect rect-pending" style="flex-shrink:0;"></view>
+        <text class="guide-text">矩形（灰色）：等待对方回复</text>
+      </view>
+      <view class="guide-row">
+        <view class="rect" style="flex-shrink:0;"></view>
+        <text class="guide-text">矩形（空）：暂无相关状态</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 回复弹窗 -->
+  <view wx:if="{{showReplyModal}}" class="modal-mask" catchtap="onCloseReply">
+    <view class="modal-box" catchtap="stopPropagation">
+      <text class="modal-close" bindtap="onCloseReply">✕</text>
+      <text class="modal-title">回复对方</text>
+      <textarea class="reply-textarea" placeholder="写一句话给对方（选填）" value="{{replyMessage}}" bindinput="onReplyMessageInput" maxlength="100" catchtap="stopPropagation" />
+      <view class="modal-btns">
+        <view class="modal-btn modal-btn-reject-red" bindtap="onReject">拒绝</view>
+        <view class="modal-btn modal-btn-accept" bindtap="onAccept">接受</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view wx:if="{{showDetailModal}}" class="modal-mask" catchtap="onCloseDetail">
+    <view style="position:relative; width:660rpx;">
+      <text style="position:absolute; top:10rpx; right:16rpx; font-size:36rpx; color:#999; z-index:10;" bindtap="onCloseDetail">✕</text>
+      <scroll-view scroll-y class="detail-scroll" catchtap="stopPropagation">
+        <view class="detail-box {{detailItem.detailMode === 'invite' || detailItem.detailMode === 'view_invite' ? 'detail-box-invite' : ''}}" catchtap="stopPropagation">
+          <text class="modal-title" style="display:block; text-align:center;">详情</text>
+      <!-- 编号 昵称（invited 模式和 view_all 有被邀请时不显示，因为那些模式自己有更完整的头部） -->
+      <view wx:if="{{detailItem.detailMode !== 'invited' && detailItem.detailMode !== 'view_invited' && !(detailItem.detailMode === 'view_all' && detailItem.invitedSelected)}}" class="detail-row">
+        <view class="detail-col-auto">
+          <text class="detail-label">编号：</text>
+          <text class="detail-val">{{detailItem.detailMode === 'invite' || detailItem.detailMode === 'view_invite' ? myNo : detailItem.no}}</text>
+        </view>
+        <view class="detail-col-auto">
+          <text class="detail-label">昵称：</text>
+          <text class="detail-val">{{detailItem.detailMode === 'invite' || detailItem.detailMode === 'view_invite' ? myNickname : detailItem.name}}</text>
+        </view>
+      </view>
+
+      <!-- invite 模式：点邀请列，只显示我的敲门内容 -->
+      <block wx:if="{{detailItem.detailMode === 'invite'}}">
+        <view wx:if="{{detailItem.myInviteTime}}" class="detail-row">
+          <text class="detail-label">发送时间：</text>
+          <text class="detail-val">{{detailItem.myInviteTime}}</text>
+        </view>
+        <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <text class="detail-label">轻轻敲门：</text>
+          <textarea class="detail-input" placeholder="（一句简单的问候，故事从此开始）" value="{{detailItem.knock}}" bindinput="onDetailInput" />
+        </view>
+        <view wx:if="{{!detailItem.inviteSelected}}" style="display:flex;justify-content:flex-end;margin-top:20rpx;">
+          <view class="footer-btn" style="margin-right:40rpx;" bindtap="onSend">发送邀请</view>
+        </view>
+        <view wx:else style="display:flex;flex-direction:row;justify-content:space-between;margin-top:20rpx;">
+          <view class="footer-btn" bindtap="onCancelInvite">取消邀请</view>
+          <view class="footer-btn" bindtap="onEditKnock">修改敲门语</view>
+        </view>
+      </block>
+
+      <!-- invited 模式：点被邀请列，显示对方完整信息+敲门内容 -->
+      <block wx:elif="{{detailItem.detailMode === 'invited'}}">
+        <!-- 编号 昵称 姓名 -->
+        <view class="detail-row">
+          <view class="detail-col-auto">
+            <text class="detail-label">编号：</text>
+            <text class="detail-val">{{detailItem.no}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">昵称：</text>
+            <text class="detail-val">{{detailItem.name}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">姓名：</text>
+            <text class="detail-val">{{detailItem.signupName}}</text>
+          </view>
+        </view>
+        <!-- 年龄 职业 学历 -->
+        <view class="detail-row">
+          <view class="detail-col-auto">
+            <text class="detail-label">年龄：</text>
+            <text class="detail-val">{{detailItem.age || '空'}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">职业：</text>
+            <text class="detail-val">{{detailItem.occupation || '空'}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">学历：</text>
+            <text class="detail-val">{{detailItem.education || '空'}}</text>
+          </view>
+        </view>
+        <!-- 才艺 -->
+        <view class="detail-row">
+          <text class="detail-label">才艺：</text>
+          <text class="detail-val">{{detailItem.talent || '空'}}</text>
+        </view>
+        <!-- 自我简介 -->
+        <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <text class="detail-label">自我简介：</text>
+          <scroll-view scroll-y class="detail-reply-scroll">
+            <text class="detail-reply-content">{{detailItem.selfIntro || '空'}}</text>
+          </scroll-view>
+        </view>
+        <!-- 对方邀请时间 -->
+        <view wx:if="{{detailItem.hisInviteTime}}" class="detail-row">
+          <text class="detail-label">对方邀请时间：</text>
+          <text class="detail-val">{{detailItem.hisInviteTime}}</text>
+        </view>
+        <!-- 对方敲门 -->
+        <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <text class="detail-label">对方敲门：</text>
+          <scroll-view scroll-y class="detail-reply-scroll">
+            <text class="detail-reply-content">{{detailItem.hisKnockContent || '（未填写）'}}</text>
+          </scroll-view>
+        </view>
+      </block>
+
+      <!-- view_invite 模式：点邀请回复列，只显示我的敲门+对方回复 -->
+      <block wx:elif="{{detailItem.detailMode === 'view_invite'}}">
+        <view wx:if="{{detailItem.myInviteTime}}" class="detail-row">
+          <text class="detail-label">我的邀请时间：</text>
+          <text class="detail-val">{{detailItem.myInviteTime}}</text>
+        </view>
+        <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <text class="detail-label">我的敲门：</text>
+          <scroll-view scroll-y class="detail-reply-scroll">
+            <text class="detail-reply-content">{{detailItem.knock || '空'}}</text>
+          </scroll-view>
+        </view>
+        <view style="background:#fff; border-radius:8rpx; padding:8rpx; margin-top:-1rpx; margin-left:-30rpx; margin-right:-30rpx; margin-bottom:-50rpx; padding-left:30rpx; padding-right:30rpx; padding-bottom:50rpx; box-sizing:border-box;">
+          <view wx:if="{{detailItem.hisReplyTime}}" class="detail-row">
+            <text class="detail-label">对方回复时间：</text>
+            <text class="detail-val">{{detailItem.hisReplyTime}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">对方回应：</text>
+            <scroll-view scroll-y class="detail-reply-scroll">
+              <text class="detail-reply-content">{{detailItem.reply || '（暂无回应）'}}</text>
+            </scroll-view>
+          </view>
+        </view>
+      </block>
+
+      <!-- view_invited 模式：点被邀请回复列，只显示对方敲门+我的回复 -->
+      <block wx:elif="{{detailItem.detailMode === 'view_invited'}}">
+        <text style="display:block; font-size:30rpx; font-weight:bold; color:#333; margin-bottom:8rpx;">邀请方信息：</text>
+        <!-- 编号 昵称 姓名 同一行 -->
+        <view class="detail-row">
+          <view class="detail-col-auto">
+            <text class="detail-label">编号：</text>
+            <text class="detail-val">{{detailItem.no}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">昵称：</text>
+            <text class="detail-val">{{detailItem.name}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">姓名：</text>
+            <text class="detail-val">{{detailItem.signupName}}</text>
+          </view>
+        </view>
+        <!-- 年龄 职业 学历 同一行 -->
+        <view class="detail-row">
+          <view class="detail-col-auto">
+            <text class="detail-label">年龄：</text>
+            <text class="detail-val">{{detailItem.age || '空'}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">职业：</text>
+            <text class="detail-val">{{detailItem.occupation || '空'}}</text>
+          </view>
+          <view class="detail-col-auto">
+            <text class="detail-label">学历：</text>
+            <text class="detail-val">{{detailItem.education || '空'}}</text>
+          </view>
+        </view>
+        <!-- 才艺 -->
+        <view class="detail-row">
+          <text class="detail-label">才艺：</text>
+          <text class="detail-val">{{detailItem.talent || '空'}}</text>
+        </view>
+        <!-- 自我简介 -->
+        <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+          <text class="detail-label">自我简介：</text>
+          <scroll-view scroll-y class="detail-reply-scroll">
+            <text class="detail-reply-content">{{detailItem.selfIntro || '空'}}</text>
+          </scroll-view>
+        </view>
+        <view class="detail-box-invite" style="border-radius:8rpx; padding:8rpx; margin-top:8rpx; margin-left:-30rpx; margin-right:-30rpx; padding-left:30rpx; padding-right:30rpx; box-sizing:border-box;">
+          <view wx:if="{{detailItem.hisInviteTime}}" class="detail-row">
+            <text class="detail-label">被邀请时间：</text>
+            <text class="detail-val">{{detailItem.hisInviteTime}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">对方敲门：</text>
+            <scroll-view scroll-y class="detail-reply-scroll">
+              <text class="detail-reply-content">{{detailItem.hisKnockContent || '（暂无）'}}</text>
+            </scroll-view>
+          </view>
+        </view>
+        <view class="detail-box-invite" style="border-radius:8rpx; padding:8rpx; margin-top:-1rpx; margin-left:-30rpx; margin-right:-30rpx; margin-bottom:-50rpx; padding-left:30rpx; padding-right:30rpx; padding-bottom:50rpx; box-sizing:border-box;">
+          <view wx:if="{{detailItem.myReplyTime}}" class="detail-row">
+            <text class="detail-label">我的回复时间：</text>
+            <text class="detail-val">{{detailItem.myReplyTime}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">我的回复：</text>
+            <textarea class="detail-input" placeholder="（暂无）" value="{{detailItem.myReplyContent}}" bindinput="onReplyContentInput" />
+          </view>
+          <view style="display:flex;flex-direction:row;justify-content:space-between;margin-top:20rpx;">
+            <view class="footer-btn" bindtap="onRejectInvite">{{detailItem.myReplyStatus === 2 ? '接受邀请' : '拒绝邀请'}}</view>
+            <view class="footer-btn" bindtap="onEditReply">修改回复语</view>
+          </view>
+        </view>
+      </block>
+
+      <!-- view_all 模式：按两对显示，有哪对显示哪对 -->
+      <block wx:else>
+        <!-- 第一对：我邀请对方 -->
+        <block wx:if="{{detailItem.inviteSelected}}">
+          <view class="detail-box-invite" style="border-radius:8rpx; padding:12rpx; margin-bottom:12rpx;">
+            <view class="detail-row">
+              <view class="detail-col-auto">
+                <text class="detail-label">编号：</text>
+                <text class="detail-val">{{myNo || '—'}}</text>
+              </view>
+              <view class="detail-col-auto">
+                <text class="detail-label">昵称：</text>
+                <text class="detail-val">{{myNickname || '—'}}</text>
+              </view>
+            </view>
+            <view wx:if="{{detailItem.myInviteTime}}" class="detail-row">
+              <text class="detail-label">我的邀请时间：</text>
+              <text class="detail-val">{{detailItem.myInviteTime}}</text>
+            </view>
+            <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+              <text class="detail-label">我的敲门：</text>
+              <scroll-view scroll-y class="detail-reply-scroll">
+                <text class="detail-reply-content">{{detailItem.knock || '空'}}</text>
+              </scroll-view>
+            </view>
+            <view wx:if="{{detailItem.hisReplyTime}}" class="detail-row">
+              <text class="detail-label">对方回复时间：</text>
+              <text class="detail-val">{{detailItem.hisReplyTime}}</text>
+            </view>
+            <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+              <text class="detail-label">对方回应：</text>
+              <scroll-view scroll-y class="detail-reply-scroll">
+                <text class="detail-reply-content">{{detailItem.reply || '空'}}</text>
+              </scroll-view>
+            </view>
+          </view>
+        </block>
+        <!-- 第二对：对方邀请我 -->
+        <block wx:if="{{detailItem.invitedSelected}}">
+          <text style="display:block; font-size:30rpx; font-weight:bold; color:#333; margin-bottom:8rpx;">邀请方信息：</text>
+          <!-- 编号 昵称 姓名 同一行 -->
+          <view class="detail-row">
+            <view class="detail-col-auto">
+              <text class="detail-label">编号：</text>
+              <text class="detail-val">{{detailItem.no}}</text>
+            </view>
+            <view class="detail-col-auto">
+              <text class="detail-label">昵称：</text>
+              <text class="detail-val">{{detailItem.name}}</text>
+            </view>
+            <view class="detail-col-auto">
+              <text class="detail-label">姓名：</text>
+              <text class="detail-val">{{detailItem.signupName}}</text>
+            </view>
+          </view>
+          <!-- 年龄 职业 学历 同一行 -->
+          <view class="detail-row">
+            <view class="detail-col-auto">
+              <text class="detail-label">年龄：</text>
+              <text class="detail-val">{{detailItem.age || '空'}}</text>
+            </view>
+            <view class="detail-col-auto">
+              <text class="detail-label">职业：</text>
+              <text class="detail-val">{{detailItem.occupation || '空'}}</text>
+            </view>
+            <view class="detail-col-auto">
+              <text class="detail-label">学历：</text>
+              <text class="detail-val">{{detailItem.education || '空'}}</text>
+            </view>
+          </view>
+          <view class="detail-row">
+            <text class="detail-label">才艺：</text>
+            <text class="detail-val">{{detailItem.talent || '空'}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">自我简介：</text>
+            <scroll-view scroll-y class="detail-reply-scroll">
+              <text class="detail-reply-content">{{detailItem.selfIntro || '空'}}</text>
+            </scroll-view>
+          </view>
+          <view wx:if="{{detailItem.hisInviteTime}}" class="detail-row">
+            <text class="detail-label">被邀请时间：</text>
+            <text class="detail-val">{{detailItem.hisInviteTime}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">对方敲门：</text>
+            <scroll-view scroll-y class="detail-reply-scroll">
+              <text class="detail-reply-content">{{detailItem.hisKnockContent || '空'}}</text>
+            </scroll-view>
+          </view>
+          <view wx:if="{{detailItem.myReplyTime}}" class="detail-row">
+            <text class="detail-label">我的回复时间：</text>
+            <text class="detail-val">{{detailItem.myReplyTime}}</text>
+          </view>
+          <view class="detail-row" style="flex-direction: column; align-items: flex-start;">
+            <text class="detail-label">我的回复：</text>
+            <scroll-view scroll-y class="detail-reply-scroll">
+              <text class="detail-reply-content">{{detailItem.myReplyContent || '空'}}</text>
+            </scroll-view>
+          </view>
+        </block>
+        <!-- 两对都没有 -->
+        <view wx:if="{{!detailItem.inviteSelected && !detailItem.invitedSelected}}" class="detail-row">
+          <text class="detail-val" style="color:#999;">暂无互动记录</text>
+        </view>
+      </block>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>
+
+<!-- 原代码备份
+<view class="page" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/绿logo背景.png'); background-size: 100% 100%;">
+  <view class="btn-view">
+    <button class="btn" bindtap="toLoveSet"><text>购买套餐</text></button>
+    <button class="btn" bindtap="chooseDinnerTime"><text>双向选择</text></button>
+  </view>
+</view>
+<view wx:if="{{showChoose}}" style="z-index: 99;display: flex;flex-direction: column;justify-content: center;align-items: center;position: fixed;width: 100vw;height: 100vh;background-color: rgba(0, 0, 0, 0.3);">
+  <view style="z-index: 999; width: 80%;height: auto;display: flex;flex-direction: column;justify-content: flex-start;background-color: #FFF;align-items: center;border-radius: 20rpx;">
+    <view style="width: 100%;font-size: 20px;font-weight: bolder;display: flex;flex-direction: row;justify-content: center;align-items: center;height: 100rpx;">
+      请选择你的用餐时间
+    </view>
+    <view style="position: absolute;width: 78%;margin-top: 10rpx; display: flex;flex-direction: row;justify-content: flex-end;">
+      <image style="height: 70rpx;width: 70rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/close.png" bindtap="closeChooseDinnerTime"></image>
+    </view>
+    <view wx:for="{{comboList}}" wx:key="index" style="width: 80%;margin: 20rpx 0;">
+      <view style="border: 1px #cecece solid;border-radius: 5px; width: 100%;display: flex;flex-direction: column;justify-content: center;align-items: center;margin-bottom: 10px;">
+        <view style="margin-top: 5px;margin-bottom: 5px;">{{item.combo_name}}</view>
+        <view style="margin-bottom: 5px;">{{item.dinner_time}}</view>
+        <view style="display: flex;flex-direction: row;justify-content: flex-end;width: 100%;margin-bottom: 5px;align-items: center;">
+          <view bindtap="goChooseLove" data-id="{{index}}" style="border: 1rpx #dddddd solid;border-radius: 10rpx; margin-right: 5px;" class="btn12">选择</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+-->

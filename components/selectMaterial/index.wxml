@@ -1,0 +1,97 @@
+<view class="container1" wx:if="{{isTable}}">
+  <!-- 表格的标题 -->
+  <view class="container-table" style='height:40rpx'>
+    <view class="table1">
+      <view class="tr1">
+        <!-- <view class="td1" style='width:13%'>选择</view> -->
+        <view class="td1" style="width:50%">食材名称</view>
+        <view class="td1" wx:if="{{dishes.spec_type == 9}}">单位</view>
+        <view class="td1" wx:if="{{dishes.spec_type == 91}}">单价</view>
+        <view class="td1" wx:if="{{dishes.spec_type == 91}}" style="width:20%">数量</view>
+        <view class="td1" style="width: 35%;">金额</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 可以滚动的食材选择 -->
+  <view class="container-select" style="height: 100%;">
+			<scroll-view style='100%' scroll-y="true" wx:if="{{porridgeObjectList.length != 0}}">
+				<view style="width:100%;border-top:{{'transparent solid 2rpx;'}};border-bottom:{{'transparent solid 2rpx;'}}">
+					<view wx:for="{{porridgeObjectList}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+						<view class='down-center' wx:if="{{item.selectStatus}}">
+							<view class='oneline' data-index='{{index}}' style='width:100%'>
+							<!-- <view class='oneline' data-index='{{index}}' bindtap="choose_whole" style='width:100%'> -->
+                <!-- 每一行的数据 -->
+								<!-- <view class='td1' style='width:13%'>
+									<image class='radio' src="{{item.selectStatus?'./images/moreSelected.svg':'./images/moreSelect.svg'}}"></image>
+								</view> -->
+								<view class="td1" style="width:50%">{{item.jointSetName}}</view>
+                <input disabled="value" style='text-align:center' wx:if="{{porridgeObject.jointSetValuation == 1}}" class="td1" maxlength="4" value='' type='number' bindinput='keyinput'/>               
+                <!-- <input disabled="value" style='text-align:center' wx:else class="td1" maxlength="4" placeholder="请输入份数" value='{{item.jointSetUnit}}' type='number' bindinput='keyinput'/> -->
+                <view class="td1" wx:if="{{dishes.spec_type == 91}}"><span style="color: #754a1f">{{item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{item.jointSetDealPrice}}/
+                  <span style="color: #009900">{{item.inline_price && item.inline_price != 0 ? item.inline_price + '/' : ''}}</span>{{item.jointSetUnit}}</view>
+                <view class="td1" wx:if="{{dishes.spec_type == 9}}">{{item.jointSetUnit}}</view>
+                <view class="td1" wx:if="{{dishes.spec_type == 91}}" style="width:20%">{{item.foodNum}}</view>
+                <view wx:if="{{dishes.spec_type == 9}}" class="td1" style="width: 35%;">{{""}}</view>
+                <view wx:elif="{{dishes.spec_type == 91}}" class="td1" style="width: 35%;">{{item.totalPrice}}</view>
+								<!-- <view wx:else class="td1" style="width: 23%;">{{item.jointSetDealPrice}}元</view> -->
+							</view>  
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+      <view class="modal-textarea" style="height: 100%;width: 100%;" wx:if="{{porridgeObjectList.length == 0}}">
+        <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;color:#888">
+          <view>--未选择食材--</view>
+        </view>
+      </view>
+  </view>
+</view>
+
+<view class="container-view" wx:if="{{!isTable}}">
+  <view class="container-view-top">
+    <!-- <text style="height: 60rpx;width: 400rpx;float: left;margin-left: 20rpx;">多拼粥({{goodModel.jointSetValuation == 1?'按份数':'按食材'}})</text> -->
+    <view style="height: 60rpx;width: 540rpx;float: left;margin-left: 20rpx;display: flex;flex-direction: column;font-size: 30rpx;">
+      <text >{{goodModel.dishes_name}}</text>
+    <text style="color:gray">[{{goodModel.spec_type == 9?'选拼菜品(份数)':'选拼菜品(食材)'}}]</text>
+    </view>
+    <!-- <text style="height: 60rpx;width: 400rpx;float: left;margin-left: 20rpx;">{{goodModel.poridgeName}}({{goodModel.jointSetValuation == 1?'按份数':'按食材'}})</text> -->
+    <image style="height: 60rpx;width: 60rpx;float: right;" src="{{i_close_img_url}}" bindtap="closeMaterial"></image>
+    <text style="width: 140rpx;position: absolute;top: 70rpx;font-weight: normal;right: 100rpx;">选择食材</text>
+  </view>
+  <!-- 列表-->
+  <view class="container-view-table">
+    <form style='width:100%;height:100%'>
+      <scroll-view scroll-y='true' class="scroll-part">
+        <radio-group wx:if="{{porridgeObject.list.length!=0}}">
+          <label style="width:30%;display: inline-block;margin:10rpx 6rpx" wx:for="{{porridgeObject.list}}" wx:key="index" data-index="{{index}}" bindtap="chooseMaterial">
+            <button class="hallcheckbox {{item.selectStatus ? 'yerrow_background':'green_background'}}" style="{{item.selectStatus ? 'color:#000':'color:#fff'}}">
+              <view class="asd">{{item.jointSetName}}</view>
+              <view wx:if="{{porridgeObject.jointSetValuation != 1}}" class="price" style="display:flex; flex-direction:row-reverse;justify-content: space-between; width: 90%">
+                <text hidden="{{!item.inline_price || item.inline_price == 0}}" style="{{item.selectStatus ? 'color:#754a1f':'color:#009900'}}">{{item.inline_price}}</text>
+                <text>{{item.jointSetDealPrice}}</text>
+                <text hidden="{{item.vip_price == 0}}" style="{{item.selectStatus ? 'color:#754a1f':'color:#000'}}">{{item.vip_price}}</text>
+              </view>
+            </button>
+          </label>
+        </radio-group>
+
+        <view class="modal-textarea" style="height: 100%;width: 100%;" wx:else>
+          <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;">
+            <view>--未设置食材--</view>
+          </view>
+        </view>
+      </scroll-view>
+    </form>
+  </view>
+  
+  <view class="container-view-bottom" style="float:right"> 
+    <view style="display: flex;flex:1.5; margin-left: 10rpx;align-items: center;" wx:if="{{goodModel.spec_type == 91 && showNu}}">
+      <text style="width:50px">数量：</text>
+      <input bindinput="numberInput" value="{{num}}" style="width: 70rpx;border: #d9d9d9 solid 2rpx;text-align:center" type="digit"></input>
+	 	  <text style="width:50px;margin-left:10rpx">{{jointSetUnit}}</text>
+    </view>
+    <button wx:if="{{goodModel.spec_type == 91 && showNu}}" class="btn_mid_y" style="height:50rpx;line-height: 50rpx;">取消</button>
+    <button class="btn_mid_y" bindtap="submitMaterial" style="height:50rpx;line-height: 50rpx;margin:0 10rpx 0 15rpx">确定</button>
+  </view>
+</view>

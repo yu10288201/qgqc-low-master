@@ -1,0 +1,70 @@
+function showCount2Single(cartList, id){
+	if(!cartList.length || !id) {
+		return [{}, []]
+	}
+	var first = {}
+	var arr = cartList.filter(function(item) {
+		if(item.id && item.dishes_id==id && !first.id) {
+			first = item
+			return false
+		}
+		return id==item.dishes_id
+	})
+	return [first, arr]
+}
+function computedCount2Single(cartList, id, len){
+  if(!cartList.length || !id) {
+		return [{}, []]
+	}
+	var first = {}
+	var arr = cartList.filter(function(item) {
+		if(item.id && item.dishes_id==id && !first.id) {
+			first = item
+			return false
+		}
+		return id==item.dishes_id
+  })
+  var count = parseInt(first.number)
+  for(var i=0; i < len; i++) {
+    count = count + parseInt(arr[i].number)
+  }
+  return count
+}
+function computedTotal2Single(cartList, id) {
+	if(!cartList.length || !id) {
+		return []
+	}
+	var total = 0
+	cartList.forEach(function(item) {
+		if(id==item.dishes_id) {
+			total = total + parseFloat(item.sum)
+		}
+	})
+	return total.toFixed(2)
+}
+
+function newsum(cartList, id){
+	var sum = 0;
+	cartList.forEach(function(item) {
+		if(id==item.dishes_id&&item.dishes_status !=20) {
+			sum = item.sum
+		
+		}
+	})
+	return sum.toFixed(2)
+}
+
+function totalDgg(num1,num2){
+	var num3
+
+num3 = parseInt(num1) + parseInt(num2)
+
+return num3;
+}
+module.exports={
+	computedTotal2Single: computedTotal2Single,
+  showCount2Single: showCount2Single,
+	computedCount2Single: computedCount2Single,
+	newsum:newsum,
+	totalDgg:totalDgg
+}

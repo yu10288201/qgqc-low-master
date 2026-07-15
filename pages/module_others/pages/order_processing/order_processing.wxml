@@ -1,0 +1,384 @@
+<!--pages/incoming/incoming.wxml-->
+<wxs module="filters" src="../../../module_discount/pages/ordersdetail/ordersdetail.wxs"></wxs>
+
+<view class="popupView-window">
+	<!-- 多种做法选择弹窗 -->
+	<van-popup show="{{showMultipleEatMethodView}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+		<s-multipleEatMethodViewAndWeight wx:if="{{showMultipleEatMethodView}}" bind:submitEatMethod="submitEatMethod" em_arry="{{practiceList}}" partIndex="{{partIndex}}"
+		  	eatMethodIndex="{{eatMethodIndex}}" eatMethodArray="{{dishes_inf.weighingByLocation==1?eatMethodArray:''}}" isAddEat="{{dishes_inf.spec_type == 8?true:false}}"
+		    addDishName = "{{addDishName}}" dishes_name="{{inputName}}" windowHeight="{{windowHeight}}"
+			partsName="{{partsName}}" inputAmount="{{inputAmount}}" inputAmountm="{{inputAmountm}}" dishesInfo="{{dishes_inf}}" wholeValue="{{inputAmount}}" needRemain="{{needRemain}}" eatMethodArray="{{eatMethodArray}}"
+			bind:keyInput="keyInput" isTable="{{false}}" bind:showMultipleEatMethodView="showMultipleEatMethodView" />
+	</van-popup>
+
+	<!-- 常用备注选择弹窗 -->
+	<van-popup show="{{showRemarkList}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+		<s-remakNormalView quickRemarkList="{{quickRemarkList}}" dishesInfo="{{dishes_inf}}" bind:hideModal="hideModal"
+			bind:quickRemarkConfirm="quickRemarkConfirm" />
+	</van-popup>
+
+	<!-- 菜品介绍弹窗 -->
+	<van-popup show="{{showIntroduction}}" custom-style="height: 20%;width: 90%;" closeable="{{true}}"
+		bind:close="showIntroduction" round="{{true}}">
+		<s-remarkView readOnly="{{true}}" remarkTitle="菜品介绍：" remarkValue="{{dishes_inf.dishes_introduce}}"
+			isIntroduction="{{true}}" />
+	</van-popup>
+
+	<!-- 口味选择弹窗 -->
+	<van-popup show="{{showTaste}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+		<s-popup_taste bind:submitTaste="submitTaste" dishesInfo="{{dishes_inf}}" bind:closeTaste="chooseTaste"
+			tasteList="{{tasteList}}" />
+	</van-popup>
+
+	<!-- 配菜选择弹窗 -->
+	<van-popup show="{{showpeicai}}" custom-style="height: 90%;width: 90%;top: 47%;" round="{{true}}">
+		<s-multipleEatMethodAndWeightSideDishesView SideDishList="{{SelectSideDish}}" eatMethodRemark="{{eatMethodRemark}}"
+			eatMethodTastesRemark="{{eatMethodTastesRemark}}" dishesInfo="{{dishes_inf}}" dishes_type="{{dishes_type}}" eatMethodArray="{{eatMethodArray}}"
+			tasteList="{{tasteList}}" quickRemarkList="{{quickRemarkList}}" eatMethodChooseIndex="{{eatMethodChooseIndex}}"
+			SideDishList_choose="{{SideDishList_choose}}" bind:submitA="submitA" bind:showpeicai="showpeicai"
+			model:sideDishIndex = "{{sideDishIndex}}"
+			isTable="{{flase}}" />
+	</van-popup>
+
+</view>
+
+<view class="page">
+	<view class="top" style="flex-direction:column;height:260rpx">
+
+		<view class="top-bottom">
+			<text class="title1" style="top:15rpx;">{{dishes_inf.spec_type == 8 ? '来料加工':'多计量'}}</text>
+			<view class="incoming" style="margin-top: 0rpx;height:'200rpx'" wx:if="{{dishes_type==0}}">
+				<view class="frame">
+					<text>名称：</text>
+					<input style="width:60%" value="{{inputName}}" wx:if="{{quedin}}" placeholder-class="place-color" type='text'
+						bindinput="inputName" placeholder="输入名称"></input>
+					<view wx:else style="font-size:30rpx;width:60%">{{inputName}}</view>
+					<button wx:if="{{dishes_inf.spec_type == 8}}" data-type="1" class="{{quedin?'btn_mid_click':'btn_mid_Brownish_red'}}" bindtap="changeAddName"
+				style="height: 45rpx;">新增名称</button>
+				</view>
+				<view class="frame" style="display: flex;flex-wrap: wrap; align-items: center;">
+					<view style="display: flex;flex-wrap: wrap;align-items: center; ">
+						<text>单价：</text>
+						<text style="color: #754a1f">{{dishes_inf.vip_price != 0 ? dishes_inf.vip_price + '/' : ''}}</text>
+						<view wx:if="{{dishes_inf.weighingByLocation==1}}" >
+							{{hasWhole?inputUnitprice!=0?inputUnitprice:eatMethodArray[0].price:dishes_inf!=''?dishes_inf.dishes_price!=0?dishes_inf.dishes_price:'':''}}
+						</view>
+						<view wx:else>
+							{{hasWhole?inputUnitprice:dishes_inf!=''?dishes_inf.dishes_price!=0?dishes_inf.dishes_price:'':''}}
+						</view>
+						<text>/<text style="color: #009900">{{dishes_inf.inline_price != 0 ? dishes_inf.inline_price + '/' : ''}}</text>{{inputUnit}}</text>
+					</view>
+					<view style="display: flex;flex-wrap: wrap;align-items: center;margin-left: 30rpx;margin-right: 30rpx;">
+						<text>数量：</text>
+						<!-- alex -->
+						<input style="width:60rpx;" wx:if="{{hasWhole}}" value="{{min_wish_weight}}"
+							placeholder-class="place-color" type='digit' bindinput="inputAmountHasWhole1" >
+						</input>
+						~
+						<input style="width:60rpx;" wx:if="{{hasWhole}}" value="{{max_wish_weight}}"
+							placeholder-class="place-color" type='digit' bindinput="inputAmountHasWhole" >
+						</input>
+						<input style="width:60rpx;" wx:else  value="{{inputAmount}}" placeholder-class="place-color"
+							type='digit' bindinput="inputAmount" ></input>
+						<text>{{inputUnit}}</text>
+					</view>
+					<view style="display: flex;flex-wrap: wrap;align-items: center; justify-content: center;">
+						<text>金额：</text>
+						<text
+							style="font-weight:normal;">{{ingredientsAmount!=''?filters.toFix(ingredientsAmount):ingredientsAmount}}</text>
+						<text>元</text>
+					</view>
+				</view>
+				<view class="frame">
+					<view style="display: flex; width:60%;margin-bottom: 10rpx;justify-content: left;">
+						<text>总金额：</text>
+						<text style="font-weight:normal;margin-left:2%;">{{money!=''?filters.toFix(money):money}}</text>
+						<text>元</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
+
+	<scroll-view scroll-y='true' class="page_view" style="height:{{scroll_height}}rpx">
+		<text class="title1" style="top: 0rpx;z-index:1">选择做法</text>
+		<view class="practice" style="height: {{dishes_type!=0?'530':'350'}}rpx;">
+			<view class="table" style="margin-top: {{dishes_type!=0?'10':'30'}}rpx;">
+				<view style="height: 100%;" wx:if="{{dishes_type==0}}">
+					<s-multipleEatMethodViewAndWeight bind:submitEatMethod="submitEatMethod" dishesInfo="{{dishes_inf}}"
+						bind:showMultipleEatMethodView="showMultipleEatMethodView" needRemain="{{needRemain}}"
+						eatMethodArray="{{eatMethodArray}}" eatMethodChooseIndex="{{eatMethodChooseIndex}}" isTable="{{true}}"
+						bind:eatMethodChoose="eatMethodChoose" />
+				</view>
+			</view>
+		</view>
+
+		<view wx:if="{{hasSideDish}}">
+			<text class="title1" style="top: -12rpx;z-index:1">选择配菜</text>
+			<view class="ingredient" style="height: 340rpx;">
+				<view class="table" style="height:290rpx;margin-top: {{dishes_type==2?'10':'30'}}rpx;">
+					<s-multipleEatMethodAndWeightSideDishesView SideDishList="{{sideDishList}}"
+						SideDishList_choose="{{sideDishList_choose}}" dishes_type="{{dishes_type}}"
+						eatMethodChooseIndex="{{eatMethodChooseIndex}}" bind:submitSideDish="submitSideDish"
+						eatMethodArray="{{eatMethodArray}}"
+						bind:changeBoxNum="changeBoxNum" isTable="{{true}}" />
+				</view>
+			</view>
+		</view>
+		<!-- 菜品介绍 -->
+		<view style="margin-left:2%;width: 96%;margin-bottom: 0;">
+			<s-remarkView readOnly="{{true}}" wx:if="{{!shrinkIntrIntroduction}}" remarkTitle="菜品介绍："
+				remarkValue="{{dishes_inf.dishes_introduce}}" isIntroduction="{{true}}"
+				onHide="{{showRemarkList || showTaste || showMaterial || showpeicai || showMultipleEatMethodView}}" />
+		</view>
+
+
+		<view class="oneline"
+			style="width: 100%;height: 50px;justify-content: space-around;position: relative;">
+			<view class='{{dishes_inf.spec_type==8?"btn_mid_Brownish_red":"btn_small_djl"}}' wx:if="{{shrinkIntrIntroduction}}" style='width:150rpx;height:50rpx'
+				bindtap='showIntroduction'>菜品介绍</view>
+			<view class='{{dishes_inf.spec_type==8?"btn_mid_Brownish_red":"btn_small_djl"}}' style='width:200rpx;height:50rpx;margin-top:29rpx' wx:if="{{dishes_type!=2 && dishes_inf.sideDishes==0&&dishes_inf.flavor==1}}" bindtap='showpeicai'>选择口味</view>
+			<view class='{{dishes_inf.spec_type==8?"btn_mid_Brownish_red":"btn_small_djl"}}' style='width:200rpx;height:50rpx' wx:elif="{{dishes_type!=2&& dishes_inf.sideDishes!=0}}" bindtap='showpeicai'>选择配菜和口味
+			</view>
+		</view>
+
+		<view class="status_model" wx:if="{{dishes_inf.spec_type == 8}}" >
+			<view style="display:flex;width:80%">
+				<view style="" class="model_text" wx:for="{{listData}}" wx:for-item="status_item" wx:key="index">
+					<text class="{{status_item.checked?'selected1':'not_selected'}}"
+						  wx:if="{{status_item.value=='分席' && status_item.checked}}">{{status_item.value}}({{bidDetailitem.copyOrder}})</text>
+					<text class="{{status_item.checked?'selected1':'not_selected'}}"
+						  wx:elif="{{status_item.value=='转单'&& status_item.checked}}">{{status_item.value}}({{item.transferOrder_tableName}})</text>
+					<text class="{{status_item.checked?'selected1':'not_selected'}}"
+						  wx:elif="{{status_item.value=='寄存' && status_item.checked}}">{{status_item.value}}({{item.depositOrder}})</text>
+					<text class="{{status_item.checked?'selected1':'not_selected'}}"
+						  wx:elif="{{status_item.checked}}">{{status_item.value}}</text>
+				</view>
+			</view>
+			<view class="model_btn">
+				<image style='height: 64rpx;width: 64rpx;margin-left: 5rpx;padding: 5px;' data-detailItem='{{item}}' bindtap="noycts"
+					   src='{{menu_img}}'></image>
+			</view>
+		</view>
+
+		<!-- 客人备注 -->
+		<!--2020-11-19 重写备注框 -->
+		<view style="margin-left:2%;width: 96%;">
+			<s-remarkView_new readOnly="{{false}}" id="BeiZhu"
+				  onHide="{{showRemarkList || showTaste || showMaterial || showpeicai || showMultipleEatMethodView}}"
+				  remarkTitle="客人备注：" spec_type="{{dishes_inf.spec_type}}" tastesRemark="{{eatMethodArray[eatMethodChooseIndex].tastesRemark}}" remarkValue="{{remarks}}" bind:remarkBack="remarks"
+				  bind:showRemarkList="showRemarkList_new" quickRemark="{{quickRemark}}"/>
+		</view>
+
+		<!--2020-11-10 按钮往下调整 alex-->
+		<view style="padding-top:8px;width:100%;height: 80rpx;justify-content: center;display: flex;">
+			<button class="{{dishes_inf.spec_type==8?'btn_mid_Brownish_red':'btn_small_djl'}}" style="height: 60rpx;width: 200rpx;font-size: 30rpx;"
+				bindtap="showPrint">确定</button>
+		</view>
+
+		<view class="typeShade" hidden="{{typeHidden}}" bindtap="typeHidden"></view>
+		<view class="shade" hidden="{{hidden}}" catchtouchmove="return" bindtap="hidden"></view>
+		<view class="fullPopup" hidden="{{fullHidden}}" catchtouchmove="return">
+			<view class="popupTitle">全部位</view>
+			<icon bindtap="hidden" size="20" class="icon" type="cancel"></icon>
+			<view class="table" style="position: absolute;height:83%;top:7%">
+				<view class="fixed">
+					<view class="t6"></view>
+					<view class="t7">做法名称</view>
+					<view class="t8">加收</view>
+				</view>
+				<scroll-view scroll-y class="tableRoll" style="position: absolute;bottom:0;"
+					wx:if="{{GetEmAndEaBySubclassTypeId.all!=''&&GetEmAndEaBySubclassTypeId.all!=undefind}}">
+					<radio-group bindchange="fullCheckboxChange">
+						<view wx:for="{{GetEmAndEaBySubclassTypeId.all}}" wx:key="index" class="roll">
+							<view class="t6">
+								<radio data-c="{{item}}" value="{{item.id}}" checked="{{item.checked}}"
+									style="transform: scale(0.8,0.8);" bindtap="fullCheckbox" data-index="{{index}}">
+								</radio>
+							</view>
+							<view class="t7">{{item.eating_method}}</view>
+							<view class="t8">{{filters.toFix(item.money)}}</view>
+						</view>
+					</radio-group>
+				</scroll-view>
+				<view class="point" wx:if="{{GetEmAndEaBySubclassTypeId.all==''||GetEmAndEaBySubclassTypeId.all==undefind}}">
+					<text>暂无全部位</text>
+				</view>
+			</view>
+			<view class="popupSure">
+				<button bindtap="popupSure">确定</button>
+			</view>
+		</view>
+
+		<view class=" partPopup" hidden="{{partHidden}}" catchtouchmove="return">
+			<view class="popupTitle">分部位</view>
+			<icon bindtap="hidden" size="20" class="icon" type="cancel"></icon>
+			<view class="table" style="position: absolute;height:83%;top:7%">
+				<view class="fixed">
+					<view class="t9"></view>
+					<view class="t10">部位</view>
+					<view class="t11">做法</view>
+					<view class="t12">加收</view>
+				</view>
+				<scroll-view scroll-y class="tableRoll" style="position: absolute;bottom:0;"
+					wx:if="{{GetEmAndEaBySubclassTypeId.one!=''&&GetEmAndEaBySubclassTypeId.one!=undefind}}">
+					<radio-group bindchange="partCheckboxChange">
+						<view wx:for="{{GetEmAndEaBySubclassTypeId.one}}" wx:key="index" class="roll" bindtap="selectMultip">
+							<view class="t9">
+								<radio data-c="{{item}}" value="{{item.id}}" checked="{{item.checked}}"
+									style="transform: scale(0.8,0.8);" bindtap="partCheckbox" data-index="{{index}}">
+								</radio>
+							</view>
+							<view class="t10">{{item.em_name}}</view>
+							<view class="t11">{{item.eating_method}}</view>
+							<view class="t12">{{filters.toFix(item.money)}}</view>
+						</view>
+					</radio-group>
+				</scroll-view>
+				<view class="point" wx:if="{{GetEmAndEaBySubclassTypeId.one==''||GetEmAndEaBySubclassTypeId.one==undefind}}">
+					<text>暂无分部位</text>
+				</view>
+			</view>
+			<view class="popupSure">
+				<button bindtap="popupSure">确定</button>
+			</view>
+		</view>
+	</scroll-view>
+</view>
+
+<!-- 打印机弹窗页面 -->
+<!-- <view class='popup-window-bg' wx:if="{{showPrint}}" style="flex-direction:column;">
+	<view class='popup-window-print' style="height:{{windowHeight*0.92}}px;" wx:if="{{showPrint}}" >
+		<text style="font-size:32rpx;color:red;margin-left: 20rpx;margin-top:25px;font-weight:bold;">选择打印机：</text>
+		<view class="modal-title print-mod-1" style="width:100%">
+			<scroll-view  scroll-y='true' style='width:90%;height: {{windowHeight*0.75}}px;' class="print_scroll">
+				<label class="radio print-lab" data-type="0" bindtap="chooseOnePrint" wx:for="{{printShowArray}}" data-index="{{index}}" data-item="{{item}}" style="border-bottom: 0.5px solid #000;padding-bottom: 2px;width:100%;padding: 20rpx 0rpx 20rpx 0rpx;">
+					<radio value="r1" checked="{{item.check}}" style="width:20%"/>
+					<text style="font-size:32rpx;width:40%">{{item.num}}{{item.connect_status==0?'(未连接)':''}}</text>
+					<text style="font-size:32rpx;width:40%">{{item.name}}</text>
+				</label>
+			</scroll-view>
+			<image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 10px;top:10px' src='{{i_close_img_url}}'
+				   bindtap='showPrint'></image>
+			<view class="print_btn" style="margin-top:50rpx;padding-left: 34%;">
+				<button class="btn_mid_y" bindtap="{{showPrint?'submitTheOrder':''}}" style="height: 25px;">确认</button>
+				
+			</view>
+		</view>
+	</view>
+</view> -->
+
+<!-- 打印机弹窗页面 -->
+<view class='popup-window-bg' wx:if="{{showPrint}}" style="flex-direction:column;">
+<view class='popup-window-print' style="height:{{windowHeight*0.92}}px;align-items: center;margin-top: 5%" wx:if="{{showPrint}}" >
+			<text style="font-size:32rpx;width:100%;color:red;margin-left: 20rpx;margin-top:25px;font-weight:bold;">选择打印机：</text>
+			<view class="modal-title print-mod-1" style="width:90%;">
+				<scroll-view  scroll-y='true' style='width:100%;height: {{windowHeight*0.75}}px;' class="print_scroll">
+				<label class="radio print-lab" data-type="0" style="border-bottom: 0.5px solid green;padding-bottom: 2px;width:100%;height:auto;">
+				<view class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+						<text style="font-size:32rpx;">编号</text>
+					</view>
+					<view class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+						<text style="font-size:32rpx;">状态</text>
+					</view>
+					<view class="box" style="width:40%;height:80rpx;margin-bottom: -2rpx;">
+						<text style="font-size:32rpx;">名称</text>
+					</view>
+				</label>
+				<label class="radio print-lab" data-type="0" bindtap="chooseOnePrint" wx:for="{{printShowArray}}" data-index="{{index}}" data-item="{{item}}" wx:key="index" style="border-bottom: 0.5px solid green;padding-bottom: 2px;width:100%;height:auto;">
+					<view class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+						<radio value="r1" checked="{{item.check}}"/>
+						<text style="font-size:32rpx;">{{item.num}}</text>
+					</view>
+					
+						<view wx:if="{{item.paper_state!=0}}" class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+							<text style="font-size:32rpx;" wx:if="{{item.connect_status==0}}">未连接</text>
+							<text style="font-size:32rpx;color:green" wx:if="{{item.connect_status==1}}">正常</text>
+							<text style="font-size:32rpx;" wx:if="{{item.connect_status==2}}">脱机</text>
+						</view>
+					
+						<view wx:if="{{item.paper_state==0}}" class="box" style="border-right:1rpx solid green;width:30%;height:80rpx;margin-bottom: -2rpx;">
+							<text style="font-size:32rpx;color:red">{{item.paper_state==0?'缺纸':''}}</text>
+						</view>
+				
+					<view class="box" style="width:40%;height:80rpx;margin-bottom: -2rpx;">
+						<text style="font-size:32rpx;">{{item.name}}</text>
+					</view>
+				</label>
+			</scroll-view>
+			</view>
+			
+				<image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 10px;top:10px' src='{{i_close_img_url}}'
+					bindtap='showPrint'></image>
+				<view class="print_btn" style="margin-top:50rpx;padding-left: 34%;" >
+					<button class="btn_mid_y" bindtap="{{showPrint?'submitTheOrder':''}}" style="height: 25px;">确认</button>
+				</view>
+		</view>
+</view>
+
+<!--订单选项-->
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showModalQR}}"></view>
+<view class="modal-dialog" wx:if="{{showModalQR}}" style='background-color: #eeeeee;height: {{windowHeight*0.85}}px;top: 10%;'>
+	<view style="height:100rpx;width:100%;align-items: center;display: flex;">
+		<view style='width: 80%;text-align: center;'>{{cart_item.name}}</view>
+		<image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='noycts'></image>
+	</view>
+
+	<form bindsubmit='buxiBindsubmit_order' style='width:100%;height:90%;'>
+		<scroll-view scroll-y='true'
+					 style='width:100%;height:80%;border-top: 1rpx solid black;border-bottom: 1rpx solid black;'>
+			<checkbox-group name="checkbox_value">
+				<!-- 2020-11-13 把赠送显示出来 item.value != '赠送' &&-->
+				<view class="nameList" wx:for="{{listData}}" wx:key="index"
+					  wx:if="{{item.value != '转单' &&  item.value != '寄存'}}">
+					<label class='nameItems'>
+						<checkbox wx:if="{{item.value == '先出单'}}" name="checkbox_value" style="display:{{permission.judge(permission.convert(item.value),levellist)? 'none':'flex'}}" bindtap="buxiCheckBoxChange" value="{{item.value}}" data-item="{{item}}"
+								  data-idx="{{index}}" checked="{{item.checked}}" disabled="{{true}}"/>
+						<checkbox wx:elif="{{item.value != '催单' && item.value != '分席' && item.value != '不分席'}}" name="checkbox_value" style="display:{{permission.judge(permission.convert(item.value),levellist)? 'none':'flex'}}" bindtap="buxiCheckBoxChange" value="{{item.value}}" data-item="{{item}}"
+								  data-idx="{{index}}" checked="{{item.checked}}" />
+					</label>
+					<view class='nameItemsValue' style="color:black;display:flex;flex-direction: row;">
+						<text>{{item.value}}</text>
+					
+					</view>
+				</view>
+			</checkbox-group>
+		</scroll-view>
+		<view style="width:100%;justify-content: center;display: flex;margin-top: 15rpx;">
+			<button class='btn_mid_y' style="height: 50rpx;" form-type='submit'>确认</button>
+		</view>
+	</form>
+</view>
+
+<!-- 赠送菜品弹框 -->
+<view class="modal-mask" catchtouchmove="preventTouchMove" wx:if="{{showPresentation}}"></view>
+<view class="modal-dialog" wx:if="{{showPresentation}}" style="background-color:#205321;color:white">
+	<view class="modal-title" style="color:white">
+		<text style="margin-left: 20%;">赠送理由</text>
+		<image style='width:60rpx;height:60rpx;float:right;margin-right: 5%;' src='{{i_close_img_url}}'
+			   bindtap='freeDishCancel'></image>
+	</view>
+	<!--下拉框  -->
+	<view class='list-msg2' bindtap='bindShowMsg_free' style="border: 1rpx solid white;">
+		<text>{{presentation}}</text>
+		<image style='height:20rpx;width:20rpx;margin: 15rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/down.png'>
+		</image>
+	</view>
+	<!-- 下拉需要显示的列表 -->
+	
+	<scroll-view scroll-y class=" " wx:if="{{select_free}}" style="width: 80%;margin-left: 10%;height: 250rpx;">
+		<block wx:for="{{ListOfPresentation}}" wx:key="index">
+			<view class="select_one" bindtap="mySelect_free" data-name="{{item.value}}">{{item.value}}</view>
+		</block>
+	</scroll-view>
+	<view class="modal-content" style="height: 225rpx;">
+		<view class="modal-textarea" wx:if="{{presentation == '其他原因'&&!select_free}}">
+			<textarea class="modal-text" style="border: 1rpx solid white;" wrap="hard" placeholder="请输入赠送菜品的原因。"
+					  bindinput="freeDishRemark"> </textarea>
+		</view>
+	</view>
+
+	<view class="modal-footer" style="width:100%;justify-content: center;display: flex;margin-top: 15rpx;">
+		<button class='btn_mid_y' style="height: 50rpx;" bindtap="freeDishConfirm">确认</button>
+	</view>
+</view>

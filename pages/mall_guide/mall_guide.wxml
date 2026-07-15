@@ -1,0 +1,43 @@
+<!--pages/mall_guide/mall_guide.wxml-->
+
+<view class="page-content" >
+   <view class="head">
+    <view style="font-size: xx-large;margin-top: 50rpx;font-weight: bold;color: #fbf3d1;letter-spacing: 6rpx;">
+      让实体商家重新出发
+    </view>
+  </view>
+
+  <view class="content">
+     <view class="content-content">
+        <view>
+          <image style="width: 348rpx;height: 390rpx;border-radius: 14rpx;" src="{{log_img}}"></image>
+        </view>
+      <view style="font-size: xx-large;margin-top: 70rpx;color: rgb(244,0,8);font-weight: bold;">弹叮商城</view>
+      <view style="font-size: x-large;color: #fbf3d1;margin-top: 15rpx;letter-spacing: 6rpx;">让你更懒更赚钱</view>
+     </view>
+     
+  </view>
+
+  <view class="footer">
+    <view>
+      <image style="width: 116rpx;height: 130rpx;border-radius: 14rpx;" src="{{log_img}}"></image>
+    </view>
+      <view style="margin-bottom: 30rpx;font-size: large;color: #fbf3d1;">
+      佛山市诗么普科技有限公司
+      </view>
+  </view>
+
+</view>
+
+<view style="padding:10rpx;position: fixed;bottom:80rpx;right:15rpx;">
+   <view style="position: relative;display: flex;opacity: 0.9;">
+    <view catch:tap="toMallIndex" style="width:90rpx;height:90rpx;color: #fff;border-radius: 50%;border:2px solid #fbf3d1;;display: flex;align-items: center;justify-content: center;">
+      <view style="font-weight: bold;">
+        {{show_current_count}}秒
+      </view>
+      
+    </view>
+   </view>
+    
+    
+</view>

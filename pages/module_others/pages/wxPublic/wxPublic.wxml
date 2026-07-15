@@ -1,0 +1,121 @@
+<view class="page">
+  <view class="wxPublic">
+    <view style="width: 100%;height: 425rpx;"></view>
+    <view class="header">
+      <text class="header_text" wx:if="{{!checkWxpublic}}">敬请关注：</text>
+      <text class="header_text" wx:if="{{checkWxpublic}}"></text>
+      <text class="header_text" wx:if="{{checkWxpublic}}">点击"查看"进入公众号</text>
+    </view>
+    <view style="display: flex;flex-direction: column;align-items: center;justify-content: center; border-radius: 20rpx;width: 95%;background-color: rgb(253, 250, 245);color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);height: 100px;">
+            <view style="width: 95%;">
+                <official-account ></official-account>
+            </view>
+        </view>
+    <!-- <view class="shadow"></view> -->
+    <!-- <view class="middle" style="margin-top: 10rpx"> -->
+      <!-- <text class="middle_text1">关注公众号好处多多!</text> -->
+      <!-- <text class="middle_text2">点击"关注"可获以下奖励：</text> -->
+    <!-- </view> -->
+    <!-- <view style="width: 95%;margin: 0 auto;">
+      <scroll-view class="listBox" scroll-y="true">
+        <view class="listBox_1">
+          <view style="border-bottom: 1rpx solid rgb(128,81,27);border-right: 1rpx solid rgb(128,81,27);width: 20%;display: flex;flex-direction: row;justify-content: center;">
+            <text style="font-size: 31rpx;color: rgb(128,81,27);font-weight: 900;">人数</text>
+          </view>
+          <view style="border-bottom: 1rpx solid rgb(128,81,27);border-right: 1rpx solid rgb(128,81,27);width: 35%;display: flex;flex-direction: row;justify-content: center;">
+            <text style="font-size: 31rpx;color: rgb(128,81,27);font-weight: 900;">菜品</text>
+          </view>
+          <view style="border-bottom: 1rpx solid rgb(128,81,27);border-right: 1rpx solid rgb(128,81,27);width: 15%;display: flex;flex-direction: row;justify-content: center;">
+            <text style="font-size: 31rpx;color: rgb(128,81,27);font-weight: 900;">折扣</text>
+          </view>
+          <view style="border-bottom: 1rpx solid rgb(128,81,27);border-right: 1rpx solid rgb(128,81,27);width: 15%;display: flex;flex-direction: row;justify-content: center;">
+            <text style="font-size: 31rpx;color: rgb(128,81,27);font-weight: 900;">优惠券</text>
+          </view>
+          <view style="border-bottom: 1rpx solid rgb(128,81,27);width: 15%;display: flex;flex-direction: row;justify-content: center;">
+            <text style="font-size: 31rpx;color: rgb(128,81,27);font-weight: 900;">代金券</text>
+          </view>
+        </view>
+        <view class="listBox_1" wx:for="{{getSettingList}}" >
+          <view style="width: 20%;" class="listBox_1_1">
+            <text class="listBox_1_1_text">{{item.peopleFirst}}-{{item.peopleSecond}}</text>
+          </view>
+            <view style="width: 35%;" class="listBox_1_1">
+            <text class="listBox_1_1_text">{{item.dishesName}}</text>
+          </view>
+          <view style="width: 15%;" class="listBox_1_1">
+            <text class="listBox_1_1_text">{{item.discount}}</text>
+          </view>
+          <view style="width: 15%;" class="listBox_1_1">
+            <text class="listBox_1_1_text">{{item.denomination * item.couponNum}}</text>
+          </view>
+          <view style="width: 15%;border-right: none;" class="listBox_1_1">
+            <text class="listBox_1_1_text">{{item.cashCoupon}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view> -->
+    <view style="width: 95%;margin: 0 auto;">
+      <view style="background-color: rgb(253, 250, 245);width: 100%;color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);text-indent: 48rpx;border-radius: 20rpx;margin-top: 10rpx">
+        <view style="margin: 10rpx 20rpx;font-size: 32rpx;">
+            <view style="margin-top: 15rpx;font-weight: bolder;">欢迎来到“切瓜切菜数字化生态餐饮平台”</view>
+                    <view style="margin-top: 15rpx;font-weight: bolder;">关注“切瓜切菜”公众号可以获得：</view>
+                    <view style="margin-top: 15rpx;">● 加入平台商家的所有餐品都会设置一个关注公众号的优惠价；</view>
+                    <view style="margin-top: 15rpx;">● 一次关注公众号可享受所有商家的关注优惠价且长期有效；</view>
+                    <view style="margin-top: 15rpx;margin-bottom: 15rpx;">● 关注公众号还可以及时精准的接收您所关注商家的优惠信息。</view>
+                </view>
+      </view>
+      <!-- <view style="background-color: rgb(253, 250, 245);width: 100%;color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);text-indent: 48rpx;border-radius: 20rpx;height: 20vh;overflow: scroll;margin-top: 10rpx" disabled>{{settingContent ? settingContent : ''}}</view> -->
+    </view>
+    <view style="margin-top: 10rpx;margin-bottom: 10rpx;color: rgb(128, 81, 27);" wx:if="{{table_name}}">当前桌号：{{table_name}}</view>
+    <view class="lower" style="flex-direction: column;" wx:if="{{!bindInfo}}">
+      <!-- <view class="listButton" bindtap="jumpRule" style="margin-top: 30rpx;">规则</view>
+      <view class="btn" id="guide" bindtap="orderNow" style="line-height: 100rpx;">现在点餐</view>
+      <view class="listButton" bindtap="jumpRegister" style="margin-top: 30rpx;">注册</view> -->
+      <view style="width: 100%;display: flex;flex-direction: row;justify-content: space-around;align-items: center;">
+        <view class="listButton" bindtap="callBZ" style="background: url({{bzColor}}) no-repeat;background-size: 100% 100%;width: 300rpx;font-size: 25rpx;height: 50rpx;text-align: center;line-height: 54rpx;font-weight: bolder;color: #fff;border: 0;margin: 0;border-radius: 20px;">呼叫部长</view>
+        <view class="listButton" bindtap="jumpRegister">注册平台</view>
+      </view>
+      <view style="width: 100%;display: flex;flex-direction: row;justify-content: space-around;align-items: center;margin-top: 20rpx;">
+        <view class="listButton" style="background: url({{fwColor}}) no-repeat;background-size: 100% 100%;width: 300rpx;font-size: 25rpx;height: 50rpx;text-align: center;line-height: 54rpx;font-weight: bolder;color: #fff;border: 0;margin: 0;border-radius: 20px;" bindtap="callFWY">呼叫服务员</view>
+        <view class="listButton" bindtap="orderNow">现在点餐</view>
+      </view>
+      <!-- <view style="width: 50%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;">
+        <view class="listButton" bindtap="callBZ" style="background: url({{bzColor}}) no-repeat;background-size: 100% 100%;width: 300rpx;font-size: 25rpx;height: 50rpx;text-align: center;line-height: 54rpx;font-weight: bolder;color: #fff;border: 0;margin: 0;border-radius: 20px;">呼叫部长</view>
+        <view class="listButton" style="background: url({{fwColor}}) no-repeat;background-size: 100% 100%;width: 300rpx;font-size: 25rpx;height: 50rpx;text-align: center;line-height: 54rpx;font-weight: bolder;color: #fff;border: 0;margin: 0;border-radius: 20px;" bindtap="callFWY">呼叫服务员</view>
+      </view>
+      <view style="width: 50%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;margin-top: 20rpx;">
+        <view class="listButton" bindtap="jumpRegister">注册平台</view>
+        <view class="listButton" bindtap="orderNow">现在点餐</view>
+      </view> -->
+    </view>
+  </view>
+
+
+    <!-- 获取头像和名称 -->
+    <view class='window' wx:if="{{showAuthorize1}}"  style="background-size:100% 100%;-moz-background-size:100% 100%;z-index: 2222;">
+      <view class='window-item'>
+        <view style="width:100%;height:10%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+          <view style="font-size: 25px;width: 100%;font-weight: bolder;">申请授权</view>
+        </view>
+        <view class='window-item-content'><text style="text-align: center;">获取您的头像和名称\n是否同意?</text></view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+          <button class='cancelBtn' bindtap='refused' data-index="1">否</button>
+          <button class='confirmBtn' bindtap="getUserInfo">是</button>
+        </view>
+      </view>
+    </view>
+
+  <!-- 获取手机号码 -->
+    <view class='window' wx:if="{{showAuthorize}}"  style="background-size:100% 100%;-moz-background-size:100% 100%;z-index: 2222;">
+      <view class='window-item'>
+        <view style="width:100%;height:10%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+          <view style="font-size: 25px;width: 100%;font-weight: bolder;">申请授权</view>
+        </view>
+        <view class='window-item-content'><text style="text-align: center;">获取您的手机号码\n是否同意?</text></view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+          <button class='cancelBtn' bindtap='refused' data-index="2">否</button>
+          <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+        </view>
+    </view>
+  </view>
+</view>

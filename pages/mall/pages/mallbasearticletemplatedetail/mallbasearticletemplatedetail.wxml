@@ -1,0 +1,430 @@
+
+
+<view class="content">
+  <view class="content_fill" >
+      
+      <scroll-view class="content_img_scroll border_solid"  scroll-y="true">
+        <view class="content_box_img_parent" >
+          <view  catch:tap="goodsImgClick" data-item="{{item}}" wx:for="{{mall_base_goods_multimedia_array}}"  wx:key="index">
+            <view wx:if="{{current_goods_multimedia_id==item.id}}" class="content_box_row_select" >
+              <image mode="aspectFill" src="{{item.url}}" style="width: 90%;height: 90%;" ></image>
+            </view>
+            <view wx:else="" class="content_box_row" >
+              <image mode="aspectFill" src="{{item.url}}" style="width: 90%;height: 90%;" ></image>
+            </view>
+          </view>
+          <view>
+          <view wx:if="{{mall_base_goods_nine_array.length>0}}" catch:tap="goodsNineClick"  class="{{mall_base_goods_nine_array_selected==0?'content_box_row':'content_box_row_select'}}">
+              <view style="width: 100%;height: 100%;display: flex;flex-direction: row;flex-wrap: wrap;">
+                    <view  wx:for="{{mall_base_goods_nine_array}}"  wx:key="index" style="width: 33%;height: 33%;">
+                      <image mode="aspectFill" src="{{item.url}}" style="width: 90%;height: 90%;" ></image>
+                    </view>
+                    <view  wx:for="{{9-mall_base_goods_nine_array.length}}"  wx:key="index" style="width: 33%;height: 33%;">
+                      
+                    </view>
+              </view>
+              
+          </view>
+          
+          </view>
+          
+        </view>
+      </scroll-view>
+
+      <scroll-view scroll-into-view="{{pageId}}"  class="content_template_scroll border_solid" scroll-y="true">
+        <view wx:if="{{item.is_delete==0}}"  class="content_box" wx:for="{{article_template_detail_array}}"  wx:key="index">
+          <view id="page_{{index}}" class="content_box_content">
+            <view style="width: 100%;margin-top: 10rpx;margin-bottom: 10rpx;display: flex;flex-direction: row;align-items: center;justify-content:space-between ;" >
+              <view data-item="{{item}}" style="font-weight: 900;padding: 10rpx 20rpx;border: #ccc dashed 2rpx;border-radius: 8rpx;">
+                        <text >顺序_{{item.sort_id_str}}_ </text>
+                        <text wx:if="{{item.source_type==1}}">文章_{{item.item_sort_id_str}} </text>
+                        <text wx:if="{{item.source_type==2}}">商品_{{item.item_sort_id_str}} </text>
+                        <text wx:if="{{item.item_type==1}}">图片</text>
+                        <text wx:if="{{item.item_type==2}}">视频</text>
+                        <text wx:if="{{item.item_type==3}}">文字</text>
+                        <text wx:if="{{item.item_type==4}}">九宫格</text>
+                </view>
+                <view wx:if="{{index>1||(index==1&&article_template_main_item.article_type==1)}}" style="display: flex;flex-direction: row;">
+                    <view catch:tap="deleteArticleTemplateDetailItem"   data-item="{{item}}" data-index="{{index}}"  class="content_box_content_item" style="margin-right: 40rpx;">
+                      <view  class="content_box_content_title_red">
+                          删除
+                      </view>
+                    </view>
+                    <view  catch:tap="addToArticleTemplateDetailFromGoodsImg"   data-item="{{item}}" data-index="{{index}}"   class="content_box_content_item" >
+                      <view  class="content_box_content_title_green">
+                          插入
+                      </view>
+                    </view>
+                </view>
+                
+              </view>
+              <view style="display: flex;flex-direction: column;">
+                <view style="display: flex;flex-direction: column;align-items: flex-start;align-items: flex-start;width: 100%;">
+                 
+                  <text wx:if="{{item.item_type==1||item.item_type==2}}" style="text-align: center; width: 100%;">{{item.item_description}}</text>
+                  <view wx:if="{{item.item_type==1}}" style="width: 100%;">
+                      <image data-src="{{item.item_content}}" src="{{item.item_content}}" catchtap="showBigImg"  style="width: 70vw;" mode="aspectFit"></image>
+                  </view>
+                  <view wx:if="{{item.item_type==2}}">
+                    <video  style="width:80vw;height: 300rpx;border-radius: 8rpx;z-index: 1;" src="{{item.item_content}}"></video>
+                  </view>
+                  <view  wx:if="{{item.item_type==3}}">
+                    <rich-text nodes="{{item.item_content}}"></rich-text>
+                  </view>
+                  <view wx:if="{{item.lstNine&&item.lstNine.length>0}}" style="display: flex;width: 100%;flex-direction: row;align-items: center;justify-content: center;flex-wrap: wrap;">
+                      <view wx:for="{{item.lstNine}}" wx:for-item="nine_item" wx:for-index="nine_index" wx:key="nine_index" style="width: 180rpx;height: 180rpx;border: #F2F2F2 1rpx solid;">
+                        <image data-src="{{nine_item.url}}" src="{{nine_item.url}}" catchtap="showBigImg"  style="width: 100%;height: 100%;" mode="aspectFill"></image>
+                      </view>
+                  </view>
+                
+                </view>
+              
+              </view>
+          </view>
+
+        </view>
+        <view wx:if="{{article_template_detail_array.length>0}}" class="content_box">
+          <view class="content_box_content">
+            <view  style="width: 100%;margin-top: 10rpx;margin-bottom: 10rpx;display: flex;flex-direction: row;align-items: center;justify-content:space-between ;" >
+                <view >    
+                </view>
+                <view style="display: flex;flex-direction: row;align-items: center;justify-content: center;">
+   
+                   <view catch:tap="addToArticleTemplateDetailFromGoodsImg"    data-index="-1"  class="content_box_content_item">
+                    <view  class="content_box_content_title_green">
+                        插入
+                    </view>
+                   </view>
+                </view>
+                
+              </view>
+            
+          </view>
+
+        </view>
+      </scroll-view>
+
+  </view>
+  
+  <view style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;padding: 10rpx 0rpx;">
+    <view catchtap="toArticleTemplateDetailDescription" class="bottom_btn">操作说明</view>
+      <view wx:if="{{article_template_detail_array.length>0}}" catchtap="previewArticleTemplateDetail" class="bottom_btn">预览</view>
+      <!-- <view catchtap="previewArticleTemplateResult" class="bottom_btn">结果页</view> -->
+      <view catchtap="showOrHideBArticleTemplateMainShow" data-show="{{true}}" class="bottom_btn">已有</view>
+      <view wx:if="{{article_template_detail_array.length>0}}" catchtap="initData" class="bottom_btn">新增</view>
+      <view wx:if="{{article_template_detail_array.length>0}}" catchtap="deleteMallBaseArticleTemplateMainClick" class="bottom_btn" style="background-color: #FF5722;">删除</view>
+      <view  catchtap="showOrHideBArticleMainShow" data-show="{{true}}" class="bottom_btn">找素材</view>
+      <view wx:if="{{is_updated==1}}" catchtap="insertOrUpdateMallBaseArticleTemplateMain" class="bottom_btn">保存</view>
+      <view  wx:if="{{is_updated==0&&article_template_main_item&&article_template_main_item.id>0&&article_template_main_item.goods_id>0}}" class="bottom_btn" style="padding: 0;" >
+        <!-- <button open-type="share" class="bottom_btn">发送</button>  -->
+        <button catchtap="showShareDlg"  class="bottom_btn">发送</button>
+      </view>
+      
+      
+  </view>
+ 
+  
+</view>
+
+
+<!-- 底部弹窗 转发素材查询 -->
+<view wx:if="{{b_article_main_show}}" style="height: 100%;"  class="popup-dlg-background-mask">
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 92vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="flex:1;"></view>
+    <view style="width: 98%;margin-bottom: 10rpx;">
+      <view style="font-weight: 800;font-size: 34rpx;">
+        素材库
+      </view>
+    </view>
+    <view style="width:98%;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+        <view style="flex: 1;"> 
+          <input model:value="{{s_key_word}}" placeholder="   搜索转发素材" style="width: 100%; font-size: 25rpx;"/>
+        </view>
+    </view>
+    <view style="width:98%;margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+        <view catch:tap="clearSKeyWord" class="bottom_btn" style="margin-right: 100rpx;background-color: #FF5722;" >
+          清空
+        </view>
+        <view data-article_type="2" catch:tap="selectMallBaseArticleMainData" class="bottom_btn" style="margin-right: 50rpx;">
+          图片
+        </view>
+        <view data-article_type="3" catch:tap="selectMallBaseArticleMainData" class="bottom_btn" style="margin-right: 50rpx;">
+          视频
+        </view>
+        <view data-article_type="0" catch:tap="selectMallBaseArticleMainData" class="bottom_btn" style="margin-right: 20rpx;">
+          搜索
+        </view>
+    </view>
+    <view class='form_tittle'>
+			<view class='th-head' style="text-align: center;width:24%;">
+				<text class='text' style="font-size: 26rpx;">日期</text>
+			</view>
+			<view class='th-center' style="text-align: center;width:10%;">
+				<text class='text' style="font-size: 26rpx;">类型</text>
+			</view>
+			<view class='th-end' style="text-align: center;width:66%;">
+				<text class='text' style="font-size: 26rpx;">标题</text>
+			</view>
+		</view>
+    <scroll-view scroll-y="true" style="height:65vh;overflow: scroll;overflow: auto;" bindscrolltolower="scrollToLowerArticleMain"  scorll-top="{{scoll_top}}" >
+        <view class='for' wx:for='{{article_main_array}}' wx:key='index' data-index='{{index}}' catch:tap='itemClickArticleMain'>
+          <view class='td-head' style='width:24%;{{listIndexArticleMain==index?"background-color:#52A76E;color:#fff":""}}'>
+          {{item.article_date_str}}
+          </view>
+          <view class='td-center' style='width:10%;{{listIndexArticleMain==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text wx:if="{{item.article_type==1}}">文章</text>
+            <text wx:if="{{item.article_type==2}}">图片</text>
+            <text wx:if="{{item.article_type==3}}">视频</text>
+          </view>			
+          <view class='td-end' style='width:66%;{{listIndexArticleMain==index?"background-color:#52A76E;color:#fff":""}}'>
+              {{item.name}}
+          </view>
+        </view>
+      </scroll-view>
+    <view style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end;width: 100%;padding: 10rpx 0rpx;">
+
+      <view catchtap="showOrHideBArticleMainShow" data-show="{{false}}" class="bottom_btn" style="background-color: #FF5722;margin-right: 150rpx;">关闭</view>
+      <view catchtap="previewArticleDetail"  class="bottom_btn" style="margin-right: 100rpx;">预览</view>
+      <view catchtap="confirmArticleMain" class="bottom_btn" style="margin-right: 20rpx;">确定</view>
+    </view>	
+   
+	</view>
+</view>
+
+
+
+<!-- 底部弹窗 序号填写 -->
+<!-- <view wx:if="{{b_sort_dlg_show}}" style="height: 100%;"  class="popup-dlg-background-mask">
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 30vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+   
+    <view style="width:98%;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;padding: 0rpx 5rpx;">
+        <text>序号：</text>
+        <view style="width:120rpx;border: #ccc 1rpx solid;border-radius: 8rpx;display: flex;flex-direction: row;align-items: center;height: 50rpx;"> 
+          <input model:value="{{dlg_sort_id}}" placeholder="{{placeholder_text}}" style="width: 100%; font-size: 25rpx;"/>
+          
+        </view>
+   
+
+    </view>
+    <view style="width:98%;margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+         <view catch:tap="hideSortDlgShow" style="height: 52rpx; color: white;background-color: #FF5722;display: flex;align-items: center;justify-content: center;border-radius: 30rpx;padding: 0rpx 30rpx; font-size: 26rpx;margin-right: 30rpx;">
+          关闭
+        </view>
+        <view catch:tap="addToArticleTemplateDetail" style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 30rpx;padding: 0rpx 30rpx; font-size: 26rpx;margin-right: 40rpx;">
+          确定
+        </view>
+    </view>
+	</view>
+</view> -->
+
+
+<!-- 底部弹窗 已完成模板查询 -->
+<view wx:if="{{b_article_template_main_show}}" style="height: 100%;"  class="popup-dlg-background-mask">
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 92vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="flex:1;"></view>
+    <view style="width: 98%;margin-bottom: 10rpx;">
+      <view style="font-weight: 800;font-size: 34rpx;">
+        已有模板
+      </view>
+    </view>
+    <view style="width:98%;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+        <view style="flex: 1;"> 
+          <input model:value="{{s_template_key_word}}" placeholder="   搜索已完成模板" style="width: 100%; font-size: 25rpx;"/>
+        </view>
+    </view>
+    <view style="width:98%;margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+        <view catch:tap="clearSTemplateKeyWord" class="bottom_btn" style="background-color: #FF5722;margin-right: 100rpx;">
+          清空
+        </view>
+
+        <!--data-article_type="2"-->
+        <view data-article_type="2" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 60rpx;">
+          图片
+        </view>
+        <view data-article_type="3" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 60rpx;">
+          视频
+        </view>
+        <view data-article_type="0" catch:tap="selectMallBaseArticleTemplateMainData" class="bottom_btn" style="margin-right: 20rpx;">
+          搜索
+        </view>
+    </view>
+    <view class='form_tittle'>
+			<view class='th-head' style="text-align: center;width:24%;">
+				<text class='text' style="font-size: 26rpx;">创建日期</text>
+			</view>
+			<view class='th-center' style="text-align: center;width:10%;">
+				<text class='text' style="font-size: 26rpx;">类型</text>
+			</view>
+      <view class='th-center' style="text-align: center;width:56%;">
+				<text class='text' style="font-size: 26rpx;">标题</text>
+			</view>
+			<view class='th-end' style="text-align: center;width:10%;">
+				<text class='text' style="font-size: 26rpx;">次数</text>
+			</view>
+		</view>
+    <scroll-view scroll-y="true" style="height:65vh;overflow: scroll;overflow: auto;" bindscrolltolower="scrollToLowerArticleTemplateMain" >
+        <view class='for' wx:for='{{s_article_template_main_array}}' wx:key='index' data-index='{{index}}' catch:tap='itemClickArticleTemplateMain'>
+          <view class='td-head' style='width:24%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+          {{item.create_date_str}}
+          </view>
+          <view class='td-center' style='width:10%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text wx:if="{{item.article_type==1}}">文章</text>
+            <text wx:if="{{item.article_type==2}}">图片</text>
+            <text wx:if="{{item.article_type==3}}">视频</text>
+          </view>	
+          <view class='td-center' style='width:56%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+           {{item.name}}
+          </view>		
+          <view class='td-end' style='width:10%;{{listIndexArticleTemplateMain==index?"background-color:#52A76E;color:#fff":""}}'>
+            {{item.use_count}}
+          </view>
+        </view>
+      </scroll-view>
+    <view style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end;width: 100%;padding: 10rpx 0rpx;">
+      <view  catchtap="toArticleTemplateDetailDescription"  class="bottom_btn" style="margin-right: 80rpx;">操作说明</view>
+      <view  catchtap="showOrHideBArticleMainShow" data-show="{{true}}" class="bottom_btn" style="margin-right: 80rpx;">新增模板</view>
+      <view catchtap="deleteMallBaseArticleTemplateMainAndRemoveSearch" data-show="{{false}}" class="bottom_btn" style="background-color: #FF5722;margin-right: 60rpx;">删除</view>
+      <view catchtap="confirmArticleTemplateMain" class="bottom_btn" style="margin-right: 20rpx;">确定</view>
+    </view>	
+	</view>
+</view>
+
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999; position: fixed;background-color: #00000066;" wx:if="{{b_share_dlg_show}}" bindtap="hideShareDlg">
+</view>
+<view style="position: fixed;top: 0;right: 0;left: 0;bottom: 0;margin: auto;height: 360rpx;width: 700rpx;background-color: #F2F2F2;border-radius: 20px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 999;" wx:if="{{b_share_dlg_show}}">
+  
+    <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
+      <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+           <button open-type="share" class="b1">
+                <view class="fri"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    微信发送					
+                </view>
+            </button>
+      </view>
+      <view catch:tap="resultArticleTemplateDetail" data-index="0" style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: center;align-items: center;">
+            <view class="timeline"></view>
+            <view style="font-size: 30rpx;margin-top: 20rpx;">
+                分享朋友圈
+            </view>            
+      </view> 
+
+      <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
+          
+            <button catchtap="showOrHideBDingMainShow" data-show="{{true}}"  class="b1">
+                <view class="dinxing-forward"></view>
+                <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">
+                    叮聊发送					
+                </view>
+            </button>
+      </view>
+        
+		    <!--分割线-->
+        <!-- <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;"/>         -->
+
+	    	<!--分割线-->
+        <!-- <view style="height: 80%;width: 1rpx;border-left: 2px #e6e6e6 dashed;"/>         -->
+               
+    </view>
+</view>
+
+
+
+<canvas type="2d" id="canvas" style="width:621px;height:1099px;position: fixed;left: -621px;top: -1099px;"></canvas>
+<canvas style="width: 200px; height: 200px;position: fixed;left: -621px;top: -1099px;" canvas-id="myQrcode"></canvas>
+<view class="popup-window1-bg" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window1" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+    <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+        <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" show-menu-by-longpress="true"></image>
+        <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+        <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+        <view style="width: 10%;">
+            <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+        </view>
+    </view>
+</view>
+
+
+
+
+
+
+<!-- 底部弹窗 转发叮聊 -->
+<view wx:if="{{b_ding_main_show}}" style="height: 100%;z-index: 99999;"  class="popup-dlg-background-mask" >
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="width:100%;height: 98vh;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="flex:1;"></view>
+    <view style="width: 98%;margin-bottom: 10rpx;">
+      <view style="font-weight: 800;font-size: 34rpx;">
+        选择叮客
+      </view>
+    </view>
+    <view style="width: 100%;display: flex;flex-direction: row;align-items: center;">
+      <view style="flex: 1;margin-bottom:15rpx;margin-top:10rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+        <view style="flex: 1;"> 
+          <input model:value="{{ding_key_word}}" placeholder="   搜索叮客" style="width: 100%; font-size: 25rpx;"/>
+        </view>
+      </view>
+      <view style="margin-bottom:0rpx;margin-top:0rpx; height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;border-radius: 50rpx;">
+          <view catch:tap="clearDingKeyWord" class="bottom_btn" style="margin-right: 10rpx;background-color: #FF5722;" >
+            清空
+          </view>
+          <view  catch:tap="selectAllDingMsgRecordDingKeFromMemberInfo" class="bottom_btn" style="margin-right: 10rpx;">
+            搜索
+          </view>
+      </view>
+    </view>
+    
+    <scroll-view scroll-y="true" style="height:80vh;overflow: scroll;overflow: auto;" bindscrolltolower="scrollToLowerArticleMain"  scorll-top="{{scoll_top}}" >
+      <block wx:if="{{dingYouList.length > 0}}">
+        <view wx:for="{{dingYouList}}" data-item="{{item}}" bindtap="changeDingSelect" data-index="{{index}}" style="height: 140rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;" wx:key="index">
+					<view style="width: 90rpx;height: 140rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <image wx:if="{{item.is_select==1}}" style="width: 60rpx;height: 60rpx;" src="{{ding_select_img}}">
+              </image>
+              <image wx:if="{{item.is_select==0}}" style="width: 58rpx;height: 58rpx;" src="{{ding_not_select_img}}">
+              </image>
+          </view>
+          <view style="width: 80rpx;height: 100%;display: flex;justify-content: center;align-items: center;">
+                        <view style="position: relative;">
+                            <image style="height: 80rpx;width: 80rpx;border-radius: 12rpx;" src="{{item.avatar_url?item.avatar_url:item.customer_code}}" />
+                        </view>
+						
+					</view>
+					<view style='margin-left: 10rpx;border-bottom: #eeeeee 1rpx solid;flex: 1;height: 100%;display: flex;flex-direction: column;align-items: flex-start;justify-content: space-evenly;{{index==0?"border-top: #eeeeee 1rpx solid;":";"}}'>
+						<view style="margin-left: 20rpx;display: flex;justify-content: space-between;align-items: center;width: 100%;height: 70rpx;">
+							<view style="margin-top: 20rpx;font-weight: 400;font-size: 32rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.customer_name}}
+							</view>
+          
+							
+						</view>
+						<view style="display: flex;justify-content: flex-start;align-items: center;width: 100%;height: 70rpx;">
+							<view wx:if="{{item.lstDingMsgRecord&&item.lstDingMsgRecord.length>0&&item.lstDingMsgRecord[0].msg_type==1}}" style="margin-bottom: 20rpx;font-size: 26rpx;width: 550rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+								{{item.lstDingMsgRecord[0].msg}}
+							</view>
+						</view>
+
+					</view>
+          
+
+          
+				</view>
+
+			</block>
+      </scroll-view>
+    <view style="display: flex;flex-direction: row;align-items: center;justify-content: flex-end;width: 100%;padding: 10rpx 0rpx;">
+
+      <view catchtap="showOrHideBDingMainShow" data-show="{{false}}" class="bottom_btn" style="background-color: #FF5722;margin-right: 150rpx;">关闭</view>
+      <view catchtap="sendMsgExec" class="bottom_btn" style="margin-right: 20rpx;">发送</view>
+    </view>	
+   
+	</view>
+</view>
+
+ 	
+    
+
+	
+
+
+

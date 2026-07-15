@@ -1,0 +1,70 @@
+<view style="margin-top: 20rpx; margin-left: 20rpx; ">
+    <!--<view class="wxPublic">
+        <view style="width: 100%;height: 460rpx;"></view>
+        <view class="header">
+            <text class="header_text" wx:if="{{!checkWxpublic}}">敬请关注：</text>
+            <text class="header_text" wx:if="{{checkWxpublic}}"></text>
+            <text class="header_text" wx:if="{{checkWxpublic}}">点击"查看"进入公众号</text>
+        </view>
+        <view style="display: flex;flex-direction: column;align-items: center;justify-content: center; border-radius: 20rpx;width: 95%;background-color: rgb(253, 250, 245);color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);height: 100px;">
+            <view style="width: 95%;">
+                <official-account></official-account>
+            </view>
+        </view>
+        <view style="width: 95%;margin: 0 auto;margin-top: 30rpx;">
+            <view style="background-color: rgb(253, 250, 245);width: 100%;color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);border-radius: 20rpx;margin-top: 10rpx">
+                <view style="margin: 10rpx 20rpx;font-size: 30rpx;font-weight: bolder;">
+                    <view style="margin-top: 25rpx;font-weight: bolder;font-size: 36rpx;">欢迎来到"切瓜切菜数字化生态餐饮平台"</view>                   
+                    <view style="margin-top: 25rpx;text-indent: 48rpx;">● 提供本地餐饮行业的全信息查询；</view>
+                    <view style="margin-top: 25rpx;text-indent: 48rpx;">● 线上点餐下单，既方便快捷又省时省钱；</view>
+                    <view style="margin-top: 25rpx;text-indent: 48rpx;">● 实时获取本地餐饮的最新优惠信息；</view>
+                    <view style="margin-top: 25rpx;margin-bottom: 15rpx;text-indent: 48rpx;">● 还有可能免费吃高价大餐的众多机会。</view>
+                </view>
+            </view>
+        </view>
+        <view style="width: 95%;margin: 0 auto;margin-top: 30rpx;">
+            <view style="background-color: rgb(253, 250, 245);width: 100%;color: rgb(128, 81, 27);border: 1px solid rgb(128, 81, 27);border-radius: 20rpx;margin-top: 10rpx">
+                <view style="margin: 10rpx 20rpx;font-size: 30rpx;font-weight: bolder;">
+                    <view style="margin-top: 15rpx;" wx:if="{{isFirstBind && bind_customer_id }}">当前您是：平台的新客，已获得5个平台星盾的奖励。</view>
+                    <view style="margin-top: 15rpx;" wx:elif="{{!isFirstBind && bind_customer_id}}">当前您已是平台的客户。</view>
+                    <view style="margin-top: 15rpx;" wx:elif="{{isFirstBind && bind_staf_id}}">当前您是：商家的新客，已获得 {{giftInfo ? giftInfo.meals_type == 3 ? giftInfo.price +' 元优惠券' : giftInfo.price +' 元超值套餐' : ''}}奖励。</view>
+                    <view style="margin-top: 15rpx;" wx:elif="{{!isFirstBind && bind_staf_id}}">当前您已是该商家的客户。</view>
+                </view>
+            </view>
+        </view>
+        <view style="width: 95%;display: flex;justify-content: space-between;margin-top: 40rpx;" wx:if="{{isFirstBind}}">
+            <view class="btn" bindtap="toPage" style="line-height: 100rpx;margin-top: 50rpx;font-size: 34rpx;">购买详情</view>
+            <view class="btn"  style="line-height: 100rpx;margin-top: 50rpx;font-size: 34rpx;" wx:if="{{isFirstBind && bind_customer_id }}" bindtap="goToStartList">我的星盾</view>
+            <view class="btn"  style="line-height: 100rpx;margin-top: 50rpx;font-size: 34rpx;" wx:if="{{isFirstBind && bind_staf_id}}" bindtap="goToOrderList">我的优惠券</view>
+        </view>
+        <view class="btn" id="guide" bindtap="toPage" style="line-height: 100rpx;margin-top: 60rpx;" wx:else>购买详情</view>
+    </view>
+
+    <view>-->
+    <text style="font-size: medium;"> 跳转中。。。 </text>
+</view>
+
+
+   
+
+  
+  <!-- 获取手机号码 -->
+  <!-- <view wx:if="{{showAuthorize}}" class='window-bg'>
+    <view class='window' style="background-size:100% 100%;-moz-background-size:100% 100%;">
+      <view class='window-item'>
+        <view style="width:100%;height:10%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+          <view style="font-size: 25px;width: 100%;font-weight: bolder;">申请授权</view>
+        </view>
+        <view class='window-item-content'><text style="text-align: center;">接收赠送需要获取您的手机号码\n是否同意?</text></view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+          <button class='cancelBtn' bindtap='refused'>否</button>
+          <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>-->
+
+
+  <!-- 获取头像和名称 -->
+  <!--<headPortrait bind:refreshAvatar="refreshAvatar" isShow="{{isShowGetAvatar}}"></headPortrait>-->

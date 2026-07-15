@@ -1,0 +1,7 @@
+{
+    "navigationStyle": "custom",
+    "navigationBarBackgroundColor": "#52A76E",
+    "usingComponents": {
+      "headPortraitNew": "/components/headPortraitNew/headPortraitNew"
+    }
+}

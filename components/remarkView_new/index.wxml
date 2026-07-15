@@ -1,0 +1,35 @@
+<wxs module="filters" src="index.wxs"></wxs>
+<view class='container' style="{{dggspec_type ?'height:60vh;':''}}">
+  <!-- style="height:100rpx" -->
+  <view class="container-top" >
+    <text>客人备注：</text>
+    <!--2020-11-10 margin-bottom: 15rpx;-->
+    <button wx:if="{{spec_type==9}}" bindtap="{{readOnly?'':'dpzchangeLock'}}" class="{{lock?'btn_mid_gray':'btn_mid_d'}}">锁定</button>
+    <button wx:elif="{{xdqspec_type==9}}" bindtap="{{readOnly?'':'dpzchangeLock'}}" class="{{lock?'btn_mid_gray':readOnly?'btn_mid_gray':'btn_mid_y'}}">锁定</button>
+    <button wx:elif="{{spec_type==1}}" class="btn_mid_g_lock">锁定</button>
+    <button wx:elif="{{spec_type==10}}" bindtap="{{readOnly?'':'changeLock'}}" class="{{lock?'btn_mid_gray':readOnly?'btn_mid_gray':'btn_mid_brown'}}">锁定</button>
+    <button wx:elif="{{spec_type==8||spec_type==2}}" bindtap="{{readOnly?'':'changeLock'}}" class="{{lock?'btn_mid_gray':readOnly?'btn_mid_gray':spec_type==8?'btn_mid_Brownish_red':'btn_small_djl'}}">锁定</button>
+    <button wx:elif="{{specal_type==6}}" class="btn_mid_gray">锁定</button>
+    <button wx:elif="{{temp}}" bindtap="{{readOnly?'':'changeLock'}}" class="{{lock?'btn_mid_gray':readOnly?'btn_mid_gray':'btn_temp'}}">锁定</button>
+    <button wx:else bindtap="{{readOnly?'':'changeLock'}}" class="{{lock?'btn_mid_gray':readOnly?'btn_mid_gray':'btn_mid_y'}}">锁定</button>
+    <image style='height: 64rpx;width: 68rpx;margin-left: 5rpx;' data-type="{{remarkType}}" bindtap="{{!readOnly?'showRemarkList':'showNoOpen'}}" src='{{menu_img}}'></image>
+  </view>
+  <view class="container-bottom2" style="{{dggspec_type ?'height:58vh;':''}}">
+    <view class='textarea' style="height:90%">
+      <scroll-view wx:if="{{quickRemark||tastesRemark}}" scroll-y="true" style="height:{{filters.toHeight(quickRemark.length,tastesRemark.length)? '30%':'34rpx'}};">
+        <view style="width:100%;background:#e5e5e5;font-size:26rpx">
+          
+          <text>{{tastesRemark != ''?'口味：'+tastesRemark+'\n':''}}{{quickRemark != ''?'常用备注：'+quickRemark:''}}</text>
+        </view>
+      </scroll-view>
+      <!--<view wx:if="{{quickRemark}}"style="height:25%;width:100%;background:#e5e5e5;font-size:26rpx">
+        <text>{{quickRemark != ''?'常用备注：'+quickRemark:''}}</text>
+      </view>-->
+      <!--<text fixed wx:if="{{onHide}}" disabled='{{readOnly}}' value='{{remarkValue}}' class="note-text" bindinput='remarks'
+        style="height:{{tastesRemark!='' && quickRemark != ''?60:(tastesRemark != '' || quickRemark != '' ?80:100)}}%;width:100%"
+            placeholder='请输入备注'></text>-->
+      <textarea fixed  disabled='{{readOnly || lock}}' value='{{remarkValue}}' class="note-text" bindinput='remarks'
+        style="height:{{tastesRemark != '' && quickRemark != '' ? '60%' : ( tastesRemark != '' || quickRemark != '' ? '80%' : '100%' )}};width:100%;" placeholder-style="color:#aaa"></textarea>
+    </view>
+  </view>
+</view>

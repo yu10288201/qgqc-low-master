@@ -1,0 +1,257 @@
+<view class='navigation'>
+
+  <view class="return_out">
+    <view style="display: flex;width: 100%;height: 100%;">
+      <view bindtap="returnBack" style="width: 100rpx;height: 100rpx;display: flex;justify-content: center;align-items: center;margin-top: 80rpx;">
+        <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" />
+      </view>
+      <view class='dianming' style="margin-top: 80rpx;">{{shop_name}}</view>
+    </view>
+  </view>
+
+  <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg5.png');background-size: 100% 100%;z-index: 0;height: 400rpx;position: relative;width: 100%;top: -1rpx;">
+  </view>
+
+  <view class='service' style="margin-top: -200rpx;">
+
+    <scroll-view class='scroll-view' scroll-y style=' display:flex;'>
+      <form bindsubmit='formsubmit' style="justify-content: center;">
+
+        <checkbox-group name="tea" class="box">
+          <view class='tea' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg1.png');background-size: 100% 100%;border-radius: 10px;">
+            <view class='tea_left'>
+              <image style="width:30rpx;height:100rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/kaishe.png'></image>
+            </view>
+            <image style="width:2rpx;height:150rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/line2.png'></image>
+            <view class='tea_right'>
+
+
+              <view class="teaItems" wx:for="{{serverList}}" wx:key="{{index}}" style="align-items:flex-end;width:100rpx;justify-content: center;">
+                <view class="box" style="flex-direction: column;">
+                  <image style="width:50rpx;height:50rpx" src="{{item.img}}"></image>
+                  <!-- style="color:{{item.checked ? 'rgb(0,0,0)' : 'rgb(150,150,150)'}};{{item.checked ? 'font-weight:1000':''}}" -->
+                  <view>{{item.value}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </checkbox-group>
+
+        <checkbox-group name="serviceItem" class="box" style="margin-top: 25rpx;">
+          <view class='serviceItem' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg2.png');background-size: 100% 100%;border-radius: 10px;">
+            <view class='serviceItem_left'>
+              <image style="width:30rpx;height:100rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/fuwu.png'></image>
+            </view>
+            <image style="width:2rpx;height:90%" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/line.png'></image>
+            <view class='serviceItem_right'>
+              <!-- 循环显示所有服务 -->
+              <view class="serviceItems" style="margin-right:0rpx;align-items:flex-start;height:100%;flex-wrap: wrap;width:100%">
+                <view wx:for="{{serviceList}}" wx:key="{{index}}" style="width:150rpx;display:flex;align-items: center;margin-right: 20rpx;justify-content: center;">
+                  <view class="box" style="flex-direction: column;">
+                    <image style="width:55rpx;height:55rpx" src="{{item.img}}"></image>
+                    <!-- color:{{item.checked ? 'rgb(0,0,0)' : 'rgb(150,150,150)'}};{{item.checked ? 'font-weight:1000':''}} -->
+                    <view style="font-size: 25rpx;" class="box">{{item.value}}</view>
+                  </view>
+                </view>
+                <view style="height:27px">
+                  <view>\n</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </checkbox-group>
+
+        <view class="box" style="margin-top: 25rpx;">
+          <view class='serviceItem' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg2.png');background-size: 100% 100%;">
+            <view class='serviceItem_left'>
+              <text style="writing-mode:vertical-rl;color: #7d5b40;font-weight: bold">硬  设  施</text>
+            </view>
+            <image style="width:2rpx;height:90%" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/line.png'></image>
+            <view class='serviceItem_right'>
+              <!-- 循环显示所有硬设施 -->
+              <view class="serviceItems" style="margin-right:0rpx;align-items:flex-start;height:100%;flex-wrap: wrap;width:100%">
+                <!-- <view wx:for="{{hardFacilities}}" wx:key="{{index}}" style="width:150rpx;display:flex;align-items: center;margin-right: 20rpx;justify-content: center;">
+                  <view class="box" style="flex-direction: column;">
+                    <image style="width:55rpx;height:55rpx" src="{{item.img}}"></image>
+                    <view style="font-size: 25rpx;color:{{item.checked ? 'rgb(0,0,0)' : 'rgb(150,150,150)'}};{{item.checked ? 'font-weight:1000':''}}" class="box">{{item.value}}</view>
+                  </view>
+                </view>
+                <view style="height:27px">
+                  <view>\n</view>
+                </view> -->
+
+                <view>
+                  <view>
+                    <text>总餐位：{{yingsheshi.tableNam}} 位</text>
+                  </view>
+
+                  <view style="width:580rpx;">
+                    <text>厅：{{yingsheshi.daTing.theHallNum}} 个</text>
+
+                    <view wx:if="{{yingsheshi.daTing.jumboHall.length>0}}" style="margin-left: 20rpx;">
+                      <text>特大厅餐桌：</text>
+                      <view wx:for="{{yingsheshi.daTing.jumboHall}}" style="margin-left: 20rpx;" wx:key="{{index}}">
+                        <text decode="true">{{item.field_name}} :{{item.tableNum}} 桌&nbsp;&nbsp;&nbsp;&nbsp;{{item.field_parameter == '无' ? '' : item.field_parameter}}</text>
+                      </view>
+                    </view>
+                    <view wx:if="{{yingsheshi.daTing.theHall.length>0}}" style="margin-left: 20rpx;">
+                      <text>大厅餐桌：</text>
+                      <view wx:for="{{yingsheshi.daTing.theHall}}" style="margin-left: 20rpx;" wx:key="{{index}}">
+                        <text decode="true">{{item.field_name}} :{{item.tableNum}} 桌&nbsp;&nbsp;&nbsp;&nbsp;{{item.field_parameter == '无' ? '' : item.field_parameter}}</text>
+                      </view>
+                    </view>
+
+                    <view wx:if="{{yingsheshi.daTing.inTheHall.length>0}}" style="margin-left: 20rpx;">
+                      <text>中厅餐桌：</text>
+                      <view wx:for="{{yingsheshi.daTing.inTheHall}}" style="margin-left: 20rpx;" wx:key="{{index}}">
+                        <text decode="true">{{item.field_name}} :{{item.tableNum}} 桌&nbsp;&nbsp;&nbsp;&nbsp;{{item.field_parameter == '无' ? '' : item.field_parameter}}</text>
+                      </view>
+                    </view>
+                    <view wx:if="{{yingsheshi.daTing.smallHall.length>0}}" style="margin-left: 20rpx;">
+                      <text>小厅餐桌：</text>
+                      <view wx:for="{{yingsheshi.daTing.smallHall}}" style="margin-left: 20rpx;" wx:key="{{index}}">
+                        <text decode="true">{{item.field_name}} :{{item.tableNum}} 桌&nbsp;&nbsp;&nbsp;&nbsp;{{item.field_parameter == '无' ? '' : item.field_parameter}}</text>
+                      </view>
+                    </view>
+                  </view>
+
+
+                  <view>包房：{{yingsheshi.baoFang.roomNumber}} 个</view>
+                  <view style="margin-left: 20rpx;">特大包房：{{yingsheshi.baoFang.largeRooms.length}} 个</view>
+
+                  <view style="margin-left: 20rpx;">豪华包房：{{yingsheshi.baoFang.deluxeRoom.length}} 个</view>
+
+                  <view style="margin-left: 20rpx;">大包房：{{yingsheshi.baoFang.theBigRoom.length}} 个</view>
+
+                  <view style="margin-left: 20rpx;">中包房：{{yingsheshi.baoFang.zhongRoom.length}} 个</view>
+
+                  <view style="margin-left: 20rpx;">小包房：{{yingsheshi.baoFang.aSmall.length}} 个</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="box" style="margin-top: 25rpx;">
+          <view class='serviceItem' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg2.png');background-size: 100% 100%;border-radius: 10px;">
+            <view class='serviceItem_left'>
+              <text style="writing-mode:vertical-rl;color: #7d5b40;font-weight: bold">酒店结构</text>
+            </view>
+            <image style="width:2rpx;height:90%" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/line.png'></image>
+            <view class='serviceItem_right'>
+              <!-- 循环显示所有硬设施 -->
+              <view class="serviceItems" style="margin-right:0rpx;align-items:flex-start;height:100%;flex-wrap: wrap;width:100%">
+                <view wx:for="{{hotelStructure}}" wx:key="{{index}}" style="width:150rpx;display:flex;align-items: center;margin-right: 20rpx;justify-content: center;">
+                  <view class="box" style="flex-direction: column;">
+                    <image style="width:55rpx;height:55rpx" src="{{item.img}}"></image>
+                    <!-- color:{{item.checked ? 'rgb(0,0,0)' : 'rgb(150,150,150)'}};{{item.checked ? 'font-weight:1000':''}} -->
+                    <view style="font-size: 25rpx;" class="box">{{item.value}}</view>
+                  </view>
+                </view>
+                <view style="height:27px">
+                  <view>\n</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class='wifi box' style="height:80rpx">
+          <view class="box" style="width:85%;background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/bg3.png');background-size: 100% 100%;height:100rpx;display: flex;flex-direction: column;border-radius: 10px;">
+            <label class="serviceItems" style="align-items:baseline;margin:0rpx;width: 100%;display: flex;">
+              <view class='serviceItem_left' style="margin-top: 0;width: 70%;">
+                <view class="text">WiFi账号：{{wifiName}}</view>
+                <!-- <text></text> -->
+              </view>
+              <!-- <view class="text" style="width: 75rpx">账号:</view> -->
+              <!-- <view name="wifiName" style="height:35rpx;">{{wifiName}}</view> -->
+              <view class="text" style="width: 50%;">密码：{{wifiPW}}</view>
+              <!-- <view name="wifiPW" style="height:35rpx;">{{wifiPW}}</view> -->
+
+
+              <!-- <view class="text" style="width: 50%;margin-left:20rpx">订餐电话:{{contact_number}}</view> -->
+            </label>
+            <label style="margin-right: 180rpx;">
+              <text class="text">订餐电话：{{contact_number}}</text>
+            </label>
+          </view>
+        </view>
+
+      </form>
+
+      <view style="display: flex;margin-left: 5%;align-items: center;">
+
+        <view class="text" style="width:10%;font-size: 28rpx;">环境</view>
+        <scroll-view class='form_items' scroll-x='true' style="width:80%">
+          <view class="picList">
+            <view wx:for='{{shop_photox}}' class='pic' wx:key='item'>
+              <view class='picid'>
+                <image src='{{item.url}}' mode="aspectFill" bindtap='showImage' data-urllist="{{shop_photox}}" data-image='{{item.url}}'></image>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view style="display: flex;margin-left: 5%;align-items: center;">
+        <view style="width: 10%;"></view>
+        <scroll-view class='form_items' scroll-x='true' style="width:80%">
+          <view class="picList">
+            <view wx:for='{{videoList2}}' class='pic' wx:key='item'>
+              <view class='picid'>
+      
+                <image src='{{item.url + "?x-oss-process=video/snapshot,t_1000,f_jpg,w_800,h_600,m_fast"}}' mode="aspectFill" bindtap='showVideo' data-index="{{index}}" data-urllist="{{videoList2}}" data-video='{{item.url}}'></image>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view style="display: flex;margin-left: 5%;align-items: center;">
+        <view class="text" style="width:10%;font-size: 28rpx;">车场</view>
+        <scroll-view class='form_items' scroll-x='true' style="width:80%">
+          <view class="picList">
+            <view wx:for='{{parking_photox}}' class='pic' wx:key='item'>
+              <view class='picid'>
+                <image src='{{item.url}}' mode="aspectFill" bindtap='showImage' data-urllist="{{parking_photox}}" data-image="{{item.url}}"></image>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view style="display: flex;margin-left: 5%;align-items: center;">
+      <view style="width: 10%;"></view>
+        <scroll-view class='form_items' scroll-x='true' style="width:80%">
+          <view class="picList">
+            <view wx:for='{{videoList3}}' class='pic' wx:key='item'>
+              <view class='picid'>
+                <image src='{{item.url + "?x-oss-process=video/snapshot,t_1000,f_jpg,w_800,h_600,m_fast"}}' mode="aspectFill" bindtap='showVideo' data-urllist="{{videoList2}}" data-video='{{item.url}}'></image>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <view class='div2'>
+        <text class='text' style="width:10%">交通地标</text>
+        <view class='form' style="width:80%">
+          <view class='form_tittle'>
+            <view class='th' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/dibiao.png');background-size: 100% 100%;margin-right:-4rpx;color:#fff">
+              <text class='text'>地标名称</text>
+            </view>
+            <view class='th2' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/shop_service/juli.png');background-size: 100% 100%;color:#fff">
+              <text class='text'>距离</text>
+            </view>
+          </view>
+          <scroll-view class='form_items' scroll-y='true' style='height:250rpx;'>
+            <view class='for' wx:for='{{array}}' wx:key='{{items}}' data-landmark='{{item.landmark}}' data-meter='{{item.meter}}' data-index='{{index}}' data-landmark_id='{{item.landmark_id}}'>
+              <view class='td' style='{{listIndex==index?"color:red;":""}}'>{{item.landmark}}</view>
+              <view class='td2' style='{{listIndex==index?"color:red;":""}}'>{{item.meter}}米</view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

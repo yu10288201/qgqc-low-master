@@ -1,0 +1,23 @@
+<!--pages/index/index.wxml-->
+<view class='picTitle'>
+	<text class='text' style="width:36%;font-weight:900;font-size:29rpx">套餐图片(一张)：</text>
+	<button class='picBtn' bindtap='chooseImg2a' data-id='营业执照'>拍照</button>
+	<!-- <button class='picBtn' bindtap='upImg2' data-id='营业执照'>拍照提交</button> -->
+	<button class='picBtn' bindtap='chooseImg2b' data-id='营业执照'>相册上传</button>
+</view>
+<view class='picList'>
+	<!-- <view wx:for='{{upimgListx2}}' class='pic' wx:key='item' encode='true'>
+		<view class='picid'>
+			<image src='{{item}}' mode="aspectFill" bindtap='bigimgx2' data-indexx2='{{item}}'></image>
+			<text class='up'>传</text>
+		</view>
+	</view> -->
+	<view wx:for='{{upimgList2}}' class='pic' wx:key='item'>
+		<view class='picid'>
+			<image src='{{item}}' mode="aspectFill" bindtap='bigimg2' data-index2='{{item}}'></image>
+		</view>
+		<text class='del' bindtap='deleteImg2' data-index2="{{index}}">x</text>
+		<text class='del' wx:if="{{upload_2}}" data-index2="{{index}}">x</text>
+	</view>
+</view>
+<button bindtap="taat">上传</button>

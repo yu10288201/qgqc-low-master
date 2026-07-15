@@ -1,0 +1,67 @@
+<view class='navigation'></view>
+
+
+<view class='toptitle'>
+  <!--拉屎区-->
+  <canvas type="2d" id="canvas" style="width:621px;height:1104px;position: fixed;left: -621px;top: -1104px;"></canvas>
+  <!-- <canvas canvas-id="canvas2d" style="width:250px;height:250px;position: fixed;top: 0;z-index:999999;background-color: #fff;"></canvas> -->
+  <!-- <image wx:if="{{loadImagePath2}}" src="{{loadImagePath2}}" style="width:250px;height:250px;position: fixed;top: 0;right:0;z-index:999999;background-color: #fff;"></image> -->
+  <!--拉屎区   ------Covin -->
+  <view class='titletext'>
+    <view style="margin: 0 auto;">分销品类</view>
+  </view>
+</view>
+<scroll-view scroll-x="true" scroll-left="300">
+  <view style="display: flex;flex-direction: row;width: auto;overflow-x: auto;white-space: nowrap;">
+    <view wx:for="{{titleName}}" style="width: 200rpx;margin: 20rpx 20rpx 0 20rpx;border-bottom: {{chooseIndex == index?'6rpx solid #00e7ff':''}};color: {{chooseIndex == index ?' rgb(106,135,252)':''}};padding-bottom: 10rpx;text-align: center;font-weight: {{chooseIndex == index?'bold':''}};" bindtap="clickChange" data-index="{{index}}">{{item}}</view>
+  </view>
+</scroll-view>
+<swiper style="width: 100%;height: 89vh; background-color: rgb(226, 226, 226);" current="{{chooseIndex}}" data-index="{{index}}" duration="0">
+  <block wx:for="{{titleName.length}}">
+    <swiper-item catchtouchmove="stopSwiper" skip-hidden-item-layout="true">
+      <scroll-view scroll-y="true" style="height: 100%;" bindscrolltolower="downRefresh">
+        <!-- 超值菜品  有 -->
+        <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if="{{chooseIndex == 0 && foodList.length != 0}}">
+          <distributionCard bind:onShare="onShare" bind:downRefresh="downRefresh" id="distributionCard" isFoodOrCombo="{{true}}" foodList="{{foodList}}" style="margin-top: 10rpx;"></distributionCard>
+        </view>
+        <!-- 无 -->
+        <view style="width: 95%;height: 100%;display: flex;flex-direction: column;justify-content: center;margin: 0 auto;margin-top: 20rpx;padding-bottom: 10rpx;align-items: center;" wx:if="{{chooseIndex == 0 && foodList.length == 0}}">
+          <view>暂无品类</view>
+        </view>
+        <!-- 超值套餐  有 -->
+        <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: rgb(226, 226, 226);padding-bottom: 10rpx;" wx:if="{{chooseIndex == 1 && comboList != 0}}">
+          <distributionCard bind:onShare="onShare" bind:downRefresh="downRefresh" id="distributionCard" isFoodOrCombo="{{true}}" foodList="{{comboList}}" style="margin-top: 10rpx;"></distributionCard>
+        </view>
+        <!-- 无 -->
+        <view style="width: 95%;height: 100%;display: flex;flex-direction: column;justify-content: center;margin: 0 auto;margin-top: 20rpx;padding-bottom: 10rpx;align-items: center;" wx:if="{{chooseIndex == 1 && comboList.length == 0}}">
+          <view>暂无品类</view>
+        </view>
+        <!-- 优惠券  有 -->
+        <view style="width: 95%;display: flex;flex-direction: column;justify-content: start;margin: 0 auto;margin-top: 20rpx;background-color: #fff;" wx:if="{{chooseIndex == 2 && couponList.length != 0}}">
+          <distributionCard bind:downRefresh="downRefresh" bind:onShare="onShare" id="couponCard" isFoodOrCombo="{{false}}" foodList="{{couponList}}"></distributionCard>
+        </view>
+        <!-- 无 -->
+        <view style="width: 95%;height: 100%;display: flex;flex-direction: column;justify-content: center;margin: 0 auto;margin-top: 20rpx;padding-bottom: 10rpx;align-items: center;" wx:if="{{chooseIndex == 2 && couponList.length == 0}}">
+          <view>暂无品类</view>
+        </view>
+        <!-- 酒水 -->
+        <view style="width: 95%;height: 100%;display: flex;flex-direction: column;justify-content: center;margin: 0 auto;margin-top: 20rpx;padding-bottom: 10rpx;align-items: center;" wx:if="{{chooseIndex == 3}}">
+          <view>暂无品类</view>
+        </view>
+      </scroll-view>
+    </swiper-item>
+  </block>
+</swiper>
+
+<view class="popup-window-bg" wx:if="{{showPoster}}" bindtap="closePosterWindow"></view>
+<view class="popup-window" style="top: 5%;bottom: none;" wx:if="{{showPoster}}">
+  <view style="width: 100%;height: 100%;display: flex;flex-direction: column;align-items: center;">
+    <image style="width: 90%;margin-top: 20rpx;" mode="widthFix" src="{{loadImagePath}}" bindtap="showBigImage" show-menu-by-longpress="true"></image>
+    <text style="margin-top: 36rpx;font-size: 38rpx;color: white;">长按保存到手机</text>
+    <text style="font-size: 38rpx;color: white;">可分享给朋友或朋友圈</text>
+    <view style="width: 10%;">
+      <image bindtap="closePosterWindow" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/sszg/close_write.png" style="width: 60rpx;height: 60rpx;margin-top: 20rpx;"></image>
+    </view>
+  </view>
+
+</view>

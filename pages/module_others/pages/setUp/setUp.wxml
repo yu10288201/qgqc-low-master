@@ -1,0 +1,67 @@
+<!--pages/mine/mine.wxml-->
+<view class="top-mode">
+  <open-data type="userAvatarUrl" class="userAvatarUrl" mode="cover"></open-data>
+  <open-data type="userNickName" clsss="userName" style="color:white" lang="zh_CN"></open-data>
+
+  
+</view>
+
+<view catchtouchmove="aaa" class='popup-window-bg' wx:if="{{isUpdatePwd}}"></view>
+<view class='popup-window-update' catchtouchmove="aaa" wx:if="{{isUpdatePwd}}">
+	<view>
+  <form bindsubmit="formSubmit" class='item'>
+    <view class='div' style="margin-top: 116rpx;">
+      <text class='text'>　　　手机：{{number}}    </text>
+    </view>
+    <view class='div'>
+      <text class='text'>　　旧密码：</text>
+      <input maxlength="8" name="oldpwd" class="input" value='{{form_info}}' placeholder='请输入旧密码'   password='true'></input>
+    </view>
+
+    <view class='div'>
+      <text class='text'>　　新密码：</text>
+      <input maxlength="8" name="newpwd1" class="input" value='{{form_info}}' placeholder='请输入新密码'  password='true'></input>
+    </view>
+    <view class='div'>
+      <text class='text'>验证新密码：</text>
+      <input maxlength="8" name="newpwd2" class="input" value='{{form_info}}' placeholder='再次输入新密码'  password='true'></input>
+    </view>
+
+    <view class='div2'>
+      <button  form-type='submit' type="primary" class='loginBtn'>修改密码</button>
+    </view>
+  </form>
+</view>
+	<image style='position: absolute;right: 5rpx;width:50rpx;height:50rpx;margin-top: 10rpx;margin-right: 10rpx;' src='{{i_close_img}}' bindtap='closeWindow'></image>
+</view>
+
+
+<view class="content" style="flex-direction:column;height: 130rpx;">
+  <view class="changePwd" bindtap="getPwd">修改密码</view>
+</view>
+<view class='content'>
+  <view class='content-text'>当前版本号</view>
+  <view style="margin-left:20rpx">{{version[0].number}}</view>
+  <view class="td" style="font-size: 28rpx;margin-left:20rpx">{{version[0].date}}</view>
+  <image class='right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_right.png'></image>
+</view>
+
+<view  style='height:5rpx; background-color:#e5e5e5; '></view>
+
+<view class='content' style="width:100%;height:{{version.length<=6?version.length*50:300}}rpx;">
+  <view class='content-text' style="width: 15%;">版本号:</view>
+  <scroll-view class="version-scroll" scroll-y="true">
+    <view wx:for="{{version}}" wx:key="index" style="display: flex;justify-content: center;">
+    <view class="tr" style="margin-left:20rpx">
+      <view class="td1">切瓜切菜 {{item.number}} 主要更新</view> 
+      <view class="td">{{item.date}}</view>
+    </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="exit">
+  <navigator class="exitButton" wx:if= "{{exitApp}}" open-type="exit" target = "miniProgram" >退出切瓜切菜</navigator>
+  <navigator class="exitButton" wx:else open - type="navigate" target = "navigate" url='../../main/main' >返回首页</navigator>
+</view>
+

@@ -1,0 +1,8 @@
+var filters = {
+  substringTime: function (value) {
+    return value != undefined ? value.substring(0, 19) : value
+  },
+}
+module.exports = {
+  substringTime:filters.substringTime
+}

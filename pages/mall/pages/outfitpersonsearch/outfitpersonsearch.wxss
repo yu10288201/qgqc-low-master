@@ -1,0 +1,155 @@
+.loading-row{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.loading-cell{
+  width: 100%;
+  text-align: center;
+}
+.circle-line{
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  position: relative;
+}
+.circle-line text{
+  display: block;
+  width: 50%;
+  height: 5px;
+  opacity: .7;
+  position: absolute;
+  top: calc(50% - 2.5px);
+  left: 0px;
+  transform-origin: center right; 
+  animation: circle 1.5s linear infinite; 
+}
+.circle-line text::before{
+  content: '';
+  display: block;
+  width: 15px;
+  height: 5px;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background-color: #a8c992;
+}
+.circle-line text:nth-child(1){
+  transform: rotate(0deg);
+  animation-delay: 0.2s;
+}
+.circle-line text:nth-child(2){
+  transform: rotate(45deg);
+  animation-delay: 0.4s;
+}
+.circle-line text:nth-child(3){
+  transform: rotate(90deg);
+  animation-delay: 0.6s;
+}
+.circle-line text:nth-child(4){
+  transform: rotate(135deg);
+  animation-delay: 0.8s;
+}
+.circle-line text:nth-child(5){
+  transform: rotate(180deg);
+  animation-delay: 1s;
+}
+.circle-line text:nth-child(6){
+  transform: rotate(225deg);
+  animation-delay: 1.2s;
+}
+.circle-line text:nth-child(7){
+  transform: rotate(270deg);
+  animation-delay: 1.4s;
+}
+.circle-line text:nth-child(8){
+  transform: rotate(315deg);
+  animation-delay: 1.6s;
+}
+@keyframes circle {
+  0%{
+      opacity: 0.05;
+  }
+  100%{
+      opacity: 0.9;
+  }
+}
+/* 第二个 */
+.circle-line-spin{
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  position: relative;
+  animation: circle-line 1.5s linear infinite;  
+}
+.circle-line-spin text{
+  display: block;
+  width: 50%;
+  height: 5px;
+  opacity: .7;
+  position: absolute;
+  top: calc(50% - 2.5px);
+  left: 0px;
+  transform-origin: center right;
+}
+@keyframes circle-line {
+  from{
+    transform:rotate(-360deg);
+  }
+  to{
+    transform:rotate(10deg);
+  }
+}
+.circle-line-spin text::before{
+  content: '';
+  display: block;
+  width: 15px;
+  height: 5px;
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background-color: #a8c992;
+}
+.circle-line-spin text:nth-child(1){
+  transform: rotate(0deg);
+  animation-delay: 0.2s;
+}
+.circle-line-spin text:nth-child(2){
+  transform: rotate(45deg);
+  animation-delay: 0.4s;
+}
+.circle-line-spin text:nth-child(3){
+  transform: rotate(90deg);
+  animation-delay: 0.6s;
+}
+.circle-line-spin text:nth-child(4){
+  transform: rotate(135deg);
+  animation-delay: 0.8s;
+}
+.circle-line-spin text:nth-child(5){
+  transform: rotate(180deg);
+  animation-delay: 1s;
+}
+.circle-line-spin text:nth-child(6){
+  transform: rotate(225deg);
+  animation-delay: 1.2s;
+}
+.circle-line-spin text:nth-child(7){
+  transform: rotate(270deg);
+  animation-delay: 1.4s;
+}
+.circle-line-spin text:nth-child(8){
+  transform: rotate(315deg);
+  animation-delay: 1.6s;
+}
+
+.badgecontent-close{
+  position:absolute;
+  color: white;
+  top:  5rpx;
+  font-size: 15rpx;
+  right: 20rpx;
+  padding: 10rpx 15rpx;
+  border-radius: 50%;
+  background-color: red;
+}

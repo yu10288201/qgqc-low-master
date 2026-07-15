@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>乔信页面文档</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f6f9; color: #222; padding: 32px 16px; }
+    h1 { font-size: 24px; margin-bottom: 8px; color: #1a1a2e; }
+    .subtitle { color: #666; font-size: 14px; margin-bottom: 32px; }
+    .card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 24px; margin-bottom: 24px; }
+    h2 { font-size: 16px; font-weight: 700; color: #333; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e8e8e8; }
+    h3 { font-size: 14px; font-weight: 600; color: #555; margin: 16px 0 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #f0f2f5; text-align: left; padding: 10px 12px; font-weight: 600; color: #444; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    tr:last-child td { border-bottom: none; }
+    code { background: #f0f2f5; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; color: #c0392b; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge-get { background: #e3f7ee; color: #27ae60; }
+    .badge-post { background: #fff3e0; color: #e67e22; }
+    .badge-upload { background: #eef3ff; color: #2563eb; }
+    .file-path { font-family: 'Courier New', monospace; font-size: 12px; color: #2980b9; background: #eaf4fd; padding: 2px 8px; border-radius: 4px; }
+    .note { background: #fffbe6; border-left: 4px solid #f7b731; padding: 12px 16px; border-radius: 4px; font-size: 13px; color: #7d6608; margin-top: 12px; }
+    ul { padding-left: 20px; font-size: 13px; line-height: 2; }
+    .section-desc { font-size: 13px; color: #666; margin-bottom: 12px; line-height: 1.8; }
+    .url { font-family: 'Courier New', monospace; font-size: 12px; color: #555; }
+  </style>
+</head>
+<body>
+
+  <h1>乔信（chatWithCust）页面文档</h1>
+  <p class="subtitle">module_others 模块 · 客户间沟通功能 · 生成时间：2026-07-11</p>
+
+  <!-- 文件结构 -->
+  <div class="card">
+    <h2>文件结构</h2>
+    <table>
+      <thead><tr><th>文件</th><th>路径</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>chatWithCust.wxml / .js / .wxss / .json</td>
+          <td><span class="file-path">pages/module_others/pages/chatWithCust/</span></td>
+          <td>会话列表页（入口）：叮客 / 通讯录 / 叮友 / 我，4 个 tab</td>
+        </tr>
+        <tr>
+          <td>chatWithCustDetail.wxml / .js / .wxss / .json</td>
+          <td><span class="file-path">pages/module_others/pages/chatWithCustDetail/</span></td>
+          <td>聊天详情页：消息收发、语音、图片、视频</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 页面跳转 -->
+  <div class="card">
+    <h2>页面跳转关系</h2>
+    <p class="section-desc">
+      chatWithCust（列表）→ 点击会话条目 → <code>wx.navigateTo</code> 跳转 chatWithCustDetail，传参 <code>custInfo=JSON.stringify(item)</code>
+    </p>
+    <table>
+      <thead><tr><th>页面</th><th>onLoad 参数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>chatWithCust</td>
+          <td>无</td>
+          <td>直接进入，自动调 initMsg 拉会话列表</td>
+        </tr>
+        <tr>
+          <td>chatWithCustDetail</td>
+          <td><code>custInfo</code>（JSON 字符串）</td>
+          <td>包含 customer_id、customer_name、avatar_url、shop_id 等字段</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- chatWithCust 功能 -->
+  <div class="card">
+    <h2>chatWithCust — 会话列表页功能</h2>
+    <p class="section-desc">底部 4 个 Tab，用 swiper 切换，不跳转页面。</p>
+    <table>
+      <thead><tr><th>Tab</th><th>index</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td>叮客</td><td>0</td><td>会话列表，显示客户头像、姓名、最后一条消息、时间、未读数红点</td></tr>
+        <tr><td>通讯录</td><td>1</td><td>占位文字"通讯录"，未实现</td></tr>
+        <tr><td>叮友</td><td>2</td><td>占位文字"绑客"，未实现</td></tr>
+        <tr><td>我</td><td>3</td><td>设置头像、获取手机号、设置昵称</td></tr>
+      </tbody>
+    </table>
+    <div class="note">会话列表过滤了 customer_name == '未知' 的条目，不显示。</div>
+  </div>
+
+  <!-- chatWithCustDetail 功能 -->
+  <div class="card">
+    <h2>chatWithCustDetail — 聊天详情页功能</h2>
+    <ul>
+      <li>进入页面调 <code>getOldData()</code>，获取历史消息（分页，每页 20 条，向上滚动加载更多）</li>
+      <li>发送文字：输入框回车或点发送 → <code>sendMsgExec(1, msg)</code></li>
+      <li>发送图片：chooseMedia → 上传到 OSS → <code>sendMsgExec(2, url)</code></li>
+      <li>发送视频：chooseMedia → 上传到 OSS → <code>sendMsgExec(4, url)</code></li>
+      <li>发送语音：长按录音（最短 2 秒）→ 上传到 OSS → <code>sendMsgExec(3, url, duration)</code></li>
+      <li>发送后调 <code>getNewData()</code> 刷新，同时通过 RabbitMQ 推送通知对方</li>
+      <li>支持预览大图（<code>wx.previewImage</code>）、播放语音（<code>InnerAudioContext</code>）</li>
+    </ul>
+    <h3>消息类型（msg_type）</h3>
+    <table>
+      <thead><tr><th>值</th><th>类型</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>文字</td></tr>
+        <tr><td>2</td><td>图片</td></tr>
+        <tr><td>3</td><td>语音（含 duration 字段，单位秒）</td></tr>
+        <tr><td>4</td><td>视频</td></tr>
+      </tbody>
+    </table>
+    <h3>wechat_type（聊天类型）</h3>
+    <table>
+      <thead><tr><th>值</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>店员 → 客户</td></tr>
+        <tr><td>2</td><td>客户 → 店员</td></tr>
+        <tr><td>3</td><td>客户 → 客户（乔信用此类型）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 接口列表 -->
+  <div class="card">
+    <h2>接口列表</h2>
+    <p class="section-desc">
+      Base URL：生产 <code>https://mb.fsmbdlkj.com</code>，测试 <code>http://test.fsmbdlkj.com</code>（由 app.js serverConfig 控制）<br/>
+      所有接口路径前缀：<code>/evaluation/</code>
+    </p>
+
+    <h3>chatWithCust — 会话列表页</h3>
+    <table>
+      <thead><tr><th>方法</th><th>路径</th><th>参数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-get">GET</span></td>
+          <td><code>/evaluation/selectWeChatMsgRecord_QGQC_Customer</code></td>
+          <td><code>shop_id</code>, <code>bind_person_id</code></td>
+          <td>初始化会话列表，返回所有会话及最新一条消息、未读数</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-get">GET</span></td>
+          <td><code>/evaluation/selectWechatMsgRecord_Last</code></td>
+          <td><code>wechat_type</code>, <code>sender_id</code>, <code>receiver_id</code></td>
+          <td>获取某对话最新一条消息（从 chatWithCustDetail 返回时调用，刷新列表）</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td><code>/evaluation/QGQCPhoneServlet</code></td>
+          <td><code>code</code>, <code>encryptedData</code>, <code>iv</code>, <code>wechatAppId</code></td>
+          <td>"我"Tab：获取手机号</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td>updateCustomerNameByOpenId（app.globalData 动态）</td>
+          <td><code>openid</code>, <code>name</code></td>
+          <td>"我"Tab：保存昵称</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td>updateCustomerPhoneByOpenId（app.globalData 动态）</td>
+          <td><code>openid</code>, <code>phone</code></td>
+          <td>"我"Tab：保存手机号</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td>updateCustomerAvatarUrlByOpenId（app.globalData 动态）</td>
+          <td><code>openid</code>, <code>avatarUrl</code></td>
+          <td>"我"Tab：保存头像</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-upload">UPLOAD</span></td>
+          <td>UploadAliYunFile（app.globalData 动态）</td>
+          <td>file（multipart）</td>
+          <td>"我"Tab：头像上传到阿里云 OSS</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>chatWithCustDetail — 聊天详情页</h3>
+    <table>
+      <thead><tr><th>方法</th><th>路径</th><th>参数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-get">GET</span></td>
+          <td><code>/evaluation/selectWechatMsgRecord_StaffToCustomer_Old</code></td>
+          <td><code>max_id</code>, <code>page_size</code>, <code>customer_id</code>, <code>shop_id</code>, <code>staff_id</code></td>
+          <td>拉取历史消息（向上滚动加载），max_id=0 时服务器用 int 最大值，即全量最新</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-get">GET</span></td>
+          <td><code>/evaluation/selectWechatMsgRecord_StaffToCustomer_New</code></td>
+          <td><code>min_id</code>, <code>page_size</code>, <code>customer_id</code>, <code>shop_id</code>, <code>staff_id</code></td>
+          <td>拉取新消息（发送后刷新）</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td><code>/evaluation/insertWechatMsgRecord</code></td>
+          <td><code>shop_id</code>, <code>msg_type</code>, <code>msg</code>, <code>duration</code>, <code>wechat_type</code>, <code>sender_id</code>, <code>receiver_id</code></td>
+          <td>发送消息（文字/图片/语音/视频），wechat_type=3</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-post">POST</span></td>
+          <td><code>/evaluation/SendRabbitMqMsg</code></td>
+          <td><code>task_queue_names</code>（格式：hj + "_qgqc_" + receiver_id）, <code>msg</code>（JSON）</td>
+          <td>发送成功后推送 RabbitMQ 通知，触发对方实时收消息</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-upload">UPLOAD</span></td>
+          <td>UploadFile（app.globalData 动态）</td>
+          <td>file（multipart），formData: <code>oldUrl</code></td>
+          <td>图片 / 视频 / 语音上传，返回 <code>object</code> 字段为 OSS URL，然后再调 insertWechatMsgRecord</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>（废弃/未启用）滚动分页接口</h3>
+    <table>
+      <thead><tr><th>方法</th><th>路径</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-get">GET</span></td>
+          <td><code>/evaluation/selectWechatMsgRecord_StaffToCustomer_Page</code></td>
+          <td>原先的分页接口，scroll 函数里调用但已 return 跳过，实际未生效</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 消息数据结构 -->
+  <div class="card">
+    <h2>关键数据结构</h2>
+
+    <h3>会话列表项（selectWeChatMsgRecord_QGQC_Customer 返回）</h3>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><code>customer_id</code></td><td>对方客户 ID</td></tr>
+        <tr><td><code>customer_name</code></td><td>对方昵称，值为"未知"时不显示</td></tr>
+        <tr><td><code>avatar_url</code></td><td>对方头像</td></tr>
+        <tr><td><code>lstWechatMsgRecord</code></td><td>数组，取 [0] 显示最后一条消息，含 msg、is_not_read_count、create_time</td></tr>
+        <tr><td><code>time</code></td><td>前端格式化后的时间字符串（weChatTimeFormat）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>消息记录项（recordList 每条）</h3>
+    <table>
+      <thead><tr><th>字段</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><code>id</code></td><td>消息 ID，用于分页 max_id / min_id 和 scroll-into-view（page_{{id}}）</td></tr>
+        <tr><td><code>sender_id</code></td><td>发送者 ID，与 customerInf.id 比较判断左右气泡</td></tr>
+        <tr><td><code>msg_type</code></td><td>1 文字 / 2 图片 / 3 语音 / 4 视频</td></tr>
+        <tr><td><code>msg</code></td><td>消息内容（文字）或 OSS URL（图片/视频/语音）</td></tr>
+        <tr><td><code>duration</code></td><td>语音时长（秒），气泡宽度 = (duration%61+5)*2 rpx</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 实时消息机制 -->
+  <div class="card">
+    <h2>实时消息机制</h2>
+    <p class="section-desc">乔信不用轮询，走 RabbitMQ + 小程序 WebSocket（app.js 全局监听）。</p>
+    <ul>
+      <li>发送消息后调 <code>SendRabbitMqMsg</code>，队列名：<code>{hj}_qgqc_{receiver_id}</code></li>
+      <li>app.js 全局收到推送后，找到当前页面（chatWithCust 或 chatWithCustDetail）调对应刷新方法</li>
+      <li>chatWithCust 收到推送 → 调 <code>selectWechatMsgRecord_Last</code> 刷新列表最后一条</li>
+      <li>chatWithCustDetail 收到推送 → 调 <code>getNewData</code> 拉取新消息</li>
+    </ul>
+  </div>
+
+  <!-- 待办 -->
+  <div class="card">
+    <h2>待办 / 对接要点</h2>
+    <table>
+      <thead><tr><th>优先级</th><th>事项</th></tr></thead>
+      <tbody>
+        <tr><td>P0</td><td>确认 app.globalData 里 updateCustomerNameByOpenId / updateCustomerPhoneByOpenId / updateCustomerAvatarUrlByOpenId / UploadFile / UploadAliYunFile 的完整 URL</td></tr>
+        <tr><td>P1</td><td>乔信入口（主题交友第三个按钮）跳转时需传 activityId，确认 chatWithCust 是否需要按活动过滤会话</td></tr>
+        <tr><td>P2</td><td>通讯录 Tab、叮友 Tab 内容未实现</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

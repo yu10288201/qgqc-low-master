@@ -1,0 +1,193 @@
+<!--discount.wxml-->
+
+<view style=' position: fixed;height: 100%;width: 100%; display:flex;  flex-direction:column;'>
+  <view style='height:100%;width:100%'>
+    <view class='bodyView' style='height:80%;margin-top:10%'>
+      <view style='height:80%;'>
+        <view class='div-list' style='margin-top: 0rpx;align-items: baseline;'>
+          <text class='text'>店铺名称:</text>
+          <text class='text1' style='65%' name='shopName'>{{shop_name}}</text>
+        </view>
+        <view class='div-list' style='align-items: center;'>
+          <text class='text'> 活动id:</text>
+          <text class='text1' name='adtId'>{{event_id}}</text>
+        </view>
+        <view class='div-list'>
+          <text class='text'>活动名称:</text>
+          <text class='text1' style="width:300rpx">{{event_name}}</text>
+        </view>
+
+        <!-- <view class='div-list'>
+            <text class='text'>开始日期:</text>
+            <picker name="create_date" class='picker' mode="date" value="{{date}}" start="{{dates}}" bindchange="bindDateChange">
+              <view class="datePickerView" style=' text-align: center;'>{{date}}</view>
+              <!-- data随着更改日期而改变，datas固定为今天 -->
+        <!-- </picker>
+          </view> -->
+        <view class='div-list'>
+          <view class='div-list1' style='width:50%;height:100%;'>
+            <text class='text'>活动单价:</text>
+            <text class='text1' style="width:40%">{{unit_price}}/{{unit}}</text>
+          </view>
+          <view class='div-list2' style='width:50%;'>
+            <view class='div-list2' style='width:50%;justify-content:'>
+              <text class='text1' style='width:100%;margin-left:0rpx;text-align:right;'>首发人提成:</text>
+            </view>
+            <view class='div-list2' style='width:50%'>
+              <text class='text1' style='width:100%;margin-left:0rpx;'>{{xd_royalty}}%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class='div-list'>
+          <view class='div-list1' style="width:50%;height:100%;">
+            <text class='text'>数量:</text>
+            <text class='text1' style="width:120rpx">{{count}}</text>
+          </view>
+
+          <view class='div-list2' style='width:50%;'>
+            <view class='div-list2' style='width:50%;justify-content: flex-end;'>
+              <text class='text1' style='width:100%;margin-left:0rpx; text-align:right;'>已报名:</text>
+            </view>
+            <view class='div-list2' style='width:50%'>
+              <text class='text1' style='width:100%;margin-left:0rpx;'>{{initNum}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class='div-list'>
+          <view class='div-list1' style='width:50%;height:100%'>
+            <text class='text'>附送优惠券:</text>
+            <text class='text1' style="width:120rpx">{{coupon_id}}元</text>
+          </view>
+
+          <!-- <view class='div-list2'>
+            <text class='text2'>优惠折扣:</text>
+          </view> -->
+
+
+          <!-- <view class='div-list'>
+          <text class='text'>首发人提成:</text>
+          <input class='input2' type='number' name='xd_royalty' maxlength="4"></input>
+          <text class='text2'>%</text>
+        </view> -->
+          <view class='div-list2' style='width:50%;'>
+            <view class='div-list2' style='width:50%;justify-content: flex-end;'>
+              <text class='text1' style='width:100%;margin-left:0rpx;text-align:right;'>优惠规则:</text>
+            </view>
+            <view class='div-list2' style='width:50%'>
+              <text class='text1' style='width:100%;margin-left:0rpx;'>满xxx抵xxx</text>
+            </view>
+          </view>
+        </view>
+
+
+        <view class='div-list'>
+          <text class='text'>活动规则:</text>
+        </view>
+
+        <view class='textarea' style='height:40%;'>
+          <!-- cursor-spacing="50"使输入框保持与输入法弹出的距离 -->
+          <scroll-view scroll-y='true' style='height:100%'>
+            <text class='text3' cursor-spacing="60" disabled="readonly" style='word-break:break-all; '>{{event_rule}}</text>
+          </scroll-view>
+        </view>
+
+      </view>
+      <view class='cut' style='margin-bottom: 10rpx;position: relative;margin-top: 5rpx;'></view>
+      <view class='btnView' style='border: 1rpx rgb(167, 167, 167) solid;border-radius: 15rpx;'>
+        <button class='btn' bindtap="sign">首发人报名</button>
+        <button class='btn'>进入店铺</button>
+      </view>
+    </view>
+
+    <view class='cut' style='margin-bottom: 10rpx;position: relative;margin-top: 5rpx;'></view>
+    <view class='bottomView' style='background:#fff'>
+      <button class='btn' open-type="share" bindtap='noact' style='width: 60%;'>邀请微信好友</button>
+    </view>
+
+  </view>
+
+</view>
+
+
+
+<view class='hiddenview' wx:if='{{hiddenview}}'>
+  <view class='hiddenview2' wx:if='{{hiddenview}}'>
+    <view class='div'>
+      <text class='exitTable' bindtap='cancel'>x</text>
+    </view>
+    <text class='ModalHeadText'>活动报名信息
+  </text>
+    <view class='cut' style="margin-top:2%;margin-bottom: 15rpx;"></view>
+    <view class='modalView1' style='height:28%;'>
+      <view class='modalTextView'>
+        <view class='modalTextView1'>
+          <text class='text'>姓名：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{name}}</text>
+        </view>
+      </view>
+      <view class='modalTextView'>
+        <view class='modalTextView1'>
+          <text class='text'>性别：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{gender}}</text>
+        </view>
+      </view>
+      <view class='modalTextView'>
+        <view class='modalTextView1'>
+          <text class='text'>手机号码：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{phone}}</text>
+        </view>
+      </view>
+      <view class='modalTextView'>
+        <view class='modalTextView1'>
+          <text class='text'>城市：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{city}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='modalView1' style='height:22%;'>
+
+
+     <view class='modalTextView' style='height:33%'>
+        <view class='modalTextView1'>
+          <text class='text'>活动ID：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{event_id}}</text>
+        </view>
+      </view>
+
+       <view class='modalTextView'style='height:33%'>
+        <view class='modalTextView1'>
+          <text class='text'>活动名称：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{event_name}}</text>
+        </view>
+      </view>
+
+       <view class='modalTextView'style='height:33%'>
+        <view class='modalTextView1'>
+          <text class='text'>店铺名称：</text>
+        </view>
+        <view class='modalTextView2'>
+          <text class='text'>{{shop_name}}</text>
+        </view>
+      </view>
+    </view>
+    <view class='modalBtnView'>
+      <button class='modalBtn' bindtap='join'>注册</button>
+      <button class='modalBtn' bindtap="signAct">确定报名</button>
+    </view>
+  </view>
+
+</view>

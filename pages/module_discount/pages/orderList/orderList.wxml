@@ -1,0 +1,303 @@
+<!--pages/order/order.wxml-->
+<wxs module="filters" src="../orderList/orderList.wxs" />
+<view class="page">
+  <view class="navigation" style="margin-bottom:20rpx;">
+    <view class="category" style="justify-content: space-around;">
+        <view style="display:flex;width: 31%;height: 70%;align-items: center;justify-content: center;margin-left: 40rpx;">
+          <view class="state" data-category="2" bindtap="switchCategory" style="margin: 0rpx;height: 66rpx;width: 225rpx;padding:0;line-height: 66rpx;{{package_type == 2?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">超值套餐/菜品</view>
+        </view>
+        <view style="display:flex;width: 31%;height: 70%;align-items: center;justify-content: center;">
+          <view class="state" data-category="3" bindtap="switchCategory" style="margin: 0rpx;height: 66rpx;width: 225rpx;padding:0;line-height: 66rpx;{{package_type == 3?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">超值优惠券</view>
+        </view>
+      <image class='top-head-right' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/flesh.png' bindtap='toFlesh'></image>
+      <text bindtap="gotoCustomerAddressList" style="color:green" >地址管理</text>
+    </view>
+    <view class="status">
+      <view class="state" bindtap="switchState" data-state="0" style="{{package_status==0?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">全部</view>
+      <view class="state" bindtap="switchState" data-state="1" style="{{package_status==1?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">待付款</view>
+      <view class="state" bindtap="switchState" data-state="2" style="{{package_status==2?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">待使用</view>
+      <view class="state" bindtap="switchState" data-state="3" style="{{package_status==3?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">已核销</view>
+      <view class="state" bindtap="switchState" data-state="4" style="{{package_status==4?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">过期未用</view>
+      <view class="state" bindtap="switchState" data-state="5" style="{{package_status==5?'font-weight:bold;border-bottom: 5rpx solid rgb(255,153,0);':'font-weight:normal'}}">退款</view>
+    </view>
+  </view>
+
+  <view wx:if="{{ordersList.length==0}}" style="width: 100%;height:{{shop_id ? '73vh':'80vh'}};display: flex;align-items: center;justify-content: center;">
+    <text style="color:#777777">暂无订单</text>
+  </view>
+  <scroll-view class="ModuleOrder" scroll-y="true" wx:if="{{ordersList.length!=0}}" style="height:{{shop_id ? '73vh':'80vh'}}" lower-threshold='50' bindscrolltolower='lineFlesh'>
+    <view wx:for="{{ordersList}}" class="List" style="margin-top:20rpx;background-color: rgb(254,250,245);;" wx:for-index="index" data-index="{{index}}">
+      <view style="display:flex;flex-direction:row;">
+        <view class='List_left' wx:if="{{package_type != 3}}">
+          <!-- <image src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1245594170,2394655806&fm=26&gp=0.jpg"></image> -->
+          <image src="{{item.ticketDetails[0].ticketInfo.distribution[0].dishesImg}}?x-oss-process=image/resize,m_fill,h_62,w_72" wx:if="{{item.ticketType ===4}}"></image>
+          <image src="{{item.ticketDetails[0].ticketInfo.minpageurl}}?x-oss-process=image/resize,m_fill,h_62,w_72" wx:else></image>
+          <view style="font-size:28rpx;color:green;">{{filters.isOrderGive(item.ticketDetails[0].orderDetail,item.isGiveAway)}}</view>
+          <!-- <view><button  class="listButton" data-item="{{item}}" bindtap="gotoRefund">订单退款</button></view> -->
+        </view>
+        <view class="List_right" style="width: {{package_type == 3? '94%':'72%'}};" data-orderinf="{{item}}" wx:if="index" data-index="{{index}}">
+          <view class="order_shop" style="align-items: flex-start;">
+            <text style="width: 60%;font-size:30rpx;color:#000000">{{item.orderName}}</text>
+            <view style="width: 40%;text-align:right;font-size:30rpx;color: {{item.orderNewStatus == 0 || item.orderNewStatus == 4 || item.orderNewStatus == 8 ? 'red' : 'green'}}">
+              [{{item.orderNewStatus == 0 ? '未支付' :
+              item.orderNewStatus == 1 ? '待接单' :
+              item.orderNewStatus == 2 ? '待使用' :
+              item.orderNewStatus == 3 ? '申请预约' :
+              item.orderNewStatus == 4 ? '预约失败' :
+              item.orderNewStatus == 5 ? '预约成功' :
+              item.orderNewStatus == 6 ? '申请退款' :
+              item.orderNewStatus == 7 ? '退款成功' :
+              item.orderNewStatus == 8 ? '退款失败' :
+              item.orderNewStatus == 9 ? '已使用' :
+              item.orderNewStatus == 10 ? '部分使用' : '未支付'}}]</view>
+          </view>
+          <view style="width: 100%;display: flex;flex-direction: row;justify-content: space-between;">
+            <view style="width: 80%;display: flex;flex-direction: column;justify-content: start;align-items: flex-start;">
+              <view class="order_shop">
+                <text style="width: 100%;">[{{item.shopName}}]</text>
+              </view>
+              <view class="order_shop">
+                <text style="width: 100%;">订单号码: {{item.orderCode}}</text>
+              </view>
+              <view class="order_shop">
+                <text style="width: 100%;">下单时间: {{item.createDate}}</text>
+              </view>
+              <view class="order_shop">
+                <text style="width: 100%;">有效期限: {{item.ticketType == 2 ? filters.formatDate(item.ticketDetails[0].ticketInfo.endtime,0) : filters.formatDate(item.ticketDetails[0].ticketInfo.coupon_validityend,0)}} 止</text>
+              </view>
+              <view class="order_shop" wx:if="{{item.ticketType == 3}}">
+                <view class="box">
+                  <text style="width: 100%;" wx:if="{{item.isGiveAway != 1}}">购买价: {{filters.toFix(item.orderTotal*0.01)}}元</text>
+                  <text style="width: 100%;" wx:if="{{item.isGiveAway == 1}}">赠送优惠券</text>
+                </view>
+              </view>
+            </view>
+            <view style="width: 30%;display: flex;flex-direction: column;justify-content: center;align-items: center;" wx:if="{{package_type == 3}}">
+              <view style="font-size: 40rpx;color: rgb(255,153,0);font-weight: 1000;margin: 50rpx 20rpx 0 0 ">￥{{item.ticketDetails[0].ticketInfo.coupon_facevalue}}元</view>
+              <view style="font-size:28rpx;color:green;">{{filters.isOrderGive(item.ticketDetails[0].orderDetail)}}</view>
+            </view>
+          </view>
+
+          <!-- <view class="order_shop" wx:if="{{item.ticketType === 2}}">
+            <text style="width: 100%;">有效日期 : {{item.ticketDetails[0].ticketInfo.starttime}} ~ {{item.ticketDetails[0].ticketInfo.endtime}}</text>
+          </view>
+          <view class="order_shop" wx:if="{{item.ticketType === 3}}">
+            <text style="width: 100%;">有效日期 : {{item.ticketDetails[0].ticketInfo.coupon_validitystar}} ~ {{filters.formatDate(item.ticketDetails[0].ticketInfo.coupon_validityend,2)}}</text>
+          </view> -->
+          <view class="order_shop" style="justify-content:space-between" wx:if="{{item.ticketType != 3}}">
+            <text style="width: 100%;">数量: {{item.detailedCount}}{{item.ticketDetails[0].ticketInfo.dishesUnit}} （已核销: {{item.usedCount}}  剩余: {{item.detailedCount - item.usedCount}}）</text>
+            <view class="box">
+              <image wx:if="{{item.orderStatus==1}}" style="margin-right:10rpx;width:40rpx;height:40rpx" class='icon' src="{{item.ticketDetails[0].orderDetail[0].praiseFlag==1 ? 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png' : 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E5%88%87%E7%93%9C%E5%88%87%E8%8F%9C/images/i_like_off.png' }}" data-item="{{item}}" data-index="{{index}}" data-praiseFlag="{{item.ticketDetails[0].orderDetail[0].praiseFlag}}" bindtap="{{item.orderStatus==1 ? 'changelike' :''}}"></image>
+              <view style="width:20rpx" wx:if="{{item.ticketDetails[0].orderDetail.praiseFlag==1}}">1</view>
+            </view>
+          </view>
+          <view class="order_shop" style="justify-content:space-between" wx:if="{{item.ticketType == 3}}">
+            <text>数量: {{item.detailedCount}}{{item.ticketDetails[0].ticketInfo.dishesUnit}}</text>
+            <view class="box">
+              <image wx:if="{{item.orderStatus==1}}" style="margin-right:{{item.ticketDetails[0].orderDetail.praiseFlag==1 ? '10rpx':'30rpx'}};width:40rpx;height:40rpx" class='icon' src="{{item.ticketDetails[0].orderDetail[0].praiseFlag==1 ? 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png' : 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E5%88%87%E7%93%9C%E5%88%87%E8%8F%9C/images/i_like_off.png'}}" data-item="{{item}}" data-index="{{index}}" data-praiseFlag="{{item.ticketDetails[0].orderDetail[0].praiseFlag}}" bindtap="{{item.orderStatus==1 ? 'changelike' :''}}"></image>
+              <view style="width:20rpx" wx:if="{{item.ticketDetails[0].orderDetail.praiseFlag==1}}">1</view>
+            </view>
+            <button class="listButton" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list" style="position:relative;top: 15rpx;">订单详情</button>
+          </view>
+          <!-- <view class="order_shop">
+            <text>价格 : <text style="color:rgb(255,153,0)">{{filters.toFix(item.orderTotal*0.01/item.detailedCount)}} 元</text></text>
+          </view> -->
+          <view class="order_shop" style="justify-content:space-between">
+            <text>             
+              <text class="order_shop">金额: <text style="color:rgb(255,153,0)">{{filters.toFix(item.orderTotal*0.01)}}元（{{item.ticketDetails[0].ticketInfo.price}}元/{{item.ticketDetails[0].ticketInfo.dishesUnit}}）</text></text>
+            </text>            
+            <button class="listButton" wx:if="{{item.ticketType == 2}}" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list" style="position:relative;top: 15rpx;">订单详情</button>
+          </view>
+        </view>
+      </view>
+      <view class="order_button">
+        <view style="width:100%;display: flex;justify-content: flex-end">
+          <!-- <button wx:if="{{item.orderStatus!=0 && item.ticketDetails[0].ticketInfo.refund == 0}}" class="listButton" style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/buttom_right_down2.png') no-repeat;background-size: 100% 100%;">不可退款</button> -->
+          <!-- ticketInfo.appointment 设置这张优惠券是否需要预约
+          orderComplete == 0 订单未完成
+          orderStatus == 1 订单已支付
+          orderDetail[0].appointment == 0 优惠券未申请预约
+          orderDetail[0].appointmentOnShop == 0 店铺未同意预约
+          orderDetail[0].refuseAppointmentRecord == null 拒绝预约记录
+          orderRefundStatus == 0 未退款 -->
+          <button wx:if="{{item.ticketDetails[0].ticketInfo.appointment == 1 && item.orderComplete == 0 && item.orderStatus == 1 && item.ticketDetails[0].orderDetail[0].appointment == 0 && item.ticketDetails[0].orderDetail[0].appointmentOnShop == 0 && item.ticketDetails[0].orderDetail[0].refuseAppointmentRecord == null && item.orderRefundStatus == 0}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list">需预约</button>
+
+          <button wx:elif="{{item.ticketDetails[0].ticketInfo.appointment == 1 && item.orderComplete == 0 && item.orderStatus == 1 && item.ticketDetails[0].orderDetail[0].appointment == 0 && item.ticketDetails[0].orderDetail[0].appointmentOnShop == 1 && item.ticketDetails[0].orderDetail[0].acceptAppointmentRecord != null && item.orderRefundStatus == 0}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list">预约成功</button>
+
+          <button wx:elif="{{item.ticketDetails[0].ticketInfo.appointment == 1 && item.orderComplete == 0 && item.orderStatus == 1 && item.ticketDetails[0].orderDetail[0].appointment == 1 && item.ticketDetails[0].orderDetail[0].appointmentOnShop == 0 && item.ticketDetails[0].orderDetail[0].acceptAppointmentRecord == null && item.ticketDetails[0].orderDetail[0].refuseAppointmentRecord == null && item.orderRefundStatus == 0}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list" style="color: red;font-weight: bolder;">预约中</button>
+
+          <button wx:elif="{{item.ticketDetails[0].ticketInfo.appointment == 1 && item.orderComplete == 0 && item.orderStatus == 1 && item.ticketDetails[0].orderDetail[0].appointment == 0 && item.ticketDetails[0].orderDetail[0].appointmentOnShop == 0 && item.ticketDetails[0].orderDetail[0].refuseAppointmentRecord != null && item.orderRefundStatus == 0}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_list" style="color: red;font-weight: bolder;">预约失败</button>
+
+
+
+          <button wx:if="{{item.isGiveAway != 1 && item.orderComplete != 1&& item.orderStatus!=0 && item.orderRefund == 0 && item.orderRefundStatus == 0 && item.ticketDetails[0].ticketInfo.refund != 0}}" class="{{item.orderNewStatus == 5 || item.orderNewStatus == 9 || item.orderNewStatus == 10 ? 'listButton_grey' : 'listButton'}}" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="gotoRefund">申请退款</button>
+          <button wx:elif="{{item.isGiveAway != 1 && item.orderStatus!=0 && item.orderRefundStatus != 0}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-item="{{item}}" bindtap="gotoRefundDetail">退款进度</button>
+          <button wx:if="{{item.orderStatus!=1}}" class="listButton" wx:for-index="index" data-index="{{index}}" data-orderinf="{{item}}" bindtap="deleteorder">删除订单</button>
+          <button class="listButton" wx:for-index="index" data-index="{{index}}" data-orderinf="{{item}}" bindtap="again" style="margin-right:10rpx;width: 98%;" wx:if="{{item.isGiveAway != 1 && item.orderStatus == 1&&item.orderRemark ==1}}">再来一单</button>
+          <button class="listButton" wx:for-index="index" data-index="{{index}}" data-orderinf="{{item}}" bindtap="again" wx:if="{{item.isGiveAway != 1 && item.orderStatus == 1&&item.orderRemark ==0}}">再来一单</button>
+          <button class="listButton" wx:for-index="index" data-index="{{index}}" data-orderinf="{{item}}" bindtap="gopay" wx:if="{{item.isGiveAway != 1 && item.orderStatus == 0}}" style="margin-right:10rpx">去支付</button>
+          <button class="listButton" wx:for-index="index" data-index="{{index}}" data-orderinf="{{item}}" bindtap="pingjia" data-item="{{item}}" wx:if="{{item.orderStatus == 1&&item.orderRemark == 0 && item.orderComplete == 1}}" style="margin-right:10rpx">点评</button>
+          <button class="listButton" wx:elif="{{item.orderStatus == 1&&item.orderRemark==1}}" style="margin-right:10rpx;margin-left:-2rpx">已点评</button>
+        </view>
+
+        <view style="width:100%;display: flex;flex-direction:column;align-items: flex-start">
+          <view wx:if="{{item.orderNewStatus != 1 && item.orderNewStatus != 0}}" style="color:green;width:90%;margin-left:5%;text-align:left;font-size:28rpx">已接单　　{{item.ministerTakesOrdersRecord.operatorName}}：{{item.ministerTakesOrdersRecord.createTime}}
+          </view>
+          <view wx:if='{{(item.ticketDetails[0].orderDetail.appointment==1 || item.ticketDetails[0].orderDetail.appointmentOnShop==1)&&item.ticketDetails[0].orderDetail.appointmentTime!=null&&item.ticketDetails[0].orderDetail.ticketRemark==null}}' style="color:rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+
+            <text style="padding: 0rpx;margin: 0rpx;border: none;color: rgb(255,153,0);" wx:if='{{item.ticketDetails[0].orderDetail.appointmentOnShop==0&&item.ticketDetails[0].orderDetail.appointment==1&&item.ticketDetails[0].orderDetail.ticketStatus==0}}'>待确认</text>
+            <text style="padding: 0rpx;margin: 0rpx;border: none;" wx:else>　　</text>　　预约时间：{{item.ticketDetails[0].orderDetail.appointmentTime}}
+
+          </view>
+
+          <view style="width:100%;display: flex;flex-direction:column;align-items: flex-start">
+
+
+            <view wx:if='{{item.ticketDetails[0].orderDetail.ticketRemark!=null}}' wx:for="{{item.ticketRejectRecords}}" wx:for-item="items" wx:for-index="indexs" style="width: 100%;display: flex;flex-direction: column;align-items: flex-start;margin-bottom:10rpx" wx:key="unique">
+              <view wx:if="{{indexs==0}}" style="color:rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+                　　　　预约时间：{{items.appointmentTime}}</view>
+              <view wx:elif="{{indexs==1}}" style="color:rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+                　　　　再次预约：{{items.appointmentTime}}</view>
+              <view style="color:red;width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+                　　　　预约失败：{{items.operatorName}}　{{items.createTime}}</view>
+              <view style="color:red;width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+                　　　　失败原因：{{items.denialReason}}</view>
+
+            </view>
+
+            <view wx:if='{{(item.ticketDetails[0].orderDetail.appointment==1 || item.ticketDetails[0].orderDetail.appointmentOnShop==1)&&item.ticketDetails[0].orderDetail.appointmentTime!=null&&item.ticketDetails[0].orderDetail.ticketRemark!=null}}' style="color:rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">
+
+              <text style="padding: 0rpx;margin: 0rpx;border: none;color: rgb(255,153,0);" wx:if='{{item.ticketDetails[0].orderDetail.appointmentOnShop==0&&item.ticketDetails[0].orderDetail.appointment==1&&item.ticketDetails[0].orderDetail.ticketStatus==0}}'>再次预约</text>
+              <text style="padding: 0rpx;margin: 0rpx;border: none;" wx:else>　　　</text>　预约时间：{{item.ticketDetails[0].orderDetail.appointmentTime}}
+
+            </view>
+
+            <view wx:if='{{item.ticketDetails[0].orderDetail.appointment==0 && item.ticketDetails[0].orderDetail.appointmentOnShop==1}}' style="color:green;width:90%;margin-left:5%;text-align:left;font-size:28rpx">已确认　　{{item.ticketDetails[0].orderDetail.acceptAppointmentRecord.operatorName}}：{{item.ticketDetails[0].orderDetail.acceptAppointmentRecord.createTime}}
+            </view>
+
+            <view wx:if="{{item.ticketDetails[0].orderDetail.ticketStatus==1&&item.ministerWriteOffOrdersRecord==null}}" style="color: rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">已核销　　</view>
+            <view wx:elif="{{item.ticketDetails[0].orderDetail.ticketStatus==1}}" style="color: rgb(255,153,0);width:90%;margin-left:5%;text-align:left;font-size:28rpx">已核销　　{{item.ministerWriteOffOrdersRecord.operatorName}}：{{item.ministerWriteOffOrdersRecord.createTime}}</view>
+
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="part4 box" style="height:10vh;" wx:if="{{shop_id}}">
+    <view bindtap="goToShopIndex" class="btn_big_green">返回店铺首页</view>
+  </view>
+
+  <view catchtouchmove="true" hidden="{{actionSheetHidden1}}" class="modelview" bindtap=""></view>
+  <view catchtouchmove="true" hidden="{{actionSheetHidden1}}" class="model1">
+
+    <image style='width:60rpx;height:60rpx;float:right;position: absolute;right: 15rpx;top: 15rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png' bindtap='modalChange'></image>
+    <view style="width:550rpx;height:600rpx;display: flex;flex-direction: column;align-items: center;">
+      <view class="order_shop" style="width: 90%;margin-left: 5%;">
+        <text style="width: 100%;color:#000">{{hexiaoShop}}</text>
+      </view>
+
+      <view class="order_shop" style="width: 90%;margin-left: 5%;">
+        <text style="width: 100%;">下单时间 : {{hexiaoTime}}</text>
+      </view>
+
+      <view class="order_shop" style="width: 90%;margin-left: 5%;">
+        <text style="width: 100%;">名称 : {{hexiaoName}}</text>
+      </view>
+
+      <view class="order_shop" style="width: 90%;margin-left: 5%;">
+        <text style="width: 100%;">数量 : {{hexiaoNum}}{{hexiaoType}}</text>
+      </view>
+
+      <view class="order_shop" style="width: 90%;margin-left: 5%;">
+        <text style="color:rgb(255,153,0)">价格 : {{hexiaoMoney}}元<text style="text-decoration: line-through;font-size: 25rpx;margin-left:10rpx;color:#000">原价{{hexiaoOldMomey}}元</text></text>
+      </view>
+
+      <image style="width:350rpx;height:400rpx" src='{{codeImage}}'></image>
+    </view>
+
+
+  </view>
+
+  <view hidden="{{actionSheetHidden}}" class="modelview" bindtap="modalChange1"></view>
+  <view hidden="{{actionSheetHidden}}" class="model">
+    <view class="modelTitle">
+      <text style="width:100%;text-align:center;padding-left:20rpx">预约</text>
+      <icon style="position: absolute;right: 25rpx;top: 15rpx" type="clear" size="20" bindtap="modalChange1" />
+    </view>
+    <view class="menu_name">
+      <text>预约时间：</text>
+      <view style="display:flex;flex-direction:column;width:60%">
+
+        <picker style="width:220rpx;border:1rpx solid #dadada;height:42rpx;border-radius: 8rpx;font-size:28rpx;text-align:center" mode="date" value="{{startdate}}" bindchange="startDateChange">
+          <view class="picker" style="position: absolute;width:220rpx;height:42rpx">
+            <view class="picker_view" style="position: absolute;width:220rpx;height:42rpx;display:flex;justify-content: flex-start;left:10rpx">{{startdate}}
+            </view>
+            <image style="position: absolute;width:30rpx;height:30rpx;float:right;right:10rpx;top:6rpx" src='https://test.fsmbdlkj.com/wx_official/web/images/image/donwn.png'></image>
+          </view>
+        </picker>
+
+
+        <picker style="width:130rpx;margin-top: 35rpx;border:1rpx solid #dadada;height:42rpx;border-radius: 8rpx;font-size:28rpx;text-align:center" mode="time" value="{{starttime}}" bindchange="startTimeChange">
+          <view class="picker" style="position: absolute;width:130rpx;height:42rpx">
+            <view class="picker_view" style="position: absolute;width:120rpx;height:42rpx;display:flex;justify-content: flex-start;left:10rpx">{{starttime}}
+            </view>
+            <image style="position: absolute;width:30rpx;height:30rpx;float:right;right:10rpx;top:6rpx" src='https://test.fsmbdlkj.com/wx_official/web/images/image/donwn.png'></image>
+          </view>
+        </picker>
+
+      </view>
+    </view>
+    <view class="menu_name">
+
+      <text>电话号码：</text>
+      <view style="display:flex;flex-direction:column;width:60%">
+        <input style="margin:0;width:175rpx" value="{{phoneNum}}" bindinput="telInput"></input>
+      </view>
+    </view>
+    <view class="menu_name" style="margin-top:40rpx">
+      <text style="font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx">*使用时间段：</text>
+      <text style="font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx" wx:for="{{timeList}}">{{item}}</text>
+    </view>
+    <view class="menu_name">
+      <text style="width:90%;font-size:30rpx;font-weight:100;color:#777777;margin-top:-10rpx">*请在使用时间段内预约</text>
+    </view>
+    <view class="modelTitle1" bindtap="gosubscribe">确定预约</view>
+  </view>
+
+  <!-- <view wx:if="{{showAuthorize1}}" class='window-bg'>
+    <view class='window' style="background-size:100% 100%;-moz-background-size:100% 100%;">
+      <view class='window-item'>
+        <view style="width:100%;height:10%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+          <view style="font-size: 25px;width: 100%;font-weight: bolder;">申请授权</view>
+        </view>
+        <view class='window-item-content'><text style="text-align: center;">接收赠送需要获取您的头像和名称\n是否同意?</text></view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+          <button class='cancelBtn' bindtap='refused'>否</button>
+          <button class='confirmBtn' bindtap="getUserInfo">是</button>
+        </view>
+      </view>
+    </view>
+  </view> -->
+
+  <!-- 获取手机号码 -->
+  <view wx:if="{{showAuthorize}}" class='window-bg'>
+    <view class='window' style="background-size:100% 100%;-moz-background-size:100% 100%;">
+      <view class='window-item'>
+        <view style="width:100%;height:10%;display: flex;flex-direction: column;justify-content: space-between;align-items: center;text-align: center;">
+          <view style="font-size: 25px;width: 100%;font-weight: bolder;">申请授权</view>
+        </view>
+        <view class='window-item-content'><text style="text-align: center;">接收赠送需要获取您的手机号码\n是否同意?</text></view>
+        <view class='btn-bar' style="width: 100%;display: flex;flex-direction: row;justify-content: space-evenly;align-items: center;">
+          <button class='cancelBtn' bindtap='refused'>否</button>
+          <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>
+
+
+  <!-- 获取头像和名称 -->
+  <headPortrait bind:refreshAvatar="refreshAvatar" isShow="{{isShowGetAvatar}}"></headPortrait>

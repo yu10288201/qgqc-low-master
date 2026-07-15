@@ -1,0 +1,158 @@
+<!-- 这个是之前封装好，避免浪费，决定两用。一个是弹窗，一个是列表 -->
+<!-- 现在全部位和分部位合在一起了，不再区分成两个弹窗 -->
+<!-- 弹窗形式 -->
+<wxs module="filters" src="multipleEatMethodViewAndWeight.wxs"></wxs>
+<view class="container" wx:if="{{!isTable}}"
+	  style="height:{{(filters.heightPart(0,isPlace,isAddEat,em_arry.length)+filters.heightPart(3,isEatMethod,isAddEat,em_arry[partIndex].length)+90)> windowHeight*0.85*2?(filters.heightPart(0,isPlace,isAddEat,em_arry.length)+filters.heightPart(3,isEatMethod,isAddEat,em_arry[partIndex].length)+90):windowHeight*0.85*2}}rpx">
+	<view style="display:flex;flex-direction: column;height: 90%;width: 100%;">
+		<view class="container-top" style="height: {{filters.heightPart(0,isPlace,isAddEat,em_arry.length)}}rpx;display: inline-block;">
+			<view style="width:100%;height: 60rpx;border-bottom:1rpx solid;">
+				<text style="margin-left: 10%;">{{dishesInfo.dishes_name}}</text>
+				<image style='width:60rpx;height:100%;float:right' src='{{i_close_img_url}}' data-type="1"
+					bindtap="showMultipleEatMethodView"></image>
+				<!-- <text style="float:right">数量：{{inputAmountm}}~{{inputAmount}}斤</text> -->
+				<text style="float:right">数量：{{inputAmount}}{{dishesInfo.dishes_metering_type}}</text>
+			</view>
+			<view wx:if="{{isAddEat}}" class="container-table" style="{{isPlace?'height: 150rpx':'height: 90rpx'}};border-bottom:1rpx solid">
+				<view style="width:100%;align-items: center;display: flex;justify-content: center">
+					<button style="margin-left:-6rpx" bindtap="changeIsPlace" class="{{isPlace?'btn_mid_g':'btn_mid_y'}} newbotton">新增部位</button>
+					<button wx:if="{{(partIndex != -1 && em_arry[partIndex][0].dishes_id == null) || addDishName}}" bindtap="cancelIsPlace" style="margin-left:135rpx" class="btn_mid_y newbotton">删除部位</button>
+				</view>
+				<view wx:if="{{isPlace}}" style="width:100%;align-items: center;display: flex;justify-content: center;margin-top:14rpx">
+					<input style="width:50%;margin-right:2%" model:value="{{inputPlace}}" class="frameInput" placeholder-style="place-color" type='text'
+						   placeholder="输入部位"></input>
+					<button  bindtap="addEmArry" class="btn_mid_y newbotton" style="margin-top:0">确定</button>
+				</view>
+			</view>
+			<!--<scroll-view scroll-y='true' style="height: {{filters.heightPart(1,isPlace,isAddEat,em_arry.length,windowHeight*0.3*2-170)}}rpx;border-bottom:0rpx;" class="scroll-part">-->
+				<view style="width:100%;padding-bottom:5px;flex-wrap: wrap;display: flex;"><!--height:{{filters.toFix1(em_arry.length) != ''?filters.toFix1(em_arry.length):'90'}}rpx;-->
+					<view wx:for="{{em_arry}}" wx:key="index" wx:item="item"
+						style="width:33%;align-items: center;display: flex;justify-content: center;">
+						<button wx:if="{{item[0].em_name==='全部位'}}"
+							class="btn_mid {{partsName[index].checked||partIndex==index?'yerrow_background':'blue'}}"
+							style="box-shadow: 6rpx 6rpx 12rpx 6rpx rgb(141, 150, 147);" data-index="{{index}}" bindtap="switchPart">
+							<text class="red_dot" wx:if="{{partIndex==index}}">●</text>
+							<text style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#000'}};height: 100%;width: 100%;font-size:32rpx">{{item[0].em_name}}</text>
+							<text class="number" style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#fff'}};" wx:if="{{isWhole}}">{{item[0].number}}</text>
+						</button>
+						<button wx:elif="{{item[0].em_name!='剩余部位'&&item[0].em_name!='全部位'}}"
+							class="btn_mid {{partsName[index].checked||partIndex==index?'yerrow_background':'yellow'}}"
+							style="box-shadow: 6rpx 6rpx 12rpx 6rpx rgb(141, 150, 147);height:40px" data-index="{{index}}" bindtap="switchPart">
+							<text class="red_dot" wx:if="{{partIndex==index}}">●</text>
+							<text style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#fff'}};height: 100%;width: 100%;">{{item[0].em_name}}</text>
+							<text class="number" style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#fff'}};">{{item[0].number}}</text><!--wx:if="{{!isWhole}}"-->
+						</button>
+						<button wx:elif="{{item[0].em_name=='剩余部位'}}"
+							class="btn_mid {{canRemain?(partsName[index].checked||partIndex==index?'yerrow_background':'yellow'):'gray'}}"
+							disabled="{{!canRemain}}" style="box-shadow: 6rpx 6rpx 12rpx 6rpx rgb(141, 150, 147);"
+							data-index="{{index}}" bindtap="switchPart">
+							<text class="red_dot" wx:if="{{partIndex==index}}">●</text>
+							<text style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#fff'}};height: 100%;width: 100%;">{{item[0].em_name}}</text>
+							<text style="{{partsName[index].checked||partIndex==index ? 'color:#000':'color:#fff'}};" class="number">{{item[0].number}}</text>
+						</button>
+					</view>
+				</view>
+			<!--</scroll-view>-->
+		</view>
+		<!-- 列表-->
+		<view class="container-table" style="height: {{filters.heightPart(3,isEatMethod,isAddEat,em_arry[partIndex].length)}}rpx">
+			<view wx:if="{{isAddEat}}" class="container-table" style="{{isEatMethod?'height:150rpx':'height:90rpx'}};border-top:1rpx solid">
+				<view  style="width:100%;align-items: center;display: flex;justify-content: center">
+					<button style="margin-left:-6rpx" bindtap="changeIsEatMethod" class="{{isEatMethod?'btn_mid_g':'btn_mid_y'}} newbotton">新增做法</button>
+					<button wx:if="{{em_arry[partIndex][eatMethodIndex].eating_method != null && em_arry[partIndex][eatMethodIndex].id == -1}}" style="margin-left:135rpx" bindtap="cancelIsEatMethod" class="btn_mid_y newbotton">删除做法</button>
+				</view>
+				<view wx:if="{{isEatMethod}}" style="width:100%;align-items: center;display: flex;justify-content: center;margin-top:14rpx">
+					<input style="width:48%;margin-right:2%" model:value="{{inputEatMethod}}" class="frameInput" placeholder-style="place-color" type='text'
+						   placeholder="输入做法"></input>
+					<input style="width:20%;margin-right:2%" model:value="{{inputEatPrice}}" class="frameInput" placeholder-style="place-color" type="digit"
+						   placeholder="价格"></input>
+					<button  bindtap="addEatMethod" class="btn_mid_y newbotton" style="margin-top:0">确定</button>
+				</view>
+			</view>
+			<form bindsubmit='table_ChangeSubmit' style='width:100%;height:{{filters.heightPart(2,isPlace,isEatMethod,em_arry[partIndex].length)}}rpx;'>
+				<!--<scroll-view scroll-y='true' style="height: {{filters.heightPart(2,isPlace,isEatMethod,em_arry[partIndex].length)}}rpx;border-bottom:0rpx;" class="scroll-part">-->
+					<radio-group wx:if="{{em_arry[partIndex].length!=0}}" style="padding-left:2%;padding-top: 10px;border-top:1px solid;">
+						<label wx:if="{{item.eating_method != null && item.eating_method != ''}}" style="width:31%;display: inline-block;margin-right: 10rpx;margin-bottom: 10rpx;"
+							wx:for="{{em_arry[partIndex]}}" wx:key="index">
+							<button data-index="{{index}}" bindtap="chooseEatMethod"
+								class="hallcheckbox {{eatMethodIndex ==  index? 'yerrow_background':'green_background'}}"
+								style="{{eatMethodIndex ==  index ? 'color:#000':'color:#fff'}};display: flex;flex-direction: row;">
+								<view class="asd">{{item.eating_method}}</view>
+								<view class="price" style="display: flex;flex-direction: row-reverse; justify-content: space-between;width: 80%">
+									<text>{{item.price}}</text>
+								<!-- <text hidden="{{item.vip_price == 0}}" style="{{eatMethodIndex == index ? 'color:#009900':'color:#ffff00'}}">{{item.vip_price}}</text> -->
+								<text hidden="{{item.vip_price == 0}}" style="color:#009900">{{item.vip_price}}</text>
+								</view>
+							</button>
+						</label>
+					</radio-group>
+					<view class="modal-textarea" style="height: 100%;width: 100%;" wx:else>
+						<view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;color:#888">
+							<view>--该部位未设置做法--</view>
+						</view>
+					</view>
+				<!--</scroll-view>-->
+			</form>
+		</view>
+	</view>
+
+	<view class="container-bottom" style="height: 90rpx;border-top: 0.5px solid;">
+		<view style="width: 200rpx;display: flex;font-size: 28rpx;" wx:if="{{eatMethodIndex >= 0 && dishesInfo.weighingByLocation == 1}}">
+			<text class="num-title color_grey">数量：</text>
+			<input class="input" placeholder-class='placeholder-class' value="{{em_arry[partIndex][eatMethodIndex].number}}"
+				type='digit' bindinput='keyInput' />
+			<text>斤</text>
+		</view>
+		<view style="width: 200rpx;" wx:else></view>
+		<button class="btn_mid_y" wx:if="{{eatMethodIndex >= 0}}" bindtap="cancelEatMethod" style="height:50rpx;line-height: 50rpx;">取消选择</button>
+		<button class="btn_mid_y" bindtap="submitEatMethod" style="height:50rpx;line-height: 50rpx;">确定</button>
+	</view>
+</view>
+
+<view class='box_table1' wx:if="{{isTable}}">
+	<view class='oneline' style='width:100%;justify-content: space-around; display: flex;align-items: center;'>
+		<!-- <view style='width:100%;justify-content: space-around; display: flex;align-items: center;'> -->
+		<view style="width:75%;justify-content: flex-end; display: flex;align-items: center;">
+			<view class='{{readOnly?"btn_mid_gray":dishesInfo.spec_type==8?"btn_mid_Brownish_red":dishesInfo.spec_type==2?"btn_small_djl":"btn_mid yellow background_url"}}' style="width:150rpx;height: 40rpx;line-height: 40rpx;" data-type="0"
+				bindtap="showMultipleEatMethodView" disabled="{{readOnly}}">选做法</view>
+		</view>
+		<view style="width:50%;justify-content: flex-end; display: flex;align-items: center;">
+			<view style="margin-right:32rpx;font-size:24rpx;" wx:if="{{dishesInfo.spec_type==2&&dishesInfo.weighingByLocation != 1}}">单位:份</view>
+		</view>
+		<!-- </view> -->
+	</view>
+	<view
+		style="width: 100%;border: #e4e4e4 solid 2rpx;height: 60rpx;border-left: black solid 2rpx;border-right: black solid 2rpx;">
+		<view class="tr1">
+			<view class="td1" style='width: 20%;'>部位</view>
+			<view class="td1" style='width: 30%;'>做法</view>
+			<view class="td1" style='width: 25%;'>单价</view>
+			<view class="td1" style='width: 10%;'>数量</view>
+			<!-- <view class="td1" style="width: 16%;">{{dishesInfo.weighingByLocation == 1?'金额':'加收'}}</view> -->
+			<view class="td1" style="width: 15%;">金额</view>
+		</view>
+	</view>
+	<scroll-view style='height:65%;text-align: center;' scroll-y="true">
+		<view style="width:100%;" wx:if="{{eatMethodArray.length!=0}}">
+			<checkbox-group bindchange="checkboxChange">
+				<view wx:for="{{eatMethodArray}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+					<view class='down-center' data-index="{{index}}" bindtap="eatMethodChoose" disabled="{{readOnly}}"
+						style="border-bottom:#ddd solid 2rpx;height: 60rpx;background-color:{{eatMethodChooseIndex==index?'#fcaf17':''}}">
+						<view class="td1" style="width: 20%;">{{item.em_block_name || item.em_name}}</view>
+						<view class='td1' style="width: 30%;">{{item.eating_method_name||item.eating_method}}</view>
+						<view class="td1" style="width: 25%;"><span style="color: #009900">{{item.vip_price&&item.vip_price != 0 ? item.vip_price + '/' : ''}}</span>{{filters.toFix3(item.em_block_item_price||item.price||0)}}</view>
+						<view class='td1' style="width: 10%;" wx:if="{{item.em_block_name == '全部位'}}">1</view>
+						<view class='td1' style="width: 10%;" wx:if="{{item.em_block_name != '全部位'}}">{{item.em_block_item_number||item.number}}</view>
+						<view class="td1" style="width: 15%;">{{filters.toFix3(item.no_sideDish_money||item.eating_method_subtotal||item.em_block_subtotal)||0}}</view>
+						<!--<view class="td1" style="width: 15%;">{{item.money}}</view>-->
+					</view>
+				</view>
+			</checkbox-group>
+		</view>
+		<view wx:if="{{eatMethodArray.length==0}}" style="height: 100%;width: 100%;">
+			<view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;color:#888">
+				<view>--未选择做法--</view>
+			</view>
+		</view>
+	</scroll-view>
+</view>

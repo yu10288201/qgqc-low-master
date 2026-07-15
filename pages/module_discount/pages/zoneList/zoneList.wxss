@@ -1,0 +1,18 @@
+/* pages/module_discount/pages/zoneList/zoneList.wxss */
+.label {
+  width: 72rpx;
+  height: 36rpx;
+  border: 0.5rpx solid rgb(218, 214, 214);
+  border-radius: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10rpx;
+  font-size: 24rpx;
+}
+
+.color {
+  background-color: #e5f7ff;
+  color: #32b5d7;
+  border-color: #32b5d7;
+}

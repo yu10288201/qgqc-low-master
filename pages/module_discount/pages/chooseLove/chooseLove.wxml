@@ -1,0 +1,90 @@
+<view class="fdcc" style="width: 100vw;height: auto;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/inviteFriends/background.png'); background-size: 100% 100%;">
+    <view class="fdcc card" style="width: 95%;height: auto;min-height: 500rpx;margin-top: 40rpx;">
+        <view style="width: 100%;display: flex;flex-direction: row;justify-content: space-between;">
+            <view class="top_text" style="width: 70%;">我的选择</view>
+            <view style="font-size: 14px;font-weight: bold;width: 30%;margin-top: 20rpx;">我的编号：{{comboList.distribute_num}}</view>
+        </view>
+        <view style="display: flex;flex-direction: row;justify-content: space-between;width: 90%;align-items: center;height: 58rpx;">
+            <view style="display: flex;flex-direction: row;">
+                <view>编号：</view>
+                <text>[</text>
+                <picker range="{{needChoose}}" range-key="distribute_num" value="{{needChooseIndex}}" bindchange="bindPickerChange">
+                    <picker-view style="border-bottom: 1rpx solid;width: 80rpx;height: 50rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;">{{needChoose[needChooseIndex].distribute_num}}</picker-view>
+                </picker>
+                <text>]</text>
+                <!-- <input type="text" style="border: 1rpx solid;border-radius: 10rpx;width: 100rpx;" /> -->
+            </view>
+            <view style="display: flex;flex-direction: row;justify-content: flex-start;">
+                <view bindtap="needChooseConfirm" style="border: 1rpx #dddddd solid;border-radius: 10rpx;" class="btn1">确定</view>
+            </view>
+        </view>
+        <view style="display: flex;flex-direction: column;margin-top: 25rpx;align-items: center;width: 90%;border: 1rpx #999999 solid;margin-bottom: 40rpx;">
+            <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;font-size: 14px;font-weight: bold;">
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">编号
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">意向
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">状态
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;width: 25%;height: 80rpx;text-align: center;" class="fdccc">操作
+                </view>
+            </view>
+            <scroll-view scroll-y="true" style="width: 100%;height:auto;max-height: 244rpx;" wx:if="{{needChooseList.length > 0}}">
+                <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;font-size: 14px;" class="fdccc" wx:for="{{needChooseList}}" wx:key="index">
+                    <view style="border-bottom: {{needChooseList.length == (index + 1) ? 'none' : '1rpx #666666 solid'}}; border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">{{item.other_num}}
+                    </view>
+                    <view style="border-bottom: {{needChooseList.length == (index + 1) ? 'none' : '1rpx #666666 solid'}}; border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">{{item.agree_status == 0 ? '等待' : item.agree_status == 1 ? '同意' : '不同意'}}
+                    </view>
+                    <view style="border-bottom: {{needChooseList.length == (index + 1) ? 'none' : '1rpx #666666 solid'}}; border-right: 1rpx #999999 solid;width: 25%;height: 80rpx;" class="fdccc">{{item.choice_status == 0 ? '等待' : item.choice_status == 1 ? '进行中' : '已结束'}}
+                    </view>
+                    <view style="border-bottom: {{needChooseList.length == (index + 1) ? 'none' : '1rpx #666666 solid'}}; width: 25%;height: 80rpx;justify-content: space-around;" class="fdrcc">
+                        <view style="border: 1rpx #dddddd solid;border-radius: 10rpx;width: 65%;" class="btn1" data-id="{{index}}" wx:if="{{item.choice_status != 2}}" bindtap="meEnd">结束</view>
+                        <view style="border: 1rpx #dddddd solid;border-radius: 10rpx;width: 65%;background-color: gray;color: #fff;text-align: center;" data-id="{{index}}" wx:if="{{item.choice_status == 2}}">结束</view>
+                    </view>
+                </view>
+            </scroll-view>
+            <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;font-size: 14px;height: 100rpx;" class="fdccc" wx:if="{{needChooseList.length <= 0}}">暂无</view>
+        </view>
+    </view>
+
+    <view class="fdcc card" style="width: 95%;height: 500rpx;margin-top: 40rpx;">
+        <view class="top_text" style="width: 100%;">选择我的</view>
+        <view style="width: 90%;display: flex;flex-direction: column;margin-top: 25rpx;align-items: center;border: 1rpx #999999 solid;">
+            <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;font-size: 14px;font-weight: bold;">
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">编号
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">同意
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">不同意
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">状态
+                </view>
+                <view style="border-bottom: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">操作
+                </view>
+            </view>
+            <scroll-view scroll-y="true" style="width: 100%;height:auto;max-height: 244rpx;"  wx:if="{{ChooseList.length > 0}}">
+                <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;font-size: 14px;" wx:for="{{ChooseList}}" wx:key="index">
+                    <view style="border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">{{item.me_num}}
+                    </view>
+                    <radio-group style="display: flex;flex-direction: row;width: 40%;height: 80rpx;border-right: 1rpx #999999 solid;">
+                        <view style="border-right: 1rpx #999999 solid;width: 50%;" class="fdccc" data-type="confirm" data-id="{{index}}" bindtap="{{item.agree_status != 0 ? '' : 'radioChange'}}">
+                            <radio style="pointer-events: none;" checked="{{item.agree_status == 1}}" disabled="{{item.agree_status != 0}}"></radio>
+                        </view>
+                        <view style="width: 50%;" class="fdccc" data-type="refused" data-id="{{index}}" bindtap="{{item.agree_status != 0 ? '' : 'radioChange'}}">
+                            <radio style="pointer-events: none;" checked="{{item.agree_status == 2}}" disabled="{{item.agree_status != 0}}"></radio>
+                        </view>
+                    </radio-group>
+                    <view style="border-right: 1rpx #999999 solid;width: 20%;height: 80rpx;" class="fdccc">{{item.choice_status == 0 ? '等待' : item.choice_status == 1 ? '进行中' : '已结束'}}
+                    </view>
+                    <view style="width: 20%;height: 80rpx;" class="fdccc">
+                        <view style="border: 1rpx #dddddd solid;border-radius: 10rpx;width: 90%;" class="btn1" data-id="{{index}}" bindtap="beEnd" wx:if="{{item.choice_status != 2}}">结束</view>
+                        <view style="border: 1rpx #dddddd solid;border-radius: 10rpx;width: 90%;background-color: gray;color: #fff;text-align: center;" data-id="{{index}}" wx:if="{{item.choice_status == 2}}">结束</view>
+                    </view>
+                </view>
+            </scroll-view>
+            <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;height: 100rpx;font-size: 14px;" wx:if="{{ChooseList.length <= 0}}">
+                <view>暂无</view>
+            </view>
+        </view>
+    </view>
+</view>

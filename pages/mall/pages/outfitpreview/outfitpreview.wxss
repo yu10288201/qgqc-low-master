@@ -1,0 +1,34 @@
+.btn-red{
+  background-color: red;
+  color: white;
+  padding: 8rpx 30rpx;
+  border-radius: 30rpx;
+}
+
+.btn-green{
+  background-color: #52A76E;
+  color: white;
+  padding: 8rpx 30rpx;
+  border-radius: 30rpx;
+}
+
+.badgecontent-close{
+  position:absolute;
+  color: white;
+  top:  10rpx;
+  right: 20rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 50%;
+  font-size: 20rpx;
+  background-color: red;
+}
+.b1{
+  border: none;
+  line-height: unset;
+  background-color: transparent;  /* 设置背景为透明 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+button::after{border: none;}

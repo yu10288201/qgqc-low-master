@@ -1,0 +1,9 @@
+<!--pages/store/store.wxml-->
+<text>店铺</text>
+
+<button bindtap="pay">支付接口测试</button>
+
+
+<button bindtap="coupon">优惠券接口测试</button>
+
+<button bindtap="setmeal">超值套餐接口测试</button>

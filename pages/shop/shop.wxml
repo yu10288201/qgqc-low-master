@@ -1,0 +1,29 @@
+<!--pages/shop/shop.wxml-->
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+	<view class='search-view'>
+		<!-- <image src="http://img3.imgtn.bdimg.com/it/u=2064794736,2436845779&fm=26&gp=0.jpg"></image> -->
+		<text style="margin-left:20rpx">商家列表</text>
+	</view>
+</view>
+<view class="deline"></view>
+
+	<view style="display:flex;flex-direction:row;width:94%;margin-left:3%;border-bottom:1rpx solid #dadada" wx:for="{{shopList}}">
+		<view class="Business_left">
+			<image src="https://mb.fsmbdlkj.com/register_war/upload/东海明珠酒楼/门头照/wxdfd0bd4e484097b0.o6zAJs0-Y6aKCJkMbes_KGRr2m_Y.oHqt3r6Y3RWW5920b81120b4ad108e0263ef9cca0b2d.jpg"></image>
+		</view>
+		<view class="Business_center">
+			<text style="font-size:30rpx;font-weight:900;color:#000000">{{item.shop_name}}</text>
+			<view style="display:flex;flex-direction:row;margin-top:10rpx">
+				<image style="margin-left:2rpx" src="../../images/xing.png" wx:for="{{item.star}}"></image>
+			</view>
+			<text>人均消费：{{item.per_capita_price}}元/人</text>
+			<text>人气：{{item.popularity}}人/天</text>
+		</view>
+		<view class="Business_right">
+			<view bindtap="tap" data-index="{{index}}" wx:key="item.shop_id" class="Business_button" style="background:#F89600;color:#ffffff;font-weight:900">详情</view>
+			<view style="margin-top:60rpx" class="Business_button" bindtap='checkbox' data-index="{{index}}" wx:key="item.shop_id">
+				<image src="../../images/phone.png"></image>
+				<text>联系商家</text>
+			</view>
+		</view>
+	</view>

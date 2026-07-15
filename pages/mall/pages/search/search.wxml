@@ -1,0 +1,53 @@
+
+<view style="width: 100vw;height: 100vh;display: flex;flex-direction: column;">
+    <view style="position: fixed;top: 0;z-index: 100;width: 100%;height: 150rpx; background-size: 100% 100%;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+        <view class="home-top">
+          <view style="flex:1;margin-bottom:15rpx;margin-top:20rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+            <view style="flex: 1;"> 
+              <input style="margin-left: 10rpx; width: 100%; font-size: 25rpx;" value="{{keywords}}" bindinput="searchInput" 
+              bindconfirm="wxSearchConfirm" focus="{{focus}}" disabled="{{input_bol}}" placeholder=" 请输入搜索字符串" />
+            </view>
+            <view style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 25rpx;"
+            bindtap="queryClick">
+              搜 索
+            </view>
+          </view>
+        </view>
+    </view>
+
+
+    
+
+    <scroll-view style="flex: 1;width: 100%;overflow: auto;" scroll-y="true" bindscrolltolower="loadNextPage" scroll-top='{{scrollTop}}'>
+        <view style="width: 100%;display: flex;flex-direction: column;position: relative;margin-top: 150rpx;">
+
+          <view wx:if="{{search_keywords_array&&search_keywords_array.length>0}}" style="display: flex;align-items: center;flex-direction: row;flex-wrap: wrap;justify-content: flex-start;padding-left: 10rpx;padding-right:10rpx;">
+        
+              <view wx:for="{{search_keywords_array}}" data-index="{{index}}" wx:key="index" style="height: 52rpx; display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 10rpx; font-size: 25rpx;margin-top: 10rpx;margin-right: 10rpx;"
+              bindtap="keywordsClick">
+                {{item.keywords}}
+              </view>
+        </view>
+        <view wx:if="{{products.length==0}}" style="width: 100;text-align: center;margin-top: 50rpx;color: #fff;font-size: 30rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+            <view style="border:#f2f2f2 solid 1rpx; border-radius: 20rpx;padding: 10rpx 40rpx;background-color: rgba(0, 0, 0, 0.7);">
+              无结果
+            </view>
+        </view>
+        <view class="model" style="margin-top:0rpx;">
+
+                                <view style="display:flex; flex-direction:row; flex-wrap:wrap; margin-bottom: 30rpx;">            
+                                    <view style="width: 40%; box-sizing: border-box; display:flex; flex-direction:column; flex-shrink:0; margin-top:30rpx; margin-left: 5%;" 
+                                        wx:for="{{products}}" wx:key="index"  data-item="{{item}}" capture-bind:tap="toDetail">
+                                        <image src="{{item.multimedia_img_url}}?x-oss-process=image/resize,m_fill,h_400,w_300" mode="scaleToFill" style="width:300rpx; height: 400rpx; border-radius: 20rpx;"></image>  
+                                        <text style="font-size: 25rpx; margin-top: 10rpx;">{{item.name}}</text>
+                                        <text style="color: #F89600; font-weight:900; font-size:25rpx;">￥{{item.customer_price}} </text>
+                                        <text style="color: #52A76E; font-weight:900; font-size:25rpx;">分销提成：￥{{item.platform_cash_commission}}</text>
+                                    </view>     
+                                </view>
+                            </view>
+          
+        </view>
+
+    </scroll-view>
+    
+</view>

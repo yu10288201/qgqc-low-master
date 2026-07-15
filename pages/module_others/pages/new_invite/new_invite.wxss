@@ -1,0 +1,218 @@
+/* pages/new_invite/new_invite.wxss */
+.page{
+  /* position: fixed; */
+  /* height: 100%; */
+  width: 100%;
+  display:flex;
+  background-color: rgb(254, 245, 238);
+  flex-direction:column; 
+  align-items:center;/*垂直居中*/
+  /* justify-content: center;水平居中 */
+}
+
+.top-image{
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/invitation_img_top.png');
+  width: 100%;
+  height: 680rpx;
+  background-size: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: flex-end;
+
+}
+
+.registered-image{
+  width: 703.5rpx;
+  height: 263.9rpx;
+}
+
+.sharing-image{
+  width: 428.4rpx;
+  height: 37.8rpx;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.activity-process{
+  width: 698.6rpx;
+  height: 188.3rpx;
+}
+
+.starFriends-background .star-background{
+  /* width: 690.9rpx;
+  height: 324.8rpx; */
+}
+
+.starFriends-background{
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/starFriends-background.png');
+  background-size: 100%;
+  width: 690.9rpx;
+  height: 324.8rpx;
+}
+
+.starFriends-background .startFriends{
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin-left: 10%;
+
+}
+.starFriends-background .startFriends .startFriends-item{
+  margin-top: 7%;
+}
+
+.starFriends-background .startFriends .startFriends-item .startFriends-number{
+  display: flex;
+  justify-content: center;
+  color: red;
+  font-size: 65rpx;
+
+}
+.starFriends-background .startFriends .startFriends-item .startFriends-text{
+  display: flex;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.registered_button{
+  width: 416.8rpx;
+  height: 88rpx;
+  margin-left: 20%;
+  margin-top: 5%;
+}
+.registered_button_btn{
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/invite_button.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
+  border: none;
+  width: 416.8rpx;
+  height: 64.6rpx;
+  /* width: 346.5rpx;
+  height: 54.6rpx; */
+  margin-left: 20%;
+  margin-top: 6%;
+}
+
+
+.registered_button_img{
+  width: 100%;
+  height: 100%;
+}
+
+.invite_view{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 3%;
+  margin-bottom: 8%;
+}
+.invite_view .invite_button{
+  width: 238rpx;
+  height: 72.1rpx;
+}
+
+/**弹窗**/
+
+.popup-window-bg {
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+
+.popup-window {
+  /* background: white; */
+  position: fixed;
+  top: 15%;
+  left: 7%;
+  width: 86%;
+  z-index: 1000;
+  border-radius: 5%;
+}
+
+/* 授权弹窗 */
+
+.window-bg {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+
+.window {
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+  width: 94%;
+  height: 45%;
+  margin-top: 75%;
+  background: white;
+  border-radius: 15rpx;
+}
+
+.window-item {
+  height: 61%;
+  /* width: 80%; */
+  /* margin-left: 2%; */
+  align-items: center;
+}
+
+.window-item-title {
+  margin-top: 20rpx;
+  font-size: 70rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  color: #ffed99;
+}
+
+.window-item-content {
+  font-size: 38rpx;
+  /* 宋体 */
+  font-family:SimSuncss; 
+  color: #ffed99;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx;
+}
+
+.btn-bar {
+  display: flex;
+  width: 100%;
+  margin-top: 50rpx;
+}
+
+.cancelBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.confirmBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+

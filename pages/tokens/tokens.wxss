@@ -1,0 +1,44 @@
+/* pages/invite/invite.wxss */
+
+.table {
+  width: 84%;
+  margin-left: 8%;
+  margin-top: 70rpx;
+}
+
+.th {
+  width: 40%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border-left: #e4e4e4 solid 2rpx;
+  border-top: #e4e4e4 solid 2rpx;
+  font-size: 26rpx;
+  height: 44rpx;
+  text-align: center;
+  font-weight: bold;
+}
+
+.td {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: #e4e4e4 solid 2rpx;
+  border-top: #e4e4e4 solid 2rpx;
+  font-size: 24rpx;
+  height: 44rpx;
+}
+
+.btn {
+  width: 160rpx;
+  background: #218c78;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  height: 50rpx;
+  color: white;
+  font-weight: bold;
+}

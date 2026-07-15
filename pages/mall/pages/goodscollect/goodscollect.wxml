@@ -1,0 +1,248 @@
+<!--固定置顶条-->
+<view class="top">
+	<!--搜索条-->
+	<view style="margin-bottom:15rpx;margin-top:30rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+		<view style="flex: 1;"> 
+			<input model:value="{{search_keyword}}" placeholder="   搜索商品" style="width: 100%; font-size: 25rpx;"/>
+		</view>
+		<view style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 25rpx;">
+			搜 索
+		</view>
+	</view>
+	<!--导航栏-->
+	<view class="bottom-row">
+		<view class="{{currentTab == 'all' ? 'active' : 'inactive'}}" data-tab="all" bindtap="switchTab">全部</view>
+		<view class="{{currentTab == 'toSale' ? 'active' : 'inactive'}}" data-tab="toSale" bindtap="switchTab">出售中</view>
+		<view class="{{currentTab == 'toOffSale' ? 'active' : 'inactive'}}" data-tab="toOffSale" bindtap="switchTab">已下架</view>
+    
+
+	</view>
+</view>
+
+<!--加一块空白-->
+<view style="height:200rpx;width:100%;">
+	<view style="height:200rpx;width:100%;"></view>
+</view>
+	
+<view style="border: 2rpx solid #dadada;width: auto;border-radius:20rpx;margin-top:20rpx;margin-left:20rpx;margin-right:20rpx;padding: 10rpx;"
+	wx:for="{{goods_array}}" wx:for-item="goods_item" wx:key="index">
+	<view style="margin-top: 10rpx; margin-bottom: 10rpx; margin-left: 1%; display: flex; flex-direction: row; justify-content: space-between;">
+		<text style="font-weight: 700;flex:1">{{goods_item.shop_name}}</text>
+		<text class="status" wx:if="{{goods_item.state_id==1}}">出售中</text>
+		<text class="status" wx:if="{{goods_item.state_id==2}}">待上架</text>
+		<text class="status" wx:if="{{goods_item.state_id==0}}">未知</text>
+	</view>
+	<!--明细-->
+	<view>	
+		<view class="content-box flex-row">			
+			<image class="head-image" src="{{goods_item.multimedia_img_url}}" mode="aspectFill" style="width: 30%"/>
+			<view class="flex-column" style="justify-content: space-between;margin-left: 12rpx; width: 70%">
+          <view class="content-title" >
+            <text>{{goods_item.name}}</text>
+            <view style="font-size: 25rpx; color: gray;margin-top: 10rpx;">
+              <!-- <text style="background-color: rgb(246, 247, 251);;padding: 0 5rpx;">{{detail.color}}</text>
+              <text style="background-color: rgb(246, 247, 251);;margin-left: 10rpx;padding: 0 5rpx;">{{detail.spec}}</text> -->
+            </view>
+          </view>
+          <view style="margin-bottom: 1rpx;display: flex;flex-flow: column;align-items: flex-end;">           
+            
+            <view style="margin-bottom: 5rpx;">
+              <text class="content-notice" style="color: #F89600;">￥{{goods_item.customer_price}}</text>
+            </view> 
+            <view style="margin-bottom: 20rpx;">
+              <text  class="content-notice">库存 {{goods_item.stock}}</text>             
+            </view>         
+          </view>
+          
+			</view>
+		</view>
+
+		<view  style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+
+			<view style="display:flex; flex-direction: row; justify-content: flex-end; margin-bottom: 20rpx; margin-top: 10rpx;">
+
+        <view  data-item="{{goods_item}}" data-index="{{index}}" catch:tap="deleteBtnClick" class="nextbtn-red" style="width: 200rpx;">取消收藏</view>
+        <view  wx:if="{{goods_item.state_id==1}}" data-item="{{goods_item}}" data-index="{{index}}"  catch:tap="toDetail" class="nextbtn" style="width: 100rpx;" >详情</view>
+       
+			
+			</view>				
+		</view>
+	</view>
+</view>
+<!--加一块空白-->
+<view style="height:100rpx;width:100%;">
+	<view style="height:100rpx;width:100%;"></view>
+</view>
+
+
+
+<!-- 左边弹窗 规格 -->
+<view wx:if="{{b_spec_show}}" style="z-index: 5555;height: 1000%;"  class="popup-dlg-background-mask" catchtap="closeSpecPopup">
+	<view  class="popup-dlg-left mall-font-family-YaHei mall-font-size-default" style="padding:20rpx;width:80%;z-index: 6666;" catchtap="NULLFUNCTION">
+    <scroll-view scroll-y="true" style="height: 100%;">
+      
+      <view class="flex-column" style="padding: 20rpx;margin-top: 20rpx;">
+        <view style="font-weight: bold;margin-bottom: 20rpx;">设置库存价格</view>
+        
+        <view wx:for="{{sku_array}}" wx:key="index" class="flex-row flex-center " style="width: 100%;border-bottom: 3rpx solid #f2f2f2;margin-top: 10rpx;padding-bottom: 10rpx;">
+          <view wx:if="{{item.color.length>0}}" class="btn-grey" style="margin-right: 20rpx;">{{item.color}}</view>
+          <view wx:if="{{item.spec.length>0}}" class="btn-grey">{{item.spec}}</view>
+          <view style="flex: 1;"></view>
+          <view catchtap="showSpecStockPopup" data-index="{{index}}" class="flex-column flex-center" style="margin-right: 20rpx;font-size: 28rpx;">
+              <view>
+              ￥{{item.customer_price}}
+              </view>
+              <view style="color: red;">
+              库存 {{item.stock}}
+              </view>
+          </view>
+        </view>
+
+      </view>
+
+      <!-- <view style="display: flex;flex-direction: row;width: 100%;margin-top: 50rpx;">
+          <button catchtap="closeSpecPopup" style="width: 300rpx;height: 70rpx;font-size: small;">确定</button>
+      </view> -->
+      <view class="pop-item flex-row flex-justify-content-space-around " style="margin-top: 30rpx;">
+          <view class="pop-btn-red" catchtap="closeSpecPopup">取消</view>
+          <view class="pop-btn-green" catchtap="updateMallBaseGoodsPriceOrStockSaveData">保存修改</view>
+        </view>
+        <view style="margin-bottom: 100rpx;height: 1rpx;"></view>
+
+      <view style="height: 200rpx;">
+      
+      </view>
+  
+    </scroll-view>	
+	</view>
+</view>
+
+
+
+<!-- 底部弹窗 点击颜色 规格后 规格库存录入 -->
+<view wx:if="{{b_spec_stock_show}}" style="z-index: 9999;" class="popup-dlg-background-mask " catchtap="closeSpecStockPopup" >
+	<view  class="popup-dlg-bottom mall-font-family-YaHei mall-font-size-default" style="padding:20rpx;z-index: 10000;" catchtap="NULLFUNCTION">
+    
+      <view class="flex-column" style="padding: 20rpx;margin-right: 30rpx;">
+        <view style="font-weight: bold;">规格库存设置</view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view style="color: red;">*</view>
+                <view>零售价格</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_customer_price}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view>券后价</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_customer_preferential_price}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view>充值会员价</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_recharge_member_price}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view>vip会员价</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_vip_member_price}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view>采购商价格</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_shop_price}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row bakground-color-grey" style="width: 250rpx;align-items: center;">
+              
+                <view>平台佣金</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_platform_cut_rate}}" placeholder="" style="width: 50%;z-index: 1000;"/>
+              <view class="flex-row flex-center">
+              %
+            </view>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row  bakground-color-grey" style="width: 250rpx;align-items: center;">
+              
+                <view>平台提成现金</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_platform_cash_commission}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row  bakground-color-grey" style="width: 250rpx;align-items: center;">
+               
+                <view>平台提成星盾</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_platform_star_commission}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row  bakground-color-grey" style="width: 250rpx;align-items: center;">
+                
+                <view>店铺提成现金</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_shop_cash_commission}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='price'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row  bakground-color-grey" style="width: 250rpx;align-items: center;">
+               
+                <view>店铺提成星盾</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_shop_star_commission}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view wx:if="{{b_update_mode=='stock'}}" class="pop-item flex-row flex-center bakground-color-grey" style="margin-top: 30rpx;">
+          <view class="pop-item flex-row  bakground-color-grey" style="width: 250rpx;align-items: center;">
+                <view style="color: red;">*</view>
+                <view>库存</view>
+          </view>
+          <view class="pop-item  flex-row flex-center" style="flex: 1;">
+              <input type="digit" model:value="{{param_stock}}" placeholder="" style="width: 100%;z-index: 1000;"/>
+          </view>
+        </view>
+        <view class="pop-item flex-row flex-justify-content-space-around " style="margin-top: 30rpx;">
+          <view class="pop-btn-red" catchtap="closeSpecStockPopup">取消</view>
+          <view class="pop-btn-green" catchtap="saveSpecStockPopup">保存规格</view>
+        </view>
+        <view style="margin-bottom: 100rpx;height: 1rpx;"></view>
+
+      </view>
+    
+   
+			
+	</view>
+</view>
+
+
+
+
+ 	
+    
+
+	
+
+
+
