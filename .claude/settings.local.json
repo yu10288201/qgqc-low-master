@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp *)",
+      "Bash(sed -i 's|'\\\\''../../models/morePorridge.js'\\\\''|'\\\\''../../../../models/morePorridge.js'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''../..//miniprogram_npm/@vant/weapp/dialog/dialog'\\\\''|'\\\\''../../../../miniprogram_npm/@vant/weapp/dialog/dialog'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''../../utils/RMQV3.js'\\\\''|'\\\\''../../../../utils/RMQV3.js'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''../../wxapi/main'\\\\''|'\\\\''../../../../wxapi/main'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''../../utils/util.js'\\\\''|'\\\\''../../../../utils/util.js'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''\\\\.\\\\./temporary/temporary|'\\\\''/pages/temporary/temporary|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''\\\\.\\\\./ordersdetail/ordersdetail|'\\\\''/pages/module_discount/pages/ordersdetail/ordersdetail|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''\\\\.\\\\./index/index'\\\\''|'\\\\''/pages/index/index'\\\\''|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|'\\\\''\\\\.\\\\./module_discount/pages/|'\\\\''/pages/module_discount/pages/|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(sed -i 's|\"\\\\.\\\\./module_discount/pages/|\"/pages/module_discount/pages/|g' 'C:/Users/xiezi/Desktop/实习项目/qgqc-low-master\\(前端\\)/qgqc-low-master/pages/module_others/pages/menu/menu.js')",
+      "Bash(xargs grep -l \"baseUrl\\\\|baseURL\\\\|restUrl\\\\|apiUrl\\\\|http\\\\|request\")",
+      "Bash(sed \"s/.*serverConfig.url + '//\")",
+      "Bash(sed \"s/',.*//\")",
+      "Bash(sed \"s/serverConfig.url + '//\")",
+      "Bash(sed \"s/'$//\")"
+    ]
+  }
+}
