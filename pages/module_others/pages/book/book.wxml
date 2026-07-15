@@ -1,0 +1,535 @@
+<view class="page">
+    <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/navbar2.png');background-size: 100% 100%;z-index: 0;height: 500rpx;position: absolute;width: 110%;top:{{ windowHeight>=750 ? '-120rpx' : '-155rpx'}};">
+    </view>
+    <view class="box" bindtap="comeback" style="position: absolute;width: 100rpx;height:100rpx;top: 70rpx;left:0rpx">
+        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png' style="z-index: 50;height: 30rpx;width:20rpx"></image>
+    </view>
+    <!-- <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png');background-size: 100% 100%;z-index: 50;height: 500rpx;position: absolute;width: 100%;top: -1rpx;" bindtap="comeback">
+</view> -->
+    <view class='go-center' style="margin-top:{{ windowHeight>=750 ? '175rpx' : '115rpx'}};color:#fff;z-index: 100;font-weight: 900;font-size: 40rpx;color: rgb(90, 65, 35)">{{shopdetail.shop_name}}——线上{{fromYuDing ? '预订' : '点餐'}}</view>
+    <view class='part' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/bg1.png');background-size: 100% 100%; z-index: 100;margin-bottom:5rpx;width: 90%;height:25%">
+        <!--用餐日期时间选择-->
+        <view class='oneline toTop'>
+            <view class='text'>点餐人：</view>
+            <input class="section" style='min-height:36rpx;font-size:26rpx;width:20%' type="text" bindblur='bookusername' value='{{userInfo}}'></input>
+            <!-- value='{{username}}' -->
+            <!-- <button bindtap="yonghumingzi" style="font-size:8px; padding:0 0;lineheight:12px">获取昵称</button> -->
+            <view class='span-star' wx:if="{{userInfo.length==0||userInfo==undefined}}">*</view>
+            <view class='oneline' style='width:40%;margin-left:5%'>
+
+                <view style='width:100%'>
+                    <view class='oneline radio-groud' style='width:100%;'>
+                        <view class='radio-groud-in' data-index='0' bindtap='changeradio'>
+                            <image class='radio' src="{{index == 0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/000.png'}}"></image>
+                            <view style='font-size:26rpx;margin-left:15rpx'>先生</view>
+                        </view>
+                        <view class='radio-groud-in' data-index='1' bindtap='changeradio'>
+                            <image class='radio' src="{{index == 1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/000.png'}}"></image>
+                            <view style='font-size:26rpx;margin-left:15rpx'>女士</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class='oneline toTop'>
+            <view class='text'>电话号码：</view>
+            <input class="section" style='min-height:36rpx;font-size:26rpx;width:30%' maxlength='11' type="number" bindblur="phonenumber" value='{{phonenumber}}'></input>
+            <view class='span-star' wx:if="{{phonenumber.length==0||phonenumber==undefined}}">*</view>            
+        </view>
+
+        <view class='oneline toTop'>
+            <view class='text'>用餐日期：</view>
+            <picker class='picker1' mode="date" value="{{date}}" start="{{nowdate}}" end="{{afterdate}}" bindchange="bindDateChange">
+                <view class="section ">
+                    <view class='right '>{{date}}</view>
+                    <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+                </view>
+            </picker>            
+            <view class='span-star' wx:if="{{date.length==0||date==undefined||atime.length==0||atime==undefined}}">*</view>      
+        </view>
+
+        <view class='oneline toTop'>
+            <!--用餐时间选择-->
+            <view class='oneline' style='width:50%'>
+
+                <view class='text'>用餐时间： </view>
+                <picker style='width:50%' mode="time" value="{{time}}" bindchange="bindTimeChange">
+                    <view class="section oneline">
+                        <view class='right'>{{time}}</view>
+                        <!--原本是time -->
+                        <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+                    </view>
+                </picker>
+                <view class='span-star' wx:if="{{time.length==0||time==undefined}}">*</view>
+            </view>
+            <!--用餐人数选择-->
+            <view class='oneline' style='width:50%'>
+                <view class='text' style='margin-left:20rpx;'>用餐人数： </view>
+                <input class="section" style='min-height:36rpx;font-size:26rpx;width:30%' type="number" bindinput="userNum" maxlength='2' value='{{userNum}}'></input>
+                <view class='span-star' wx:if="{{userNum.length==0||userNum==undefined}}">*</view>
+            </view>
+        </view>
+
+        <view class='oneline toTop'>
+            <view class='text' >选择你喜欢的部长：</view>
+            <picker style="width: 48%;" mode="selector" range="{{allManagers}}" range-key="nameAndPosition" bindchange="selectManager">
+                <view class="section ">
+                    <view class='right ' style='width: 95%' >{{selectedManagerName}}</view>
+                    <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+                </view>
+            </picker>           
+            <view class='span-star'>*</view>
+        </view>
+
+        <view class='oneline toTop'>
+            <view class='text'>选择位置：</view>
+            <view bindtap='changeTab' data-index="0" class="go-center top-btn {{tabIndex==0?'active-color':'unactive-color'}}" style='margin-left:20rpx;'>
+                大
+                <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>厅
+            </view>
+            <view bindtap='changeTab' data-index="1" class="go-center top-btn {{tabIndex==1?'active-color':'unactive-color'}}" style='margin-left:60rpx;'>
+                包
+                <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>房
+            </view>
+        </view>
+        <!--<view class='go-center'>
+            <view class='prompt' style="{{operatingstate=='营业中'?'color:green':'color:red'}}">{{operatingstate}}</view>
+            <view class='oneline prompt' style='margin-left:40rpx'>营业时间：{{operatingTime}}</view>
+        </view>-->
+    </view>
+    <!--------------大厅--------------->
+    <view class="part {{showOrHidden1?'show':'hide'}}" wx:if="{{isshowtable}}" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/bg2.png');background-size: 100% 100%;margin-bottom:0rpx;margin-top:10rpx;height: 43%">
+        <view class='oneline toTop1' style='margin-top:10rpx;'>
+            <view class='oneline'>
+                <!--厅类型选择-->
+                <view class='oneline' style='width:90%'>
+                    <view class='text'>厅名称：</view>
+                    <picker class='picker4' bindchange="upwindow" value="{{inde}}" range="{{hallAllType}}">
+                        <view class="section oneline">
+                            <view class='right'>{{hallAllType[inde]}}</view>
+                            <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+                        </view>
+                    </picker>
+                    <!-- <view class='picker4' bindtap='upwindow'>
+          <view class="section oneline">
+            <view class='right'>{{hallType}}</view>
+            <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+          </view>
+        </view> -->
+                </view>
+                <!--可坐人数选择-->
+                <view class='oneline ' style='margin-left:5%;'>
+                    <view class='text '>可坐人数： </view>
+                    <input class="section" style='width:40%;min-height:36rpx;font-size:26rpx' type="number" bindinput="bindKeyInput"></input>
+                </view>
+            </view>
+        </view>
+        <!--选择大厅类型弹窗-->
+        <view class='Window-out' bindtap='upwindow' wx:if='{{window}}'>
+            <view class='Window' wx:if='{{window}}'>
+                <scroll-view scroll-y="true" style='height:250rpx'>
+                    <view class='window-item' wx:for='{{hallAllType}}' wx:key='unique' data-id='{{index}}' bindtap='hallchoose'>{{item}}</view>
+                </scroll-view>
+            </view>
+        </view>
+
+        <view class='oneline toTop1 ' style="justify-content: space-around;">
+            <view class='btn' bindtap='showDetail' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;">详
+                <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>情
+            </view>
+            <view class='btn' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;" bindtap='clean'>清
+                <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>空
+            </view>
+            <view class='btn' bindtap='query' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;">查
+                <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>询
+            </view>
+        </view>
+        <view class="table" style="height: 65%;">
+            <view class="tr" style="border-bottom: 0px;">
+                <view class="th">名称</view>
+                <view class="th">桌号</view>
+                <view class="th">可坐人数</view>
+                <view class="th">状态</view>
+            </view>
+            <!-- <scroll-view scroll-y="true" style="height:{{ windowHeight>=750 ? '500rpx' : '320rpx'}};margin-top: -4rpx;" wx:if="{{newhallarry.length!=0}}"> -->
+            <scroll-view scroll-y="true" style="height:87%;margin-top: -4rpx;" wx:if="{{newhallarry.length!=0}}">
+                <block wx:for="{{newhallarry}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+                    <view bindtap='selectlocation' data-item="{{item}}" data-id='{{index}}' data-num='2' data-table_id='{{item.table_id}}' data-table_name='{{item.table_name}}'>
+                        <view class="tr {{locationid==item.table_id?'chose-bg':''}}">
+                            <view class="td">
+                                <view wx:for="{{field}}" wx:key="unique" wx:for-item="items">
+                                    <view wx:if="{{item.field_id==items.field_id}}">
+                                        <view>{{items.field_name}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="td">{{item.table_name}}</view>
+                            <view class="td">{{item.user_count}}</view>
+                            <view class="td" wx:if="{{item.table_status==1}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_greenbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #33ff33;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">空　闲</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==0}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">已　订</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==2}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">停　用</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==3}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/book_icon.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #083d43;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">预　订</view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </scroll-view>
+            <!-- <scroll-view scroll-y="true" style="height:{{ windowHeight>=750 ? '500rpx' : '320rpx'}};margin-top: -4rpx" wx:else> -->
+            <scroll-view scroll-y="true" style="height:87%;margin-top: -4rpx" wx:else>
+                <block wx:for="{{halldata}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+                    <view bindtap='selectlocation' data-item="{{item}}" data-id='{{index}}' data-num='0' data-table_id='{{item.table_id}}' data-table_name='{{item.table_name}}'>
+                        <view class="tr {{locationid==item.table_id?'chose-bg':''}}">
+                            <!-- <view class="td">
+              <view wx:for="{{field}}" wx:key="unique" wx:for-item="items">
+                <view wx:if="{{item.field_id==items.field_id}}">
+                  <view>{{items.field_name}}</view>
+                </view>
+              </view>
+            </view> -->
+                            <view class="td">{{item.field_name}}</view>
+                            <view class="td">{{item.table_name}}</view>
+                            <view class="td">{{item.user_count}}</view>
+                            <view class="td" wx:if="{{item.table_status==1}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_greenbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #33ff33;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">空　闲</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==0}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">已　订</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==2}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">停　用</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==3}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/book_icon.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #083d43;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">预　订</view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </scroll-view>
+        </view>
+
+        <view class='popup-window-bg' bindtap='showDetail' wx:if='{{window6}}'></view>
+        <view class='popup-window' wx:if='{{window6}}'>
+            <view style='padding:20rpx'>
+                <view class='oneline toTop1'>
+                    <view class='text'>桌子名称</view>
+                    <view>：{{locationNum}}</view>
+                </view>
+                <view class='oneline toTop1'>
+                    <view class='text'>可坐人数</view>
+                    <view>：{{userCount}}人</view>
+                </view>
+                <view class='oneline toTop1'>
+                    <view class='text'>设施</view>
+                    <view>：{{field_parameter}}</view>
+                </view>
+                <view>
+                    <view class='text'>照片</view>
+                    <scroll-view class='scroll-view-x' scroll-x style='width:100%' wx:if="{{hallphoto}}">
+                        <view class='oneline' style='display: inline-block;padding-left:10rpx' wx:for="{{hallphoto}}" wx:key="unique">
+                            <image class='centerimage' src='{{item.img_url}}' data-type='2' bindtap='photo'></image>
+                        </view>
+                    </scroll-view>
+                </view>
+            </view>
+        </view>
+
+        <view class='oneline1'>
+            <view class='bottom-left'>
+                <view class='btn' style="background:{{locationindex==2? hui : btn2 }};background-size:100% 100%;color:#000" data-model='0' bindtap='bookroom'>订房提交</view>
+            </view>
+           
+            <!--<view wx:if="{{locationindex==2}}" style="margin-top: 20rpx;margin-right:6rpx;">
+                <view class='btn' data-model='0' style="background:{{locationindex==2? hui : btn3 }};background-size:100% 100%;color:#000" bindtap=''>请部长点餐</view>
+            </view>
+            <view wx:else style="margin-top: 20rpx;">
+                <view class='btn' data-model='0' style="background:{{hadchangetable? hui : btn3 }};background-size:100% 100%;color:#000" bindtap='changehelporder'>请部长点餐</view>
+            </view>-->
+
+            <view style="margin-top: 20rpx;" wx:if="{{locationindex==2}}">
+                <view class='btn' style="background:{{hadchangetable? hui :btn4}};background-size:100% 100%;color:#000" bindtap='changeinformation'>修改保存</view>
+            </view>
+            
+            <view class='bottom-right'>
+                <view wx:if="{{show_toMenu}}" class='btn' style="background:{{locationindex==2&&hadchangetable==false? hui : btn4}};background-size:100% 100%;color:#000" data-model='1' bindtap='toMenu'>现在点菜</view>
+                <view wx:if="{{!show_toMenu&&toview}}" class='btn' style="background:{{locationindex==2&&hadchangetable==false? hui : btn4 }};background-size:100% 100%;color:#000" data-model='1' bindtap='toMenu1'>查看菜谱</view>
+                <view wx:if="{{!show_toMenu&&!toview}}" class='btn' style="background:{{locationindex==2&&hadchangetable==false? hui : btn4 }};background-size:100% 100%;color:#000" data-model='1' bindtap='toMenu'>现在点菜</view>
+            </view>
+        </view>
+    </view>
+    <!--------------包房--------------->
+    <view class="part {{showOrHidden2?'show':'hide'}}" wx:if="{{isshowtable}}" style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/bg2.png');background-size: 100% 100%;margin-bottom:0rpx;margin-top:10rpx">
+        <!--包房名称选择-->
+        <view class='oneline toTop1 ' style='margin-top:10rpx'>
+            <view class='text' style="width:200rpx;">包房名称:</view>
+
+            <picker class='picker4' bindchange="upwindow3" value="{{inde1}}" range="{{roomname}}">
+                <view class="section oneline">
+                    <view class='right'>{{roomdata[inde1].table_name}}</view>
+                    <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png'></image>
+                </view>
+            </picker>
+
+
+            <!-- <view class='picker3' bindtap='upwindow3'>
+      <view class="section oneline">
+        <view class='right '>{{roomType}}</view>
+        <image class='icon ' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/icon_triangle.png '></image>
+      </view>
+    </view> -->
+            <view class='oneline ' style='margin-left:20rpx;'>
+                <view class='text '>可坐人数： </view>
+                <input class="section" style='width:30%;min-height:36rpx;font-size:26rpx' type="number" bindinput="bindKeyInput1"></input>
+            </view>
+        </view>
+        <!-- 包房名称弹窗 -->
+        <view class='Window-out' bindtap='upwindow3' wx:if='{{window3}}'>
+            <view class='Window' wx:if='{{window3}}'>
+                <scroll-view scroll-y="true" style='height:330rpx'>
+                    <view class='window-item' wx:for='{{room}}' wx:key='unique' data-id='{{index}}' bindtap='roomchoose'>{{item.field_name}}</view>
+                </scroll-view>
+            </view>
+        </view>
+        <!--包房可坐人数弹框-->
+        <view class='Window-out' bindtap='upwindow5' wx:if='{{window5}}'>
+            <view class='Window' wx:if='{{window5}}'>
+                <view class='window-item' wx:for='{{RoomNum}}' wx:key='unique' data-id='{{index}}' bindtap='tableNum'>{{item}}</view>
+            </view>
+        </view>
+        <!--桌子可坐人数选择-->
+        <view class='oneline toTop1' style='flex-direction: row-reverse;'>
+            <view>
+                <view class='btn' bindtap='query1' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;">查
+                    <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>询
+                </view>
+            </view>
+            <view style='margin-right:90rpx'>
+                <view class='btn' bindtap='clean' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;">清
+                    <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>空
+                </view>
+            </view>
+            <view>
+                <view style="margin-right:90rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn1.png');background-size: 100% 100%;" class='btn' bindtap='upwindow4'>详
+                    <text decode="{{true}}" space="{{true}}">&nbsp;&nbsp;&nbsp;</text>情
+                </view>
+            </view>
+        </view>
+
+        <view class="table">
+            <view class="tr" style="border-bottom: 0px;">
+                <view class="th">包房名称</view>
+                <view class="th">桌子编号</view>
+                <view class="th">可坐人数</view>
+                <view class="th">状态</view>
+            </view>
+            <scroll-view scroll-y="true" style="height:{{ windowHeight>=750 ? '635rpx' : '445rpx'}};margin-top: -4rpx" wx:if="{{newhallarry.length!=0}}">
+                <block wx:for="{{newhallarry}}" wx:key="unique" wx:for-index="index" wx:for-item="item">
+                    <view bindtap='selectlocation' data-item="{{item}}" data-id='{{index}}' data-num='2' data-table_id='{{item.table_id}}' data-table_name='{{item.table_name}}'>
+                        <view class="tr {{locationid==item.table_id?'chose-bg':''}}">
+                            <!-- <view class="td">
+              <view wx:for="{{field}}" wx:key="unique" wx:for-item="items">
+                <view wx:if="{{item.field_id==items.field_id}}">
+                  <view>{{items.field_name}}</view>
+                </view>
+              </view> 
+            </view> -->
+                            <view class="td">{{room_name}}</view>
+                            <view class="td">{{item.table_name}}</view>
+                            <view class="td">{{item.user_count}}</view>
+                            <view class="td" wx:if="{{item.table_status==1}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_greenbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #33ff33;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">空　闲</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==0}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">已　订</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==3}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/book_icon.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                
+                                <view style="width: 28rpx;height: 28rpx;background-color: #083d43;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">预　订</view>
+                            </view>
+                            <view class="td" wx:else>
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">停　用</view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </scroll-view>
+            <scroll-view scroll-y="true" style="height:{{ windowHeight>=750 ? '635rpx' : '445rpx'}};margin-top: -4rpx" wx:else>
+                <block wx:for="{{roomdata}}" wx:key="unique" wx:for-index="index" wx:for-item="item">
+                    <view bindtap='selectlocation' data-item="{{item}}" data-id='{{index}}' data-num='1' data-table_id='{{item.table_id}}' data-table_name='{{item.table_name}}'>
+                        <view class="tr {{locationid==item.table_id?'chose-bg':''}}">
+                            <view class="td">
+                                <view wx:for="{{field}}" wx:key="unique" wx:for-item="items">
+                                    <view wx:if="{{item.field_id==items.field_id}}">
+                                        <view>{{items.field_name}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="td">{{item.table_name}}</view>
+                            <view class="td">{{item.user_count}}</view>
+                            <view class="td" wx:if="{{item.table_status==1}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_greenbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #33ff33;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">空　闲</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==0}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">已　订</view>
+                            </view>
+                            <view class="td" wx:elif="{{item.table_status==3}}">
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/book_icon.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #083d43;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">预　订</view>
+                            </view>
+                            <view class="td" wx:else>
+                                <!-- <image class='bot' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_redbot.png?x-oss-process=image/crop,g_center,w_70,h_70'></image> -->
+                                <view style="width: 28rpx;height: 28rpx;background-color: #ff3333;border-radius: 100%;"></view>
+                                <view style="margin-left: 20rpx;">停　用</view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </scroll-view>
+        </view>
+        <view class='oneline'>
+            <view class='bottom-left' style='width:33%'>
+                <view class='btn' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn2.png');background-size: 100% 100%;" data-model='0' bindtap='bookroom'>订房提交</view>
+            </view>
+            <!--<view class='bottom-left' style='width:33%;justify-content: center;'>
+                <view class='btn' data-model='0' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn3.png');background-size: 100% 100%;" bindtap='changehelporder'>请部长点餐
+                    <text decode="{{true}}" space="{{true}}"></text>
+                </view>
+            </view>-->
+            <view class='bottom-right' style='width:33%'>
+                <view class='btn' data-model='1' bindtap='toMenu' style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/btn4.png');background-size: 100% 100%;">现在点菜</view>
+            </view>
+        </view>
+
+        <!--包房详情-->
+        <view class='popup-window-bg' bindtap='upwindow4' wx:if='{{window4}}'></view>
+        <view class='popup-window' wx:if='{{window4}}'>
+            <!-- <view></view> -->
+            <view style='padding:20rpx'>
+            <view style="width: 100%;display: flex;flex-direction: row;justify-content: flex-end;align-items: center;">
+                <image bindtap='upwindow4' src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png" style="width: 60rpx;height: 60rpx;"></image>
+            </view>
+                <view class='oneline toTop1' style="flex-direction: column;">
+                    <view style="margin-top: 10rpx;"><text class='text'>包房名称：</text>{{thisroom.field_name}}</view>
+                    <view style="margin-top: 10rpx;"><text class='text'>桌子编号：</text>{{locationNum}}</view>
+                    <view style="margin-top: 10rpx;"><text class='text'>类型：</text>{{thisroom.size_type}}</view>
+                    <view style="margin-top: 10rpx;"><text class='text'>可坐人数：</text>{{thisroom.user_num}}</view>
+                    <view style="margin-top: 10rpx;"><text class='text'>低消：</text>{{thisroom.field_price}}</view>
+                    <view style="margin-top: 10rpx;"><text class='text'>设施：</text>{{thisroom.field_parameter}}</view>
+                </view>
+                <view class='oneline toTop1'>
+                    <view class='text'>备注:</view>
+                    <view class='remark'>
+                        <view style='margin:10rpx;'> {{thisroom.bei_zhu}}</view>
+                    </view>
+                </view>
+                <view>
+                    <view class='text'>照片</view>
+                    <scroll-view class='scroll-view-x' scroll-x style='width:100%' wx:if="{{hallphoto}}">
+                        <view class='oneline' style='display: inline-block;padding-left:10rpx' wx:for="{{hallphoto}}" wx:key="unique">
+                            <image class='centerimage' src='{{item.img_url}}' data-type='2' bindtap='photo'></image>
+                        </view>
+                    </scroll-view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+
+    <scroll-view class='scroll-view-x' scroll-x style='width:100%' wx:if="{{hallphoto&&tabIndex!=1}}">
+        <view class='oneline' style='display: inline-block;padding-left:10rpx' wx:for="{{hallphoto}}" wx:key="unique">
+            <image class='centerimage' src='{{item.img_url}}' data-type='1' bindtap='photo'></image>
+        </view>
+    </scroll-view>
+
+
+    <view class='popup-window-bg' wx:if='{{show_sbwindow}}'></view>
+    <view class='popup-window' wx:if='{{show_sbwindow}}'>
+        <view class='sbwindow'>
+            <view wx:if="{{helporder}}">欢迎您选择我们的餐厅，您的订餐信息已成功提交，餐厅部长帮您点好餐后会用短信与您联系，请及时确认，谢谢!</view>
+            <view wx:else>欢迎您选择了我们的餐厅，您的订房信息已成功提交，请您依时到达预定的餐桌位置后，扫描二维码进行点餐操作。祝您用餐愉快！谢谢！</view>
+            <view class='oneline' style='flex-direction: row-reverse;margin-top:20rpx;'>
+                <view class='btn' bindtap='sbwindow_sure'>确定</view>
+            </view>
+        </view>
+    </view>
+
+
+    <!-- 请部长点餐弹窗- -->
+    <view bindtap='dishesInfo' catchtouchmove="true" class='popup-window-bg' wx:if='{{noteshows}}'></view>
+    <view style="border-radius:10rpx;top:35%;" class='popup-window' catchtouchmove="true" wx:if='{{noteshows}}'>
+        <view class='note' style='margin-bottom:100rpx;'>
+            <view style='font-size:26rpx;font-weight:bold'>订单备注:</view>
+            <textarea cursor-spacing="100" fixed placeholder='如有口味要求，请输入备注' value='{{remark}}' bindinput='addremarks' class='note-text'></textarea>
+        </view>
+        <view class='select-dishes' style="margin-left:280rpx;">
+            <view class='btn1' bindtap='closeWindow' style="margin-bottom:12rpx;">确定</view>
+        </view>
+    </view>
+
+    <!-- 订房提交- -->
+    <view bindtap='dishesInfo' catchtouchmove="true" class='popup-window-bg' wx:if='{{bookingroom}}'></view>
+    <view style="border-radius:10rpx;top:35%;" class='popup-window' catchtouchmove="true" wx:if='{{bookingroom}}'>
+        <view class='note' style='margin-bottom:100rpx;'>
+            <view style='font-size:26rpx;font-weight:bold'>订单备注:</view>
+            <textarea cursor-spacing="100" fixed placeholder='如有口味要求，请输入备注' model:value='{{orderRemark}}' bindinput='addremarks' class='note-text'></textarea>
+        </view>
+        <view class='select-dishes' style="display: flex;flex-direction: row;justify-content: space-between;width: 70%;align-items: center;margin: 0 auto;">
+            <view class='btn1' bindtap='closeBooking' style="margin-bottom:12rpx;">取消</view>
+            <view class='btn1' bindtap='booking' style="margin-bottom:12rpx;">确定</view>
+        </view>
+    </view>
+
+
+
+    <view wx:if="{{showAuthorize}}" class='window-bg'>
+        <view class='window' style="background:#fff;background-size:100% 100%;-moz-background-size:100% 100%;">
+            <view class='window-item' style="border: none;">
+                <view class='window-item-title' style="color: black;">欢迎关注</view>
+                <view class='window-item-content' style="color:black">申请授权</view>
+                <view class='window-item-content' style="margin-left:5%;color: black;">现需获取您的手机号码。是否同意？</view>
+            </view>
+            <view class='btn-bar'>
+                <button class='cancelBtn' bindtap='refused'>否</button>
+                <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+            </view>
+        </view>
+    </view>
+</view>

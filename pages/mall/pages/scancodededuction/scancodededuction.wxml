@@ -1,0 +1,264 @@
+<!--pages/weixinpay/weixinpay.wxml-->
+
+<view class='top'>
+ <view style="width: 100%;">
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+    <view style="margin-left: 20rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+      充值会员
+    </view>
+  </view>
+
+ 
+ </view>
+  
+
+  <view style="width:45%;height:20%;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg2.png') no-repeat;background-size: 100% 100%;position: absolute;top: 100rpx;"/>
+  
+  <!--<view class="tap" style="z-index: 2; margin-top: 80rpx;" bindtap="showQRCode">充值二维码</view>
+  <view catchtouchmove="true" class="popup-window-bg" wx:if="{{showQR}}"></view>
+  <view class='popup-window1' style="display: flex;flex-direction: column;justify-content: space-around;" catchtouchmove="true" wx:if="{{showQR}}">
+    <canvas style="width:200px; height: 200px;" canvas-id='rechargeQrcode'></canvas>
+    <view style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 41px;text-align: center;display: flex;align-items: center;width: 30%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' bindtap="closeQRCode">关闭</view>
+  </view>-->
+
+  <view class='comtainer' style="height:360rpx;justify-content: flex-start;margin-top: 10rpx;z-index: 2;">
+   
+    <view style="width:100%;display:flex;justify-content: center;align-items: center;color: rgb(81,59,38);margin-top:25rpx;font-size: 36rpx;font-weight: 550;">
+      {{rule_name}} </view>
+    
+    <view class='oneline' style='margin-bottom:0rpx;height:4vh;width:96%;margin-top: 30rpx;'>
+      <view class='div3'>
+        <text class='text2' >当前余额:<text>{{mall_member_total_recharge_amount}}</text>元</text>
+      </view>
+      <view class='div3' style="margin-left: 20rpx;">
+        <text class='text2'>充值金额:</text>
+        <input class='input'  style='width:125rpx'  value='{{recharge_amount}}' disabled="true">{{preferentDiscount}}</input>元
+      </view>      
+    </view>
+
+    <view class='div3'>
+
+      <text class='text2'>赠送金额：</text>
+      <input class='input'  style='width:120rpx'  value='{{give_amount}}' disabled="true"></input>
+      <text class="text2">元　　</text>
+      <text class='text2'>抵扣比例：</text>
+      <input class='input'  style='width:60rpx' value='{{deduction_percentage}}' disabled="true"></input>%
+      <text class='text2'></text>
+    </view>
+
+   
+
+    <view class='oneline' style='margin-bottom:0rpx;display: flex;flex-direction: row;justify-content: space-between;width: 90%;'>
+
+      <view class='div3'>
+        <view style="display: flex;">
+          <text class="text2">有效期：</text>
+          <input class='input' style='width:70rpx' value='{{effective_day_count}}' disabled="true"></input>
+          <text class="text2">天　　</text>
+          <text wx:if="{{listIndex>=0}}" class='text2'>充后余额：</text>
+          <input wx:if="{{listIndex>=0}}" class='input'  style='width:120rpx' value='{{mall_member_total_recharge_amount_after}}' disabled="true" readOnly="true"></input>
+          <text wx:if="{{listIndex>=0}}" class='text'>元</text>
+        </view>
+        
+      </view>
+  
+    </view>
+
+
+
+  </view>
+
+ <scroll-view scroll-y="true" style="width: 100%;height: 660rpx;display: flex;flex-direction: column;margin-left: 2.5%;">
+    <view class='comtainer' style="height:360rpx;margin-top: -26rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view class='padding centercontent' style="font-size: 30rpx;">
+        <view class='oneline' style="width:100%;margin-top: 10rpx;">
+          <view class='title text4' style='width:87%;margin-top: 10rpx;'>选择充值额度:</view>
+        </view>
+        <view style="height: 52rpx;line-height: 52rpx;width: 100%;display: flex;font-weight: bold;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top-left-radius: 10rpx;border-top-right-radius: 10rpx;overflow: hidden;">
+          <view class="th" style="width: 28%;">充值金额</view>
+          <view class="th" style="width: 20%;">赠送金额</view>
+          <view class="th" style="width: 24%;">抵扣比例</view>
+          <view class="th" style="width: 13%;">有效天</view>
+          <view class="th" style="flex: 1;">状态</view>
+        </view>
+        <scroll-view scroll-y="true" style="height: 160rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top: 0;border-bottom-left-radius: 10rpx;border-bottom-right-radius: 10rpx;">
+          <view catch:tap="itemClick" data-item="{{item}}" data-index="{{index}}" wx:key="index" wx:for="{{rule_array}}" style="display: flex;height: 52rpx;line-height: 52rpx;">
+            <view class="td" style="width: 28%;{{listIndex==index?'background-color:#52A76E;':''}}">{{item.recharge_amount}}{{ item.prestoreMoneyStart == item.prestoreMoneyEnd ? '' : '-' + item.prestoreMoneyEnd}}</view>
+            <view class="td" style="width: 20%;{{listIndex==index?'background-color:#52A76E;':''}}">{{item.give_amount}}</view>
+            <view class="td" style="width: 24%;{{listIndex==index?'background-color:#52A76E;':''}}">{{item.deduction_percentage}}%</view>
+            <view class="td" style="width: 13%;{{listIndex==index?'background-color:#52A76E;':''}}">{{item.effective_day_count}}</view>
+
+            <view wx:if="{{item.state_id==0}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#52A76E;':''}}">停用</view>
+            <view wx:if="{{item.state_id==1}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#52A76E;':''}}">启用</view>
+            
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class='comtainer' style="height:500rpx;display: flex;margin-top: -70rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="width:100%;margin-top: 30rpx;">
+          <view class='title text5' style='width:87%;margin-top: 10rpx;'>赠送礼品:</view>
+        </view>
+        <scroll-view scroll-y="true" style="height: 324rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-radius: 10rpx;">
+          <view class='vw'>
+            
+            <view >
+              <text style="font-size:32rpx;">{{gift_content}}</text>
+            </view>
+            
+          
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class='comtainer' style="height:100rpx;display: flex;margin-top: -50rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="width:100%;margin-top: 18rpx;display: flex;flex-direction: row;align-items: center;">
+          <view class='title' style='margin-top: 10rpx;'>选择礼品序号: </view>
+          <input model:value="{{submit_gift}}" style="background-color: white;margin-top: 13rpx;border: 1rpx solid #888;margin-left: 20rpx; border-radius: 10rpx; width: 60rpx;"></input>
+        </view>
+      </view>
+    </view>
+    <view class='comtainer' style="height:100rpx;display: flex;margin-top: 1rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="width:100%;margin-top: 18rpx;display: flex;flex-direction: row;align-items: center;">
+          <view class='title' style='margin-top: 10rpx;'>礼品领取方式: </view>
+          <radio-group bindchange="radioChanged">
+              <radio value="1" >现场</radio>
+              <radio value="2" >邮寄</radio>
+          </radio-group>
+         
+        </view>
+      </view>
+    </view>
+
+   <!--隐藏以下代码-->
+    <view wx:if="{{receive_type==2&&receive_type==1}}"  style="height:140rpx;display: flex;margin-top: 1rpx;padding-left: 30rpx;width: 94%;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;display: flex; flex-direction: row;justify-content: left; align-items: center;">
+      
+      <view style="align-items: center; width:10%">
+          <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/dizhi.png" mode="aspectFill" style="width: 50rpx; height: 50rpx;"></image>
+        </view>
+        <view style="width:85%; margin-right: 2%;" wx:if="{{detail_address!=''}}">
+            <view>
+                <text class="content-title">{{detail_address}}</text>
+            </view>
+            <view style="margin-top: 10rpx;">
+                <text class="content-notice" style="font-weight: bolder;">{{name}}</text> 
+                <text class="content-notice" style="margin-left: 20rpx;">{{mobile}}</text> 
+            </view>
+                        
+        </view>
+        <view style="width:75%; margin-right: 2%;" wx:if="{{detail_address==''}}">
+            <view>
+                <text class="content-title">请输入地址</text>                 
+            </view>                       
+        </view>
+        <view style="width:3%">
+            <image bindtap="toAddressList" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/icon_right.png" style="width: 30rpx; height: 30rpx;"></image> 
+        </view> 
+
+    </view>
+
+
+    <!-- <view wx:if="{{receive_type==2}}" class='comtainer' style="height:100rpx;display: flex;margin-top: 1rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="width:100%;margin-top: 18rpx;display: flex;flex-direction: row;align-items: center;">
+         
+          <button catch:tap='toAddressList' class='btn' style="width: 270rpx;">
+          <text style="text-shadow: 1px 2px 1px #222;">添加地址信息</text></button>
+        </view>
+      </view>
+    </view> -->
+
+    <view class='comtainer' style="height:500rpx;display: flex;margin-top: 10rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="margin-top: 30rpx;">
+          <view class='title text5' style='width:87%;margin-top: 10rpx;'>充值会员规则:
+          
+          </view>
+            
+        </view>
+        <scroll-view scroll-y="true" style="height: 334rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-radius: 10rpx;">
+          <view class='vw'>
+            
+            <view >
+              <text style="font-size:32rpx;">{{rule_content}}</text>
+            </view>
+            
+          </view>
+        </scroll-view>
+     
+      </view>
+     
+    </view>
+   
+  </scroll-view>
+
+  <view style="height: 110rpx;width:100%;display:center;align-items: center;justify-content: center;margin-bottom: 25rpx;">
+   
+
+    <view class='div'>
+      <view class='div1'>
+        <button catch:tap='checkIsVip' class='btn' >
+          <text style="text-shadow: 1px 2px 1px #222;">微信充入</text></button>        
+      </view>
+      <view class='div1'>
+        <button class='btn' bindtap='jumpmingxi'><text style="text-shadow: 1px 2px 1px #222;">充值/消费明细</text></button>
+      </view>
+    </view>
+
+    <view class='div'>
+      <view class='div1'>
+        <button catch:tap='showDQQRCode' class='btn' >
+          <text style="text-shadow: 1px 2px 1px #222;">抵扣二维码</text></button>        
+      </view>
+      <view class='div1'>
+        <button class='btn' catch:tap='showLPQRCode'><text style="text-shadow: 1px 2px 1px #222;">领取礼品二维码</text></button>
+      </view>
+    </view>
+
+  </view>
+  <view style="margin-bottom: 1rpx;font-size: 22rpx;display: flex;flex-direction: column;">
+    <view style="height: 50rpx;"></view>
+    <checkbox-group bindchange="checkChange" style="display: flex;flex-direction: row;align-items: center;justify-content: center;">
+      <checkbox style="transform:scale(0.75,0.75);" value="1"></checkbox><view >已阅读并同意</view><view catch:tap="openRuleFile" style="color: blue;text-decoration:underline;">平台会员权益规则</view>
+
+    </checkbox-group>
+    
+  </view>
+</view>
+
+
+
+<view class='popup-window' style="display: flex;flex-direction: column;justify-content: space-around; border: 1rpx solid #52A76E;background-color: #FFF;" catchtouchmove="true" wx:if="{{showDQQR}}">
+	<canvas style="width:200px; height: 200px;" canvas-id='dqQrcode'></canvas>
+  <view  style="width: 100%;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+  
+    <view wx:if="{{mall_member_consumption_record_item!=null}}"  style="height: 52rpx;line-height: 52rpx;width:100%;display: flex;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top-left-radius: 10rpx;border-top-right-radius: 10rpx;overflow: hidden;">
+          <view class="th" style="width: 30%;">消费金额</view>
+          <view class="th" style="width: 30%;">抵扣金额</view>
+          <view class="th" style="width: 20%;">状态</view>
+          <view class="th" style="flex: 1;">操作</view>
+        </view>
+        <view wx:if="{{mall_member_consumption_record_item!=null}}" style="display: flex;height: 52rpx;line-height: 52rpx;width:100%;">
+            <view class="td" style="width: 30%;border-left: 1rpx solid rgba(153, 106, 62, 0.281);">{{mall_member_consumption_record_item.consumption_total_amount}}</view>
+            <view class="td" style="width: 30%;">{{mall_member_consumption_record_item.deduction_amount}}</view>
+            <view wx:if="{{mall_member_consumption_record_item.is_customer_confirm==1}}" class="td" style="width: 20%;">已确认</view>
+            <view wx:if="{{mall_member_consumption_record_item.is_customer_confirm==0}}" class="td" style="width: 20%;">待确认</view>
+            <view  class="td" style="flex: 1;border-right: 1rpx solid rgba(153, 106, 62, 0.281);display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <view wx:if="{{mall_member_consumption_record_item.is_customer_confirm==0}}" style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 25px;text-align: center;display: flex;align-items: center;width: 80%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' catch:tap="updateMallMemberConsumptionRecordIsCustomerConfirm">确认</view>
+            </view>
+        </view>
+  </view>
+  
+	<view style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 41px;text-align: center;display: flex;align-items: center;width: 30%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' bindtap="closeDQQRCode">关闭</view>
+</view>
+
+<view class='popup-window' style="display: flex;flex-direction: column;justify-content: space-around;border: 1rpx solid #52A76E;background-color: #FFF;" catchtouchmove="true" wx:if="{{showLPQR}}">
+	<canvas style="width:200px; height: 200px;" canvas-id='lpQrcode'></canvas>
+	<view style='font-weight: bolder;font-size: 13px;border-radius: 26px;height: 41px;text-align: center;display: flex;align-items: center;width: 30%;justify-content: center;background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg5.png") no-repeat;background-size: 100% 100%;' bindtap="closeLPQRCode">关闭</view>
+</view>

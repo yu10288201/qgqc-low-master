@@ -1,0 +1,59 @@
+.section {
+  display: flex;
+  height: 36rpx;
+  border: #e5e5e5 solid 2rpx;
+  border-radius: 10rpx;
+  align-items: baseline;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.radio-groud {
+  display: flex;
+  align-items: center;
+}
+
+.radio-groud-in {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.radio {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.text {
+  font-size: 28rpx;
+  font-weight: bold;
+}
+
+.toTop {
+  margin-top: 30rpx;
+  margin-left: 20rpx;
+}
+
+.btn {
+  width: 150rpx;
+  height: 50rpx;
+  font-size: 26rpx;
+  background: orange;
+  border-radius: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-bar {
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 30rpx;
+}

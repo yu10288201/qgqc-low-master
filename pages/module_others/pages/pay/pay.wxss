@@ -1,0 +1,115 @@
+/* pages/pay/pay.wxss */
+ 
+.wrap{
+   display: flex;
+  flex-direction:column;
+  /* height: 100vh; */
+  overflow: hidden;
+  justify-content:center;
+  align-items: center;
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/pay/bg.png');
+  background-size: 100% 100%;
+}
+.ren{
+  position: absolute;
+  top: 170px;
+  right: 25px;
+  width: 180rpx;
+  height: 120rpx;
+}
+
+.pay{
+  display: flex;
+  height: 50vh;
+  flex-direction:column;
+  padding-top: 20px;
+  text-align: center;
+  justify-content:flex-start;
+  flex-grow:11;
+  width: 100%;
+ 
+}
+.storename{
+  font-size: 34rpx;
+  
+}
+.money{
+  font-size: 52rpx;
+  font-weight: bold;
+}
+ 
+.payBtn{
+  width:80%;
+}
+.payrec{
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+  padding:10px 40px 0;
+}
+.paynum{
+   border-bottom: 1px solid #ccc;
+   margin-bottom: 10px;
+    padding:0 40px 10px;
+    
+}
+.text1{
+  color: #aaa;
+  font-size: 32rpx;
+  float: left;
+}
+.text2{
+font-size: 32rpx;
+float: right;
+}
+/* .line{
+  height: 1px;
+  background: #666;
+}
+.linetext{
+  background: white;
+  width:120px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0 auto;
+  margin-top: -10px;
+   text-align: center;
+} */
+.adv{
+  /* border-top: 1px solid #666; */
+   
+    height: 34vh;
+    flex-grow:1;
+    width:100%;
+   text-align: center;
+   font-size: 30rpx;
+   /* padding-bottom: 20rpx; */
+}
+/* .line{
+  height: 1px;
+  background: #666;
+}
+.linetext{
+  background: white;
+  display: block;
+  width:120px;
+  height: 20px;
+  line-height: 20px;
+  margin: 0 auto;
+  margin-top: -10px;
+   text-align: center;
+} */
+.swiperview{
+  width: 100%;
+  height: 100%;
+  border: 8rpx solid rgb(26,61,125);
+   border-radius: 6rpx;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+ .slide-image{
+   
+  display: block;
+  width:100%;
+  height: 100%;
+ }
+ 

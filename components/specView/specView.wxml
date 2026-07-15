@@ -1,0 +1,33 @@
+<!--components/specView/specView.wxml-->
+<view class='box_table1' >
+    <view
+            style="width: 100%;border: #e4e4e4 solid 2rpx;height: 60rpx;border-left: black solid 2rpx;border-right: black solid 2rpx;">
+        <view class="tr1">
+            <view class="td1" style='width: 42%;'>规格</view>
+            <view class="td1" style='width: 20%;'>单价</view>
+            <view class="td1" style='width: 18%;'>数量</view>
+            <view class="td1" style="width: 20%;">金额</view>
+
+        </view>
+    </view>
+    <scroll-view style='height:65%;text-align: center;' scroll-y="true">
+        <view style="width:100%;" wx:if="{{choosedishesSpecArry.length!=0}}">
+            <checkbox-group bindchange="checkboxChange">
+                <view wx:for="{{choosedishesSpecArry}}" wx:key="index" wx:for-item="item" wx:for-index="index">
+                    <view class='down-center' data-index="{{index}}" bindtap="chooseDishesSpec" disabled="{{readOnly}}"
+                          style="border-bottom:#ddd solid 2rpx;height: 60rpx;background-color:{{choosedishesSpecIndex==index?'#fcaf17':''}}">
+                        <view class="td1" style="width: 42%;">{{item.spec_name}}</view>
+                        <view class="td1" style="width: 20%;">{{item.spec_price}}</view>
+                        <view class='td1' style="width: 18%;">{{item.number}}</view>
+                        <view class="td1" style="width: 20%;">{{item.price}}</view>
+                    </view>
+                </view>
+            </checkbox-group>
+        </view>
+        <view wx:if="{{choosedishesSpecArry.length==0}}" style="height: 100%;width: 100%;">
+            <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;color:#888">
+                <view>--未选择规格--</view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

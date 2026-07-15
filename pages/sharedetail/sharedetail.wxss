@@ -1,0 +1,50 @@
+page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/treat/bg2.png');
+  background-size: 100% 100%;
+}
+
+.image {
+  width: 372rpx;
+  height: 310rpx;
+  /* margin-left: 25%; */
+  margin-top: 20rpx;
+  border-radius: 10rpx;
+}
+
+.content {
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  font-size: 30rpx;
+}
+
+.text1 {
+  font-size: 30rpx;
+  font-weight: bold;
+}
+
+.btn {
+  width: 80%;
+}
+
+.chooseimage {
+  width: 30%;
+  /* margin-top: 20rpx; */
+  border-radius: 10rpx;
+  background: rgb(26, 173, 25);
+  color: white;
+  font-size: 35rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15rpx;
+  padding-bottom: 15rpx;
+}

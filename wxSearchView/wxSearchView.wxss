@@ -1,0 +1,586 @@
+/** 整个区域 */
+
+.top {
+  background-color: #009AA2;
+  width: 100%;
+  height: 130rpx;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+}
+
+.popup-window-bg {
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+}
+ 
+.popup-window {
+  background: white;
+  position: fixed;
+  top: 20%;
+  left: 7%;
+  width: 86%;
+  z-index: 10001;
+  border-radius: 5%;
+}
+
+.tip {
+  position: absolute;
+  top: 150rpx;
+  right: 0rpx;
+
+}
+
+.bck {
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/搜索指南.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 400rpx;
+}
+
+
+.search-view {
+  height: 130rpx;
+  width: 96%;
+  background-color: #D09352;
+  /* background-color:#218C78; */
+  /* background-color:#00D3C4; */
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
+  float: left;
+}
+
+.selectCity {
+  height: 115rpx;
+  width: 19%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+}
+
+.index {
+  text-align: center;
+  font-size: 30rpx;
+  color: white;
+  line-height: 30rpx;
+  width: 95%;
+}
+
+.location {
+  width: 100%;
+}
+
+
+.search {
+  height: 115rpx;
+  width: 80%;
+  float: left
+}
+
+.search-input { 
+  background: rgb(254, 250, 245);
+  border: 1rpx solid #fff;
+  color: #000;
+  display: flex;
+  width: 98%;
+  height: 50rpx;
+  background: rgb(254, 250, 245);
+  border-radius: 18rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-input .placeholder-color {
+  color: #757575;
+}
+
+.search-view .index image {
+  height: 30rpx;
+  width: 44rpx;
+  align-self: center;
+}
+
+view.search-input input {
+  font-size: 30rpx;
+  width: 90%;
+}
+
+.search-input image {
+  height: 30rpx;
+  width: 30rpx;
+  align-self: center;
+}
+
+.view-button {
+  display: flex;
+  flex-direction: row;
+  height: 50rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-button image {
+  height: 30rpx;
+  width: 30rpx;
+  margin-left: 10rpx;
+  margin: 0;
+}
+
+view.view-button button {
+  float: left;
+  width: 23%;
+  height: 43rpx;
+  font-size: 26rpx;
+  color: white;
+  border: none;
+  line-height: 43rpx;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  background-color: #218C78;
+  margin-right: 10rpx;
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  justify-content: center;
+
+}
+
+.button-hover {
+  background-color: rgb(9, 198, 170) !important;
+}
+
+
+
+
+.wxSearch {
+  position: absolute;
+  top: 86rpx;
+  left: 0;
+  width: 100%;
+  height: 99.5%;
+  border-top: 1px #eee solid;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+.searchButton {
+  display: flex;
+  width: 100%;
+  height: 60rpx;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchButton button {
+  float: left;
+  height: 46rpx;
+  line-height: 46rpx;
+  width: 22%;
+  font-size: 25rpx;
+  background-color: rgb(255, 214, 98);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.searchButton image {
+  height: 30rpx;
+  width: 30rpx;
+  margin: 0;
+}
+
+
+
+/** 搜索框下面的提示区域 */
+.wxSearchInner {
+  height: 98%;
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img8.png');
+  background-size: 100% 100%;
+}
+
+/** 搜索热点标题 */
+.wxSearchTitle {
+  display: block;
+  /* padding: 20rpx 10rpx 10rpx 10rpx; */
+  font-size: 26rpx;
+  text-align: left;
+  font-weight: bold;
+}
+
+/** 提示样式 */
+.wxSearchMindKeyItem {
+  padding: 20rpx 10rpx 20rpx 30rpx;
+  margin-left: 20rpx;
+  border-bottom: 1rpx solid #eee;
+  display: flex;
+  font-size: 26rpx;
+}
+
+.wxSearchKey {
+  background: #fff;
+  padding: 2% 3%;
+  margin: 3% 3%;
+  width: 88%;
+  border-radius: 5rpx;
+  box-shadow: 0rpx 5rpx 10rpx 8rpx #e4e4e4;
+}
+
+/** 标签样式 */
+.wxSearchKeyList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* border-bottom: 1rpx solid #eee; */
+}
+
+.div-translucent {
+  filter: alpha(Opacity=80);
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+
+/** 标签样式 */
+.wxSearchKeyItem {
+  font-size: 28rpx;
+  text-align: center;
+  border: 1rpx solid rgb(243, 241, 241);
+  margin: 10rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 18rpx;
+  max-width: 100%;
+  background-color: rgb(243, 241, 241);
+
+}
+
+/** 搜索热点标题栏 */
+.wxSearchHotkeyItem {
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+  padding-right: 10rpx;
+  padding-bottom: 10rpx;
+  display: flex;
+  /* border-top: 2rpx  solid rgb(243, 241, 241) */
+}
+
+.wxSearchHistory {
+  padding: 2% 3%;
+  width: 88%;
+  margin: 3% 3%;
+  background: #fff;
+  border-radius: 5rpx;
+  box-shadow: 0rpx 5rpx 10rpx 8rpx #e4e4e4;
+}
+
+/** 搜索记录标题栏 */
+.wxSearchHistoryItem {
+  padding-left: 20rpx;
+  padding-top: 20rpx;
+  padding-right: 10rpx;
+  padding-bottom: 10rpx;
+  display: flex;
+
+}
+
+/** 搜索记录标题 */
+.wxSearchHistoryItemTitle {
+  flex: 8;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+/** 搜索记录删除按钮 */
+.wxSearchHistoryItemDel {
+  flex: 1;
+  font-size: 26rpx;
+  text-align: center;
+  padding-top: 4rpx;
+  padding-bottom: 4rpx;
+  border: 1rpx solid #eee;
+  border-radius: 4rpx;
+}
+
+/****************************  附近餐厅样式   ********************/
+.nearbyStore {
+  padding-bottom: 10rpx;
+  height: 110rpx;
+  width: 98%;
+  margin: 2% 1.5% 1% 1.5%;
+  border-radius: 5rpx;
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img11.png');
+  background-size: 100% 100%;
+
+}
+
+.nearbyStoreTap {
+  color: red;
+  height: 110rpx;
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+/** 附近餐厅字体样式 */
+.nearbyStoreFont {
+  font-size: 30rpx;
+  font-weight: bold;
+
+}
+
+
+/** 附近餐厅右箭头icon样式 */
+.nearbyStoreArrow {
+  width: 20rpx;
+  height: 20rpx;
+  border-top: 2px solid red;
+  border-right: 2px solid red;
+  position: absolute;
+  right: 40rpx;
+  transform: rotate(45deg);
+}
+
+
+
+/**                 最近使用的餐厅样式                */
+.recentStore {
+  margin: -1% 3% 3% 3%;
+  height: 280rpx;
+  width: 88%;
+  padding: 2% 3%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5rpx;
+  background: #fff;
+  box-shadow: 0rpx 5rpx 10rpx 8rpx #e4e4e4;
+}
+
+/** 最近使用的餐厅点击区域样式 */
+.recentStoreTap {
+  height: 45rpx;
+  width: 93%;
+  padding-left: 20rpx;
+  padding-top: 20rpx;
+  padding-right: 10rpx;
+
+
+}
+
+.recentStoreList {
+  height: 145rpx;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+
+}
+
+/** 最近使用的餐厅标题样式 */
+.recentStoreTitle {
+  flex: 8;
+  font-size: 26rpx;
+  font-weight: bold;
+
+}
+
+.recentStoreImages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 140rpx;
+  width: 100rpx;
+  margin: 13rpx;
+
+}
+
+.recentStoreImage {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50%;
+
+
+}
+
+.recentStoreName {
+  font-size: 20rpx;
+  max-width: 120rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  white-space: nowrap;
+
+}
+
+
+/**               我的餐厅样式              */
+.frequentlyRestore {
+  height: 138rpx;
+  width: 88%;
+  margin: 3% 3%;
+  padding: 2% 3%;
+  display: flex;
+  background: #fff;
+  box-shadow: 0rpx 5rpx 10rpx 8rpx #e4e4e4;
+  border-radius: 5rpx
+}
+
+.frequentlyRestoreTap {
+  padding-left: 20rpx;
+  padding-top: 10rpx;
+  padding-right: 10rpx;
+  padding-bottom: 10rpx;
+  height: 45rpx;
+  width: 100%;
+
+}
+
+/** 最近使用的餐厅标题样式 */
+.frequentlyRestoreTitle {
+  flex: 8;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.frequentlyList {
+  height: 70rpx;
+  width: 100%;
+  display: flex;
+  white-space: nowrap
+}
+
+.frequentlyRestoreItems {
+  max-width: 240rpx;
+  display: inline-block;
+}
+
+.frequentlyRestoreItem {
+  border: 1rpx solid rgb(243, 241, 241);
+  margin: 10rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 18rpx;
+  background-color: rgb(243, 241, 241);
+  font-size: 26rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  white-space: nowrap;
+  text-align: center;
+}
+
+
+
+
+
+
+
+/** ---------------------- 以下是搜索框的 we-ui 样式--------------------------------*/
+
+/*!
+ * WeUI v1.1.1 (https://github.com/weui/weui-wxss)
+ * Copyright 2017 Tencent, Inc.
+ * Licensed under the MIT license
+ */
+
+.weui-search-bar {
+  position: relative;
+  padding: 16rpx 20rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  box-sizing: border-box;
+  background-color: #efeff4;
+  border-top: 1rpx solid #d7d6dc;
+  border-bottom: 1rpx solid #d7d6dc;
+}
+
+.weui-icon-search {
+  margin-right: 16rpx;
+  font-size: inherit;
+}
+
+.weui-icon-search_in-box {
+  position: absolute;
+  left: 20rpx;
+  top: 14rpx;
+}
+
+.weui-search-bar__text {
+  display: inline-block;
+  font-size: 28rpx;
+  vertical-align: middle;
+}
+
+.weui-search-bar__form {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: auto;
+  flex: auto;
+  border-radius: 10rpx;
+  background: #fff;
+  border: 1rpx solid #e6e6ea;
+}
+
+.weui-search-bar__box {
+  position: relative;
+  padding-left: 60rpx;
+  padding-right: 60rpx;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.weui-search-bar__input {
+  height: 56rpx;
+  line-height: 56rpx;
+  font-size: 28rpx;
+}
+
+.weui-icon-clear {
+  position: absolute;
+  margin-left: 250rpx;
+}
+
+.weui-search-bar__label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  border-radius: 6rpx;
+  text-align: center;
+  color: #9b9b9b;
+  background: #fff;
+  line-height: 56rpx;
+}
+
+.weui-search-bar__cancel-btn {
+  margin-left: 20rpx;
+  line-height: 56rpx;
+  color: #09bb07;
+  white-space: nowrap;
+}
+
+.box-div {
+  background: rgb(254, 250, 245)
+}

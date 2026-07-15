@@ -1,0 +1,152 @@
+var filters = {
+    toFix: function (value) {
+      return Math.round(value*1000)/100
+    },
+    Time:function(value){
+      var a = value.split('T')[0];
+      return a
+    },
+    Time2:function(value){
+    return value != undefined ? value.substring(0, 10) : value
+    },
+    dishes_unit:function(value,value2){
+      var a = value;
+      var b = value2;
+      if(b == 2){
+        return a
+      }else{
+        return '套'
+      }
+    },
+    
+  people:function(value,value2){
+    var a = value
+    var b = ''
+    var c = value2
+    if(c == '2'){
+      b = '[菜品]'
+    }else{ 
+      switch(a){
+        case 1:
+        b = '[单人]';
+        break;
+        
+        case 2:
+        b = '[双人]'
+        break;
+        
+        case 3:
+        b = '[3~4人]'
+        break;
+        
+        case 5:
+        b = '[5~6人]'
+        break;
+        
+        case 7:
+        b = '[7~8人]'
+        break;
+        
+        case 9:
+        b = '[9~10人]'
+        break;
+        
+        case 11:
+        b = '[10人以上]'
+        break;
+
+      }
+    }
+    return b
+  }
+}
+var sub = function(val) {
+  if (val.length == 0 || val == undefined) {
+    return;
+  }
+  if (val.length > 17) {
+    if(val.substring(val.length-2, val.length) =='\r\n'){
+      return val.substring(0, val.length-6) +'big';
+    }else{
+    return val.substring(0, val.length-4) +'big';
+    }
+  } else {
+    return val;
+  }
+}
+
+var formatDate = function (datetime) {
+  var date = getDate(datetime);
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  return [year, month, day].map(formatNumber).join('-');
+}
+var formatNumber = function (n) {
+  n = n.toString()
+  return n[1] ? n : '0' + n
+}
+var usefulDate = function (usefulDate) {
+  var shit = ['1,2,3,4,5,6,7','1,2,3,4,5,6','1,2,3,4,5','1,2,3,4','1,2,3','1,2','2,3,4,5,6,7','2,3,4,5,6','2,3,4,5','2,3,4','2,3','3,4,5,6,7','3,4,5,6','3,4,5','4,5','5,6,7','5,6','6,7']
+    if(shit.indexOf(usefulDate) != -1){
+      var day = usefulDate.substring(0,1).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六') + ' 至 周'+ usefulDate.substring(usefulDate.length-1,usefulDate.length).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六').replace('7','日')
+      return '周'+day+' 可用'
+    }
+    var usefulDate = usefulDate.split(',')
+    var day = ''
+    if(usefulDate.indexOf('1') != -1){
+      day += '一、'
+    }
+    if(usefulDate.indexOf('2') != -1){
+      day += '二、'
+    }
+    if(usefulDate.indexOf('3') != -1){
+      day += '三、'
+    }
+    if(usefulDate.indexOf('4') != -1){
+      day += '四、'
+    }
+    if(usefulDate.indexOf('5') != -1){
+      day += '五、'
+    }
+    if(usefulDate.indexOf('6') != -1){
+      day += '六、'
+    }
+    if(usefulDate.indexOf('7') != -1){
+      day += '日、'
+    }
+    // console.log(day)
+    return '周'+day.substring(0,day.length-1)+'可用'
+  
+    //别人拉屎我也拉，我直接拉一大坨
+}
+
+var substr = function(val) {
+
+  if (val.length == 0 || val == undefined) {
+  
+  return false;
+  
+  } else if (val.length > 8) {
+  
+  return val.substring(0,8) + "...";
+  
+  }else{
+  
+  return val;
+  
+  }
+  
+  }
+
+module.exports = {
+  formatDate: formatDate,
+  sub:sub,
+  Time:filters.Time,
+  usefulDate:usefulDate,
+  substr:substr,
+  toFix: filters.toFix,toNumber: filters.toNumber,
+  people:filters.people,
+  Time2:filters.Time2,
+  dishes_unit:filters.dishes_unit
+}

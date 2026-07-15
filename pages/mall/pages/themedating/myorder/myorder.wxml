@@ -1,0 +1,108 @@
+<view class="container">
+  <!-- 搜索头部 -->
+  <view class="search-panel">
+    <text class="search-title">订单查询：</text>
+    <view class="search-row">
+      <text class="search-label">活动名称：</text>
+      <input class="search-input" placeholder="请输入活动名称" value="{{titleKeyword}}" data-field="titleKeyword" bindinput="onSearchInput" style="padding-top: 1rpx; padding-bottom: 1rpx;" />
+    </view>
+    <view class="search-row">
+      <text class="search-label">活动日期：</text>
+      <picker mode="date" value="{{dateStart}}" bindchange="onDateStartChange">
+        <view class="date-val {{dateStart ? '' : 'placeholder'}}">{{dateStart || '开始日期'}}</view>
+      </picker>
+      <text class="date-sep">-</text>
+      <picker mode="date" value="{{dateEnd}}" bindchange="onDateEndChange">
+        <view class="date-val {{dateEnd ? '' : 'placeholder'}}">{{dateEnd || '结束日期'}}</view>
+      </picker>
+    </view>
+    <view class="search-row search-btn-row">
+      <view class="search-btn {{hasFilter ? 'btn-clear-active' : 'btn-clear-disabled'}}" style="letter-spacing:2rpx;text-indent:2rpx;" bindtap="onClear">清 空</view>
+      <view class="search-btn btn-search" style="letter-spacing:2rpx;text-indent:2rpx;" bindtap="onSearch">查 询</view>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view wx:if="{{orderList.length > 0}}">
+    <view class="order-card" wx:for="{{orderList}}" wx:key="id">
+      <view class="card-row">
+        <text class="card-label">订单编号：</text>
+        <text class="card-text card-id">{{item.outTradeNo || '—'}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">活动名称：</text>
+        <text class="card-text">{{item.title || '—'}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">活动类型：</text>
+        <text class="card-text">{{item.activityTypeText}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">活动时间：</text>
+        <text class="card-text">{{item.activityTimeStr || '—'}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">活动地点：</text>
+        <scroll-view scroll-x class="card-scroll">
+          <text class="card-scroll-text">{{item.location || '—'}}</text>
+        </scroll-view>
+      </view>
+      <view class="card-row">
+        <text class="card-label">活动费用：</text>
+        <text class="card-text">{{item.amount}}元</text>
+        <text class="card-label" style="margin-left:-50rpx;">订单状态：</text>
+        <text class="card-text">{{item.orderStatusText}}</text>
+      </view>
+      <view class="card-row">
+        <text class="card-label">支付状态：</text>
+        <text class="card-text {{item.payStatus === 0 ? 'status-unpaid' : item.payStatus === 1 ? 'status-paid' : 'status-refunded'}}">{{item.payStatus === 0 ? '待支付' : item.payStatus === 1 ? '已支付' : '已退款'}}</text>
+        <view wx:if="{{item.payStatus === 0}}" class="btn-pay" bindtap="onPay" data-item="{{item}}" style="letter-spacing:2rpx;text-indent:2rpx;">支 付</view>
+      </view>
+      <view class="card-row">
+        <text class="card-label">下单日期：</text>
+        <text class="card-text">{{item.createTimeStr || '—'}}</text>
+      </view>
+      <view wx:if="{{item.refundStatus === 3}}" class="refund-reject-box">
+        <text class="refund-reject-title">退款审核结果</text>
+        <view class="refund-reject-row">
+          <text class="refund-reject-label">审核人：</text>
+          <text class="refund-reject-val">{{item.refundAuditBy || '—'}}</text>
+        </view>
+        <view class="refund-reject-row">
+          <text class="refund-reject-label">审核时间：</text>
+          <text class="refund-reject-val">{{item.refundAuditTimeStr || '—'}}</text>
+        </view>
+        <view class="refund-reject-row">
+          <text class="refund-reject-label">拒绝原因：</text>
+          <text class="refund-reject-val">{{item.refundAuditReason || '—'}}</text>
+        </view>
+      </view>
+      <view class="card-actions">
+        <view class="btn-refund {{item.isHighlight ? 'btn-refund-highlight' : ''}}" style="visibility: {{item.payStatus === 1 ? 'visible' : 'hidden'}}; pointer-events: {{item.payStatus === 1 ? 'auto' : 'none'}};" bindtap="onRefund" data-item="{{item}}">退款申请</view>
+        <view class="btn-edit" bindtap="onDetail" data-item="{{item}}">活动详情</view>
+        <view class="btn-edit" bindtap="onNavigate" data-item="{{item}}">导航</view>
+        <view class="btn-edit" bindtap="onEdit" data-item="{{item}}">{{item.canEdit ? '修改订单' : '查看订单'}}</view>
+      </view>
+    </view>
+    <view wx:if="{{loading}}" class="list-loading">加载中...</view>
+    <view wx:elif="{{orderList.length >= total && total > 0}}" class="list-end">没有更多了</view>
+  </view>
+  <view wx:elif="{{loading}}" class="empty-tip">加载中...</view>
+  <view wx:else class="empty-tip">暂无订单记录</view>
+
+  <!-- 退款弹窗 -->
+  <view wx:if="{{refundModal}}" class="modal-mask" bindtap="onCloseRefund">
+    <view class="modal-box" bindtap="stopPropagation" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">退款申请</text>
+        <text class="modal-close" catchtap="onCloseRefund">✕</text>
+      </view>
+      <view class="modal-body">
+        <textarea class="refund-textarea" placeholder="请输入退款原因" value="{{refundReason}}" bindinput="onRefundReasonInput" maxlength="200" catchtap="stopPropagation" />
+      </view>
+      <view class="modal-submit-row">
+        <view class="search-btn" style="letter-spacing:2rpx;text-indent:2rpx;" catchtap="onSubmitRefund">提 交</view>
+      </view>
+    </view>
+  </view>
+</view>

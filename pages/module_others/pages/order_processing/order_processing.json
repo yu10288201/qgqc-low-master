@@ -1,0 +1,16 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#009AA2",
+  "navigationBarTitleText": "来料加工",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "s-popup_taste":"/components/popup_taste/popup_taste",
+    "s-remakNormalView":"/components/remakNormalView/remakNormalView",
+    "s-remarkView":"/components/remarkView/index",
+    "s-multipleEatMethodAndWeightSideDishesView":"/components/multipleEatMethodAndWeightSideDishesView/multipleEatMethodAndWeightSideDishesView",
+    "s-multipleEatMethodViewAndWeight":"/components/multipleEatMethodViewAndWeight/multipleEatMethodViewAndWeight",
+    "s-remarkView_new":"/components/remarkView_new/index"
+  }
+}

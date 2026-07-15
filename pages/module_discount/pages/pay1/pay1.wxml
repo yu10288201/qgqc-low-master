@@ -1,0 +1,46 @@
+<!--pages/pay/pay.wxml-->
+<wxs module="filters" src="pay1.wxs"></wxs>
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+  <view class='search-view'>
+    <text style="margin-left:20rpx">订单支付</text>
+  </view>
+</view>
+
+<view class="money">￥{{filters.toFix(actualSum)}}<text style="margin-left: 15rpx;">元</text></view>
+<!-- <view wx:else class="money">￥{{filters.toFix(order_total*0.01)}}<text style="margin-left: 15rpx;">元</text></view> -->
+
+<view class='payrec' style="border-top: 1px solid #ccc;margin-top:60rpx">
+  <text class='text1' style="padding-top: 20rpx;">收款方：</text>
+  <text class='text2' style="padding-top: 20rpx;">{{shopName}}</text>
+</view>
+<view class='payrec' style="border-bottom: 1px solid #ccc;">
+  <text class='text1' style="padding-bottom: 20rpx;">订单号：</text>
+  <text class='text2' style="padding-bottom: 20rpx;">{{order_code}}</text>
+</view>
+
+
+<!-- <button style='margin-top:20px' class='payBtn' type="primary" bindtap='pay2'>付 款</button> -->
+<button style='margin-top:20px' class='payBtn' type="primary" bindtap='pay1'>付 款</button>
+<view style="height: 300rpx;width: 100%;display: flex;justify-content: center;margin-top: 40rpx;">
+  <view style="display: flex;flex-direction: column;width: 93%;background-color: #f2f2f2;border-radius: 10rpx;padding: 20rpx 20rpx;">
+    <view style="font-size: 34rpx;font-weight: bolder;">关注"切瓜切菜"公众号可获得:</view>
+    <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">每次消费都有"关注公众号优惠价"的优惠;</view>
+    </view>
+    <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">可享受加入"切瓜切菜"平台的所有商家的"关注公众号优惠价"优惠;</view>
+    </view>
+    <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">一次关注长期有效(取消关注除外);</view>
+    </view>
+    <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">及时精准地接收您所需要的商家优惠信息;</view>
+    </view>
+  </view>
+</view>
+<view class='adv'>
+  <swiper class='swiperview' interval='2000' autoplay="true" circular="true" indicator-dots="{{imgUrls}}" indicator-color="#666" indicator-active-color="red">
+    <swiper-item>
+      <image src="http://img0.imgtn.bdimg.com/it/u=1549323940,1972420322&fm=26&gp=0.jpg" mode="aspectFill" class="slide-image" />
+    </swiper-item>
+  </swiper>
+
+
+
+</view><!-- adv  -->

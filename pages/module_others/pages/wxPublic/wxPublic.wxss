@@ -1,0 +1,255 @@
+/*ATim--11-18放大缩小动画特效*/
+#guide {
+    position: relative;
+    animation: mymove 5s infinite;
+    -webkit-animation: mymove 5s infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    -webkit-animation: mymove 5s infinite;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-timing-function: ease-in-out;
+}
+
+@keyframes mymove {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+}
+
+@-webkit-keyframes mymove {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+}
+
+/*ATim--11-18放大缩小动画特效*/
+
+
+.page {
+    height: 100vh;
+    background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/appimg/wxpublic.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    width: 100%;
+}
+
+.wxPublic {
+    z-index: -1;
+    display: flex;
+    flex-direction: column;
+    height: 120vh;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.listButton {
+    background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_green.png") no-repeat;
+    /* background:url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/buttom_right_down.png") no-repeat; */
+    border-radius: 20px;
+    background-size: 100% 100%;
+    line-height: 50rpx;
+    width: 300rpx;
+    font-size: 25rpx;
+    height: 50rpx;
+    border: none;
+    text-align: center;
+    line-height: 54rpx;
+    font-weight: bolder;
+    color: #fff;
+    border: 0;
+    margin: 0;
+}
+
+
+.header {
+    width: 90%;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 10rpx;
+}
+
+.header_text {
+    font-weight: 900;
+    color: rgb(134, 75, 60);
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 95%;
+}
+
+.middle_text1 {
+    color: rgb(128, 81, 27);
+    font-weight: 900;
+}
+
+.middle_text2 {
+    margin: 4rpx 0 10rpx 64rpx;
+    color: rgb(128, 81, 27);
+    font-weight: 900;
+}
+
+.listBox {
+    width: 100%;
+    border-radius: 10rpx;
+    height: 420rpx;
+    background-color: rgb(253, 250, 245);
+    border: 1px solid rgb(128, 81, 27);
+}
+
+.listBox_1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.listBox_1_1 {
+    height: 60rpx;
+    border-bottom: 1rpx solid rgb(128, 81, 27);
+    border-right: 1rpx solid rgb(128, 81, 27);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.listBox_1_1_text {
+    font-size: 30rpx;
+    color: rgb(105, 56, 1);
+}
+
+.lower {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* margin-top: 30rpx; */
+    font-family: SimSun;
+}
+
+.shadow {
+    width: 95%;
+    height: 10rpx;
+    background-color: rgb(196, 196, 196);
+}
+
+.btn {
+    background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/appimg/wxpublic_20211027175711.png")no-repeat;
+    width: 380rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10rpx;
+    font-size: 40rpx;
+    height: 100rpx;
+    color: white;
+    font-weight: bold;
+    background-size: 100% 100%;
+}
+
+
+.window-bg {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}
+
+.window {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    top: 50%;
+    right: 3%;
+    width: 94%;
+    height: 37%;
+    background: white;
+    border-radius: 15rpx;
+    position: absolute;
+}
+
+.window-item {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    align-items: center;
+}
+
+.window-item-content {
+    font-size: 38rpx;
+    /* 宋体 */
+    font-family: SimSuncss;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+}
+
+.btn-bar {
+    display: flex;
+    width: 100%;
+}
+
+.cancelBtn {
+    margin: 0%;
+    padding: 0;
+    background-color: rgba(255, 60, 0, 0.76);
+    width: 25%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    color: #ffffff;
+}
+
+.confirmBtn {
+    margin: 0%;
+    padding: 0;
+    background-color: #2bca52;
+    width: 25%;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    font-size: 32rpx;
+    color: white;
+}

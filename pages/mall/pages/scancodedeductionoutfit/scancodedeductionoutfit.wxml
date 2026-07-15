@@ -1,0 +1,55 @@
+<view class="box">
+ <view class="box-top">
+  <view class="box-top-comtainer">
+    <view style="width:100%;display:flex;justify-content: center;align-items: center;color: rgb(81,59,38);font-size: 36rpx;font-weight: 550;">{{rule_name}} </view>
+    <view class='top-oneline' style='margin-top: 10rpx;'>
+      <view style="margin-left: 20rpx;">
+        当前账号余额:
+      </view>
+    
+    </view>
+    <view class='top-oneline' style='margin-top: 10rpx;'>
+      <view style="margin-left: 20rpx;">
+        现金:{{mall_member_total_recharge_amount}}元
+      </view>
+      <view style="margin-left: 20rpx;">
+        代金券:{{total_color_global_voucher}}元
+      </view> 
+    </view>
+    <view class='top-oneline' style='margin-top: 20rpx;'>
+      <view style="margin-left: 20rpx;">
+        试衣会员充值:
+      </view>    
+      <input model:value="{{recharge_amount}}"  style="width: 120rpx;border: 1rpx solid rgb;background-color: #fff;margin-left:20rpx;margin-right: 20rpx;"/>
+        元
+    </view>
+
+  </view>
+ 
+ </view>
+ <view class="box-rule">
+    <view style="width:100%;height:100%;display: flex;flex-direction: column;align-items: center;;background-color: rgb(254,251,247);border: 1rpx solid rgb(238,223,206);border-radius: 10rpx;">
+      <view class='title text5' style='width:96%;margin-top: 10rpx;'>试衣会员充值规则:</view>
+      <scroll-view style="flex: 1;border: #f2f2f2 1rpx solid;width: 96%;margin-bottom: 10rpx;">
+        <view >
+                <text style="font-size:32rpx;">{{rule_content}}</text>
+              </view>
+      </scroll-view>
+
+    </view>
+ </view>
+ <view class="box-footer">
+  <view class="box-footer-div" style="background-color: #f2f2f2;width: 100%;">
+    <button catch:tap='checkIsVip' class='btn' >
+          <text style="text-shadow: 1px 2px 1px #222;">微信充入</text></button>  
+  </view>
+  <view class='box-footer-div' style="background-color: #f2f2f2;">
+      <view style="font-size: 23rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+        <checkbox-group bindchange="checkChange" style="display: flex;flex-direction: row;align-items: center;justify-content: center;width:100vw;">
+          <checkbox style="transform:scale(0.75,0.75);" value="1"></checkbox><view >已阅读并同意</view><view catch:tap="openRuleFile" style="color: blue;text-decoration:underline;">试衣会员充值规则</view>
+        </checkbox-group>
+      </view>
+    
+    </view>
+ </view>
+</view>

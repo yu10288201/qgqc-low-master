@@ -1,0 +1,67 @@
+/* pages/guide/guide.wxss */
+.page{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display:flex;
+  flex-direction:column;
+
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/guide.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.index{
+  border: 5rpx solid #FFED99;
+  border-radius: 10%;
+  width: 90%;
+  height: 500rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 30%;
+}
+.shop_name{
+  font-size: 70rpx;
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #FFED99;
+}
+.welcome{
+  font-size: 60rpx;
+  height: 20%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #FFED99;
+}
+.btn{
+  height: 40%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  padding-top: 120%;
+}
+.btn1{
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/index/guide_bottom.png');
+  width: 200rpx;
+  font-weight: bold;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  height: 80rpx;
+  line-height: 70rpx;
+  color: black;
+  border: none;
+  font-size: 32rpx;
+}
+
+.btn1::after{
+  border: none;
+}

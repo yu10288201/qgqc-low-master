@@ -1,0 +1,45 @@
+<!--pages/pay/pay.wxml-->
+<view class='wrap'>
+    <view class='pay'>
+      <text class='storename' style="color: rgb(3,82,86);font-size: 40rpx;font-weight: 600;margin-top: 20rpx;">{{shop_name}}</text>
+      
+      <text class='money' style="color: rgb(255,150,0);;margin: 60rpx 0rpx;">￥{{total_amount}}</text>
+     
+      <view class='payrec'>
+          <text class='text1'>收款方：</text>
+           <text class='text2'>{{shop_name}}</text>
+      </view>
+      <view class='paynum'>
+          <text class='text1'>订单号：</text>
+           <text class='text2'>{{order_code}}</text>
+      </view>
+       <!-- <button class='payBtn' type="primary" bindtap='pay'>立即支付</button> -->
+       <button style='margin-top:60rpx' class='payBtn' type="primary" bindtap='pay2'>付 款</button>
+   
+    </view>
+    <!-- <view class='adv'> -->
+      
+      <!-- <swiper class='swiperview' interval='2000' autoplay="true" circular="true" indicator-dots="{{imgUrls}}" 
+      indicator-color="#666" indicator-active-color="red">
+        <block wx:for="{{imgUrls}}" wx:key="index">
+          <swiper-item>
+            <image src="{{item}}" class="slide-image"/>
+          </swiper-item>
+        </block>
+      </swiper> -->
+     
+    <!-- </view> -->
+    <view style="background-color: rgb(242,250,248);padding: 15rpx;margin-top:20rpx;width:90%;border-radius: 10rpx;box-shadow: 5rpx 5rpx 5rpx #dddddd;">
+      <view style='font-size:32rpx;margin-left:40rpx'></view>
+      <view class='content go-center'>
+          <image  src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/pay/bg2.png" style='font-size:28rpx;background:#ffffff;margin:20rpx;border: 1rpx solid rgb(53,156,112);height:180rpx'></image>
+      </view>
+    </view>
+
+    <view style="background-color: rgb(242,250,248);padding: 15rpx;margin:20rpx 0rpx;width:90%;border-radius: 10rpx;box-shadow: 5rpx 5rpx 5rpx #dddddd;">
+      <view style='font-size:32rpx;margin-left:40rpx'></view>
+      <view class='content go-center'>
+          <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/pay/bg1.png" style='font-size:28rpx;background:#ffffff;margin:20rpx;border: 1rpx solid rgb(53,156,112);height:180rpx'></image>
+      </view>
+    </view>
+</view>

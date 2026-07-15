@@ -1,0 +1,170 @@
+<!--固定置顶条-->
+<view style="display: flex;flex-direction: column;padding: 0; margin: 0;width: 100vw;height: 100vh;">
+
+  <view class="top">
+        <!--搜索条件-->
+        <view style="margin-top:20rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;align-items: center;"> 
+            <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">日期:</text>
+            <picker mode="date" value="{{begin_date}}" bindchange="bindBeginDateChange">
+              <view class="date-picker">
+                <text style='margin-left: 10rpx;'>{{begin_date}}</text>
+              
+                <text style='color:gray;margin-right: 10rpx;'>▼</text>
+              </view>
+            </picker>
+            <text style="margin:0 20rpx;font-size: 26rpx;">至</text>
+            <picker mode="date" value="{{end_date}}" bindchange="bindEndDateChange" >
+              <view class="date-picker" >
+                <text style='margin-left: 10rpx;'>{{end_date}}</text>
+              <text style='color:gray;margin-right: 10rpx;'>▼</text>
+              </view>
+            </picker>
+          </view>
+        </view>
+        
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">区域:</text>
+              <input model:value="{{region}}" style="background-color: #fff;width: 480rpx;border:1rpx solid #ccc;border-radius: 10rpx;height: 40rpx;font-size: 26rpx;" />
+           </view>
+          </view>
+        </view>
+
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">商家:</text>
+              <input model:value="{{shop_name}}" style="background-color: #fff;width: 480rpx;border:1rpx solid #ccc;border-radius: 10rpx;height: 40rpx;font-size: 26rpx;" />
+           </view>
+          </view>
+        </view>
+
+        <!-- <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">入口:</text>
+                <picker bindchange="bindQueryQxPyqPickerChange" value="{{index}}" range="{{query_wx_pyq_array}}" style="background-color: #fff;width: 140rpx;border:1rpx solid #ccc;border-radius: 10rpx;height: 40rpx;font-size: 26rpx;">
+                        <view class="flex-row flex-align-items-center" style="width: 100%;height: 40rpx;font-size: 26rpx;">
+                            <view style="flex: 1;height: 40rpx;font-size: 26rpx;padding-left: 10rpx;">
+                                {{query_wx_pyq_name}}
+                            </view>
+                            <view class="flex-column flex-center">
+                                <image style="width: 32rpx;height: 32rpx;margin-top: 5rpx;margin-right: 5rpx;" src="{{downSVGIcon}}"/>
+                            </view>
+                        </view>
+                </picker>
+                <text style="margin-right: 10rpx;font-weight: 600;font-size: 26rpx;margin-left: 100rpx;">分享范围:</text>
+                <text wx:if="{{listIndex>=0&&current_item&&current_item.is_wx==1}}" style="font-size: 26rpx;margin-left: 10rpx;">微信</text>
+                <text wx:if="{{listIndex>=0&&current_item&&current_item.is_pyq==1}}" style="font-size: 26rpx;margin-left: 20rpx;">朋友圈</text>
+           </view>
+
+          </view>
+        </view> -->
+        
+
+        <!--搜索按钮-->
+        <view style="margin-bottom:15rpx;margin-top:15rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: flex-end;padding: 0rpx 5rpx;">
+          <view catch:tap="reSetData" style="height: 52rpx; color: white;background-color:coral;;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 26rpx;">
+            清空
+          </view>
+          <view catch:tap="selectData" style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 26rpx;margin-left: 30rpx;">
+            查询
+          </view>
+        </view>
+
+        
+        <!--导航栏-->
+  </view>
+
+  <view style="margin-top:10rpx;width: 95%;margin-left: 2.5%;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: space-between;"> 
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                  <text style="font-weight: 600;font-size: 26rpx;margin-right: 10rpx;">日期:</text>
+                  <text wx:if="{{current_item}}" style="font-size: 26rpx;">{{current_item.create_date_str}}</text>
+              </view>
+              
+          </view>
+  </view>
+
+  <!--查询结果-->
+  <view class='form' style='flex:1;display: flex;flex-direction: column;overflow: hidden;'>
+      <view class='form_tittle'>
+        <view class='th-head' style="text-align: center;width:15%;">
+          <text  class='text'>编码</text>
+        </view>
+        <view class='th-center' style="text-align: center;width:15%;">
+          <text class='text' >类别</text>
+        </view>
+        <view class='th-center' style="text-align: center;width:45%;">
+          <text class='text' >商家</text>
+        </view>
+        <view class='th-end' style="text-align: center;width:25%;">
+          <text class='text'>区域</text>
+        </view>
+      </view>
+      <scroll-view scroll-y='true' style='width:100%;flex:1;overflow: hidden;'
+      bindscrolltolower="scrollToLower">
+        <view class='for' wx:for='{{items}}' wx:key='index' data-index='{{index}}' catch:tap='itemClick'>
+          <view class='td-head' style='width:15%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text>{{item.use_code}}</text>
+          </view>
+          <view class='td-center' style='width:15%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text wx:if="{{item.ding_type==1}}">叮客</text> 
+          <text wx:if="{{item.ding_type==2}}">叮友</text> 
+          <text wx:if="{{item.ding_type==3}}">份数</text> 
+          </view>				
+          <view class='td-center' style='width:45%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+           <text class="td-center1">{{item.shop_name}}</text>
+          </view>
+          <view class='td-end' style='width:25%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+              <text class="td-center1">{{item.region}}</text>
+          </view>
+        </view>
+
+      </scroll-view>
+
+    <!--按钮-->
+    
+
+  </view>
+
+  <view class="bottom-bar">
+    <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;width: 100%;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">叮客:</text>
+              <text style="font-size: 26rpx;" >{{items.length}} 人</text>
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;margin-left:100rpx">区域:</text>
+              <text style="font-size: 26rpx;" >{{region_count}} 个</text>
+           </view>
+          </view>
+    </view>
+   
+  </view>
+</view>
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+ 	
+    
+
+	
+
+
+

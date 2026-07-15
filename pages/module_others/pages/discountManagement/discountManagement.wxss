@@ -1,0 +1,129 @@
+/* pages/module_others/pages/discountManagement/discountManagement.wxss */
+.page {
+  height: 100vh;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg1.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.query {
+  display: flex;
+  width: 100%;
+  height: auto;
+  margin-top: 5rpx;
+}
+
+.top {
+  /* background-color: #009AA2; */
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg3.png") no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.text2 {
+  width: 97rpx;
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 5px;
+  width: 75rpx;
+  height: 75rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}
+
+.inputText {
+  border-radius: 25rpx;
+  border: 1rpx solid rgba(153, 106, 62, 0.281);
+  margin-right: 10rpx;
+  min-height: 1.2rem;
+  height: 50rpx;
+  width: 87px;
+  display: flex;
+  padding-left: 6px;
+}
+
+.text {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.queryButton {
+  height: 70rpx;
+  width: 140rpx;
+  line-height: 60rpx;
+  background: url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/btn2.png);
+  background-size: 100% 100%;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50rpx;
+  border: 0rpx;
+  padding-bottom: 10rpx;
+}
+
+.pop {
+  position: absolute;
+  width: 100vh;
+  height: 100vh;
+  background-color: #000;
+  opacity: 0.4;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.detail {
+  position: absolute;
+  width: 90%;
+  height: 25%;
+  background-color: #fff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  /* padding-top: 20%; */
+  border-radius: 10rpx;
+  z-index: 99;
+}
+
+.detail_box {
+  display: flex;
+  margin: 0 0 0 10rpx;
+  width: 95%;
+  /* justify-content: center; */
+}
+
+.detail_box_box {
+  width: 30%;
+  text-align: right;
+}
+
+.detail_title {
+  font-size: 30rpx;
+  font-weight: 700;
+  margin: 20rpx 0 10rpx 20rpx;
+}
+
+.detail_value {
+  margin-left: 20rpx;
+}
+
+.detail_top {
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,19 @@
+page{
+  /* background-color: #e2e2e2; */
+}
+
+.btn{
+  background-color: #519763;
+  height: 50rpx;
+  line-height: 50rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: white;
+  border-radius: 10rpx;
+}
+
+checkbox .wx-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+}

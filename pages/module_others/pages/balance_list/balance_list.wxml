@@ -1,0 +1,156 @@
+<!--pages/balance_list/balance_list.wxml-->
+
+<wxs module="filters" src="../../../module_discount/pages/ordersdetail/ordersdetail.wxs"></wxs>
+<view class="return_out" bindtap="returnBack">
+  <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+</view>
+
+<view class="return_out" style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+  预存明细
+</view>
+<view class="bg-gray" style="width:100%;height:100%">
+
+  <view class='top'>
+
+    <view style="width:45%;height:20%;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg2.png') no-repeat;background-size: 100% 100%;position: absolute;top: 100rpx;">
+    </view>
+
+    <view class="title" style="margin-top: 30vh;">当前余额:{{existingBalance}}元</view>
+
+    <view style="display: flex;flex-direction: row;width: 90%;">
+      <view style="border: 1px solid #000;width: 30%;display: flex;flex-direction: row;justify-content: center;">
+        <text>日期</text>
+      </view>
+      <view style="border: 1px solid #000;width: 25%;display: flex;flex-direction: row;justify-content: center;">
+        <text>预存/消费</text>
+      </view>
+      <view style="border: 1px solid #000;width: 25%;display: flex;flex-direction: row;justify-content: center;">
+        <text>余额</text>
+      </view>
+      <view style="border: 1px solid #000;width: 20%;display: flex;flex-direction: row;justify-content: center;">
+        <text>状态</text>
+      </view>
+    </view>
+    <scroll-view style="width: 90%;height: 440px;font-size: 30rpx;" scroll-y="true">
+      <view class="prestoreList" wx:for="{{user_record}}" bindtap="chooseList" wx:key="index" data-index="{{index}}">
+        <view style='border: 1px solid #000;width: 30%;{{listIndex==index?"background-color:#d0d0d0;":""}}'>
+          <view>{{item.createTime}}</view>
+        </view>
+        <view style='border: 1px solid #000;width: 25%;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:if="{{item.status == 0}}">
+          <view style="color:#FF0000">-{{item.payMoney}}</view>
+        </view>
+        <view style='border: 1px solid #000;width: 25%;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:if="{{item.status == 1}}">
+          <view style="color: #01af01;">+{{item.payMoney}}</view>
+        </view>
+        <view style='border: 1px solid #000;width: 25%;{{listIndex==index?"background-color:#d0d0d0;":""}}'>
+          <view>{{item.currentBalance}}</view>
+        </view>
+        <view style='border: 1px solid #000;width: 20%;color:#FF0000;font-size: 28rpx;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:if="{{item.confirmStatus == 0}}">
+          <view>未确认</view>
+        </view>
+        <view style='border: 1px solid #000;width: 20%;font-size: 28rpx;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:elif="{{item.confirmStatus == 1}}">
+          <view>已确认</view>
+        </view>
+        <view style='border: 1px solid #000;width: 20%;font-size: 28rpx;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:elif="{{item.confirmStatus == 6}}">
+          <view>全额抵扣</view>
+        </view>
+        <view style='border: 1px solid #000;width: 20%;font-size: 28rpx;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:elif="{{item.confirmStatus == 7}}">
+          <view>部分抵扣</view>
+        </view>
+        <!-- <view style='border: 1px solid #000;width: 20%;font-size: 28rpx;{{listIndex==index?"background-color:#d0d0d0;":""}}' wx:else>
+          <view>未知</view>
+        </view> -->
+      </view>
+    </scroll-view>
+    <view class="prestoreListDetailButton">
+      <view class="prestoreListDetailButton_1" bindtap="openAllDetail">详情</view>
+    </view>
+    <!-- 遮罩层 -->
+    <view class="pop" wx:if="{{openDetail}}" bindtap="clocePop">
+    </view>
+    <!-- 预存详情 -->
+    <view class="detail" wx:if="{{prestoreDetail}}">
+      <view style="border: 2rpx solid #000;width: 93%;margin-left: 3.5%;">
+        <view style="width: 95%;display: flex;flex-direction: row;justify-content: flex-end;margin-top: 15rpx;">
+        <view style="margin-left: 2.5%;width: 60rpx;height: 60rpx;background-color: red;border-radius: 90rpx;line-height: 30px;text-align: center;" bindtap="clocePop">
+          <text style="color: white;">X</text>
+        </view>
+      </view>
+        <view class="detail_1" style="font-weight: 700; font-size: 36rpx;">
+          <text>预存详情</text>
+        </view>
+        <view class="detail_2">
+          <text>当前存入金额：</text>
+          <text>{{addAccountDetail.prestore_money}}</text>
+        </view>
+        <view class="detail_2">
+          <text>赠送：</text>
+          <text>{{addAccountDetail.givingAmount}}</text>
+        </view>
+        <view class="detail_2">
+          <text>存入方式：</text>
+          <text>{{addAccountDetail.mode}}</text>
+        </view>
+        <view class="detail_2">
+          <text>当前余额：</text>
+          <text>{{existingBalance}}</text>
+        </view>
+        <view class="detail_2">
+          <text>顾客编号：</text>
+          <text>{{addAccountDetail.userCode}}</text>
+        </view>        
+        <view class="detail_2">
+          <text>存入日期：</text>
+          <text>{{addAccountDetail.create_time}}</text>
+        </view>        
+        <view class="detail_2">
+          <text>确认人：</text>
+          <text>{{addAccountDetail.confirmBy}}</text>
+        </view>
+        <view class="detail_2" style="margin-bottom: 30rpx;">
+          <text>确认时间：</text>
+          <text>{{addAccountDetail.confirmTime}}</text>
+        </view>
+      </view>
+    </view>
+    <!-- 消费详情 -->
+    <view class="detail" wx:if="{{consumptionDetail}}">
+      <view style="border: 2rpx solid #000;width: 95%;margin-left: 2.5%;">
+        <view style="width: 95%;display: flex;flex-direction: row;justify-content: flex-end;margin-top: 15rpx;">
+        <view style="width: 60rpx;height: 60rpx;background-color: red;border-radius: 90rpx;line-height: 30px;text-align: center;" bindtap="clocePop">
+          <text style="color: white;">X</text>
+        </view>
+      </view>
+        <view class="detail_1">
+          <text>消费详情</text>
+        </view>
+        <view class="detail_2">
+          <text>消费订单号：</text>
+          <text>{{orderDetail.order_code}}</text>
+        </view>
+        <view class="detail_2">
+          <text>消费金额：</text>
+          <text>{{orderDetail.total_amount}}</text>
+        </view>
+        <view class="detail_2">
+          <text>抵扣金额：</text>
+          <text>{{orderDetail.used_prepaid_deposit}}</text>
+        </view>
+        <view class="detail_2">
+          <text>当前余额：</text>
+          <text>{{orderDetail.remain_prepaid_deposit}}</text>
+        </view>
+        <view class="detail_2">
+          <text>商家操作员：</text>
+          <text>{{orderDetail.operator}}</text>
+        </view>
+        <view class="detail_2">
+          <text>操作时间：</text>
+          <text>{{orderDetail.operation_time}}</text>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>
+<!--bg-gray-->

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "distributionCard": "/components/distributionCard/distributionCard",
+    "headPortrait": "/components/headPortrait/headPortrait"
+  }
+}

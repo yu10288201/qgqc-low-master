@@ -1,0 +1,130 @@
+
+<view class='popup-window-bg' wx:if="{{showModalQR}}" bindtap="ycts"></view>
+
+<view class='popup-window' style="height:70%" wx:if="{{showModalQR}}" bindtap="ycts">
+    <view style="display:flex;flex-direction:cloumn;height:100%">
+        <view style="width:100%;height:100%" class="bck"></view>
+    </view>
+</view>
+
+
+<view style="width: 100vw;height: 100vh;display: flex;flex-direction: column;">
+    <view style="position: fixed;top: 0;z-index: 100;width: 100%;height: 150rpx;background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%;display: flex;justify-content: center;align-items: center;">
+        <view style="width: 100%;height: 150rpx;background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img10.png');background-size: 100% 100%;border-top-left-radius: 30rpx;border-top-right-radius: 30rpx;display: flex;">
+            <view style="width: 18%;height: 100%;display: flex;justify-content: center;align-items: center;">
+                <navigator class="location" url="../switchcity/switchcity">
+                    <view class="index">
+                        <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+                            {{isPosition?cityName:'定位'}}
+                        </view>
+                        <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+                            {{countyName}}
+                        </view>
+                        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/down.png' style="height: 30rpx;width: 44rpx; align-self: center;" />
+                    </view>
+                </navigator>
+            </view>
+            <view style="width: 82%;height: 100%;display: flex;align-items: center;justify-content: center;flex-direction: column;">
+                <view class='search-input' style="width: 95%;">
+                    <input type="text" class='input' placeholder-class="placeholder-color" placeholder="请输入餐厅名称、菜品、优惠关键词" value="{{wxSearchData.value}}" bindinput="wxSearchInput" bindconfirm="wxSearchConfirm" focus="{{focus}}" disabled="{{input_bol}}" />
+
+                    <view class="weui-icon-clear" wx:if="{{wxSearchData.value.length > 0}}" bindtap="wxSearchClear">
+                        <icon type="clear" size="14"></icon>
+                    </view>
+                </view>
+                <view class='view-button' style="width: 100%;margin-top: 15rpx;">
+                    <button bindtap="wxSearchConfirm" data-key='dianPu' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/btn.png');background-size:100% 100%;height: 60rpx;display: flex;justify-content: center;align-items: center;font-size: 30rpx;">
+                        <view style="margin-bottom: 5rpx;">店铺</view>
+                        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search2.png' style="margin-left: 10rpx;margin-bottom: 5rpx;" />
+                    </button>
+                    <button bindtap="wxSearchConfirm" data-key='caiPin' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/btn.png');background-size:100% 100%;height: 60rpx;display: flex;justify-content: center;align-items: center;font-size: 30rpx;">
+                        <view style="margin-bottom: 5rpx;">菜品</view>
+                        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search2.png' style="margin-left: 10rpx;margin-bottom: 5rpx;"/>
+                    </button>
+                    <button bindtap="wxSearchConfirm" data-key='youhui' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/btn.png');background-size:100% 100%;height: 60rpx;display: flex;justify-content: center;align-items: center;font-size: 30rpx;">
+                        <view style="margin-bottom: 5rpx;">优惠</view>
+                        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search2.png' style="margin-left: 10rpx;margin-bottom: 5rpx;"/>
+                    </button>
+                    <button bindtap="wxSearchConfirm" data-key='jiuShui' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/btn.png');background-size:100% 100%;height: 60rpx;display: flex;justify-content: center;align-items: center;font-size: 30rpx;">
+                        <view style="margin-bottom: 5rpx;">酒水</view>
+                        <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search2.png' style="margin-left: 10rpx;margin-bottom: 5rpx;"/>
+                    </button>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view style="width: 100%;display: flex;flex-direction: column;position: relative;margin-top: 150rpx;">
+        <view wx:if="{{wxSearchData.his[0]}}" class="wxSearchHistory">
+            <view class="box-div">
+                <view class="wxSearchHistoryItem">
+                    <text class="wxSearchHistoryItemTitle">最近搜索</text>
+                    <image bindtap="wxSearchDeleteAll" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Trash.png' style="width: 36rpx;height: 36rpx;"></image>
+                </view>
+                <view class="wxSearchKeyList">
+                    <block wx:for="{{wxSearchData.his}}" wx:key="key">
+                        <view class="wxSearchKeyItem" bindtap="wxSearchKeyTap" data-key="{{item}}">{{item}}</view>
+                    </block>
+                </view>
+            </view>
+        </view>
+
+        <view class="tip" wx:if="{{!showModalQR}}" bindtap="noycts">
+            <image style='height:90rpx;width:60rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/btn1.png'></image>
+        </view>
+
+        <view class="wxSearchKey">
+            <view class="box-div">
+                <view class='wxSearchHotkeyItem'>
+                    <text class="wxSearchTitle">搜索热点</text>
+                </view>
+                <view class="wxSearchKeyList">
+                    <block wx:for="{{wxSearchData.hotKeys}}" wx:key="key">
+                        <view class="wxSearchKeyItem" bindtap="wxSearchKeyTap" data-key="{{item.keyWord}}">{{item.keyWord}}</view>
+                    </block>
+                </view>
+            </view>
+        </view>
+
+        <view class="nearbyStore" bindtap="nearbyStore">
+            <view class="nearbyStoreTap" data-key='nearby'>
+                <text class="nearbyStoreFont">附近餐厅/酒庄</text>
+                <view class="nearbyStoreArrow" />
+            </view>
+        </view>
+
+        <view class="recentStore" style="height:{{LatelyRestaurant.length == 0?'100':'200'}}rpx">
+            <view class="box-div" style="width: 100%;height: 100%;">
+                <view class="recentStoreTap">
+                    <text class="recentStoreTitle">最近使用餐厅</text>
+                </view>
+
+                <view class="recentStoreList">
+                    <block wx:for="{{LatelyRestaurant}}" wx:key="index">
+                        <view class="recentStoreImages" bindtap="imageToStore" data-id='{{item.shop_id}}'>
+                            <image class="recentStoreImage" src="{{item.shop_img}}" mode="aspectFill"></image>
+                            <text class="recentStoreName">{{item.shop_name}}</text>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
+
+        <view class="frequentlyRestore" wx:if="{{myCollectionShop.length!=0}}" style="display:block;height: auto;margin-bottom: 100rpx;">
+
+            <view class="box-div">
+                <view class="frequentlyRestoreTap" style="height: auto;">
+                    <text class="frequentlyRestoreTitle">我的餐厅</text>
+                </view>
+                <scroll-view scroll-y="true" class="frequentlyList" style="height: 380rpx;width: 100%;">
+                    <view style="display: flex;flex-wrap: wrap;flex-direction: row;width: 100%;">
+                        <view wx:for="{{ShopCollection}}" wx:key="index" wx:for-item="item" style="display: flex;justify-content: center;align-items: center;width: 33%;">
+                            <view class='frequentlyRestoreItems' style="width: 230rpx;" bindtap='MyStore' data-shopId="{{item.shop_id}}">
+                                <text class="frequentlyRestoreItem">{{item.shop_name}}</text>
+                            </view>
+                        </view>
+                    </view>
+                </scroll-view>
+            </view>
+        </view>
+    </view>
+</view>

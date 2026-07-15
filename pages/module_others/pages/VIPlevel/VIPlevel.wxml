@@ -1,0 +1,40 @@
+<!--pages/module_others/pages/VIPlevel/VIPlevel.wxml-->
+<view class="page">
+
+  <view style="background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg4.png');background-size: 100% 100%;z-index: -10;height: 400rpx;position: absolute;width: 100%;top: -1rpx;">
+  </view>
+
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+  </view>
+
+  <view class="return_out" style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+    会员等级
+  </view>
+
+  <view class="top-mode">
+    <view style="width:100%;display:flex;align-items: center;height:100%">
+      <open-data type="userAvatarUrl" class="userAvatarUrl" mode="cover"></open-data>
+      <open-data type="userNickName" style='margin-top: 20%;margin-left: 3%;' clsss="userName" lang="zh_CN"></open-data>
+    </view>
+  </view>
+
+  <view class="head-mode" style="width: 87%;">
+    <view class="wrap-item" wx:if="{{memberInfo != '' && memberInfo.member_level != ''}}">
+      <view class="hm-list">
+        <view class="texts">会员等级</view>:<text>{{memberInfo.member_level}}</text>
+      </view>
+      <view class="hm-list">
+        <view class="texts">有期限</view>:<text>{{memberInfo.member_end_date}}止</text>
+      </view>
+    </view>
+    <view class="wrap-item" wx:if="{{memberInfo == '' || memberInfo.member_level == ''}}">
+      <view>暂无会员</view>
+    </view>
+    <view class="wrap-img">
+      <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/tubiao.png"></image>
+    </view>
+  </view>
+
+
+</view>

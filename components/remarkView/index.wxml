@@ -1,0 +1,31 @@
+<view class="container" style="{{spec_type==10?'height:100%':spec_type==9?'height:100%':'height:90%'}}" wx:if="{{isIntroduction}}">
+  <view class="container-top" style="{{spec_type==10?'height:11%':spec_type==9?'height:11%':'height:11%'}}">
+    <text>{{remarkTitle}}</text>
+  </view>
+  <view style="{{spec_type==10?'height:90%':spec_type==9?'height:90%':'height:90%'}}" class="container-bottom">
+    <text fixed wx:if="{{onHide}}" cursor-spacing="100" fixed placeholder-class="placeholder-textarea"
+      placeholder-style='color:#ACACAC' placeholder='{{placeholderStr}}' style="height:85%;" value='{{remarkValue}}'
+      bindinput='remarks' disabled='{{readOnly}}'></text>
+    <textarea wx:else cursor-spacing="100" fixed placeholder-class="placeholder-textarea" placeholder-style='color:#ACACAC' placeholder='{{placeholderStr}}' style="height:85%;" value='{{remarkValue}}'
+      bindinput='remarks' disabled='{{readOnly}}'></textarea>
+  </view>
+</view>
+
+<view class='container' wx:else>
+  <view class="container-top" style="height: 80rpx;">
+    <text>客人备注：</text>
+    <!--2020-11-10 margin-bottom: 15rpx;-->
+    <image style='height: 64rpx;width: 68rpx;margin-left: 5rpx;' data-type="{{remarkType}}" bindtap="showRemarkList" src='{{menu_img}}'></image>
+  </view>
+  <view class="container-bottom2">
+    <view class='textarea'>
+      <view wx:if="{{tastesRemark!=''}}" style="height:20%;width:100%;background:#e5e5e5;font-size:26rpx">
+        <text>口味：{{tastesRemark}}</text>
+      </view>
+      <text fixed wx:if="{{onHide}}" value='{{remarkValue}}' class="note-text" bindinput='remarks'
+        style="height:{{tastesRemark!=''?80:100}}%;width:100%"></text>
+      <textarea fixed wx:else value='{{remarkValue}}' class="note-text" bindinput='remarks'
+        style="height:{{tastesRemark!=''?80:100}}%;width:100%"></textarea>
+    </view>
+  </view>
+</view>

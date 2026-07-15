@@ -1,0 +1,231 @@
+/* pages/changePassword/changePassword.wxss */
+image{
+  background-size: 100%;
+}
+
+.toptitle {
+  width: 95%;
+  border-radius: 15rpx;
+  background-color: white;
+  top: 5rpx;
+  position: absolute;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.titletext {
+  height: 90rpx;
+  display: flex;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 40rpx;
+  flex-direction: column;
+}
+
+.oneline {
+  display: flex;
+  align-items: center;
+}
+
+.item {
+  width: 90%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  left: 5%;
+  border-radius: 15rpx;
+  box-shadow: 4rpx 4rpx 4rpx 4rpx #e97909;
+}
+
+.navigation {
+  position: relative;
+  width: 100%;
+  height: 80rpx;
+  background-color: #009AA2;
+}
+
+.button {
+  background: url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/appimg/buttonMealBlue_20211201114918.png) no-repeat;
+  border-radius: 10rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: white;
+  width: 206rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  position: absolute;
+  right: 28rpx;
+}
+
+.form_tittle {
+  width: 95%;
+  margin-left: 2.5%;
+  height: 60rpx;
+  display: flex;
+  font-size: 28rpx;
+  justify-content: center;
+}
+
+.maincontent {
+  width: 95%;
+  margin-left: 2.5%;
+  display: flex;
+  font-size: 28rpx;
+  justify-content: center;
+}
+
+.th {
+  width: 100%;
+  border: 4rpx solid #d6d6d6;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: 28rpx;
+}
+
+.for {
+  width: 95%;
+  margin-left: 2.5%;
+  justify-content: center;
+  align-items: center;
+  height: 60rpx;
+  font-size: 28rpx;
+  display: flex;
+}
+
+.td{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  border: 4rpx solid #d6d6d6;
+  border-top: 0;
+}
+
+.dishesImg{
+  width: 140rpx;
+  height: 120rpx;
+}
+
+.videoImg{
+  width: 90rpx;
+  height: 60rpx;
+}
+
+.box_first{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.commen_margin{
+  margin-top: 10rpx;
+}
+
+.changeColor{
+  background-color: #009AA2;
+  font: white;
+}
+
+.popup-window-bg {
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 997;
+  display: flex;
+  justify-content: center;
+}
+
+.popup-window {
+  /* background: white; */
+  position: fixed;
+  bottom: 0;
+  height: 85%;
+  width: 80%;
+  margin-left: 10%;
+  z-index: 998;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.video_text {
+  height: 10%;
+  display: flex;
+  align-items: center;
+  margin-left: 25rpx;
+}
+
+.video_style {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.tab-view::before {
+  content: '';
+  position: absolute;
+  border-bottom: 1rpx solid #eaeef1;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.tab-view {
+  width: 100%;
+  height: 100rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  background: #fff;
+  white-space: nowrap;
+}
+
+.tab-bar-item {
+  padding: 0;
+  height: 100rpx;
+  min-width: 80rpx;
+  line-height: 100rpx;
+  margin: 0 28rpx;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.tab-bar-title {
+  height: 100rpx;
+  line-height: 100rpx;
+  font-size: 32rpx;
+  color: #999;
+  font-weight: 400;
+}
+
+.active {
+  border-bottom: 6rpx solid #5677fc;
+}
+
+.active .tab-bar-title {
+  color: #5677fc !important;
+  font-size: 36rpx;
+  font-weight: bold;
+}

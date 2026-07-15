@@ -1,0 +1,87 @@
+<view class="page">
+  <view style="display:flex; width: 100%; align-items: center; margin-top: 60rpx;">
+      <button class="bottomButton"  data-index="{{index}}" data-item="{{item}}" bindtap="chooseAddr">使用微信收货地址</button>
+    </view>  
+    <view class="flex-row" style="justify-content: left; margin-left: 30rpx; margin-top: 40rpx;">
+        <text class="content-title" style="margin-right: 10rpx; width: 150rpx; font-weight: bolder; margin-top: 20rpx">收货人：</text>      
+        <textarea  cols="30" rows="10" style="border: 2rpx solid #dadada; width: 500rpx; height: 60rpx; border-radius:16rpx; margin-right:40rpx; padding: 10rpx;" bindinput="bindinputName" value="{{customer_address.name}}"></textarea>
+    </view>
+
+    <view class="flex-row" style="justify-content: left; margin-left: 30rpx;margin-top: 30rpx;">
+      
+    <text class="content-title" style="margin-right: 10rpx; width: 150rpx; font-weight: bolder; margin-top: 20rpx">手机号码：</text>
+   
+      
+      <view style="border: 2rpx solid #dadada; width: 500rpx; height: 60rpx; border-radius:16rpx; margin-right:40rpx; padding: 10rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+        <textarea  cols="30" rows="1" style=" flex:1;height: 40rpx; margin-right:40rpx; padding: 10rpx;" bindinput="bindinputMobile" value="{{customer_address.mobile}}"></textarea>
+  
+        <button wx:if="{{customer_address.mobile==''}}"  class="flex-row flex-center" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber" style="height: 60rpx;font-size: small;background-color: #f2f2f2;color: #444;">获取手机号</button> 
+      </view>
+      
+    </view>
+
+
+    <view class="flex-row " style="justify-content: left; margin-left: 30rpx;margin-top: 30rpx;">
+      <text class="content-title" style="margin-right: 10rpx; width: 150rpx; font-weight: bolder; margin-top: 20rpx">所在地：</text>
+      <view class="bakground-color-grey" style="border: 2rpx solid #dadada; width: 500rpx; height: 60rpx; border-radius:16rpx; margin-right:40rpx; padding: 10rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+        <view class='flex-row flex-center item bakground-color-grey ' style="margin-right: 18rpx;">
+                <view class="flex-row flex-align-items-center" style="width: 100%;" >
+                      <view class="flex-row" style="flex: 1;">
+                          <picker style="width: 100%;" mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                                  <view class="flex-row flex-align-items-center" style="width: 100%;">
+                                      <view style="flex: 1;">
+                                          {{location_show}}
+                                      </view>
+                                      <view class="flex-column flex-center">
+                                          <image style="width: 32rpx;height: 32rpx;" src="{{downSVGIcon}}"/>
+                                      </view>
+                                  </view>
+                          </picker>
+                      
+                      </view>
+                </view>
+    </view>
+      </view>    
+      
+      
+    </view>
+
+    
+
+    <view class="flex-row" style="justify-content: left; margin-left: 30rpx;margin-top: 30rpx;">
+      <text class="content-title" style="margin-right: 10rpx; width: 150rpx; font-weight: bolder; margin-top: 20rpx">小区简称：</text>
+      <view style="border: 2rpx solid #dadada; width: 500rpx; height: 60rpx; border-radius:16rpx; margin-right:40rpx; padding: 10rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+        <textarea  cols="30" rows="1" style=" flex:1;height: 40rpx; margin-right:40rpx; padding: 10rpx;" bindinput="bindinputApartmentComplex" value="{{customer_address.apartment_complex}}" placeholder="请输入简写小区名称"></textarea>
+        
+      </view>    
+      
+      
+    </view>
+
+    <view class="flex-row" style="justify-content: left; margin-left: 30rpx;margin-top: 30rpx;">
+      <text class="content-title" style="margin-right: 10rpx; width: 150rpx; font-weight: bolder; margin-top: 20rpx">详细地址：</text>      
+      <textarea  cols="30" rows="10" style="border: 2rpx solid #dadada; width: 500rpx; height: 200rpx; border-radius:16rpx; margin-right:40rpx; padding: 10rpx;" bindinput="bindinputDetailAddress" value="{{customer_address.detail_address}}"></textarea>
+    </view>
+
+    <view class="flex-row" style="justify-content: left; margin-left: 30rpx; margin-top: 40rpx;">
+        <text class="content-title" style="font-weight: bolder; ">设为默认收货地址</text>         
+        <checkbox-group style="margin-left: 20rpx;">
+            <checkbox bindtap="isDefaultCheckChange" checked="{{customer_address.is_default==1}}"></checkbox>
+        </checkbox-group>                 
+    </view>   
+
+      
+    
+
+    <view style="display:flex; width: 100%; align-items: center; margin-top: 60rpx;">
+      <button  class="bottomButton" data-index="{{index}}" data-item="{{item}}" bindtap="save_address">保   存</button>
+    </view> 
+
+</view>
+
+
+
+
+
+
+

@@ -1,0 +1,14 @@
+diff a/meals/pages/menu/menu.wxss b/meals/pages/menu/menu.wxss	(rejected hunks)
+@@ -1020,11 +1020,10 @@
+ .query-list {
+   width: 100%;
+   display: flex;
+-  border-bottom: 5rpx solid #fff;
+   white-space: nowrap;
+   position: fixed;
+   top: 0rpx;
+-  z-index: 501;
++  z-index: 500;
+   background: #edece8;
+   flex-wrap: wrap;
+   height: 70rpx;

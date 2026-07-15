@@ -1,0 +1,60 @@
+page{
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/treat/bg2.png');
+  background-size: 100% 100%;
+}
+
+.radio-groud {
+  display: flex;
+  width: 40%;
+  align-items: center;
+}
+
+.shopName{
+  font-size: 45rpx;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;  
+  margin-bottom: 20rpx;
+}
+.ren{
+  position: absolute;
+  top: 170px;
+  right: 25px;
+  width: 180rpx;
+  height: 120rpx;
+}
+.radio-groud-in {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.radio {
+  width: 35rpx;
+  height: 35rpx;
+}
+
+.title {
+  margin-left: 10rpx;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.btn {
+  width: 80%;
+}
+
+.page {
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 50rpx;
+}

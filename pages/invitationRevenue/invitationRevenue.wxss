@@ -1,0 +1,65 @@
+/* pages/invitationRevenue/invitationRevenue.wxss */
+
+.top-mode {
+  background: #e4393c;
+  height: 400rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*第一第二句让方形的头像变圆*/
+
+.userAvatarUrl {
+  border-radius: 50%;
+  overflow: hidden;
+  height: 150rpx;
+  width: 150rpx;
+  margin-top: 60rpx;
+  display: flex;
+}
+
+.history-table-wrap{
+  position: absolute;
+  width: 668rpx;
+  height: 578rpx;
+  left: 50%;
+  margin-left: -334rpx;
+  top: 38%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+/* 表格代码   */
+.table{
+  border:1px solid #dadada;
+  border-right:0;
+  border-bottom: 0;
+  width: 98%;
+  margin-left: 1%;
+}
+.tr{
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+}
+.th,.td{
+  padding: 10px;
+  border-bottom: 1px solid #dadada;
+  border-right: 1px solid #dadada;
+  text-align: center;
+  width: 33%;
+}
+.th1,.th2,.td1,.td2{
+  width: 40%;
+}
+.th{
+  font-weight: 800;
+  background-color: #EFF4FB;
+  font-size: 32rpx;
+  color: #330e0e;
+}
+.td{
+  font-size: 32rpx;
+  /* color: #e4393c; */
+}
+

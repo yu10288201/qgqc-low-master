@@ -1,0 +1,339 @@
+/* components/sideDishesView/sideDishesView.wxss */
+.box_table1{
+  width: 99.5%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  border: 1px solid #888;
+  margin-bottom: 10rpx;
+}
+
+.box_table2{
+  width: 79.5%;
+  height: 40%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  border: 1px solid #888;
+  margin-bottom: 10rpx;
+  position: absolute;
+  top: 400rpx;
+  background: #fff;
+  left: 10%;
+  z-index: 2;
+}
+.box_background{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+
+}
+.tr1 {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 60rpx;
+}
+
+.td1 {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60rpx;
+  border-left:#e4e4e4 solid 2rpx;
+  font-size: 24rpx;
+}
+
+.down-center {
+  display: flex;
+  align-items: center;
+}
+
+
+/* pages/testpopup/testpopup.wxss */
+@import "../../app.wxss";
+.page{
+  background-size: 100% 100%;
+  overflow:hidden;
+  position:fixed;
+  margin: 0px;
+  width: 100%;
+  height: 100%;
+  /* background-color: #CEFBE8; */
+}
+
+.popupView{
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  font-size: 26rpx;
+}
+
+.popupView-window {
+  background: white;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  width: 94%;
+  height: 1200rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid #000;
+  padding:0;
+  margin: 10px;
+}
+
+.red_dot{
+  color: red;
+  font-size: 35rpx;
+  position: absolute;
+  left: 5%;
+  bottom: 30%;
+}
+
+.container-top {
+  font-size: 32rpx;
+  width: 100%;
+  height: 8%;
+  /* align-items: center;
+  justify-content: center;
+  display: flex; */
+  font-weight: bold; 
+  
+}
+
+/* 新增部位和删除部位的样式 */
+.newbotton {
+  margin-top: 20rpx;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 150rpx;
+  height:50rpx;
+  line-height: 50rpx;
+}
+
+.container-table {
+  width: 100%;
+  height: 80%;
+}
+
+.scroll-part{
+  width:98.5%;
+  height:100%;
+  border-top: 1rpx solid black;
+  border-bottom: 1rpx solid black;
+  display:flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 2%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.hallcheckbox {
+  height: 90rpx;
+  line-height: 90rpx;
+  font-size: 27rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0rpx;
+  flex-direction: column;
+  box-shadow: 6rpx 6rpx 12rpx 6rpx #D3D3D3;
+  
+}
+
+.red_background {
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/red.png');
+  background-size: 100% 100%;
+}
+
+.yerrow_background {
+  /* background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/yerrow.png');
+  background-size: 100% 100%; */
+  background-color: rgb(255, 255, 65);
+}
+
+.green_background {
+  /* background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/orderDirectly/green.png'); */
+  /* background-color: rgb(94, 181, 129); */
+  /* background-size: 100% 100%; */
+  background-color: rgb(105, 64, 34);
+}
+
+.asd{
+  font-size:28rpx;
+  margin-bottom: 20rpx;
+}
+
+.container-bottom{
+  width: 100%;
+  height: 5%;
+  align-items: center;
+  justify-content: space-around;
+  display: flex;
+  margin-top: 2%;  
+}
+
+.red_dot{
+  color: red;
+  font-size: 35rpx;
+  position: absolute;
+  left: 5%;
+  bottom: 30%;
+}
+
+.number{
+  position: absolute;
+  left: 8%;
+  top: 34%; 
+}
+
+.price{
+  position: absolute;
+  right: 8%;
+  top: 20%; 
+}
+
+.btn_mid {
+  line-height: 70rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-top: 5rpx;
+  width: 200rpx;
+  height: 70rpx;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  
+}
+.btn_mid_Brownish_red {
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/menu/lailiaojiagong.jpg") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-top: 5rpx;
+  width: 200rpx;
+  height: 70rpx;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+.btn_small_djl {
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/menu/duojiliang.jpg") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-top: 5rpx;
+  width: 200rpx;
+  height: 70rpx;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.btn_mid_gray {
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_gray.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  margin-top: 5rpx;
+  width: 200rpx;
+  height: 70rpx;
+  color: white;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: 0;
+  margin-right: 0;
+  line-height: 45rpx;
+}
+
+.green {
+  background-color: rgb(40, 191, 179);
+  /* background-color: rgb(105, 64, 34); */
+}
+
+.yellow {
+  /* background-color: rgb(250, 161, 66); */
+  background-color:rgb(208,147,82);
+}
+
+.blue{
+  background-color: rgb(208,147,82);
+  /* border:2px white solid */
+}
+
+.gray {
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_gray.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.input {
+  font-size: 24rpx;
+  border: #d9d9d9 solid 2rpx;
+  width: 60rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  min-height: 40rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+  align-items: baseline;
+}
+
+.textarea {
+  background: #e5e5e5;
+  height:100%;
+  width:100%
+}
+
+.place-color{
+  color: #b3b3b3;
+}
+
+.frameInput{
+  width: 66%;
+  border-radius: 8rpx;
+  text-align: center;
+  font-weight: normal;
+  border: 1rpx solid #b3b3b3;
+}
+
+.background_url{
+  background:url(https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/btn/button_mid_yellow3.png) no-repeat;
+}

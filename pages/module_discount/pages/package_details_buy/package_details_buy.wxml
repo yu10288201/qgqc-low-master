@@ -1,0 +1,402 @@
+
+<wxs module="filters" src="addmul.wxs" />
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+    <view class='search-view'>
+        <text wx:if="{{id == 0}}" style="margin-left:20rpx" wx:for="{{setMeal}}" wx:key="index">{{filters.people(item.typeForSetMeal)}}:{{item.setMealName}}</text>
+        <text wx:if="{{id == 1}}" style="margin-left:20rpx">{{CouponList.coupon_name}}</text>
+        <text wx:if="{{id == '2'}}" style="margin-left:20rpx">{{distributionList.dishesName}}</text>
+    </view>
+</view>
+
+<view class="model" style="margin-top:90rpx;" wx:if="{{id==0}}">
+    <view class='banner_warp'>
+        <swiper autoplay='true' circular='true' indicator-dots='true' indicator-dots='true' style="height:{{height}}px;width:{{width}}px;margin-left:{{width*0.02}}px">
+            <block wx:for="{{setMeal[0].pageUrl}}" wx:key='index'>
+                <swiper-item>
+                    <view class='li'>
+                        <image style="height:{{height}}px;width:{{width}}px;" src="{{item.pageURL}}?x-oss-process=image/resize,m_fill,h_{{height}},w_{{width}}" bindtap='bigimg2' data-src="{{item.pageURL}}"></image>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+    <view class="model_title" wx:for="{{setMeal}}" wx:key='index'>
+        <view style="width:74%">
+            <text wx:if="{{item.refund == 1}}">可退款</text>
+            <text wx:else>不可退款</text>
+            <text wx:if="{{item.appointment == 1}}" style="margin-left: 12rpx;">需预约</text>
+            <text wx:else style="margin-left: 12rpx;">免预约</text>
+            <text wx:if="{{item.pastRefund == 1}}" style="margin-left: 12rpx;">过期可退款</text>
+            <text wx:else style="margin-left: 12rpx;">过期不退款</text>
+            <text wx:if="{{item.pickOneself == 1}}" style="margin-left: 12rpx;">可自提</text>
+            <text wx:else style="margin-left: 12rpx;">不可自提</text>
+        </view>
+        <view style="width:26%;text-align:right" wx:if="{{setMealType}}">类别:{{setMealType}}</view>
+    </view>
+    <view class="model_title" wx:for="{{setMeal}}" wx:key='index'>
+        <view style="width:60%">
+            <text wx:if="{{item.holidays == 1}}">节假日可用</text>
+            <text wx:else>节假不可用</text>
+            <text wx:if="{{item.privateRoom == 1}}" style="margin-left: 12rpx;">包间可用</text>
+            <text wx:else style="margin-left: 12rpx;">包间不可用</text>
+        </view>
+        <view style="width:40%;text-align:right">销量:{{item.setMealSales}}</view>
+    </view>
+    <view class="menu_star" wx:for="{{setMeal}}" wx:key='index'>
+        <view style="width:60%">
+            <image style="margin-top:3px;padding-right:1px;width:240rpx;height:40rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/{{item.starNum}}star.png"></image>
+        </view>
+        <view style="width:40%;text-align:right">
+            <image style="margin-top:2rpx" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png"></image>
+            <text style="padding-top:4rpx;padding-right:1rpx">:{{item.setMealLike}}</text>
+        </view>
+    </view>
+    <view class="menu_star">
+        <text style="width:50%">{{shitWeek}}</text>
+        <view wx:if="{{setMeal&&setMeal.length>0}}" style="text-align:right;width:50%;display:flex;margin-left:16%;align-items: center;justify-content: flex-end;">
+            <text>{{filters.userTimeFor(setMeal[0].useTimeType) == '不限'? '': ('[' + filters.userTimeFor(setMeal[0].useTimeType) + ']')}}</text>
+
+        </view>
+    </view>
+    <view class="menu_star" wx:if="{{setMeal[0].platform_commission_amount || setMeal[0].platform_commission_star || setMeal[0].shop_commission_amount || setMeal[0].shop_commission_star}}" style="color: #ea9518;font-size: 26rpx;margin-bottom: 10rpx;">
+        <text>提成奖励：</text>
+        <text>{{setMeal[0].platform_commission_amount > 0 ? setMeal[0].platform_commission_amount + '元 [平台现金]' : setMeal[0].platform_commission_star > 0 ? setMeal[0].platform_commission_star + '个 [平台星盾]' : ''}}</text>
+        <text style="margin-left: 30rpx;">{{setMeal[0].shop_commission_amount > 0 ? setMeal[0].shop_commission_amount + '元 [商家现金]' : setMeal[0].shop_commission_star > 0 ? setMeal[0].shop_commission_star + '个 [商家星盾]' : ''}}</text>
+    </view>
+</view>
+
+<wxs module="changeDate">
+    function formatDate(value, a) {
+        //不能使用 new Date()
+        if (value == null || value == undefined || value == '') {
+            return '';
+        }
+        if (a == null || a == undefined) {
+            a = 0
+        }
+        var time = getDate(value);
+        var year = time.getFullYear();
+        var month = time.getMonth() + 1;
+        var date = time.getDate();
+        var hour = time.getHours();
+        var minute = time.getMinutes();
+        var second = time.getSeconds();
+        month = month < 10 ? "0" + month : month;
+        date = date < 10 ? "0" + date : date;
+        hour = hour < 10 ? "0" + hour : hour;
+        minute = minute < 10 ? "0" + minute : minute;
+        second = second < 10 ? "0" + second : second;
+        if (a === 1) {
+            return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+        } else {
+            return year + "-" + month + "-" + date;
+        }
+
+    }
+    module.exports = {
+        formatDate: formatDate
+    }
+</wxs>
+
+<view wx:if="{{id == 1}}" style="margin-top:90rpx;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+    <view style="width: 94%;border: 8rpx solid #754a1f;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+        <view class="ticket" style="display: flex;flex-direction: row;justify-content: space-between;">
+            <view style="width: 100%;display: flex;flex-direction: column;justify-content: start;align-items: flex-start;">
+                <view class="menu_right_view" style="width: 100%;margin-top:10rpx;">
+                    <text style="width:100%;font-size:30rpx;font-weight:900;width:76%">{{CouponList.coupon_name}}</text>
+                </view>
+                <view class="menu_right_view" style="margin-top:10rpx;width: 100%;height: auto;">
+                    <view style="width: 100%;display: flex;justify-content: space-between;">
+                        <view style="display: flex;flex-direction: column;">
+                            <text wx:if="{{CouponList.coupon_superposition ==0}}">不可叠加</text>
+                            <text wx:elif="{{CouponList.coupon_superposition >= '9999'}}">可无限叠加</text>
+                            <text wx:else>可叠加{{CouponList.coupon_superposition}}张</text>
+                            <text>{{chooseWeek}}</text>
+                        </view>
+                        <text style="font-size:40rpx;font-weight:bolder;color: #ea9518;margin-right: 70rpx;">￥{{CouponList.coupon_facevalue}}元</text>
+                    </view>
+                </view>
+                <view class="menu_right_view" style="margin-top: 10rpx;width: 100%;">
+                    <view style="width:76%">
+                        <view style="margin-bottom:10rpx;margin:0rpx">
+                            <text style="font-weight: bold;">购买价：<text style="color: green;font-weight: bold;font-size: 30rpx;">￥{{CouponList.coupon_original}}元</text></text>
+                        </view>
+                    </view>
+                </view>
+                <view class="menu_right_view" style="margin-top: 10rpx;width: 100%;display: flex;justify-content: space-between;">
+                    <text>有效期：{{changeDate.formatDate(CouponList.coupon_validityend,0)}} 止</text>
+                </view>
+            </view>
+        </view>
+        <view style="width: 100%;display: flex;flex-direction: column;">
+            <view class="meal_rule_title" style="margin-top: 20rpx;">
+                {{CouponList.coupon_name}}简介
+            </view>
+            <view class="meal_rule" style="text-indent: 48rpx;border: none;">
+                <text>{{CouponList.coupon_Scopeofapplication}}
+                </text>
+            </view>
+            <view class="meal_rule" style="border: none;display: flex;justify-content: space-between;align-items: flex-end;">
+                <view style="flex: 1;display: flex;flex-direction: column;align-items: center;">
+                    <view class="model_title">
+                        <text wx:if="{{CouponList.refund == 1}}">可退款</text>
+                        <text wx:else>不可退款</text>
+                        <text wx:if="{{CouponList.past_refund == 1}}" style="margin-left: 12rpx;">过期可退款</text>
+                        <text wx:else style="margin-left: 12rpx;">过期不退款</text>
+                    </view>
+                    <view class="model_title">
+                        <text wx:if="{{CouponList.holidays == 1}}">节假日可用</text>
+                        <text wx:else>节假日不可用</text>
+                        <text wx:if="{{CouponList.private_room == 1}}" style="margin-left: 12rpx;">包间可用</text>
+                        <text wx:else style="margin-left: 12rpx;">包间不可用</text>
+                    </view>
+                </view>
+                <view style="flex: 1;display: flex;justify-content: flex-end;">
+                    <!-- <view style="margin-right: 30rpx;line-height: 35rpx;"><text style="color: rgb(255,153,0);font-weight: bold;font-size: 27rpx;" wx:if="{{CouponList.commission_price}}">返佣￥{{CouponList.commission_price}}元</text></view> -->
+                    <!-- <button class="b1" style="background-color: rgb(255,153,0);height: 39rpx;width: 100rpx;border-radius: 10px;" data-item="{{CouponList}}" data-indexShare="3" bindtap="shareSelect" wx:if="{{CouponList}}">
+                        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/00586bfc2184c33493da987da652235.png" style="width: 45rpx;height: 18rpx;"></image>
+                    </button> -->
+                </view>
+            </view>
+            <view class="meal_rule" style="border: none;display: flex;justify-content: space-between;color: #777;">
+                <view style="display: flex;">
+                    <view>销量：</view>
+                    <view>{{CouponList.coupon_salesvolue}}</view>
+                </view>
+
+                <view style="display: flex;">
+                    <view>库存：</view>
+                    <view>{{CouponList.saleNum}}</view>
+                </view>
+
+                <view style="display: flex;">
+                    <view>分享人次：</view>
+                    <view>{{CouponList.share_num}}</view>
+                </view>
+            </view>
+            <view class="meal_rule" style="border: none;display: flex;color: #ea9518;font-size: 26rpx;margin-bottom: 10rpx;" wx:if="{{CouponList.platform_commission_amount || CouponList.platform_commission_star || CouponList.shop_commission_amount || CouponList.shop_commission_star}}">
+                <text>提成奖励：</text>
+                <text>{{CouponList.platform_commission_amount > 0 ? CouponList.platform_commission_amount + '元 [平台现金]' : CouponList.platform_commission_star > 0 ? CouponList.platform_commission_star + '个 [平台星盾]' : ''}}</text>
+                <text style="margin-left: 30rpx;">{{CouponList.shop_commission_amount > 0 ? CouponList.shop_commission_amount + '元 [商家现金]' : CouponList.shop_commission_star > 0 ? CouponList.shop_commission_star + '个 [商家星盾]' : ''}}</text>
+            </view>
+        </view>
+    </view>
+</view>
+
+<!-- <view class="model" style="margin-top:20rpx;" wx:if="{{id == 0&&constituteTypeList!=undefined&&setMeal[0].setMealAbout!=''}}">
+    <view class="meal_rule_title">
+        套餐简介
+    </view>
+    <view wx:if="{{id == 0}}" class="meal_rule">
+        <text>{{setMeal[0].setMealAbout}}
+        </text>
+    </view>
+</view> -->
+
+<view class="model" style="margin-top:20rpx;" wx:if="{{id == 0&&setMeal&&setMeal[0].setMealAbout!=''}}">
+        <view class="meal_rule_title">
+            {{setMeal[0].setMealName}}简介
+        </view>
+        <view style="margin-left: 20rpx;font-size: 26rpx;">[{{setMeal[0].shop_name}}]</view>
+        <view wx:if="{{id == 0}}" class="meal_rule" style="text-indent: 48rpx;">
+            <text>{{setMeal[0].setMealAbout}}
+            </text>
+        </view>
+        <view class="meal_rule" style="border: none;display: flex;justify-content: space-between;color: #777;">
+            <view style="display: flex;">
+                <view>销量：</view>
+                <view>{{setMeal[0].setMealSales}}</view>
+            </view>
+
+            <view style="display: flex;">
+                <view>库存：</view>
+                <view>{{setMeal[0].spreads}}</view>
+            </view>
+
+            <view style="display: flex;">
+                <view>分享人次：</view>
+                <view>{{setMeal[0].share_num}}</view>
+            </view>
+        </view>
+</view>
+
+
+<view wx:for="{{setMeal}}" class="model" style="margin-top:20rpx;" wx:if="{{setMeal[0].videoUrl != ''}}" wx:key='index'>
+    <view class="Business_title">
+        <text style="font-weight: 900;width:70%">套餐视频</text>
+    </view>
+    <video wx:if="{{item.videoUrl!=''&&is_video_show==1}}" src="{{item.videoUrl}}"></video>
+</view>
+
+<!-- <view wx:if="{{id == 0&&constituteTypeList!=undefined}}" class="model" style="margin-top:20rpx">
+	<text style="font-weight: 900;width:70%;font-size:30rpx;margin-left:2%;margin-top:20rpx">套餐组成</text>
+	<view style="display:flex;flex-direction: column;margin-bottom:10rpx" wx:for="{{constituteTypeList}}" wx:key='index'>
+		<view class="meal_subtitle" wx:if="{{item.constituteTypeCount ==-1}}">
+			● 固定菜品:
+		</view>
+		<view class="meal_subtitle" wx:else>
+			● 选择菜品:
+		</view>
+		<view class="meal_dishes" wx:if="{{item.setMealConstituteList&&item.setMealConstituteList.length>0}}" wx:for="{{item.setMealConstituteList}}" wx:key="index" wx:for-item="item2">
+      <checkbox checked="{{item2.isCheck}}" wx:if="{{constituteByOrderIdList.length > 0 && item.constituteTypeCount !=-1}}" disabled>
+      </checkbox>
+      <view style="width: 60rpx;" wx:if="{{constituteByOrderIdList.length > 0 && item.constituteTypeCount ==-1}}">
+      </view>
+			<text style="width:70%">{{item2.constituteName}}（{{item2.constituteUnit}}）x{{item2.constituteNum}}</text>
+			<text style="width:20%;text-align:right">￥{{item2.constituteValue*item2.constituteNum}}</text>
+		</view>
+	</view>
+</view> -->
+<view wx:if="{{constituteTypeList_Fix.length>0||constituteTypeList_Select.length>0}}" class="model" style="margin-top:20rpx">
+	<text style="font-weight: 900;width:70%;font-size:30rpx;margin-left:2%;margin-top:20rpx">套餐组成</text>
+    
+    <view wx:if="{{constituteTypeList_Fix.length>0}}">
+        <view class="meal_subtitle">
+        ● 固定菜品:
+        </view>
+
+        <view style="display:flex;flex-direction: column;margin-bottom:10rpx" wx:for="{{constituteTypeList_Fix}}" wx:key='index'>
+                
+                <view class="meal_dishes" wx:if="{{item.setMealConstituteList&&item.setMealConstituteList.length>0}}" wx:for="{{item.setMealConstituteList}}" wx:key="index" wx:for-item="item2">
+                            <!-- <view style="width: 60rpx;" wx:if="{{item.constituteTypeCount ==-1}}">
+                            </view> -->
+                            <text style="width:70%">{{item2.constituteName}}（{{item2.constituteUnit}}）x{{item2.constituteNum}}</text>
+                            <text style="width:20%;text-align:right">￥{{item2.constituteValue*item2.constituteNum}}</text>
+                </view>
+        </view>
+
+    </view>
+
+</view>
+<view wx:if="{{constituteTypeList_Select.length>0}}" class="model" style="margin-top:20rpx">
+	
+	<view style="display:flex;flex-direction: column;margin-bottom:10rpx" wx:for="{{constituteTypeList}}" wx:key='index'>
+		<view wx:if="{{item.constituteTypeCount!=-1}}">
+            <view class="meal_subtitle" >
+			● 选择菜品: {{item.constituteTypeCount}}选{{item.choosableCount}}
+		    </view>
+            <view class="meal_dishes" wx:if="{{item.setMealConstituteList&&item.setMealConstituteList.length>0}}" wx:for="{{item.setMealConstituteList}}" wx:key="index" wx:for-item="item2">
+                    
+                        
+                        <text style="width:70%">{{item2.constituteName}}（{{item2.constituteUnit}}）x{{item2.constituteNum}}</text>
+                        <text style="width:20%;text-align:right">￥{{item2.constituteValue*item2.constituteNum}}</text>
+                   
+            </view>
+
+        </view>
+	</view>
+</view>
+
+<view class="model" style="margin-top:20rpx;">
+    <view class="meal_rule_title">
+        使用规则
+    </view>
+    <view wx:if="{{id == 0}}" class="meal_rule">
+        <text style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline}};-webkit-box-orient: vertical;" id='xxx'>{{ruleList.ruleContent}}
+        </text>
+    </view>
+    <view wx:if="{{id == 1}}" class="meal_rule">
+        <text style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline}};-webkit-box-orient: vertical;" id='xxx'>{{ruleList.ruleContent}}
+        </text>
+    </view>
+    <view style="{{(webkitline==10000 || show_rule) ? 'display:block':'display:none'}}" class="rule_button" catchtap="ruletap">
+        <text style="width:18%;text-align:center;margin-left:74%">更多规则</text>
+        <image style="transform: {{transform}}" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xiala.png"></image>
+    </view>
+</view>
+
+<view class="model" style="margin-top:20rpx;">
+    <view class="Business_title">
+        <text style="font-weight: 900;width:70%">适用商户</text>
+        <view class="usefulshop">
+            <text style="background:#dadada">{{shopList.length?shopList.length:0}}家商户可用→</text>
+        </view>
+    </view>
+    <view style="display:flex;flex-direction:row" wx:for="{{shop}}" wx:key='index'>
+        <view class="Business_left">
+            <image src="{{item.shop_img}}"></image>
+        </view>
+        <view class="Business_center">
+            <text style="font-size:30rpx;font-weight:900;color:#000000">{{item.shop_name}}</text>
+            <view style="display:flex;flex-direction:row;margin-top:10rpx">
+                <image style="width:240rpx;height:40rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/{{item.star}}star.png" wx:key="index"></image>
+            </view>
+            <text>人均消费：{{item.per_capita_price == null ? '50':item.per_capita_price}}元/人</text>
+            <text>人气：{{item.popularity}}人/天</text>
+        </view>
+        <view class="Business_right">
+            <view class="Business_button" style="background:#dadada;color:#ffffff;font-weight:900">详情</view>
+            <view style="margin-top:25rpx" class="Business_button" bindtap="call">
+                <image src="https://test.fsmbdlkj.com/wx_official/web/images/image/phone.png"></image>
+                <text>联系商家</text>
+            </view>
+        </view>
+    </view>
+</view>
+
+<view class="model" style="margin-top:20rpx;margin-bottom:32rpx">
+    <text style="font-weight: 900;width:70%;font-size:30rpx;margin-left:2%;margin-top:20rpx">用户评论</text>
+    <view class="appraise_score" wx:for="{{shop}}" wx:key='index'>
+        <view style="border-bottom:4rpx solid #dadada;display:flex;flex-direction:row;width:96%;margin-left:2%;padding-bottom:10rpx;padding-top:10rpx">
+            <view class="appraise">
+                <text style="width:22%">{{item.star==null ? '8.8':item.star}}.0</text>
+                <image wx:for="{{item.star}}" wx:key="index" style="margin-left:2rpx;" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xing.png"></image>
+            </view>
+            <view class="score">
+                <text>口味 {{item.taste_score == null ? '8.8':item.taste_score}} 服务 {{item.service_score == null ? '8.8':item.service_score}} 环境 {{item.environment_score == null ? '8.8':item.environment_score}}</text>
+            </view>
+        </view>
+        <view class="appraise_button">
+            <text class="appraise_button_text{{file_id==0?'active':''}}" data-id="0" data-index="0" style="margin-left: 2%;" bindtap="file">全部</text>
+            <text class="appraise_button_text{{file_id==1?'active':''}}" data-id="1" data-index="1" bindtap="file" style=" margin-left: 10%;">好评</text>
+            <text class="appraise_button_text{{file_id==2?'active':''}}" data-id="1" data-index="2" bindtap="file" style=" margin-left: 10%;">差评</text>
+            <text class="appraise_button_text{{file_id==3?'active':''}}" data-id="1" data-index="3" bindtap="file" style=" margin-left: 10%;">有图</text>
+        </view>
+    </view>
+
+    <view style="width:100%;display:flex;height:200rpx;line-height:200rpx;text-align:center;justify-content: center;color:#777777" wx:if="{{evaluations ==''}}">
+        暂无评论
+    </view>
+    <view style="width:96%;margin-left:2%;display:flex;flex-direction:row" wx:key="index" wx:for="{{evaluations}}" wx:if="{{evaluations !=''}}">
+        <view class="appraise_left">
+            <image src="{{item.user_avatar}}"></image>
+        </view>
+        <view class="appraise_right">
+            <view class="appraise_title">
+                <text style="font-size:30rpx;width:70%;color:#3d3d3d">{{item.user_name}}</text>
+                <text style="font-size:26rpx;width:30%;text-align:right;">{{item.assess_date}}</text>
+            </view>
+            <view class="appraise_title">
+                <text style="font-size:26rpx;width:10%">评分</text>
+                <image wx:for="{{item.assess_surport}}" wx:key="index" style="margin-left:2rpx;" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xing.png"></image>
+            </view>
+            <view class="appraise_title">
+                <text style="color:#3d3d3d;font-size:28rpx;margin-top:20rpx">{{item.assess_evaluation}}</text>
+            </view>
+            <view class="appraise_image">
+                <image mode="aspectFill" bindtap='bigimg2' data-src="{{item.imgurl}}" wx:for="{{item.ordersList}}" wx:key="index" src="{{item.imgurl}}"></image>
+            </view>
+            <view class="appraise_thumbs">
+                <image src="https://test.fsmbdlkj.com/wx_official/web/images/image/dianzan.png"></image>
+                <text wx:for="{{setMeal}}" wx:key="index">{{item.setMealName}}</text>
+            </view>
+            <view class="appraise_answer">
+                <text style="padding: 16rpx 2rpx 16rpx;margin-left:16rpx">
+                    <text style="color: #F89600;font-weight:900;">商家回复：</text>
+                    <text>谢谢您的五星好评与支持!我们会继续努力的!祝您生活愉快!</text>
+                </text>
+            </view>
+        </view>
+    </view>
+
+</view>
+
+<view style="background-color: #f4f4f4;display: flex;flex-direction: row;justify-content: space-between;position: fixed;bottom: 0;margin: auto;width: 100%;align-items: center;height: 76rpx;">
+        <view style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;">
+            
+            <text style="color: #F89600;font-weight: 900;font-size:36rpx;margin-left: 20rpx;" wx:if="{{setMeal&&setMeal.length>0}}">￥{{setMeal[0].price}}元/{{setMeal[0].dishes_unit}}</text>
+            <text style="text-decoration:line-through;color: #5a5a5a;font-size:26rpx;" wx:if="{{setMeal&&setMeal.length>0}}">￥{{setMeal[0].originalPrice}}</text>
+            <view class="listButton" bindtap="Mealtap" style="margin-right: 20rpx;text-align: center;">部长下单</view>
+        
+        </view>
+</view>

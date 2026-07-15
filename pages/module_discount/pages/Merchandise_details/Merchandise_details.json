@@ -1,0 +1,9 @@
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#52A76E",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "headPortrait": "/components/headPortrait/headPortrait"
+  }
+}

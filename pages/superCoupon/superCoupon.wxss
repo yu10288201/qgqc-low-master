@@ -1,0 +1,14 @@
+.page{
+  height: 100%;
+}
+.box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.service{
+  height: 100%;
+}
+page{
+  height: 100%;
+}

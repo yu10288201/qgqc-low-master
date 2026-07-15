@@ -1,0 +1,34 @@
+<wxs module="filters" src="addmul.wxs" />
+<wxs module="quote" src="../superValueOrderDetail/superValueOrderDetail.wxs"></wxs>
+
+<view style="margin-bottom: {{'0'}}px;">
+        
+    <view class="model" style="margin-top:90rpx; justify-content: space-between; align-items: center;" >
+		<image src="{{payment_success_img}}" style="width: 200rpx; height: 200rpx; margin-top: 50rpx;" mode="scaleToFill"/>
+		<text style="font-weight: 900; margin-top: 30rpx;">支付成功</text>
+		<view style="display: flex;flex-direction: row;align-items: center;justify-content: space-around; margin-bottom: 50rpx; margin-top: 30rpx;">            
+			<view class="nextbtn"  bindtap="goHome" >返回首页</view>           
+			<view class="nextbtn" bindtap="goBill" style="margin-left: 60rpx;">查看订单</view>
+		</view>       
+    </view>    
+
+	<view style="display:flex; flex-direction: row; margin-top:130rpx; align-items: center; justify-content: center;" >		
+		<text style="font-size: 25rpx; color:rgb(255, 106, 105)"> -- 你可能还喜欢 -- </text>
+	</view>
+	<view style="display:flex; flex-direction:row; flex-wrap:wrap; margin-bottom: 30rpx;">            
+		<view style="width: 40%; box-sizing: border-box; display:flex; flex-direction:column; flex-shrink:0; margin-top:30rpx; margin-left: 5%;" 
+			wx:for="{{other_products}}" wx:key="index" bindtap="toDetail" data-item="{{item}}">
+			<image src="{{item.multimedia_img_url}}" mode="scaleToFill" style="width:300rpx; height: 300rpx; border-radius: 20rpx;"></image>  
+			<text style="font-size: 25rpx; margin-top: 10rpx;">{{item.name}}</text>
+			<text style="color: #F89600; font-weight:900; font-size:25rpx;">￥{{item.customer_price}} </text>
+			<text style="color: #52A76E; font-weight:900; font-size:25rpx;">分销提成：￥{{item.platform_cash_commission}}</text>
+		</view>     
+	</view>
+
+	<!--加一块空白-->
+	<view style="height:200rpx;width:100%;">
+    	<view style="height:200rpx;width:100%;"></view>
+  	</view>
+     
+</view>
+

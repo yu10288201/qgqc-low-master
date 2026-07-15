@@ -1,0 +1,22 @@
+
+<view style="width: 100vw;height: 100vh;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+    
+    <scroll-view scroll-y="true" style="width: 100%;height: 90%;padding: 0;margin-top: 10rpx;;">
+        <view style="width: 100%;padding-bottom: 20rpx;color: #555;border-bottom: 1rpx #999 solid;display: flex;align-items: center;justify-content: center;">
+            <text style="font-size: 46rpx;font-weight: bolder;width: 95%;">T馆运动，给您一个全新的体验!</text>
+        </view>
+        <view wx:for="{{imageUrl}}" style="width: 100%;margin-top: -5rpx;height: 1732.5rpx;background-image: url({{item}});background-size: 100% 100%;"></view>
+        <view style="width: 100%;display: flex;justify-content: center;align-items: center;margin-top: 10rpx;">
+            <view style="width: 92%;border-radius: 20rpx;padding-bottom: 20rpx;background-color: #fcfdf1;">
+                <view style="font-size: 34rpx;font-weight: bolder;margin-top: 10rpx;">关注"切瓜切菜"公众号可获得:</view>
+                <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">每次消费都有"关注公众号优惠价"的优惠;</view></view>
+                <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">可享受加入"切瓜切菜"平台的所有商家的"关注公众号优惠价"优惠;</view></view>
+                <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">一次关注长期有效(取消关注除外);</view></view>
+                <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">及时精准地接收您所需要的商家优惠信息;</view></view>
+            </view>
+        </view>
+    </scroll-view>
+    <view style="width: 75%;height: 10%;display: flex;justify-content: center;align-items: center;">
+        <view class="listButton" bindtap="jumpCoupon">购买优惠券</view>
+    </view>
+</view>

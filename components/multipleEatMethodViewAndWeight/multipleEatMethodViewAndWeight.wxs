@@ -1,0 +1,80 @@
+var filters = {
+  toFix: function (len) {
+    return len != null && len != '' && len > 0 ? (Math.ceil(len / 3) + 1) * 70 + 120 : 70
+  },
+  toFix1: function (len) {
+    return len != 0 ? len >= 3 ? (Math.ceil(len / 3) + 1) * 60 : 60 : 0
+  },
+
+  toFix2: function(value) {
+    if(value!=undefined){
+      // return value != null ? value.toFixed(2) < 0 ? 0 : value.toFixed(2) : '' //此处2为保留两位小数
+      return value != null ? Math.floor(value * 100) / 100 : 0//此处2为保留两位小数
+    }else{
+      return 0
+    }
+  },
+  toFix3: function (value) {
+    console.log(value)
+    if(typeof(value) ==='undefined' ) return ''
+    if(value == 0)return 0;
+    var f =( parseInt( value * 100 ) / 100 ).toFixed(2);
+    return f//此处2为保留两位小数
+  },
+  multiply: function (price,num) {
+    if(price == null || num== null ){
+      return 0;
+    }else{
+      return (price * num).toFixed(2)
+    }
+  },
+  indexOf: function (arr, value) {
+    if (arr.indexOf(value) < 0) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+
+  //返回高度 type:0-部位总体高度(460)，1-部位高度(310) 2-做法高度 3-做法总体高度
+  heightPart:function(type,isPlace,isAddEat,emarry){
+    var heightL = 0;
+    switch (type) {
+      case 0:
+        if(isAddEat){
+          heightL = heightL + 90
+        }
+        heightL = heightL + (Math.ceil(emarry / 3) + 1) * 70 + 120;
+        if(isPlace){
+          heightL = heightL + 60
+        }
+        break;
+      case 1:
+        heightL = heightL + (Math.ceil(emarry / 3) + 1) * 70;
+        break;
+      case 2:
+        heightL = heightL + (Math.ceil(emarry / 3) + 1) * 100;
+        break;
+      case 3:
+        if(isAddEat){
+          heightL = heightL + 90
+        }
+        if(isPlace){
+          heightL = heightL + 60
+        }
+        heightL = heightL + (Math.ceil(emarry / 3) + 1) * 100;
+        break;
+    }
+    return heightL;
+  }
+}
+
+module.exports = {
+  toFix: filters.indexOf,
+  toFix: filters.toFix,
+  toFix2: filters.toFix,
+  multiply: filters.multiply,
+  toFix1: filters.toFix1,
+  toFix3: filters.toFix3,
+  heightPart:filters.heightPart
+}

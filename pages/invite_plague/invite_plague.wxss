@@ -1,0 +1,94 @@
+/* pages/invite_ plague/invite_ plague.wxss */
+
+.page {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  /* display:flex; */
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/plague/background.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  /* flex-direction:column;  *//* align-items:center; *//* justify-content: center;水平居中 */
+}
+
+.wx {
+  position: fixed;
+  width: 100%;
+  bottom: 1%;
+  display: block;
+}
+
+.background {
+  width: 100%;
+  height: 29%;
+  position: fixed;
+  bottom: 1%;
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  /* margin-top: 10%; */
+  margin-top: 15%;
+}
+
+.button_top {
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/plague/button_top.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 75rpx;
+  width: 450rpx;
+  background-color: transparent; /*按钮透明*/
+  border: none;
+}
+
+.button_bottom {
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/plague/button_bottom.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 75rpx;
+  width: 450rpx;
+  border: none;
+  background-color: transparent; /*按钮透明*/
+}
+
+.button_left {
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/plague/button_left.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: transparent; /*按钮透明*/
+  height: 86rpx;
+  width: 305rpx;
+  border: none;
+}
+
+.button_right {
+  background-image: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/plague/button_right.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: transparent; /*按钮透明*/
+  height: 86rpx;
+  width: 305rpx;
+  border: none;
+}
+
+.button_top::after {
+  border: none;
+}
+
+.button_bottom::after {
+  border: none;
+}
+
+.button_left::after {
+  border: none;
+}
+
+.button_right::after {
+  border: none;
+}

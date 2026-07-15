@@ -1,0 +1,57 @@
+var filters = {
+  toFix: function (value) {
+    return value != null ? value.toFixed(2) : ''//此处2为保留两位小数
+  },
+
+  line: function (value) {
+    return value.replace(',', '-');
+  },
+
+  median: function (value) {
+    value = value.split(',');
+    var median = (parseInt(value[0]) + parseInt(value[1])) / 2;
+    return median;
+  },
+  getBoolean: function (value, item) {
+    console.log(value)
+    console.log(item)
+  },
+  toSum: function (value, em_id) { // 计算总额
+    return value.toFixed(2)//此处2为保留两位小数
+  },
+  timeSubstring: function (time) { // 删除默认时间的后两位'.0' {{filters.timeSubstring(tempDetail.operation_time)}}
+    return time != '' ? time.substring(0, time.length - 2) : '';
+  },
+
+  substringTime: function (value) {
+    return value != undefined ? value.substring(0, 19) : value
+  },
+
+  bracket: function (value) {
+
+    var a = value.replace("(", " [");
+    var b = a.replace(")", "]");
+
+    return b
+  },
+
+  abs: function (value) {
+    return Math.abs(value)
+  },
+  timeSubstring1: function (time) { // 删除默认时间的后两位'.0' {{filters.timeSubstring(tempDetail.operation_time)}}
+    return time != '' ? time.substring(10, time.length - 3) : '';
+  },
+
+
+}
+
+module.exports = {
+  toFix: filters.toFix,
+  line: filters.line,
+  bracket: filters.bracket,
+  median: filters.median,
+  abs: filters.abs,
+  timeSubstring: filters.timeSubstring,
+  timeSubstring1: filters.timeSubstring1,
+  substringTime: filters.substringTime
+}

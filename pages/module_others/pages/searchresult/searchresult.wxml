@@ -1,0 +1,179 @@
+<import src="../../../../components/filterbar/filterbar.wxml" />
+<wxs module="filters" src="addmul.wxs" />
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+  <view class='search-view' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img10.png');display: flex;align-items: center;">
+
+    <view class='selectCity'>
+      <view class="index">
+        <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+          {{cityName}}
+        </view>
+        <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+          {{countyName}}
+        </view>
+      </view>
+    </view>
+
+    <view class='inputBar'>
+      <input type='text' value='{{searchValue}}' bindtap="wxSearchTab" disabled='true'></input>
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search.png' />
+    </view>
+  </view>
+</view>
+
+
+<view class='myFilterBar'>
+  <view class='allArea'>
+    <view class="nav">
+      <view style="padding-bottom: 2px;">[{{result_sum}}]</view>
+      <view class="nav-son {{shownavindex == 1? 'active' : ''}}" bindtap="listqy" data-nav="1">
+        <view class="content" style='font-weight: bold;'>{{city}}</view>
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+      </view>
+    </view>
+
+    <!-- 区域-》区域、标签 -->
+    <view class="quyu {{qyopen ? 'slidown' : 'slidup'}} {{qyshow ? 'disappear':''}}">
+      <view class='quyuAll'>
+        <view class="qy quyu-left">
+          <view class="{{select0 == item.provinceName ? 'current' : ''}}" wx:for="{{provinceList}}" bindtap="selectLefts" data-provincecode="{{item.provinceCode}}" data-id="{{item.id}}" data-province="{{item.provinceName}}">{{item.provinceName}}</view>
+        </view>
+
+        <view class="qy quyu-left">
+          <view class="{{select1 == item.cityName ? 'current' : ''}}" wx:for="{{cityleft}}" wx:key="key" bindtap="selectleft" data-city='{{item.cityName}}' data-ID="{{item.id}}">
+            {{item.cityName}}
+          </view>
+        </view>
+
+        <view class="qy quyu-center">
+          <view class="{{select2 == item.county_name? 'current2' : ''}}" wx:for="{{citycenter}}" wx:key="key" bindtap="selectcenter" data-city='{{item.county_name}}' data-ID="{{item.id}}">
+            {{item.county_name}}
+          </view>
+        </view>
+
+        <view class="qy quyu-right">
+          <view class="{{select3 == item.area_name? 'current3':''}}" wx:for="{{cityright}}" wx:key="key" bindtap="selectright" data-city='{{item.area_name}}' data-ID="{{item.id}}">
+            {{item.area_name}}
+          </view>
+        </view>
+      </view>
+
+      <view class='form-btn'>
+        <button class='btn-reset' bindtap='quyuEmpty'>重 置</button>
+        <button class='btn-submit' bindtap='submitFilter'>确 定</button>
+      </view>
+    </view>
+  </view>
+
+  <view class='sort'>
+    <view class="tabTit box">
+      <view class="flex1{{!tab[index]?' active':''}}" wx:for="{{tabTxt}}" wx:key="type" data-index="{{index}}" bindtap="filterTab">
+        <text style='letter-spacing:10rpx;font-weight: bold;'>{{item}}</text>
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+      </view>
+    </view>
+
+    <view class="tabLayer" hidden="{{tab[0]}}">
+      <view>
+        <text class="{{sort_id==0?'active':''}}" data-id="0" data-index="0" data-txt="排序" data-condition="" bindtap="filter">不限</text>
+        <text class="{{sort_id==1?'active':''}}" data-id="1" data-index="0" data-txt="距离" data-condition="distance" bindtap="filter">距离</text>
+        <!-- <text class="{{sort_id==6?'active':''}}" data-id="6" data-index="0" data-txt="点赞升" data-condition="fabulousAsc" bindtap="filter">点赞数升序</text>
+        <text class="{{sort_id==7?'active':''}}" data-id="7" data-index="0" data-txt="点赞降" data-condition="fabulousDesc" bindtap="filter">点赞数降序</text>
+        <text class="{{sort_id==8?'active':''}}" data-id="8" data-index="0" data-txt="名称" data-condition="dishesName" bindtap="filter">名称</text>
+        <text class="{{sort_id==9?'active':''}}" data-id="9" data-index="0" data-txt="店铺" data-condition="shop" bindtap="filter">店铺</text> -->
+      </view>
+      <view class="tab-button">
+        <button class='reset' bindtap='reset'>重 置</button>
+        <button class='submit' bindtap='submit'>确 定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- <view class='screen' bindtap='closeOther'>
+    <template is="filterbar" data="{{ ...$wux.filterbar }}" />
+  </view> -->
+
+</view>
+
+<view style='padding-top:130rpx;'></view>
+
+<!-- 优惠 -->
+<view class='dishesList' wx:for='{{dishesNameLists}}' wx:key="list">
+  <view class="store" bindtap='toDetails' data-id='{{item.shop_id}}' data-shopName="{{item.shop_name}}">
+    <view class='store-images'>
+      <image mode="aspectFill" src="{{item.shop_img ? item.shop_img : 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E5%88%87%E7%93%9C%E5%88%87%E8%8F%9C/images/demo.jpeg'}}"></image>
+    </view>
+    <view class='store-text' style="margin-left: 15rpx;">
+      <view class='store-name' style="margin-top: 15rpx;">
+        
+        <view class='item' id='{{index}}' style='float:left;'>{{item.shop_name}}</view>
+  
+      </view>
+      <view class='store-info clearfix'>
+        <view class='clearfix' style="display: flex;justify-content: space-between;">
+          
+          <view class='store-start'>
+            <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;' wx:for="{{item.star}}"></image>
+            <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start.png' style='width: 30rpx;height: 30rpx;' wx:for="{{6 - item.star}}"></image>
+          </view> 
+
+          <view wx:if="{{item.shop_type!=''}}" class='store-style'>
+            [ <text style='color:black;'>{{item.shop_type}}</text> ]
+          </view>
+          <view wx:if="{{item.distance!=''}}">
+            <view class='store-address' wx:if="{{item.distance > 1}}">{{filters.toFix(item.distance)}}公里</view>
+            <view class='store-address' wx:else>{{item.distance*1000}}米</view>
+          </view>
+        </view>
+
+        <view style="width: 100%;display:flex;justify-content: space-between;">
+          <view class='store-level clearfix' style="width: 80%;">
+            <view class='item' id='{{index}}'>人均消费：{{item.per_capita_price}} 元</view>
+            <!-- <view style='width:110rpx;'>食安：10</view> -->
+            <view style='width:140rpx;'>人气：{{item.popularity}} 人/天</view>
+          </view>
+
+          <view class='item' id='{{index}}' style='float:right;margin:0;width: 20%;text-align: right;'>{{item.area_name}}</view>
+        </view>
+
+        <view class='store-offer'>
+          <view class='item' style='color:#519761;display: flex;overflow: hidden;'>
+            <view style="margin-right: 10rpx;word-break: keep-all;">优惠信息: </view>
+            <view wx:for="{{item.discountNameList}}" wx:for-item="itemName" wx:for-index="indexName" style="display: flex;word-break: keep-all;">
+              <view>[{{itemName.discount_name}}]</view>
+              <view wx:if="{{indexName != item.discountNameList.length-1}}" style="margin: 0 10rpx 0 10rpx;">,</view>
+            </view>
+          </view>
+        </view>
+         
+         <!-- 特大 房/厅 -->
+        <view>
+          <text wx:if="{{item.tableTotalNum}}" style="color: brown;" decode="true">总餐位：{{item.tableTotalNum}} 位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+          <text wx:if="{{item.hall}}" style="color: brown;" decode="true">{{item.hall}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+          <text wx:if="{{item.largeRoom}}" style="color: brown;">{{item.largeRoom}}</text>
+        </view>
+        <view>
+          <text wx:if="{{filters.businessTime(item.timeStr1)}}">营业时间:{{filters.businessTime(item.timeStr1)}}</text>
+        </view>
+
+        <view style='width:100%;display:flex;white-space: nowrap;margin-top: 5rpx;'>
+          <view style='color:#E66A68;font-size:24rpx;margin:2rpx;width:480rpx;font-weight:bold;'>{{item.describes}}</view>
+          <!-- <view class='isfull'>满座</view> -->
+        </view>
+
+      </view>
+    </view>
+</view>
+</view>
+
+<view class='hiddenStore' wx:if="{{dishesNameLists.length == 0}}">
+  没有找到匹配的信息
+</view>
+
+<view class='hiddenStore' hidden='{{rquestFail}}'>
+  请求数据库失败,请联系客服
+</view>
+
+<view class='loadCompleted' hidden='{{loadcompleted}}'>
+  全部数据加载完毕
+</view>

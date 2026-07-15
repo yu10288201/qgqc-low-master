@@ -1,0 +1,78 @@
+/* pages/module_discount/pages/refund/refund.wxss */
+page {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/table_baground.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.top{
+  position: fixed;
+  top: 2%;
+  bottom: 69%;
+  width: 96%;
+  left: 2%;
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow:0rpx 2rpx 20rpx 2rpx #cecece;
+}
+.topView{
+  display: flex;
+  flex-direction: row;
+  font-size: 28rpx;
+  width: 96%;
+  align-items: center;
+  height: 16%;
+  margin-left: 2%;
+  border-bottom: 1rpx solid #dadada;
+  font-weight: 900;
+}
+.topView .minText{
+  font-weight: normal;
+}
+
+.centre{
+  position: fixed;
+  top: 34%;
+  bottom: 8%;
+  left: 2%;
+  width: 96%;
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow:0rpx 2rpx 20rpx 2rpx #dadada;
+}
+.centreView{
+  width: 96%;
+  margin: 2%;
+  font-size: 28rpx;
+  justify-content: center;
+  height: 6%;
+  font-weight: 900;
+}
+.checkbox-group{
+  font-weight: normal;
+  display: flex;
+  font-size: 28rpx;
+  width: 96%;
+  margin-left: 2%;
+  height: 8%;
+  flex-direction: column;
+}
+
+.bottom{
+  position: fixed;
+  top: 93%;
+  bottom: 1%;
+  width: 90%;
+  left: 5%;
+  font-size: 36rpx;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 10rpx;
+  background: #01C2AD;
+  box-shadow:0rpx 2rpx 20rpx 6rpx #b1b0b0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

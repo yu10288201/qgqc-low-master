@@ -1,0 +1,50 @@
+<view class="page" style="padding-bottom: 120rpx;">            
+    <!--真实数据循环-->
+    <view wx:for="{{customer_address_list}}" wx:key="index" class="content-box flex-column" style="padding-left:20rpx;">
+        <view style="display: flex; flex-direction: row;">
+            <view style="margin-top: 10rpx;">
+                <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/dizhi.png" mode="aspectFill" style="width: 50rpx; height: 50rpx;"></image>
+            </view>   
+            <view style="display: flex; flex-direction: column; margin-left: 15rpx;">  
+                <view class="flex-row" style="margin-bottom: 0rpx;">            
+                    <view class="content-title" style="margin-right: 30rpx; font-weight: bolder;">{{item.name}}</view>
+                    <view class="content-title">{{item.mobile}}</view>
+                    <view style="border-color: #7e7c7c; margin-left: 20rpx; border-radius: 1%;" wx:if="{{item.is_default}}">
+                        <text style="font-size: 25rpx; color: #7e7c7c;">默认</text>
+                    </view>
+                </view>
+                <view class="content-notice" style="margin-bottom: 10rpx; margin-top: 10rpx;">{{item.detail_address}}</view>
+            </view>
+        </view>      
+        
+        <view class="flex-row" style="justify-content: flex-end; width: 100%; margin-top: 20rpx;">           
+            <view wx:if="{{from_page=='freshshoppingbill'}}" style="margin-right: 20rpx;">
+              <button class="listButton" data-index="{{index}}" data-item="{{item}}" bindtap="freshshoppingbillCustomerAddress">选择</button>
+            </view>
+            <view wx:if="{{from_page=='scancodededuction'}}" style="margin-right: 20rpx;">
+              <button class="listButton" data-index="{{index}}" data-item="{{item}}" bindtap="scancodedeductionCustomerAddress">选择</button>
+            </view>           
+            <view style="margin-right: 20rpx;">
+              <button class="listButton" data-index="{{index}}" data-item="{{item}}" bindtap="updateCustomerAddress">修改</button>
+            </view> 
+            <view style="margin-right: 30rpx;">
+              <button class="listButton" data-index="{{index}}" data-item="{{item}}" bindtap="deleteCustomerAddress">删除</button>
+            </view>
+        </view>
+    </view>
+    <!--加一大块空白来解决padding不work的问题-->
+    <view style="height:200rpx;width:100%;">
+    <view style="height:200rpx;width:100%;"></view>
+  </view>  
+</view>
+
+<view style="display:flex; flex-direction:row; justify-content:space-between; position:fixed; bottom:0rpx; margin:length; width:100%; align-items:center; height: 120rpx; background-color: #FFF;">          
+    <view style="width:100%; margin-bottom:40rpx;">
+        <button class="bottomButton" data-index="{{index}}" data-item="{{item}}" bindtap="go_to_add">添加收货地址</button>            
+    </view>        
+</view>
+
+
+
+
+

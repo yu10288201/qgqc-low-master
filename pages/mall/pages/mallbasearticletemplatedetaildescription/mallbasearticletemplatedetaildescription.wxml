@@ -1,0 +1,26 @@
+<view class="content">
+      <view wx:if="{{mall_base_description_array.length==0}}"  style="height: 50rpx;">
+        无操作说明内容
+      </view>
+      <view class="content_box" wx:for="{{mall_base_description_array}}"  wx:key="index" style="width:100%">
+        <view  class="content_box_content">
+            <view style="flex: 1;display: flex;flex-direction: column;">
+              <view style="display: flex;flex-direction: row;align-items: flex-start;align-items: flex-start;margin-bottom: 32rpx;">
+                <rich-text  style="width:96vw;" nodes="{{item.description}}"></rich-text>
+              </view>
+            </view>
+        </view>
+      </view>
+      <view  style="height: 50rpx;">
+      </view>
+</view>
+
+
+
+ 	
+    
+
+	
+
+
+

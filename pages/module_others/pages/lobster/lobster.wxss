@@ -1,0 +1,375 @@
+/**discount.wxss**/
+/**index.wxss**/
+
+page {
+  background-color: #fff;
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}
+
+.headView {
+  /* 头部设置 */
+  position: relative;
+  width: 100%;
+  height: 5%;
+  background-color: #214785;
+}
+/* E4393C */
+.headText {
+  /* 顶端文字 */
+  font-family: "宋体";
+  color: rgb(0, 0, 0);
+  font-size: 35rpx;
+  font-weight: 900;
+  width: 95%;
+  border-radius: 15rpx;
+  background-color: white;
+  top: 5rpx;
+  position: absolute;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  height: 100rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cut {
+  width: 100%;
+  height: 25rpx;
+  background-color: #f4f4f4;
+  margin-bottom: 40rpx;
+}
+
+.bodyView {
+  /* 主体样式 */
+  width: 100%;
+}
+
+.picker {
+  /* 日期格式 */
+  width: 250rpx;
+  font-size: 28rpx;
+  height: 35rpx;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  border: 1rpx rgb(87, 87, 87) solid;
+  border-radius: 15rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 15rpx;
+}
+
+.smallView {
+  /* 一行两个的view */
+  display: flex;
+  align-items: center;
+  margin-top: 3%;
+  height: 9%;
+}
+
+.input {
+  /* 输入框样式 */
+  border: 1rpx rgb(87, 87, 87) solid;
+  border-radius: 15rpx;
+  width: 400rpx;
+  color: rgb(0, 0, 0);
+  font-size: 26rpx;
+  text-align: center;
+  margin-left: 15rpx;
+  min-height: 35rpx;
+  height: 8%;
+}
+
+.input2 {
+  /* 小输入框样式 */
+  width: 100rpx;
+  text-align: center;
+  font-size: 26rpx;
+  color: rgb(0, 0, 0);
+  border: 1rpx rgb(87, 87, 87) solid;
+  border-radius: 15rpx;
+  margin-left: 15rpx;
+  min-height: 35rpx;
+  align-items: center;
+  justify-content: center;
+  height: 8%;
+}
+
+.text {
+  /* 左边字体样式 */
+  font-family: "宋体";
+  color: rgb(0, 0, 0);
+  font-size: 28rpx;
+  font-weight: 900;
+  text-align: right;
+  margin-left: 25rpx;
+  align-items: center;
+  width: 175rpx;
+}
+
+.text1 {
+  /* 获取数据的字体样式 */
+  font-family: "宋体";
+  color: rgb(0, 0, 0);
+  font-size: 28rpx;
+  font-weight: 900;
+  margin-left: 25rpx;
+  text-align: left;
+  align-items: center;
+  width: 100rpx;
+}
+
+.text2 {
+  /* 右边字体样式 */
+  font-family: "宋体";
+  color: rgb(0, 0, 0);
+  font-size: 28rpx;
+  font-weight: 900;
+  text-align: left;
+  align-items: center;
+}
+
+.div-list {
+  /* 一整行的文字与输入框 */
+  display: flex;
+  justify-content: flex-start;
+  height: 6%;
+  width: 100%;
+  margin-top: 2%;
+  align-items: center;
+}
+
+.div-list1 {
+  /* 靠左文字与输入框 */
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  width: 63%;
+  align-items: center;
+}
+
+.div-list2 {
+  /* 右侧文字与输入框 */
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  width: 15%;
+  text-align: right;
+  align-items: center;
+}
+
+.div-list3 {
+  /* 靠右文字与输入框 */
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  width: 10%;
+  text-align: right;
+  align-items: center;
+}
+
+.from {
+  width: 100%;
+  height: 100%;
+}
+
+.bottomView {
+  /* 底部样式 */
+  top: 20rpx;
+  width: 60%;
+  height: 8%;
+  display: flex;
+  position: relative;
+  bottom: 25rpx;
+  justify-content: center;
+  align-items: center;
+  border: 1rpx rgb(167, 167, 167) solid;
+  margin-left: 20%;
+  border-radius: 15rpx;
+  margin-bottom: 10rpx;
+}
+
+.btn {
+  /* 按钮样式 */
+  background-color: #519763;
+  height: 50rpx;
+  display: flex;
+  color: white;
+  font-size: 28rpx;
+  justify-content: center;
+  font-weight: 900;
+  align-items: center;
+}
+
+.textarea {
+  /* 大输入框 */
+  width: 80%;
+  margin-left: 10%;
+  height: 330rpx;
+  /* display: flex;
+  justify-content: center; */
+  border: 1rpx rgb(167, 167, 167) solid;
+  border-radius: 15rpx;
+  padding: 5rpx;
+}
+
+.text3 {
+  /* 输入框格式 */
+  width: 75%;
+  height: 90%;
+  /* overflow-y:hidden; */
+  font-size: 28rpx;
+}
+
+.btnView {
+  /* ‘首发人报名’按钮和‘进入店铺’按钮外框样式 */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 5%;
+  margin-left: 5%;
+  width: 90%;
+  border-radius: 15rpx;
+  height: 10%;
+}
+
+/* .btn2{
+  /* 按钮样式 */
+
+/* background-color: #519763;
+  height: 45rpx;
+  color: white;
+  font-size: 28rpx;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    color: transparent;
+}
+/* 弹出框样式1 */
+.hiddenview {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+/* 弹出框样式2 */
+.hiddenview2 {
+  background-color: white;
+  position: fixed;
+  top: 15%;
+  left: 7%;
+  width: 86%;
+  height: 65%;
+  border-radius: 15rpx;
+  border-top-left-radius: 15rpx;
+  border-top-right-radius: 15rpx;
+}
+.modalView1{
+  border: 1rpx rgb(167, 167, 167) solid;
+  border-radius: 15rpx;
+  margin: 10rpx;
+  padding: 10rpx;
+  margin-top:5%;
+  height:25%;
+}
+.modalBtn {
+  /* 按钮样式 */
+  background-color: #519763;
+  height: 50rpx;
+  display: flex;
+  color: white;
+  font-size: 28rpx;
+  justify-content: center;
+  margin-top: 5%;
+  font-weight: 900;
+  align-items: center;
+  width: 30%;
+}
+.modalBtnView{
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+}
+.exitTable {
+  position: absolute;
+  top: 11rpx;
+  right: 11rpx;
+  color: #fff;
+  border-radius: 50%;
+  width: 45rpx;
+  height: 45rpx;
+  z-index: 2;
+  line-height: 45rpx;
+  text-align: center;
+  background-color: #f00;
+  font-size: 40rpx;
+  padding-bottom: 5rpx;
+}
+.ModalHeadText {
+  /* 顶端文字 */
+  font-family: "宋体";
+  color: rgb(0, 0, 0);
+  font-size: 35rpx;
+  font-weight: 900;
+  width: 100%;
+  border-radius: 15rpx;
+  background-color: white;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* 弹出框文字行样式 */
+.modalTextView{
+height:25%;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+}
+/* 弹出框文左侧字行样式 */
+.modalTextView1{
+height:100%;
+width: 28%;
+text-align: right;
+}
+/* 弹出框文右侧字行样式 */
+.modalTextView2{
+height:100%;
+width: 72%;
+text-align: left;
+}

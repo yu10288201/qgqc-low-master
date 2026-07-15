@@ -1,0 +1,170 @@
+<wxs module="util">
+  function formatTimeToDate(time) {
+    return time.split(" ")[0]
+  }
+  module.exports = {
+    formatTimeToDate: formatTimeToDate
+  }
+</wxs>
+<view class="body">
+  <view class="return_out" style="height: {{return_out_height}}px;top: {{return_out_top}}px;" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+    <view>绑客详情</view>
+  </view>
+  <view class="title-bg">
+    <!-- <view class="titleimg">
+            <view class="titleimgone">
+                <image class="top-image1" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg8.png"></image>
+            </view>
+            <view class="titleimgtwo">
+                <image class="top-image2" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/binding/Bindingimg10.png"></image>
+            </view>
+        </view> -->
+  </view>
+  <view class="content">
+    <view style="width: 100%;height: 200rpx;">
+    </view>
+    <view style="display: flex;justify-content: flex-end;width: 100%;z-index: 3;margin-bottom: 10rpx;">
+        <view class='th1' data-id="1" bindtap="toChatWithCust" style="width: 150rpx;padding: 5rpx 10rpx;margin-top: 10rpx;margin-right: 20rpx;background-color: #0099A2;border-radius: 20rpx;background-image: none;">
+            <view class="text" style="color: #FFF;">乔信</view>
+        </view>
+    </view>
+    <view class='form'>
+      <view style="z-index: 3;border: 1rpx solid;border-radius: 10rpx;display: flex;flex-direction: column;align-items: center;">
+        <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 70rpx;">
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 0 10rpx 10rpx;flex: 1;">
+            <view style="font-size: 28rpx;font-weight: bolder;">平台编号：</view>
+            <view style="border-radius: 10rpx;border: #000 1rpx solid;flex: 1;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <input style="width: 100%;font-size: 30rpx;text-align: center;" type="number" model:value="{{selectUserCode}}"/>
+            </view>
+          </view>
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 0 10rpx 10rpx;flex: 1;">
+            <view style="font-size: 28rpx;font-weight: bolder;">昵称：</view>
+            <view style="border-radius: 10rpx;border: #000 1rpx solid;flex: 1;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <input style="width: 100%;font-size: 30rpx;text-align: center;" type="number" model:value="{{selectNickName}}"/>
+            </view>
+          </view>
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 0 10rpx 10rpx;flex: 0.9;">
+            <view style="font-size: 28rpx;font-weight: bolder;">距离：</view>
+            <view style="border-radius: 10rpx;border: #000 1rpx solid;flex: 0.9;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <input style="width: 100%;font-size: 30rpx;text-align: center;" type="number" model:value="{{selectDistance}}"/>
+            </view>
+            <view style="font-size: 28rpx;font-weight: bolder;margin: 0 10rpx 0 10rpx;">KM</view>
+          </view>
+        </view>
+        <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 70rpx;">
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 0 10rpx 10rpx;">
+            <view style="font-size: 28rpx;font-weight: bolder;margin-right: 5rpx;">区域:</view>
+            <view style="border-radius: 10rpx;border: #000 1rpx solid;max-width: 100rpx;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <input style="width: 100%;font-size: 30rpx;text-align: center;" type="number" model:value="{{selectAreaName}}"/>
+            </view>
+          </view>
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 10rpx 10rpx 10rpx;flex: 1;">
+            <view style="font-size: 28rpx;font-weight: bolder;margin-right: 5rpx;">日期:</view>
+            <view style="flex: 1;height: 100%;border-radius: 10rpx;border: #000 1rpx solid;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <picker mode="date" bindchange="beginCreateTimeChange" style="width: 100%;height: 100%;">
+                <view style="height: 40rpx;width: 100%;font-size: 26rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+                    <text style="margin-left: 20rpx;">{{beginCreateTime}}</text>
+                    <view style="width: 0px;height: 0px;border: 15rpx solid transparent;border-top-color: #000;position: absolute;margin-left: 170rpx;margin-top: 20rpx;"></view>
+                </view>
+              </picker>
+
+            </view>
+
+            <view style="font-size: 28rpx;font-weight: bolder;margin: 0 5rpx 0 5rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;">-</view>
+            <view style="flex: 1;height: 100%;border-radius: 10rpx;border: #000 1rpx solid;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <picker mode="date" bindchange="{{beginCreateTime ? 'endCreateTimeChange' : ''}}" start="{{beginCreateTime}}" style="width: 100%;height: 100%;">
+                <view style="height: 40rpx;width: 100%;font-size: 26rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+                    <text style="margin-left: 20rpx;">{{endCreateTime}}</text>
+                    <view style="width: 0px;height: 0px;border: 15rpx solid transparent;border-top-color: #000;position: absolute;margin-left: 170rpx;margin-top: 20rpx;"></view>
+                </view>
+              </picker>
+
+            </view>
+          </view>
+        </view>
+        <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 70rpx;align-items: center;">
+          <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 10rpx 10rpx 10rpx;">
+            <view style="font-size: 28rpx;font-weight: bolder;">类型：</view>
+            <view style="width: 150rpx;height: 100%;border-radius: 10rpx;border: #000 1rpx solid;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <picker mode="selector" range="{{bindingType}}" value="{{bindingTypeIndex}}" bindchange="selectBindingType" style="width: 100%;height: 100%;">
+                <view style="height: 40rpx;width: 100%;line-height: 40rpx;text-align: center;font-size: 26rpx;">
+                  {{bindingType[bindingTypeIndex]}}
+                </view>
+              </picker>
+              <view style="width: 0px;height: 0px;border: 15rpx solid transparent;border-top-color: #000;position: absolute;margin-left: 100rpx;margin-top: 20rpx;"></view>
+
+            </view>
+          </view>
+           <!-- <view style="display: flex;justify-content: center;align-items: center;margin: 10rpx 10rpx 10rpx 10rpx;">
+            <view style="font-size: 28rpx;font-weight: bolder;">绑定人：</view>
+            <view style="width: 200rpx;height: 100%;border-radius: 10rpx;border: #000 1rpx solid;height: 40rpx;overflow: hidden;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+              <picker mode="selector" range="{{bindingRole}}" value="{{bindingRoleIndex}}" bindchange="selectBindingRole" style="width: 100%;height: 100%;">
+                <view style="height: 40rpx;width: 100%;line-height: 40rpx;text-align: center;font-size: 26rpx;">
+                  {{bindingRole[bindingRoleIndex]}}
+                </view>
+              </picker>
+              <view style="width: 0px;height: 0px;border: 15rpx solid transparent;border-top-color: #000;position: absolute;margin-left: 160rpx;margin-top: 20rpx;"></view>
+            </view>
+          </view>  -->
+        </view> 
+        <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 70rpx;">
+          <view style="display: flex;flex-direction: row;justify-content: flex-end;flex: 1;align-items: center;">
+            <view class='th1' bindtap="showWriteDetailDialog" style="height: 50rpx;width: 140rpx;padding: 0 10rpx;margin-right: 10rpx;background-color:#e7c7a8;border-radius: 20rpx;background-image: none;">
+                <view class="text">选择内容</view>
+            </view>
+            <view class='th1' bindtap="sendMessageToCust" style="height: 50rpx;width: 80rpx;padding: 0 10rpx;margin-right: 10rpx;background-color:#e7c7a8;border-radius: 20rpx;background-image: none;">
+              <view class="text">发布</view>
+            </view>
+            <view class='th1' bindtap="selectAllCust" style="height: 50rpx;width: 80rpx;padding: 0 10rpx;margin-right: 10rpx;background-color:#e7c7a8;border-radius: 20rpx;background-image: none;">
+              <view class="text">全选</view>
+            </view>
+            <view class='th1' bindtap="initDetail" style="height: 50rpx;width: 80rpx;padding: 0 10rpx;margin-right: 10rpx;background-color:#e7c7a8;border-radius: 20rpx;background-image: none;">
+              <view class="text">查询</view>
+            </view>
+            <view class='th1' bindtap="clearInputContent" style="height: 50rpx;width: 80rpx;padding: 0 10rpx;margin-right: 10rpx;background-color:#e7c7a8;border-radius: 20rpx;background-image: none;">
+              <view class="text">清空</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view style="display: flex;flex-direction: row;justify-content: space-between;width: 100%;height: 50rpx;align-items: center;">
+          <view style="display: flex;justify-content: center;align-items: center;margin: 0 0 0 10rpx;">
+            <view style="font-size: 28rpx;font-weight: bolder;">查询结果数量：</view>
+            <text style="font-weight: 400;font-size: 26rpx;">{{detailList.length}}个</text>
+          </view>
+          <text style="font-size: 26rpx;font-weight: 400;">类型: A-平台 B-商家 C-餐品</text>
+        </view>
+      <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;">
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 2;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">日期</text>
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 1.5;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">平台编号</text>
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 2;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">昵称</text>
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 1;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">距离</text>
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 0.8;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">类型</text>
+        <text class='text' style="display: flex;flex-direction: row;justify-content: center;align-items: center;height: 50rpx;font-size: 26rpx;flex: 0.8;text-align: center;border-bottom: 2rpx solid #9b4c3c;border-right: 2rpx solid #9b4c3c;border-left: 2rpx solid #9b4c3c;border-top: 2rpx solid #9b4c3c;">选择</text>
+      </view>
+      <scroll-view wx:if="{{detailList.length > 0}}" class='td1' style="width: 100%;flex: 1;max-height: 400rpx;border: none;" scroll-y>
+        <block wx:for="{{detailList}}" wx:key="index">
+          <view style="width: 100%;display: flex;flex-direction: row;justify-content: center;align-items: center;" data-index="{{index}}" data-item="{{item}}" bindtap="chooseDetail">
+            <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 2;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;">{{util.formatTimeToDate(item.create_time)}}</text>
+            <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 1.5;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;">{{item.bind_person_code}}</text>
+            <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 2;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;">{{item.customer_name}}</text>
+            <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 1;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;">{{item.customer_company_distance > item.customer_home_distance ? item.customer_home_distance > 99999 ? '∞' : item.customer_home_distance : item.customer_company_distance > 99999 ? '∞' : item.customer_company_distance }}</text>
+            <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 0.8;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;">{{item.bind_type == 1 ? 'A' : item.bind_type == 2 ? 'B' : 'C'}}</text>
+            <view class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 0.8;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;border-right: 2rpx solid #9b4c3c;">
+            <checkbox-group bindchange="choosePeople" data-index="{{index}}">
+              <checkbox checked="{{item.selected}}"></checkbox>
+            </checkbox-group>
+            </view>
+
+            <!-- <text class='text' style="font-size: 26rpx;font-weight: unset;height: 60rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;flex: 1;text-align: center;border-left: 2rpx solid #9b4c3c;border-bottom: 2rpx solid #9b4c3c;border-right: 2rpx solid #9b4c3c;">{{item.selected}}</text> -->
+          </view>
+        </block>
+      </scroll-view>
+
+      <view wx:if="{{detailList.length == 0}}" class='td1' style="width: 100%;height: 400rpx;border: none;">
+        <view>没有符合条件的记录</view>
+      </view>
+    </view>
+  </view>
+</view>

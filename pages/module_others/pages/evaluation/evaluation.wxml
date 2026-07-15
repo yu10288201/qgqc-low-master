@@ -1,0 +1,251 @@
+<!--pages/evaluation/evaluation.wxml-->
+<wxs module="filters">
+  function formaterTime(value) {
+    var time = getDate(value);
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var date = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+    month = month < 10 ? "0" + month : month;
+    date = date < 10 ? "0" + date : date;
+    hour = hour < 10 ? "0" + hour : hour;
+    minute = minute < 10 ? "0" + minute : minute;
+    second = second < 10 ? "0" + second : second;
+    return year + "-" + month + "-" + date ;
+  }
+  module.exports = {
+    formaterTime: formaterTime
+  }
+</wxs>
+<view class="movie-container">
+  <!-- 导航栏 -->
+  <view class="navbar">
+    <block wx:for="{{navbarTitle}}" wx:key="index">
+      <view class="navbar-item {{navbarActiveIndex === index ? 'navbar-item-active' : ''}}" data-navbar-index="{{index}}" catchtap="onNavBarTap">
+        <text>{{item}}</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- <view class="fix-navbar" wx:if="{{fixTop<scrollTop}}" > -->
+  <!-- <block wx:for="{{navbarTitle}}" wx:key="index">
+      <view class="navbar-item {{navbarActiveIndex === index ? 'navbar-item-active' : ''}}" data-navbar-index="{{index}}" catchtap="onNavBarTap">
+        <text>{{item}}</text>
+      </view>
+    </block> -->
+
+
+
+  <!-- <scroll-view style='height:{{pop_window}}px' scroll-y="true"> -->
+
+  <view class='tabs-view'>
+    <view class='tabs'>
+      <button wx:for="{{riderCommentList}}" wx:for-item="item" wx:key="item.index" bindtap="checkboxChange" data-value="{{item.value}}" data-index="{{index}}" checked="{{item.selected}}" class="btn {{item.selected ? 'btn-selected' : ''}}">
+        {{item.title}}
+      </button>
+    </view>
+    <view class='drop_down'>
+      <image class='dropImage' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/drop_down.png' />
+    </view>
+
+  </view>
+
+
+  <view class='review' >
+    <view wx:if="{{isConsume}}" class='review-text' style="width: 100%;display: flex;justify-content: flex-end;">
+        <view class="listButton" bindtap='toAssess' style="margin-right: 40rpx;">点评</view>
+    </view>
+    <text wx:else="{{isConsume}}" bindtap='toAssess' class='review-text'>您尚未消费，不能评价</text>
+  </view>
+
+  <view class="movie-content-wrapper">
+    <swiper class='swiper' current="{{navbarActiveIndex}}" style='height:{{pop_window}}px' bindanimationfinish="onBindAnimationFinish">
+      <swiper-item wx:for="{{navbarTitle}}" class='swiper-item' wx:key="index">
+        <!-- <view wx:for="{{navbarTitle}}" wx:key="index"> -->
+        <scroll-view scroll-y="{{true}}" bindscrolltolower="downRefresh" style='height:{{pop_window}}px' wx:if="{{navbarActiveIndex == 0}}">
+          <view class='title'>全部评价 （{{allCounts}}条）</view>
+          <view class='evaluations' wx:for="{{evaluations}}" wx:key="list" wx:if="{{evaluations.length > 0}}">
+            <view class='avatar'>
+              <image class="avatar_Image" src='{{item.userAvatar}}'></image>
+            </view>
+            <view class='main_view'>
+              <view class='row1'>
+                <view class='nickname'>{{item.userName}}</view>
+                <view class='date'>{{item.assessDate}}</view>
+              </view>
+              <view class='row2'>
+                <view class='star'>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                </view>
+                <view class='isConsumption'>已消费</view>
+              </view>
+
+              <view class='text'>
+                <text class="text-view unellipsis">
+                  {{item.assessEvaluation}} 　
+                </text>
+              </view>
+              <view class='pictures'>
+                <block wx:for='{{item.assessPicture}}' wx:key='{{index}}'>
+                  <image class='picture' src='{{item.imgurl}}' hidden='{{item.imgurl==null}}' wx:key="{{index}}" data-url='{{item.imgurl}}' data-index='{{index}}' bindtap='previewImg' />
+                </block>
+              </view>
+              <view class='support'>
+                <view class='text3' data-id='{{item.assessId}}' data-islike="{{item.is_support}}" style='justify-content: flex-end;' bindtap='favorclick'>
+                  <image wx:if="{{is_support == 1}}" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png' style='width: 24rpx;height: 24rpx;'></image>
+                  <image wx:else src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png' style='width: 24rpx;height: 24rpx;'></image> {{item.assessSurport}}
+                </view>
+              </view>
+              <view style="width: 100%;display: flex;flex-direction: column;background-color: #eee;border-radius: 10rpx;" wx:if="{{item.replyMap}}">
+                <view style="width: 100%;display: flex;margin-top: 10rpx;flex-direction: column;padding-bottom: 10rpx;align-items: center;">
+                  <view style="width: 97%;margin-left: 10rpx;display: flex;justify-content: space-between;">
+                    <view style="width: 35%;font-weight: bolder;">商家回复</view>
+                    <view style="width: 35%;">{{filters.formaterTime(item.replyMap.create_time)}}</view>
+                  </view>
+                  <view style="width: 97%;color: #888;text-indent: 62rpx;margin-top: 10rpx;">{{item.replyMap.content}}</view>
+                </view>
+              </view>
+              <view style="width: 100%;height: 20rpx;"></view>
+            </view>
+          </view>
+          <view  wx:if="{{evaluations.length == 0}}" style="display: flex;flex-direction: row;justify-content: center;align-items: center;margin-top: 100rpx;">暂无评论</view>
+          <view class='loadCompleted' wx:if='{{loadMore}}'>
+            全部加载完毕
+          </view>
+        </scroll-view>
+
+        <scroll-view scroll-y="{{true}}" bindscrolltolower="downRefresh" style='height:{{pop_window}}px' wx:if="{{navbarActiveIndex == 1}}">
+          <view class='title'>{{item}}评价 （{{picturesCounts}}条）</view>
+
+          <view class='evaluations' wx:for="{{evaluations_picture}}" wx:if="{{evaluations_picture.length > 0}}" wx:key="list">
+            <view class='avatar'>
+              <image class="avatar_Image" src='{{item.userAvatar}}'></image>
+            </view>
+            <view class='main_view'>
+              <view class='row1'>
+                <view class='nickname'>{{item.userName}}</view>
+                <view class='date'>{{item.assessDate}}</view>
+              </view>
+              <view class='row2'>
+                <view class='star'>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                </view>
+                <view class='isConsumption'>已消费</view>
+              </view>
+              <view class='text'>
+                <text class="text-view unellipsis">
+                  {{item.assessEvaluation}} 　
+                </text>
+              </view>
+              <view class='pictures'>
+                <block wx:for='{{item.assessPicture}}' wx:key='{{index}}'>
+                  <image class='picture' src='{{item.imgurl}}' hidden='{{item.imgurl==null}}' wx:key="{{index}}" data-url='{{item.imgurl}}' data-index='{{index}}' bindtap='previewImg' />
+                </block>
+              </view>
+              <view class='support'>
+                <view class='text3' style='justify-content: flex-end;' data-assessId="{{item.assessId}}" bindtap='approval'>
+                  <image wx:if="{{approval}}" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png' style='width: 24rpx;height: 24rpx;'></image>
+                  <image wx:else src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png' style='width: 24rpx;height: 24rpx;'></image> {{item.assessSurport}}
+                </view>
+              </view>
+              <view style="width: 100%;display: flex;flex-direction: column;background-color: #eee;border-radius: 10rpx;" wx:if="{{item.replyMap}}">
+                <view style="width: 100%;display: flex;margin-top: 10rpx;flex-direction: column;padding-bottom: 10rpx;align-items: center;">
+                  <view style="width: 97%;margin-left: 10rpx;display: flex;justify-content: space-between;">
+                    <view style="width: 35%;font-weight: bolder;">商家回复</view>
+                    <view style="width: 35%;">{{filters.formaterTime(item.replyMap.create_time)}}</view>
+                  </view>
+                  <view style="width: 97%;color: #888;text-indent: 62rpx;margin-top: 10rpx;">{{item.replyMap.content}}</view>
+                </view>
+              </view>
+              <view style="width: 100%;height: 20rpx;"></view>
+            </view>
+          </view>
+          <view  wx:if="{{evaluations_picture.length == 0}}" style="display: flex;flex-direction: row;justify-content: center;align-items: center;margin-top: 100rpx;">暂无评论</view>
+          <view class='loadMore' hidden='{{loadMore}}' bindlongtap='{{loadMore}}' wx:if="{{evaluations_picture.length > 0}}">
+            点击加载更多
+          </view>
+
+
+          <view class='loadCompleted' hidden='{{loadingMore}}'>
+            已经全部加载完毕
+          </view>
+        </scroll-view>
+
+        <scroll-view scroll-y="{{true}}" bindscrolltolower="downRefresh" style='height:{{pop_window}}px' wx:if="{{navbarActiveIndex == 2}}">
+          <view class='title'>{{item}}评价 （{{recentCounts}}条）</view>
+
+          <view class='evaluations' wx:for="{{evaluations_recent}}" wx:key="list" wx:if="{{evaluations_recent.length > 0}}" >
+            <view class='avatar'>
+              <image class="avatar_Image" src='{{item.userAvatar}}'></image>
+            </view>
+            <view class='main_view'>
+              <view class='row1'>
+                <view class='nickname'>{{item.userName}}</view>
+                <view class='date'>{{item.assessDate}}</view>
+              </view>
+              <view class='row2'>
+                <view class='star'>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                  <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                </view>
+                <view class='isConsumption'>已消费</view>
+              </view>
+              <view class='text'>
+                <text class="text-view unellipsis">
+                  {{item.assessEvaluation}} 　
+                </text>
+              </view>
+              <view class='pictures'>
+                <block wx:for='{{item.assessPicture}}' wx:key='{{index}}'>
+                  <image class='picture' src='{{item.imgurl}}' hidden='{{item.imgurl==null}}' wx:key="{{index}}" data-url='{{item.imgurl}}' data-index='{{index}}' bindtap='previewImg' />
+                </block>
+              </view>
+              <view class='support'>
+                <view class='text3' style='justify-content: flex-end;' bindtap='approval'>
+                  <image wx:if="{{approval}}" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png' style='width: 24rpx;height: 24rpx;'></image>
+                  <image wx:else src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png' style='width: 24rpx;height: 24rpx;'></image>{{item.assessSurport}}
+                </view>
+              </view>
+              <view style="width: 100%;display: flex;flex-direction: column;background-color: #eee;border-radius: 10rpx;" wx:if="{{item.replyMap}}">
+                <view style="width: 100%;display: flex;margin-top: 10rpx;flex-direction: column;padding-bottom: 10rpx;align-items: center;">
+                  <view style="width: 97%;margin-left: 10rpx;display: flex;justify-content: space-between;">
+                    <view style="width: 35%;font-weight: bolder;">商家回复</view>
+                    <view style="width: 35%;">{{filters.formaterTime(item.replyMap.create_time)}}</view>
+                  </view>
+                  <view style="width: 97%;color: #888;text-indent: 62rpx;margin-top: 10rpx;">{{item.replyMap.content}}</view>
+                </view>
+              </view>
+              <view style="width: 100%;height: 20rpx;"></view>
+            </view>
+          </view>
+          <view  wx:if="{{evaluations_recent.length == 0}}" style="display: flex;flex-direction: row;justify-content: center;align-items: center;margin-top: 100rpx;">暂无评论</view>
+          <view class='loadMore' hidden='{{loadMore}}' bindlongtap='{{loadMore}}' wx:if="{{evaluations_recent.length > 0}}">
+            点击加载更多
+          </view>
+
+          <view class='loadCompleted' hidden='{{loadingMore}}'>
+            已经全部加载完毕
+          </view>
+        </scroll-view>
+
+      </swiper-item>
+    </swiper>
+  </view>
+
+</view>

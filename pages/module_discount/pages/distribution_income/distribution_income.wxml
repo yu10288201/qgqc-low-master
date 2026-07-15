@@ -1,0 +1,64 @@
+<wxs module="filters" src="./distribution_income.wxs" />
+<view class="return_out" bindtap="returnBack">
+  <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+</view>
+
+<view class="return_out" style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+  分销收入明细
+</view>
+
+<view class='top'>
+  <!-- <view style="height: 10%;width: 100%;"></view> -->
+  
+  <view style="width: 100%;display: flex;flex-direction: column;align-items: center;margin-top: 230rpx;">
+    <view style="display: flex;flex-direction: column;width: 90%;">
+      <view style="width:90%;height:80rpx;display: flex;"><text decode="emsp">日&emsp;&emsp;期：</text>
+        <picker mode="date" start="2015-09-01" name="queryByDate" bindchange="selectDate">
+          <view style="position: relative;flex-direction:row-reverse;justify-content: space-between;">
+            <view style="position: absolute;right: 0;color: gray;">▼</view>
+            <view style="text-align: center;">{{selectDate}}</view>
+          </view>
+        </picker>
+      </view> 
+      <view style="width:90%;height:60rpx;display: flex;">
+        <text>商品名称：</text>
+        <input style="text-align: center;" type="text" id="queryByName" bindinput="selectName" />
+        <view class="queryButton" bindtap="getDistributionInCome">查询</view>
+      </view> 
+    </view>
+    
+    <view class="comtainer" style="height: 80vh;">
+      <view style="display: flex;width: 95%;margin-top: 30rpx;justify-content: center;">
+        <view class="th" style="width: 30%;">日期</view>
+        <view class="th" style="width: 40%;">商品</view>
+        <view class="th" style="width: 15%;">返佣</view>
+        <view class="th" style="width: 15%;">累计</view>
+      </view>
+      <scroll-view scroll-y="true" style="height: 66vh;width: 95%;">
+        <view style="display: flex;justify-content: center;" wx:for="{{detailList}}" wx:if="{{detailList.length != 0}}" bindtap="showDetail" data-item="{{item}}">
+          <view class="td" style="width: 30%;">{{filters.formatDate(item.createTime,2)}}</view>
+          <view class="td" style="width: 40%;">{{item.goodsName}}</view>
+          <view class="td" style="width: 15%;">{{item.commissionPrice}}</view>
+          <view class="td" style="width: 15%;">{{item.commissionTotal}}</view>
+        </view>
+      </scroll-view>
+      
+    </view>
+  </view>
+</view>
+
+<view wx:if="{{isShowDetail}}" class="popup-window-bg" bindtap="showDetail"></view>
+<view wx:if="{{isShowDetail}}" class="popup-window" style="display: flex;justify-content: flex-start;font-size: 28rpx">
+  <view style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;margin-left: 100rpx;">
+    <view style="margin-top: 36rpx;"><text decode="emsp">&emsp;&emsp;&emsp;&emsp;&emsp;日期:&emsp;</text>{{filters.formatDate(createTime,2)}}</view>
+    <view ><text decode="emsp">&emsp;&emsp;&emsp;商品名称:&emsp;</text>{{goodsName}}</view>
+    <view ><text decode="emsp">&emsp;&emsp;&emsp;&emsp;分销价:&emsp;</text>{{distributionPrice}}</view>
+    <view ><text decode="emsp">&emsp;&emsp;&emsp;&emsp;&emsp;返佣:&emsp;</text>{{commissionPrice}}</view>
+    <view ><text decode="emsp">&emsp;&emsp;&emsp;购买数量:&emsp;</text>{{orderNum}}</view>
+    <view ><text decode="emsp">购买人平台编号:&emsp;</text>{{buyCode}}</view>
+    <view ><text decode="emsp">&emsp;&emsp;购买人名称:&emsp;</text>{{buyNickName}}</view>
+    <view style="margin-bottom: 36rpx"><text decode="emsp">&emsp;&emsp;&emsp;&emsp;&emsp;累计:&emsp;</text>{{commissionTotal}}</view>
+  </view>
+</view>
+
+<view style="position: fixed;top: 50%;width: 100%;text-align: center;font-size: 30rpx;" wx:if="{{detailList.length == 0}}">暂无分销收入</view>

@@ -1,0 +1,111 @@
+/* pages/module_discount/pages/refund_detail/refund_detail.wxss */
+page {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/table_baground.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.top{
+  position: fixed;
+  top: 2%;
+  bottom: 69%;
+  width: 96%;
+  left: 2%;
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow:0rpx 2rpx 20rpx 2rpx #cecece;
+}
+.topView{
+  display: flex;
+  flex-direction: row;
+  font-size: 28rpx;
+  align-items: center;
+  width: 96%;
+  height: 16%;
+  margin-left: 2%;
+  border-bottom: 1rpx solid #dadada;
+  font-weight: 900;
+}
+.topView .minText{
+  font-weight: normal;
+}
+.centre{
+  position: fixed;
+  top: 34%;
+  bottom: 2%;
+  left: 2%;
+  width: 96%;
+  background: #ffffff;
+  border-radius: 8rpx;
+  box-shadow:0rpx 2rpx 20rpx 2rpx #dadada;
+}
+.centreView{
+  width: 96%;
+  margin: 2%;
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: row;
+  height: 6%;
+  border-bottom: 4rpx solid #dadada;
+  font-weight: 900;
+}
+.centreView .help{
+  color: #01C2AD;
+  display: flex;
+  flex-direction: row;
+}
+
+.icon{
+  width: 20rpx;
+  height: 20rpx;
+  background: #01C2AD;
+  border-radius: 50%;
+  display: inline-block;
+  margin:10rpx 10rpx 0rpx 20rpx;
+}
+.pattern{
+  display:flex;
+  flex-direction:row;
+  font-size:28rpx;
+  color:#01C2AD;
+}
+.logistics_centent{
+  position: absolute;
+  left: 100rpx;
+  width: 85%;
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.on{
+  background: #01C2AD;
+  height: 100rpx;
+  margin-top: 8rpx;
+  margin-bottom: 4rpx;
+  width: 1px;
+  margin-left: 32rpx;
+}
+.no_in{
+  width: 24rpx;
+  height: 24rpx;
+  background: #01C2AD;
+  border-radius: 50%;
+  display: inline-block;
+  margin:4rpx 0rpx 0rpx 15rpx;
+  border: 6rpx solid #BBEEE9;
+}
+.in{
+  width: 24rpx;
+  height: 24rpx;
+  margin:4rpx 0rpx 0rpx 20rpx;
+  border: 1rpx solid #BBEEE9;
+  animation: my_animation 2s infinite;
+}
+@keyframes my_animation{
+    100% {  
+    transform: scale(1.5);  
+    background-color: transparent;  
+    }  
+}

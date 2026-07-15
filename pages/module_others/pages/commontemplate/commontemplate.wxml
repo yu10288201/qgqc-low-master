@@ -1,0 +1,946 @@
+<!--pages/commontemplate/commontemplate.wxml-->
+<template name="personCourseItemTmp">
+  <!-- <view class='part2-title' style="display: flex;align-items: center;">早市
+        <image style="width:44rpx;height:44rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/dot.png' />单规格/多规格</view> -->
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==4&&item.dishes_status!=5&&item.dishes_status!=6&&item.dishes_status!=7&&item.dishes_status!=8}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==4&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==4}}">规格:多规格</view>
+            <!-- <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1}}">规格:茶位米饭</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==2}}">规格:酒水</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3}}">规格:其他用品</view> -->
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==10&&orderDetail_cantchange[index].dishes_status==10}}" data-index='{{index}}'></i>
+
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+            </view>
+          </view>
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange' wx:if="{{item.spec_name=='默认'}}">{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='width:30%;color:orange' wx:else>{{item.item_price}}元/{{item.spec_name}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+<template name="fanshipersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==5&&item.dishes_status!=5&&item.dishes_status!=6&&item.dishes_status!=7&&item.dishes_status!=8&&item.spec_name !='称重'}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==5&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==5}}">规格:多规格</view>
+            <!-- <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1}}">规格:茶位米饭</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==2}}">规格:酒水</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3}}">规格:其他用品</view> -->
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==10&&orderDetail_cantchange[index].dishes_status==10}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+            </view>
+          </view>
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange' wx:if="{{item.spec_name=='默认'}}">{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='width:30%;color:orange' wx:else>{{item.item_price}}元/{{item.spec_name}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+
+
+</template>
+
+<template name="linshipersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==6}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <!-- <view style='align-items: center;width:40%' wx:if="{{item.specal_type==0&&item.spec_name=='默认'}}">规格:单规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==0}}">规格:多规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1}}">规格:茶位米饭</view> -->
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==6&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==6&&item.spec_name!='默认'}}">规格:多规格</view>
+            <!-- <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3}}">规格:其他用品</view> -->
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+
+            </view>
+          </view>
+
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+
+<template name="duochipersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{(item.specal_type==5&&item.dishes_status==5)||(item.specal_type==5&&item.dishes_status==6)||(item.specal_type==5&&item.dishes_status==7)||(item.specal_type==5&&item.dishes_status==8)||(item.specal_type==5&&item.dishes_status==9&&item.operator!='')||(item.specal_type==5&&item.dishes_status==10&&item.em_id!=0)||(item.specal_type==5&&item.dishes_status==11&&item.em_id!=0)}}">
+      <view>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 多种吃法的订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx;margin-bottom:20rpx;' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:16rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' wx:if="{{item.dishes_status==5}}" style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' style="margin-top:10rpx" data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+              <!-- 时间内取消显示状态 -->
+              <view class=' content-item oneline' style='margin-top:16rpx'>
+
+                <view class='oneline' style='width:40%'>
+                  <!-- <view class="part9-btn" wx:if="{{item.dishes_status==10}}">等待确认</view> -->
+                  <view class="part2-btn" wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red'>等待确认</view>
+                  <view class="part2-btn" wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green'>同意修改</view>
+                  <view class="part2-btn" wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red'>不能修改</view>
+                  <view class="part2-btn" wx:elif="{{item.dishes_status==8}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red'>等待取消</view>
+                  <view class="part2-btn" wx:elif="{{item.dishes_status==9}}" style='width:120rpx;font-weight:bold;background:green'>同意取消</view>
+                  <view class="part2-btn" wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red'>不能取消</view>
+
+                </view>
+                <view class='content-item down-center'>
+                  <view style='width:38%'>
+                    <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx;font-size:20rpx;'>[{{item.operator}}]</view>
+                    <view wx:elif="{{(item.dishes_status==11&&item.operator!='')||(item.dishes_status==9&&item.operator!='')}}" style='color:green;margin-left:4rpx;font-size:20rpx;'>[{{item.operator}}]</view>
+                  </view>
+                  <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;font-size:20rpx;'>{{item.operation_time}}</view>
+                  <view wx:elif="{{(item.dishes_status==11&&item.operator!='')||(item.dishes_status==9&&item.operator!='')}}" class='oneline' style='width:100%;color:green;flex-direction: row;font-size:20rpx;'>{{item.operation_time}}</view>
+                </view>
+              </view>
+              <!-- 后加 -->
+              <view class=' content-item oneline' style='margin-top:16rpx'>
+
+                <view class='oneline' style='width:60%'>
+                  <view class="part9-btn" wx:if="{{item.item_type==2}}" style="height:30rpx;width: 60rpx;">后加</view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 实称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' wx:if="{{item.measurement_value==0}}" style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥0元</view>
+            <view class='oneline' wx:else style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+
+
+<template name="chaweipersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==1}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <!-- <view style='align-items: center;width:40%' wx:if="{{item.specal_type==0&&item.spec_name=='默认'}}">规格:单规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==0}}">规格:多规格</view> -->
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==1&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1&&item.spec_name!='默认'}}">规格:多规格</view>
+            <!-- <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==2}}">规格:酒水</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3}}">规格:其他用品</view> -->
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==10&&orderDetail_cantchange[index].dishes_status==10}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+
+            </view>
+          </view>
+
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange'>{{item.item_price}}元/{{item.spec_name}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_metering_type}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+<template name="jiushuipersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==2}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <!-- <view style='align-items: center;width:40%' wx:if="{{item.specal_type==0&&item.spec_name=='默认'}}">规格:单规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==0}}">规格:多规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1}}">规格:茶位米饭</view> -->
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==2&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==2&&item.spec_name!='默认'}}">规格:多规格</view>
+            <!-- <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3}}">规格:其他用品</view> -->
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==10&&orderDetail_cantchange[index].dishes_status==10}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+
+            </view>
+          </view>
+
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>
+<template name="qitapersonCourseItemTmp">
+  <view wx:for="{{orderDetail}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:if="{{item.specal_type==3}}">
+      <view class='content' wx:if="{{item.spec_name !='称重'}}">
+        <image wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}" src='{{item.dishes_img}}' bindtap='photo' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+        <view style='width:80%' wx:if="{{(item.dishes_status!=3)||(item.dishes_status==3&&item.operator!='')}}">
+          <!--wx:if="{{item.dishes_status!=3&&time!=true}}"不显示时间外以取消记录 -->
+          <view class='content-item down-center'>
+            <view class='oneline' style='font-weight:bold;width:85%;display:flex;flex-direction:row;justify-content:space-between;'>
+              <view style='width:60%'>{{item.dishes_name}}</view>
+              <view wx:if="{{item.dishes_status==2||item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3}}" style='width:120rpx;margin-right:60rpx;font-weight:bold;' data-item='{{item}}'></view>
+              <view class='part2-btn' wx:else style='width:120rpx;margin-right:60rpx;font-weight:bold' data-index='{{index}}' data-item='{{item}}' bindtap='button_h'>取　消</view>
+            </view>
+            <view class='go-center'>
+              <image class='icon' style="padding-bottom:16rpx" src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+            </view>
+          </view>
+          <!-- 后面加 -->
+
+          <view class='content-item2 down-center' style='padding:10rpx 0rpx; '>
+            <!-- <view style='align-items: center;width:40%' wx:if="{{item.specal_type==0&&item.spec_name=='默认'}}">规格:单规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==0}}">规格:多规格</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==1}}">规格:茶位米饭</view>
+                <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==2}}">规格:酒水</view> -->
+            <view style='align-items: center;width:40%' wx:if="{{item.specal_type==3&&item.spec_name=='默认'}}">规格:单规格</view>
+            <view style='align-items: center;width:40%' wx:elif="{{item.specal_type==3&&item.spec_name!='默认'}}">规格:多规格</view>
+            <view class='down-center' style='width:30%;display:flex;justify-content:space-between;margin-right:0rpx;'>
+              <i class="iconfont icon-jian font20 activity-color2" wx:if="{{thisorderarry.preorder_starus==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==12||item.dishes_status==13}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.item_number==1||item.item_number==0||item.dishes_status==11}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color2" wx:elif="{{item.dishes_status==10&&orderDetail_cantchange[index].dishes_status==10}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20 activity-color" wx:else data-index='{{index}}' bindtap="reducedishesnum"></i>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:if="{{item.jiemian==8}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==12}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==4||item.dishes_status==10}}">{{item.item_number}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==11||item.item_number>0}}">{{item.item_number-(-item.u_item_number)}}</view>
+              <view style='padding-left:8rpx;padding-right:8rpx;padding-bottom:10rpx;font-weight:bold' wx:elif="{{item.dishes_status==3}}">{{item.item_number}}</view>
+              <i class="iconfont icon-jiahao2fill activity-color2 font20" wx:if="{{item.dishes_status==3}}" data-index='{{index}}'></i>
+              <i class="iconfont icon-jiahao2fill activity-color font20" wx:else data-index='{{index}}' bindtap='adddishesnum'></i>
+            </view>
+            <image class='icon' style='margin-top:5rpx;margin-left:76rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+          </view>
+          <!-- 等待部长确认时加减的判断式 -->
+          <view wx:if="{{item.dishes_status==10||item.dishes_status==11||item.dishes_status==12||item.dishes_status==13||item.dishes_status==3||item.dishes_status==2}}" class='content-item1 down-center' style='padding:0rpx 0rpx; '>
+            <!-- 申请修改时显示状态 -->
+            <view class='part2-btn' wx:if="{{item.dishes_status==10}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>等待确认</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==2}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>申请取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==3}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>同意取消</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==11}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:green' data-item='{{item}}'>同意修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==12}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能修改</view>
+            <view class='part2-btn' wx:elif="{{item.dishes_status==13}}" style='width:120rpx;margin-right:50rpx;font-weight:bold;background:red' data-item='{{item}}'>不能取消</view>
+            <view wx:else data-item='{{item}}'></view>
+
+            <view style='align-items: center;width:5%'></view>
+            <view class='down-center' style='width:50%;'>
+              <i class="iconfont icon-jian font20" wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.dishes_status==11}}" style="color:green" data-index='{{index}}'></i>
+              <i class="iconfont icon-jian font20" wx:elif="{{item.u_item_number>0}}" style="color:red" data-index='{{index}}' bindtap="addnumber"></i>
+              <!-- 减式中被减数与➖的距离 -->
+              <view style="margin-left:30rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green">{{item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red">{{item.u_item_number}}</view>
+              </view>
+              <!-- 等号和结果的距离 -->
+              <view style="width:100rpx;display:flex;flex-direction:row;margin-left:23rpx;">
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.dishes_status==10&&item.u_item_number>0}}" style="color:red;width:20rpx;">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:20rpx">=</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:20rpx">=</view>
+
+
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:if="{{item.jiemian==8}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{(item.dishes_status==10&&item.u_item_number>0)||item.dishes_status==12}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.dishes_status==11}}" style="color:green;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number}}</view>
+                <view style='padding-left:8rpx;padding-right:8rpx;font-weight:bold' wx:elif="{{item.u_item_number>0}}" style="color:red;width:35rpx">{{item.item_number-item.u_item_number}}</view>
+              </view>
+
+            </view>
+          </view>
+
+          <view wx:else style='padding:0rpx 0rpx; '></view>
+
+          <!-- 菜品单价和每个菜品的总额 -->
+          <view class='content-item down-center'>
+            <view style='width:30%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view class='go-center' style='width:30%'>
+              <view wx:if="{{item.item_type==2}}" class="part9-btn" style="height:30rpx;width: 60rpx;">后加</view>
+              <view wx:if="{{item.item_type==3}}" class="part9-btn">同意修改</view>
+
+            </view>
+            <view class='oneline' style='width:35%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+          <!-- 显示确认操作部长及操作时间 -->
+          <view class='content-item down-center'>
+            <view style='width:60%'>
+              <view wx:if="{{(item.item_type==1&&item.operator!='')||(item.dishes_status==12&&item.operator!='')||(item.dishes_status==13&&item.operator!='')}}" style='color:red;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+              <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" style='color:green;margin-left:4rpx'>确认部长:{{item.operator}}</view>
+            </view>
+            <view wx:if="{{item.item_type==1||item.dishes_status==12||item.dishes_status==13}}" class='oneline' style='width:100%;color:red;flex-direction: row;'>{{item.operation_time}}</view>
+            <view wx:elif="{{item.dishes_status==11&&item.operator!=''}}" class='oneline' style='width:100%;color:green;flex-direction: row;'>{{item.operation_time}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else>
+        <view class='content' style='display:block'>
+          <view class='oneline'>
+            <image src='{{item.dishes_img}}' style='width:150rpx;height:100rpx;margin-top:10rpx'></image>
+            <view style='width:80%'>
+              <view class='content-item oneline' style='margin-left:20rpx;'>
+                <view class='oneline' style='width:85%'>
+                  <view style='font-weight:bold;width:60%'>{{item.dishes_name}}</view>
+                  <view class='oneline' style='width:40%;flex-direction: row-reverse;'>
+
+                    <!-- 订单详情列表中的详情 -->
+                    <view class='part2-btn' style='margin-right:40rpx' data-index='{{index}}' bindtap='opendetail' data-item='{{item}}'>详情</view>
+                  </view>
+                </view>
+                <image class='icon' src="{{item.praise_flag==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_off.png'}}" data-id='{{item.id}}' bindtap='changelike'></image>
+              </view>
+              <view class=' content-item oneline' style='margin-top:10rpx'>
+                <view style='width:25%'>单位:{{item.dishes_metering_type}}</view>
+                <view class='oneline' style='width:60%'>
+                  <view wx:if="{{item.item_type==2}}" style='color:green'>加　菜</view>
+                  <view wx:if="{{item.item_type!=1}}" class='part2-btn' style="width:120rpx;margin-right:20rpx;background:{{item.measurement_value==0?'gray':''}}" data-item='{{item}}' bindtap='sureweight'>确认称重</view>
+                  <view class='part2-btn' style='margin-right:50rpx' data-index='{{index}}' bindtap='canceldishes'>取消</view>
+                </view>
+                <image class='icon' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_zhuanfa.png' data-dishesid='{{item.dishes_id}}' bindtap='share'></image>
+              </view>
+            </view>
+          </view>
+          <view class='oneline' style='font-size:26rpx;margin-left:10rpx;margin-top:20rpx;width:100.2%'>
+            <view style='margin-left:10rpx;width:50%;color:orange'>{{item.item_price}}元/{{item.dishes_metering_type}}</view>
+            <view style='color:red;margin-left:10rpx;width:50%'>订:{{item.item_number}}{{item.dishes_metering_type}}</view>
+            <view style='color:green;margin-left:10rpx;width:50%'> 称:{{item.measurement_value}}{{item.dishes_metering_type}}</view>
+            <view class='oneline' style='margin-left:10rpx;width:50%;color:orange;flex-direction: row-reverse;'>￥{{item.item_subtotal}}元</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</template>

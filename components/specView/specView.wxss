@@ -1,0 +1,30 @@
+/* components/specView/specView.wxss */
+.box_table1{
+    width: 99.5%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    border: 1px solid #888;
+    margin-bottom: 10rpx;
+}
+.tr1 {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 60rpx;
+}
+.td1 {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60rpx;
+    border-left:#e4e4e4 solid 2rpx;
+    font-size: 24rpx;
+}
+.down-center {
+    display: flex;
+    align-items: center;
+}

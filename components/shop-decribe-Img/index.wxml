@@ -1,0 +1,41 @@
+<view class="container top">
+
+	<view class="orderList-content top-bottom">
+		<view class="content-left">
+			<view class="content-img">
+				<image src="{{goodModel.dishes_img}}"></image>
+			</view>
+			<view class="content-Data" style="font-weight: bold;">
+				<!-- 计价方式：1-按菜品份数计价 2-按菜品食材计价 -->
+
+					<!--<text style="font-size: 30rpx;font-weight: bold;">多拼粥({{goodModel.jointSetValuation == 1?'按份数':'按食材'}})</text>-->
+					 <text style="font-size: 30rpx;font-weight: bold;">{{goodModel.dishes_name}}</text>
+					 <text style="color:gray">[{{goodModel.spec_type == 9?'选拼菜品(份数)':'选拼菜品(食材)'}}]</text>
+
+				<!-- <view>
+					<text>选中：</text>
+					<text style="{{goodModel.selName=='请选择'?'color:#888':''}};font-size: 28rpx;font-weight:bold;" >{{goodModel.selName}}</text>
+				</view> -->
+				<view class="color_grey" style="display: flex;">
+					<text wx:if="{{goodModel.jointSetValuation == 1}}" >单价：</text>
+					<text style="color: #754a1f" wx:if="{{goodModel.spec_type == 9}}">{{goodModel.vip_price != 0 ? goodModel.vip_price + '/' : ''}}</text>{{goodModel.dishes_price}}/
+					<text style="color: #009900" wx:if="{{goodModel.spec_type == 9}}">{{goodModel.inline_price != 0 ? goodModel.inline_price + '/' : ''}}</text>份
+				</view>
+				<view class="data-num">
+					<text class="num-title color_grey">数量：</text>
+					<input class="input" style="text-align: center" placeholder-class='placeholder-class' value='{{goodModel.poridgeNum}}' type='number' bindinput='keyinput'/>
+					<text class="num-title color_grey">份</text>
+				</view>
+			</view>
+		</view>
+
+		<!-- 删除按钮 -->
+		<view class="content-right">
+			<image class="deleteImg" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E8%86%B3%E9%A3%9F%E6%8E%8C%E6%9F%9C/img/i_close.png' bindtap='closeClick'></image>
+		</view>
+	</view>
+
+	<view class="content-price">
+		<text class="color_grey" style="font-weight: bold;">总金额:￥{{goodModel.poridgeAllPrice}}元</text>
+	</view>
+</view>

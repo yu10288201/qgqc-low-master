@@ -1,0 +1,54 @@
+<!--pages/weixinpay/weixinpay.wxml-->
+<view class="return_out" bindtap="returnBack">
+  <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+</view>
+
+<view class="return_out" style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+  VIP会员
+</view>
+
+<!-- <form bindsubmit='submitSub' report-submit='true'> -->
+<view class='top'>
+  <view style="width:45%;height:20%;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg2.png') no-repeat;background-size: 100% 100%;position: absolute;top: 100rpx;">
+
+  </view>
+  <view class='comtainer' style="height:360rpx;justify-content: flex-start;margin-top: 180rpx;z-index: 2;">
+   
+    <view class="text2"  style="width:100%;margin-bottom: 20rpx;margin-top: 40rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;">
+          vip会员付费
+    </view>
+    
+    <view class='oneline' style='margin-left: 30rpx;margin-bottom:25rpx;height:4vh;width:96%;'>
+      <view class='div3'>
+        <text class='text-content'>vip会员(付费会员)年费为:<text style="color: red;font-size: 30rpx;">299</text>元</text>
+        
+      </view>
+    
+    </view>
+
+
+
+   
+
+    
+
+    <view class="div1">
+      <view class='div1'>
+        <button catch:tap='checkIsVip' class='btn' style="width: 200rpx;">
+          <text style="text-shadow: 1px 2px 1px #222;">微信付费</text></button>        
+      </view>
+    
+    </view>
+
+    <view  style="width:100%;margin-bottom: 10rpx;margin-top: 20rpx;display:flex;flex-direction: row;align-items: center;justify-content: center;">
+      <checkbox-group bindchange="checkChange" style="display: flex;flex-direction: row;align-items: center;justify-content: center;">
+        <checkbox style="transform:scale(0.75,0.75);" value="1"></checkbox><view class="text3">已阅读并同意</view><view class="text3" catch:tap="openRuleFile" style="text-decoration:underline;">平台会员权益规则</view>
+
+      </checkbox-group>
+    
+    </view>
+
+
+
+  </view>
+</view>

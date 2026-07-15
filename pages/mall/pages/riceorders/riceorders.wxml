@@ -1,0 +1,141 @@
+<!--固定置顶条-->
+<view style="padding: 0;margin: 0;display: flex;flex-direction: column;height: 100vh;width: 100vw;">
+  <view class="top">
+	<!--搜索条-->
+	<view style="margin-bottom:15rpx;margin-top:30rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+		<view style="flex: 1;display: flex;flex-direction: row;justify-content: center;"> 
+      
+      <picker mode="date" value="{{begin_date}}" bindchange="bindBeginDateChange">
+        <view class="date-picker" style="margin-right: 10rpx;">
+          开始: {{begin_date}}
+        </view>
+      </picker>
+      --
+      <picker mode="date" value="{{begin_date}}" bindchange="bindEndDateChange" >
+        <view class="date-picker" style="margin-left: 10rpx;">
+          结束: {{end_date}}
+        </view>
+      </picker>
+		</view>
+		<view catch:tap="selectData" style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 25rpx;">
+			搜 索
+		</view>
+	</view>
+	<!--导航栏-->
+
+</view>
+<view  style="border: 2rpx solid #dadada;width: auto;border-radius:20rpx;margin-top:20rpx;margin-left:20rpx;margin-right:20rpx;padding: 10rpx;" >
+  <!--详情-->
+	<view style="margin-top: 10rpx; margin-bottom: 10rpx; display: flex; flex-direction: row; justify-content: space-between;">
+		<text style="font-weight: 700; font-size: 32rpx;margin-left: 10rpx;">品名:{{current_item!=null?current_item.goods_name:''}}</text>
+	</view>
+  <view class="item-detail" style="display: flex;flex-direction: row;">
+      <view style="margin-left: 10rpx;">
+        <text class="text-title">日期:</text><text class="text-content">{{current_item!=null?current_item.expect_delivery_date:''}}</text>
+      </view>
+      <view>
+        <text class="text-title">周期:</text>
+        <text class="text-content" >{{current_item!=null?current_item.delivery_day:' '}}天</text>
+      </view>
+      <view >
+        <text class="text-title">期限:</text>
+        <text class="text-content" >{{current_item!=null?current_item.spec:''}}</text>
+      </view>
+  </view>
+  <view class="item-detail" style="display: flex;flex-direction: row;">
+      <view style="margin-left: 10rpx;">
+        <text class="text-title">价格:</text>
+        <text class="text-content">{{current_item!=null?'￥'+current_item.price:''}}</text>
+      </view>
+      
+      <view>
+        <text class="text-title">单次数量:</text>
+        <text class="text-content">{{current_item!=null?current_item.delivery_weight:''}}斤</text>
+      </view>
+
+      <view >
+        <text class="text-title">总数量:</text>
+        <text class="text-content">{{current_item!=null?current_item.number:' '}}斤</text>
+      </view>
+
+      
+  </view>
+  <view class="item-detail" style="display: flex;flex-direction: row;">
+    <view style="margin-left: 10rpx;">
+     <text class="text-title">总金额:</text>
+      <text class="text-content">{{current_item!=null?'￥'+current_item.total_amount:''}}</text>
+    </view>
+    
+      <view >
+        <text class="text-title">状态:</text>
+        <text class='text-content' >{{current_item!=null&&current_item.status==1?'待接单':''}}</text>
+        <text class='text-content' >{{current_item!=null&&current_item.status==2?'待配送':''}}</text>
+        <text class='text-content' >{{current_item!=null&&current_item.status==3?'配送中':''}}</text>
+        <text class='text-content' >{{current_item!=null&&current_item.status==4?'已签收':''}}</text>
+        <text class='text-content' >{{current_item!=null&&current_item.status==4?current_item.receive_goods_date:''}}</text>
+      </view>
+      <view></view>
+      
+     
+      
+      
+
+  </view>
+</view>
+<!--查询结果-->
+<view style='flex:1;display: flex;flex-direction: column;'>
+		<view class='form_tittle'>
+			<view class='th-head' style="text-align: center;width:24%;">
+				<text class='text' style="font-size: 26rpx;">日期</text>
+			</view>
+			<view class='th-center' style="text-align: center;width:40%;">
+				<text class='text' style="font-size: 26rpx;">品名</text>
+			</view>
+			<view class='th-center' style="text-align: center;width:18%;">
+				<text class='text' style="font-size: 26rpx;">数量</text>
+			</view>
+			<view class='th-end' style="text-align: center;width:18%;">
+				<text class='text' style="font-size: 26rpx;">状态</text>
+			</view>
+		</view>
+		<scroll-view scroll-y='true' style='width:100%;flex:1;'
+    bindscrolltolower="scrollToLower">
+			<view class='for' wx:for='{{orders}}' wx:key='index' data-index='{{index}}' catch:tap='itemClick'>
+				<view class='td-head' style='width:24%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+        {{item.expect_delivery_date}}
+        </view>
+				<view class='td-center' style='width:40%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>{{item.goods_name}}</view>
+				<view class='td-center' style='width:18%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>{{item.delivery_weight}}斤</view>				
+				<view class='td-end' style='width:18%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text wx:if="{{item.status==1}}">待接单</text>
+          <text wx:if="{{item.status==2}}">待配送</text>
+          <text wx:if="{{item.status==3}}">配送中</text>
+          <text wx:if="{{item.status==4}}">签收</text>
+        </view>
+			</view>
+
+		</scroll-view>
+   
+
+</view>
+ <!--按钮-->
+ <view class="bottom-bar">
+    <view catch:tap="updateReceiveGoodsStatus" class="bottom-button">
+			签收
+		</view>
+  </view>
+</view>
+
+
+
+
+
+
+
+ 	
+    
+
+	
+
+
+

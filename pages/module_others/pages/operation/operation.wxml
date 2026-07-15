@@ -1,0 +1,39 @@
+<view class="choose">
+  <view class="tips">{{shopName}}</view>
+  <view class="tips">欢迎光临!请选择你的操作</view>
+  <view class="list">
+    <view>该餐桌已有订单:</view>
+    <view style="display: flex;">
+      <view style="width: 15%;border-bottom: 1rpx solid #000;"></view>
+      <view style=" width: 55%;text-align: center;border-bottom: 1rpx solid #000;">姓名</view>
+      <view style=" width: 35%;text-align: center;border-bottom: 1rpx solid #000;">订单号</view>
+    </view>
+    <!-- <view class="box"  style="width:100%;flex-direction:column;justify-content:flex-start;border-top: 1rpx solid #000;">
+    <view wx:for="{{getTableStatusByNum}}" wx:key="index" wx:for-item='item' wx:for-index='index' class="box" style="width:99%;border: 1rpx solid #000;justify-content: space-around;margin-bottom: 10rpx;color:{{orderIndex==index?'rgb(251,158,59)':'white'}};" bindtap="chooseOrderIndex" data-index="{{index}}" data-item="{{item}}">
+			<view class="order-inf">订单{{index+1}}</view>
+			<view class="order-inf">{{item.tableName}}</view>
+			<view class="order-inf">{{item.orderCode}}</view>
+		</view>
+  </view> -->
+    <block wx:for="{{getTableStatusByNum}}" wx:key="index">
+      <view style="background:{{chooseList == index ? '#d8b070':''}};" class="listRow"
+        bindtap="getOrder" data-id="{{index}}">
+        <view class="boxOrder" style="width: 15%;">
+          订单{{index+1}}</view>
+        <view class="boxOrder" style=" width: 55%;">
+          {{item.userName}}</view>
+        <view class="boxOrder" style=" width: 35%;">
+          {{item.orderCode}}</view>
+      </view>
+    </block>
+  </view>
+  <view class="chooseType">
+    <view class="chooseSmallType box" style="background:{{chooseClick == 0 ? 'rgb(226, 46, 49)':''}}"
+      bindtap="chooseOpenTable" data-id="0">拼桌</view>
+    <view class="chooseSmallType box" style="background:{{chooseClick == 1 ? 'rgb(226, 46, 49)':''}}"
+      bindtap="chooseOpenTable" data-id="1">加菜</view>
+    <view class="chooseSmallType box" style="background:{{chooseClick == 3 ? 'rgb(226, 46, 49)':''}}"
+      bindtap="chooseOpenTable" data-id="2">买单</view>
+  </view>
+  <view class="btn" wx:if="{{checkPublic}}" style="margin:50rpx 0 0 290rpx;" bindtap="orderNow">查看公众号</view>
+</view>

@@ -1,0 +1,190 @@
+<!--pages/QRorder/QRorder.wxml-->
+<wxs module="filters" src="../../pages/QRorder/QRorder.wxs"></wxs>
+<view class='page'>
+  <view class='page-header bg1'>
+    <image class='logo' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/logo.png' />
+  </view> 
+  <!-- <view class='frame' style='background-image: url({{img_url}});'/> -->
+  <!-- <image class='frame' src='{{img_url}}' data-item='{{img_url}}' bindtap='photo' /> -->
+
+<view class="bg2">
+<view class="box">
+    <image style="height: 55rpx;width:450rpx;margin-top:50rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/pingtai.png'/>
+</view>
+<view class="box" style="margin-top: 35rpx">
+    <image class='line'style="width:160rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/line.png' />
+    <image class='line'style="height: 50rpx;margin:0rpx 35rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/welcome.png' />
+    <image class='line'style="width:160rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/line.png' />
+</view>
+<view class="box" style="font-size: 25rpx;margin-top: 10rpx;">
+    <image style="height: 15rpx;width:575rpx" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/welcomeText.png' />
+</view>
+  <view class='text2' style="margin:30rpx 0rpx 30rpx 0rpx;">
+    <text>{{shop_name}}</text>
+  </view>
+  <view class='position'>
+    <text class='text3'>您现在的位置是</text>:
+    <text style='color:#FF0000;'>{{table_name}}</text>
+  </view>
+  <view class='sample'>
+    <view class='text3' style="margin: 10rpx;" wx:if="{{isFirst}}">请您填写:</view>
+    <view class='text3' wx:elif='{{!isFirst}}'>
+      <view style='font-size:33rpx;margin:10rpx 0rpx 10rpx 0rpx;'>您的名字/昵称: {{dineUserName}}</view>
+      <view class='cellphone'>
+        <text style="font-size: 33rpx;">手机号码:</text>
+        <input class='input' style='width:220rpx;' placeholder="" maxlength="11" type="number" bindblur="dinePhoneNumber" value='{{dinePhoneNumber}}' />
+      </view>
+      <view style='font-size:33rpx;margin:20rpx 0rpx 10rpx 0rpx;display:flex;align-items:center;'>
+      <text class="text3" style="margin:0rpx">用餐人数: </text>
+      <input class='input' style='width:160rpx;' type='number' placeholder="" bindinput="getInput" bindinput="userNum" maxlength='2' value='{{userNum}}' /> 人
+      </view>
+
+    </view>
+    <view class='message' hidden='{{!isFirst}}'>
+      <view class='Lastname'>
+        <text class="text3">您的称呼:</text>
+        <input class='input' style='width:160rpx;' placeholder="" bindblur='bookusername' value='{{dineUserName}}' type='text' />
+        <radio-group class="item-right radio-group" data-sex='{{sex}}' bindchange="changeSex">
+          <label class="radio" wx:for="{{items}}" wx:key="{{item}}">
+            <radio value="{{item.name}}" checked="{{item.checked}}" />{{item.name}}
+          </label>
+        </radio-group>
+      </view>
+
+      <view class='cellphone'>
+        <text class="text3">手机号码:</text>
+        <input class='input' style='width:220rpx;' placeholder="" maxlength="11" type="number" bindblur="dinePhoneNumber" value='{{dinePhoneNumber}}' />
+      </view>
+    <view class="{{!isFirst ? 'amount-center':'amount'}}">
+      <text class="text3" style="margin: 0rpx 10rpx 0rpx 10rpx;">用餐人数: </text>
+      <input class='input' style='width:160rpx;' type='number' placeholder="" bindinput="getInput" bindinput="userNum" maxlength='2' value='{{userNum}}' /> 人
+    </view>
+    
+    </view>
+  </view>
+</view>
+
+  <view class='action' style="height:25%">
+    <button class='tool box' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/btn1.png');background-size: 100% 100%; color:{{fackyousevencolor}}"  data-id="0" bindtap='call'>呼叫部长</button>
+    <button class='tool box' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/btn2.png');background-size: 100% 100%; color:{{fackyousevencolor1}}" data-id="1" bindtap='call'>　呼叫　服务员</button>
+    <button class='tool box' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/QRorder/btn3.png');background-size: 100% 100%" bindtap='toOrder'>现在点餐</button>
+  </view>
+</view>
+
+
+<view bindtap='showModalStatus' class='popup-window-bg' wx:if='{{showModalStatus}}'></view>
+<view class='popup-window' style='top:30%' wx:if='{{showModalStatus}}'>
+  <view class='go-center' style='background:white;padding:120rpx 0rpx;color:black;'>是否授权用户信息</view>
+  <button open-type='getUserInfo' style='color:green' bindtap='selectUnionID'>确定</button>
+</view>
+
+<!-- 申请拼桌弹出模态框 -->
+<view bindtap='' catchtouchmove="true" class='popup-window-bg1' wx:if='{{!hidden}}'></view>
+<view style="border-radius:10rpx;top:35%;background:rgb(63,93,112);color:white;" class='popup-window1' catchtouchmove="true" wx:if='{{!hidden}}'>
+  <view style="display:flex;flex-direction:column;width:80%;margin-left:60rpx;margin-top:10rpx;">
+    <view>对不起,该餐桌已被客人订用,用餐时间为:</view>
+    <view>{{filters.substringTime(eatdinnertime)}}您可以进行以下的选择:</view>
+  </view>
+  <view class='oneline' style='margin-top:20rpx;margin-bottom:40rpx;justify-content: space-around;'>
+
+    <view class='radio-groud-in ' data-index='0' bindtap='changeway' style="width:180rpx;">
+      <image class='radio1 ' src="{{way==0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='1' style="font-weight:bold;margin-left:10rpx;">拼桌</view>
+    </view>
+    <view class='radio-groud-in ' data-index='1' style="width:280rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='2' style="font-weight:bold;margin-left:10rpx;">够时间使用</view>
+    </view>
+    <view class='radio-groud-in ' data-index='2' style="width:180rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==2?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='3' style="font-weight:bold;margin-left:10rpx;">不使用</view>
+    </view>
+    
+		<view class='radio-groud-in ' wx:if='{{hidden2}}'  data-index='3' style="width:200rpx;" bindtap='changeway'>
+			<image class='radio1 ' src="{{way==3?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+			<view data-paymentway='4' style="font-weight:bold;margin-left:10rpx;">订单详情</view>
+		</view>	
+
+  </view>
+  <view style="border-bottom:solid 2rpx #e3e3e3;margin-bottom:10rpx;"></view>
+    <view class="box" wx:if='{{!hidden2}}' style="width:100%;flex-direction:column;justify-content:flex-start;border-top: 1rpx solid #000;">
+    <view wx:for="{{orderId_directy}}"  wx:for-item='item' wx:for-index='index' class="box" style="width:99%;border: 1rpx solid #000;justify-content: space-around;">
+        <view style="font-size:25rpx;width:30%;text-align: center;">订单{{index+1}}</view>
+        <view style="font-size:25rpx;width: 30%;text-align: center;">{{item.tableName}}</view>
+        <button class="btn1" bindtap="{{item.userClaim==1 ? '' : 'bindOrder'}}" data-item="{{item}}" style="font-size:25rpx;height: 50rpx;line-height: 45rpx;margin: 5px 10px;{{item.userClaim==1 ? 'background-color:#949494' : ''}}">订单详情</button>
+    </view>
+    <!-- <view  class="box" style="width:100%;border: 1rpx solid #000;justify-content:center;">
+      <button class="btn1" bindtap="closeHidden2" data-item="{{item}}" style="font-size:25rpx;height: 50rpx;margin: 5px 10px;">拼桌</button>
+    </view> -->
+  </view>
+  <view class='select-dishes' style="margin-left:280rpx;">
+    <view class='btn2' bindtap='confirm' style="margin-bottom:12rpx;margin-top:12rpx;">确定</view>
+  </view>
+</view>
+
+<!-- 申请拼桌弹出模态框 -->
+<view bindtap='' catchtouchmove="true" class='popup-window-bg1' wx:if='{{!hidden1}}'></view>
+<view style="border-radius:10rpx;top:35%;background:rgb(63,93,112);color:white;" class='popup-window1' catchtouchmove="true" wx:if='{{!hidden1}}'>
+  <view style="display:flex;flex-direction:column;width:80%;margin-left:60rpx;margin-top:10rpx;">
+    <view>对不起,该餐桌已被客人订用,用餐时间为:</view>
+    <view>{{filters.substringTime(eatdinnertime)}}您可以进行以下的选择:</view>
+  </view>
+  <view class='oneline' style='margin-top:20rpx;margin-bottom:40rpx;'>
+
+    <view class='radio-groud-in ' data-index='0' bindtap='changeway' style="width:180rpx;">
+      <image class='radio1 ' src="{{way==0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='1' style="font-weight:bold;margin-left:10rpx;">拼桌</view>
+    </view>
+    <view class='radio-groud-in ' data-index='1' style="width:280rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='2' style="font-weight:bold;margin-left:10rpx;">够时间使用</view>
+    </view>
+    <view class='radio-groud-in ' data-index='2' style="width:180rpx;" bindtap='changeway'>
+      <image class='radio1 ' src="{{way==2?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Pick.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/unPick.png'}}"></image>
+
+      <view data-paymentway='3' style="font-weight:bold;margin-left:10rpx;">不使用</view>
+    </view>
+
+  </view>
+  <view style="border-bottom:solid 2rpx #e3e3e3;margin-bottom:10rpx;"></view>
+  <view class='select-dishes' style="margin-left:280rpx;">
+    <view class='btn2' bindtap='confirm1' style="margin-bottom:12rpx;">确定</view>
+  </view>
+  
+</view>
+
+<!-- 手机号获取  -->
+  <view wx:if="{{showAuthorize}}" class='window-bg'>
+    <view class='window' style="background:url({{background2}});background-size:100% 100%;-moz-background-size:100% 100%;">
+      <view class='window-item'>
+        <view class='window-item-title'>欢迎关注</view>
+        <view class='window-item-content'>申请授权</view>
+        <view class='window-item-content' style="width:90%;margin-left:5%;">现需获取您的手机号码。是否同意？</view>
+      </view>
+      <view class='btn-bar'>
+        <button class='cancelBtn' bindtap='refused'>否</button>
+        <button class='confirmBtn' open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">是</button>
+      </view>
+    </view>
+  </view> 
+
+<!-- <view bindtap='' catchtouchmove="true" class='popup-window-bg2' wx:if='{{!hidden2}}'></view>
+<view style="border-radius:10rpx;top:35%;background:#fff;flex-direction:column;border: 1rpx solid #000;width: 80%;left: 10%;" class='popup-window2 box' catchtouchmove="true" wx:if='{{!hidden2}}'>
+  <view class="box" style="height:70rpx">选择订单</view>
+  <image style='width:40rpx;height:40rpx;float:right;position: absolute;right: 15rpx;top: 15rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png' bindtap='closeHidden2'></image>
+  <view class="box" style="width:100%;flex-direction:column;justify-content:flex-start;border-top: 1rpx solid #000;">
+    <view wx:for="{{orderId_directy}}"  wx:for-item='item' wx:for-index='index' class="box" style="width:100%;border: 1rpx solid #000;justify-content: space-around;">
+        <view style="font-size:25rpx;width:30%;text-align: center;">订单{{index+1}}</view>
+        <view style="font-size:25rpx;width: 30%;text-align: center;">{{item.tableName}}</view>
+        <button class="btn1" bindtap="{{item.userClaim==1 ? '' : 'bindOrder'}}" data-item="{{item}}" style="font-size:25rpx;height: 50rpx;margin: 5px 10px;{{item.userClaim==1 ? 'background-color:#949494' : ''}}">订单详情</button>
+    </view>
+    <view  class="box" style="width:100%;border: 1rpx solid #000;justify-content:center;">
+      <button class="btn1" bindtap="closeHidden2" data-item="{{item}}" style="font-size:25rpx;height: 50rpx;margin: 5px 10px;">拼桌</button>
+    </view>
+  </view>
+</view> -->

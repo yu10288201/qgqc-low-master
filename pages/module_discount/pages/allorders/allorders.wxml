@@ -1,0 +1,241 @@
+<!--固定置顶条-->
+<view class="top">
+	<!--搜索条-->
+	<view style="margin-bottom:15rpx;margin-top:30rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;border-radius: 50rpx;border: 2rpx solid grey;padding: 0rpx 5rpx;">
+		<view style="flex: 1;"> 
+			<input model:value="{{search_keyword}}" placeholder="   搜索订单" style="width: 100%; font-size: 25rpx;"/>
+		</view>
+		<view style="height: 52rpx; color: white;background-color: #52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 40rpx; font-size: 25rpx;">
+			搜 索
+		</view>
+	</view>
+	<!--导航栏-->
+	<view class="bottom-row" wx:if="{{status < 6}}">
+		<view class="{{currentTab == 'all' ? 'active' : 'inactive'}}" data-tab="all" bindtap="switchTab">
+    全部
+    </view>
+		<view class="{{currentTab == 'toPay' ? 'active' : 'inactive'}}" data-tab="toPay" bindtap="switchTab">
+      <view style="position: relative;">
+        <view wx:if="{{status_1_count>99}}" class="badgecontent">99+</view>
+        <view wx:elif="{{status_1_count>0}}" class="badgecontent">{{status_1_count}}</view>
+        待付款
+      </view>
+    
+    </view>
+		<view class="{{currentTab == 'toShip' ? 'active' : 'inactive'}}" data-tab="toShip" bindtap="switchTab">
+      <view style="position: relative;">
+        <view wx:if="{{status_2_count+status_9_count>99}}" class="badgecontent">99+</view>
+        <view wx:elif="{{status_2_count+status_9_count>0}}" class="badgecontent">{{status_2_count+status_9_count}}</view>
+        待发货
+      </view>
+    
+    </view>
+		<view class="{{currentTab == 'toReceive' ? 'active' : 'inactive'}}" data-tab="toReceive" bindtap="switchTab">
+      <view style="position: relative;">
+        <view wx:if="{{status_3_count>99}}" class="badgecontent">99+</view>
+        <view wx:elif="{{status_3_count>0}}" class="badgecontent">{{status_3_count}}</view>
+        待收货
+      </view>
+    
+    </view>
+    <view class="{{currentTab == 'toComment' ? 'active' : 'inactive'}}" data-tab="toComment" bindtap="switchTab">
+      <view style="position: relative;">
+        <view wx:if="{{status_3_count>99}}" class="badgecontent">99+</view>
+        <view wx:elif="{{status_3_count>0}}" class="badgecontent">{{status_3_count}}</view>
+        待评价
+      </view>
+    </view>
+    <view class="{{currentTab == 'refund' ? 'active' : 'inactive'}}" data-tab="refund" bindtap="switchTab">
+      <view style="position: relative;">
+        <view wx:if="{{status_6_count+status_7_count>99}}" class="badgecontent">99+</view>
+        <view wx:elif="{{status_6_count+status_7_count>0}}" class="badgecontent">{{status_6_count+status_7_count}}</view>
+        退款/售后
+      </view>
+    
+    
+    </view>
+	</view>
+</view>
+
+<!--加一块空白-->
+<view style="height:200rpx;width:100%;">
+	<view style="height:200rpx;width:100%;"></view>
+</view>
+	
+<view style="border: 2rpx solid #dadada;width: auto;border-radius:20rpx;margin-top:20rpx;margin-left:20rpx;margin-right:20rpx;padding: 10rpx;"
+	wx:for="{{orders}}" wx:for-item="shop" >
+	<view style="margin-top: 10rpx; margin-bottom: 10rpx; margin-left: 1%; display: flex; flex-direction: row; justify-content: space-between;">
+		<text style="font-weight: 700; font-size: 32rpx;">{{shop.shop_name}}</text>
+    <text class="status" wx:if="{{shop.bill_type == 1}}">平台赠品</text>
+    <view class="status" wx:else>
+      <text class="status" wx:if="{{shop.status==1}}">买家未付款</text>
+      <text class="status" wx:if="{{shop.status==9}}">买家已付款</text>
+      <text class="status" wx:if="{{shop.status==2}}">商家已接单</text>
+      <text class="status" wx:if="{{shop.status==3}}">卖家已发货</text>
+      <text class="status" wx:if="{{shop.status==4}}">交易成功</text>
+      <text class="status" wx:if="{{shop.status==5}}">交易成功</text>
+      <text class="status" wx:if="{{shop.status==6}}">等待商家处理</text>
+      <text class="status" wx:if="{{shop.status==7}}">商家同意退货/款</text>
+      <text class="status" wx:if="{{shop.status==8}}">退货/款成功</text>
+      <text class="status" wx:if="{{shop.status==10}}">商家拒绝退货/款</text>
+    </view>
+	</view>
+	<!--明细总包-->
+	<view wx:for="{{(shop.bill_type==0||shop.bill_type==2)&&shop.lstDetail}}" wx:for-item="detail" wx:key="detail" wx:for-index="detail_index">	
+		<view class="content-box flex-row" bindtap="toDetail" data-id="{{detail.goods_id}}">			
+			<image class="head-image" src="{{detail.goods_multimedia_url}}" mode="aspectFill" style="width: 30%"/>
+			<view class="flex-column" style="justify-content: space-between;margin-left: 12rpx; width: 70%">
+        <view class="content-title" >
+          <view style="display: flex; flex-direction: row; justify-content: space-between;">
+            <text>{{detail.goods_name}}</text>
+            <view class="nextbtn" wx:if="{{shop.status==4}}" catchtap="showSubmitComment" data-item="{{detail}}" data-shop="{{shop}}">评价</view>
+          </view>         
+          <view style="font-size: 28rpx; color: gray;">
+            <text wx:if="{{detail.color!='' && detail.spec!=''}}">{{detail.color}}, {{detail.spec}}</text>
+            <text wx:if="{{detail.color!='' && detail.spec==''}}">{{detail.color}}</text>
+            <text wx:if="{{detail.color=='' && detail.spec!=''}}">{{detail.spec}}</text> 
+          </view>           
+          
+        </view>
+        <view style="display: flex; flex-direction: row; justify-content: flex-end;align-items: center;">				
+          <!-- <view class="nextbtn" wx:if="{{shop.bill_type!=2&&(shop.status==2 || shop.status==9)}}" bindtap="applyRefund" data-id="{{shop.id}}">申请退款</view>	   -->
+ 
+          <text  wx:if="{{detail.refund_status==1}}" style="color: #F89600;">
+            申请退款处理中
+          </text>
+          <text wx:if="{{detail.refund_status==2}}" style="color: #52A76E;">
+              退款￥{{detail.refund_amount}} 备注:{{detail.refund_examin_remark}}
+          </text>
+          <text wx:if="{{detail.refund_status==3}}" style="color: #F89600;">
+              拒绝：
+          </text>
+          <text wx:if="{{detail.refund_status==3}}">
+              {{detail.refund_examine_remark}}
+          </text>
+          <view class="nextbtn-small" wx:if="{{detail.refund_status==0&&shop.pay_status==1}}" data-item="{{detail}}" catch:tap="applyRefund" data-id="{{shop.id}}">申请退款</view>    
+        </view>
+        <view style="display: flex; flex-direction: row; justify-content: space-between;">				
+          <text class="content-notice" style="color: #F89600; font-size: 33rpx; font-weight: bolder;">￥{{detail.price}}</text>	
+          <text class="content-notice" style="color: gray; margin-right: 20rpx; font-weight: bolder;">x{{detail.number}}</text>          			      
+        </view>
+			</view>
+		</view>
+
+		<view wx:if="{{detail_index==(shop.lstDetail.length-1)}}" style="display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;">
+			<view class="content-notice" style="margin-left: 20rpx; margin-right: 20rpx; font-weight: 900;">实付款￥{{shop.total_amount}}</view>
+			<view style="display:flex; flex-direction: row; justify-content: flex-end; margin-bottom: 20rpx; margin-top: 10rpx;">
+        <!-- 待付款-->
+				<view class="nextbtn" wx:if="{{shop.status==1}}" bindtap="deleteOrder" data-id="{{shop.id}}">删除</view>
+				<view class="nextbtn" wx:if="{{shop.status==1}}" bindtap="pay" data-item="{{shop}}">付款</view>
+        <!-- 待发货-->
+        <!-- <view class="nextbtn" wx:if="{{shop.bill_type!=2&&(shop.status==2 || shop.status==9)}}" bindtap="applyRefund" data-id="{{shop.id}}">申请退款</view> -->
+				<view class="nextbtn" wx:if="{{shop.bill_type!=2&&(shop.status==2 || shop.status==9)}}" bindtap="pushShipping">催发货</view>
+        <!-- 待收货-->
+        <view class="nextbtn" wx:if="{{shop.bill_type!=2&&shop.status==3}}" bindtap="applyRefund" data-id="{{shop.id}}">申请退货</view>
+				<view class="nextbtn" wx:if="{{shop.bill_type!=2&&shop.status==3}}" bindtap="confirmReceipt" data-id="{{shop.id}}">确认收货</view>				
+        <!-- 售后-->				
+        <view class="nextbtn" wx:if="{{shop.bill_type!=2&&shop.status==7}}" bindtap="confirmRefund" data-id="{{shop.id}}">确认退款</view>
+			</view>				
+		</view>
+	</view>
+  <view wx:if="{{shop.bill_type==1}}">
+    <view class="content-box flex-row">			
+			<image class="head-image" src="{{gift_img}}" mode="aspectFill" style="width: 30%"/>
+			<view class="flex-column" style="justify-content: space-between;margin-left: 12rpx; width: 70%">
+        <view class="content-title" >
+          <view style="display: flex; flex-direction: row; justify-content: space-between;">
+            <text>{{shop.remark}}号赠送礼品套餐</text>            
+          </view>          
+        </view>       
+			</view>
+		</view>
+  </view>
+
+  <!-- <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==1}}">下单时间：{{shop.create_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==9}}">支付时间：{{shop.pay_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==2}}">接单时间：{{shop.receive_bill_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==3}}">发货时间：{{shop.send_out_goods_time}} 
+  快递单号：{{shop.express_number}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==4 || shop.status==5}}">确认收货时间：{{shop.receive_goods_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==6}}">申请退款/货时间：{{shop.request_refund_goods_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==7}}">商家同意退/款货时间：{{shop.agree_refund_goods_time}}</view>
+  <view style="font-size: 28rpx; color: gray; margin-left: 20rpx; margin-bottom: 20rpx;" wx:if="{{shop.status==8}}">退款/货完成时间：{{shop.refund_successful_time}}</view> -->
+
+  <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">订单编号</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.code}}</text> 
+  </view>
+  <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">下单时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.create_time}}</text> 
+  </view>
+  <view wx:if="{{shop.pay_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">支付时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.pay_time}}</text> 
+    </view>
+    <view wx:if="{{shop.receive_bill_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">接单时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.receive_bill_time}}</text> 
+    </view>
+          
+    <view wx:if="{{shop.express_number!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">快递单号</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.express_number}}</text> 
+    </view>
+    <view wx:if="{{shop.send_out_goods_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">发货时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.send_out_goods_time}}</text> 
+    </view>
+    <view wx:if="{{shop.receive_goods_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">收货时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.receive_goods_time}}</text> 
+    </view>
+    <view wx:if="{{shop.completed_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">完成时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.completed_time}}</text> 
+    </view>
+    <view wx:if="{{shop.request_refund_goods_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">申请退款退货时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.request_refund_goods_time}}</text> 
+      </view>
+      <view wx:if="{{shop.agree_refund_goods_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">同意退款退货时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.agree_refund_goods_time}}</text> 
+      </view>
+      <view wx:if="{{shop.refuse_refund_goods_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">拒绝退款退货时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.refuse_refund_goods_time}}</text> 
+      </view>
+      <view wx:if="{{shop.refund_successful_time!=''}}" style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;">
+            <text style="margin-right:10rpx;font-size:30rpx;">退款退货成功时间</text>
+            <text style="font-size:30rpx;color: gray;">{{shop.refund_successful_time}}</text> 
+      </view>
+
+
+</view>
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" 
+	wx:if="{{showComment}}" bindtap="closeShowComment"/>
+
+<view wx:if="{{showComment}}" class="dialog_wrapper">
+	<view style="display: flex; flex-direction: row; justify-content: center;">
+		<view style="font-size: 32rpx; margin-top: 30rpx; font-weight: 900; "> 提交评价 </view>
+	</view>
+    <textarea style="border: 2rpx solid #dadada;width: 86%; height: 200rpx;border-radius:30rpx;margin-left:6%;padding: 10rpx; margin-top: 30rpx;" 
+		bindinput="comment_change" value="{{comment}}" cols="30" rows="15"></textarea>
+	<view style="position:fixed; bottom:0rpx; width:100%; height: 120rpx; display: flex; flex-direction:row; align-items: flex-start;">
+
+		<button class='tap1' style="width: 80%; border-radius: 40rpx;" bindtap='submitComment'>确   定</button>
+	</view>
+</view>
+
+
+
+
+ 	
+    
+
+	
+
+
+

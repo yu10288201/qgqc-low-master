@@ -1,0 +1,333 @@
+<wxs module="filters" src="../Merchandise_details/addmul.wxs"/>
+
+<view class="page" style="padding-bottom: 120rpx;">
+    <view catch:tap="goCustomerAddressList" style="border: 2rpx solid #dadada; width: auto; border-radius:30rpx; margin-top:20rpx; margin-left:20rpx; margin-right:20rpx; padding: 20rpx; display: flex; flex-direction: row;justify-content: left; align-items: center;">
+        <view style="align-items: center; width:10%">
+          <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/dizhi.png" mode="aspectFill" style="width: 50rpx; height: 50rpx;"></image>
+        </view>
+        <view style="width:85%; margin-right: 2%;" wx:if="{{name!=''}}">
+            <view>
+                <text class="content-title">{{detail_address}}</text>
+            </view>
+            <view style="margin-top: 10rpx;">
+                <text class="content-notice" style="font-weight: bolder;">{{name}}</text> 
+                <text class="content-notice" style="margin-left: 20rpx;">{{mobile}}</text> 
+            </view>
+                        
+        </view>
+        <view style="width:85%; margin-right: 2%;" wx:if="{{name==''}}">
+            <view>
+                <text class="content-title">请输入地址</text>                 
+            </view>                       
+        </view>
+        <view style="width:3%">
+            <image  src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/qgqc/icon_right.png" style="width: 30rpx; height: 30rpx;"></image> 
+        </view>   
+    </view>
+
+<view wx:for="{{lstShoppingCart}}" wx:for-item="shop" wx:for-index="shop_index">
+	<view style="border: 2rpx solid #dadada; border-radius:30rpx; margin-top:50rpx ;margin-left:20rpx; margin-right:20rpx; padding: 20rpx; width: auto;" 
+		wx:if="{{shop.lstMallBillShoppingCart.length != 0}}">   
+
+      <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder; font-size: 32rpx;" >
+      {{shop.shop_name}}
+      </view>
+      <!--明细总包-->
+      <view wx:for="{{shop.lstMallBillShoppingCart}}" wx:for-item="detail" wx:key="detail" wx:for-index="detail_index">	
+        <view class="content-box flex-row">			
+          <image class="head-image" src="{{detail.goods_multimedia_url}}" mode="aspectFill" style="width: 30%"/>
+          <view class="flex-column" style="justify-content: space-between;margin-left: 12rpx; width: 70%">
+          <view class="content-title" >
+            <text>{{detail.goods_name}}</text>
+            <view style="font-size: 28rpx; color: gray;" wx:if="{{detail.category_id!=14&&detail.color!='默认颜色' && detail.spec!='默认规格'}}">
+              <text wx:if="{{detail.color!='' && detail.spec!=''}}">{{detail.color}}, {{detail.spec}}</text>
+              <text wx:if="{{detail.color!='' && detail.spec==''}}">{{detail.color}}</text>
+              <text wx:if="{{detail.color=='' && detail.spec!=''}}">{{detail.spec}}</text> 
+            </view>
+            <view style="font-size: 28rpx; color: gray;" wx:if="{{detail.category_id==14&&detail.color!='默认颜色' && detail.spec!='默认规格'}}">
+              <text wx:if="{{detail.color!='' && detail.spec!=''}}">{{detail.color}},订购期限：{{detail.spec}}</text>
+              <text wx:if="{{detail.color!='' && detail.spec==''}}">{{detail.color}}</text>
+              <text wx:if="{{detail.color=='' && detail.spec!=''}}">订购期限：{{detail.spec}}</text> 
+            </view>
+            <view style="font-size: 28rpx; color:#52A76E;" wx:if="{{detail.category_id==14}}">
+              <text wx:if="{{detail}}">配送周期：{{detail.delivery_day}}天,  配送量：{{detail.delivery_weight}}</text>斤 
+            </view>
+
+          </view>
+          <view style="margin-bottom: 0rpx;">			
+            <view style="margin-top: 10rpx; display: flex; flex-direction: row; justify-content: space-between;">
+              <view>
+                <text class="content-notice" style="color: #F89600; font-size: 33rpx; font-weight: bolder; margin-top: 5rpx;">￥{{detail.price}}</text>
+              </view>
+            </view>          
+          </view>
+          <view style="margin-bottom: 10rpx;">			
+            <view style="margin-top: 0rpx; display: flex; flex-direction: row; justify-content: space-between;">
+              <view>
+                <text wx:if="{{detail.buy_one_give_more_id==1}}"  class="content-notice" style="color: #F89600; margin-left: 15rpx; font-size: 28rpx;">买一送多价 ￥{{detail.price}}</text>
+                <text wx:if="{{detail.buy_one_give_more_id==0}}" class="content-notice" style="color: #F89600; margin-left: 15rpx; font-size: 28rpx;">{{detail.actual_price_name}} ￥{{detail.actual_price}}</text>
+              </view>
+              <view>
+                <text class="content-notice">x{{detail.number}}</text>             
+              </view>
+            </view>          
+          </view>
+
+          </view>
+        </view>
+        <view wx:if="{{detail.lstForm&&detail.lstForm.length>0}}">
+          <text class='option_name' >形态设置：</text>
+                <view style="width: 100%;">			
+                  <view   class="gift_box" style="flex-direction: row;" data-item="{{item}}" wx:key="item.id">
+                    <radio-group style="display: flex;flex-direction: row;align-items: center;justify-content: space-evenly;width: 100%;" data-sindex="{{shop_index}}" data-dindex="{{detail_index}}" bindchange="formChange">
+                   <view wx:for="{{detail.lstForm}}" data-item="{{item}}" >
+                    <radio value="{{item.id}}">
+                      {{item.name}}
+                    </radio>
+                      
+                   
+                   
+                   </view>
+                  </radio-group>
+                 
+                  </view>			
+                </view>
+        </view>
+
+        <view wx:if="{{detail_index==(shop.lstMallBillShoppingCart.length-1)}}" style="display: flex; flex-direction: column;">
+          <view style="display: flex;flex-direction: row; justify-content: space-between;">  
+            <view class="content-notice" style="margin-left: 20rpx;margin-bottom: 15rpx; ">配送服务</view>	
+            <view class="content-notice" style="margin-bottom: 15rpx; ">快递配送，免邮费</view>
+          </view>
+          <view style="padding-bottom:20rpx;font-size: 30rpx;width: 100%; display: flex;flex-direction: row; justify-content: space-between;"
+          bindtap="showRemark" data-item="{{shop}}">      
+            <view class="content-notice" style="margin-left: 20rpx;margin-bottom: 5rpx; ">订单备注</view>				
+            <view class="content-notice" style="margin-bottom: 5rpx;" bindtap="showRemark" data-item="{{shop}}"
+              wx:if="{{shop.remark.length > 10}}"> 有备注 ></view>				
+            <view class="content-notice" style="margin-bottom: 5rpx; " bindtap="showRemark" data-item="{{shop}}"
+              wx:if="{{shop.remark.length > 0 && shop.remark.length <= 10}}">{{shop.remark}} ></view>
+            <view class="content-notice" style="margin-bottom: 5rpx; color:gray" bindtap="showRemark" data-item="{{shop}}"
+              wx:if="{{shop.remark.length == 0}}">无备注 ></view>
+          </view>
+        </view>
+
+        <view wx:if="{{detail.lstGift&&detail.lstGift.length>0}}" style="padding: 0rpx 15rpx;">
+                <text class='option_name' >赠送礼品：</text>
+                <view style="width: 100%;">			
+                  <view   wx:for="{{detail.lstGift}}" class="gift_box" data-item="{{item}}">
+                  {{item.gift_goods_name}}
+                    <view class="gift_detail">
+                      <view>
+                        <text class="gift_title">单价：</text>{{item.gift_sku_price}}元
+                      </view>
+                      <view>
+                        <text class="gift_title">数量：</text>{{item.gift_number}}
+                      </view>
+                      <view>
+                        <text class="gift_title" >金额：</text>{{item.gift_sku_price*item.gift_number}}元
+                      </view>
+                    </view>
+
+                  </view>			
+                </view>
+        </view>	
+
+		</view>
+	</view>
+ 
+</view>
+
+<view style="border: 2rpx solid #dadada; width: auto; border-radius:30rpx; margin-top:50rpx; margin-left:20rpx; margin-right:20rpx; padding: 20rpx; display: flex; flex-direction: column;">
+  <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">价格明细</view>
+  <view style="display: flex;flex-direction: row; justify-content: space-between;">
+    <view style="display: flex;flex-direction: row;">
+      <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">商品总价</view>
+      <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; font-size: 25rpx; color:gray; margin-left: 15rpx;">共{{total_number}}{{category_id==14?'斤':'件宝贝'}}</view>
+    </view>
+    <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{customer_total_amount}}</view> 
+  </view> 
+
+  <view style="display: flex;flex-direction: row; justify-content: space-between;">    
+     <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">折后总价</view>
+     <!-- 其他情况，按原来记录的价格计算 -->
+     <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;" 
+     >￥{{actual_total_amount}}</view>  
+  </view> 
+ 
+  <view style="display: flex;flex-direction: row; justify-content: space-between;">    
+    
+    <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">{{discount_name}}</view>
+    <view style="display: flex;flex-direction: row;">
+      <view class="content-notice" style="margin-top: 13rpx;margin-bottom: 10rpx; font-size: 25rpx; color:#F89600; font-weight: bolder;">减 </view> 
+      <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; font-size: 30rpx; color:#F89600; font-weight: bolder;" >￥{{deduction_amount}}</view> 
+    </view>  
+  </view> 
+
+  <view wx:if="{{channel_type==2}}" style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">赠送充电券</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">￥{{battery_total_amount}}元</view> 
+  </view> 
+
+  <view wx:if="{{give_color_global_total_voucher>0}}" style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">送代金券</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{give_color_global_total_voucher}}元</view> 
+  </view> 
+  <view wx:if="{{deduction_recharge_total_amount>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">充值金额抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_recharge_total_amount}}元</view> 
+  </view> 
+  <view wx:if="{{scan_staff_shop_id==0&&deduction_shop_star>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">店铺星盾抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_shop_star}}元</view> 
+  </view> 
+  <view wx:if="{{scan_staff_shop_id>0&&deduction_scan_shop_star>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">店铺星盾抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_scan_shop_star}}元</view> 
+  </view> 
+  <view wx:if="{{deduction_platform_star>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">平台星盾抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{(deduction_platform_star)}}元</view> 
+  </view> 
+  <view wx:if="{{scan_staff_shop_id==0&&deduction_shop_color_global_total_voucher>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">店铺代金券抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_shop_color_global_total_voucher}}元</view> 
+  </view>
+  <view wx:if="{{scan_staff_shop_id>0&&deduction_scan_shop_color_global_total_voucher>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">店铺代金券抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_scan_shop_color_global_total_voucher}}元</view> 
+  </view>  
+  <view wx:if="{{deduction_platform_color_global_total_voucher>=0}}"  style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">平台代金券抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;color: #52A76E;">{{deduction_platform_color_global_total_voucher}}元</view> 
+  </view> 
+  
+  <!-- 是充值会员-->
+  <view wx:if="{{recharge_balance > -1}}" style="display: flex;flex-direction: column;">
+    <view style="display: flex;flex-direction: row; justify-content: space-between;" >    
+      <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">账户余额</view>   
+      <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{recharge_balance}}</view> 
+    </view>
+    <!-- 余额足够抵扣，可用充值会员价-->
+    <view wx:if="{{recharge_balance >= (total_amount - total_actual_amount)}}" style="display: flex;flex-direction: column;">
+      <view style="display: flex;flex-direction: row; justify-content: space-between;" >    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">本次抵扣</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{filters.toFix2(total_amount - total_actual_amount)}}</view> 
+      </view> 
+      <view style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">扣后余额</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{filters.toFix2(recharge_balance - (total_amount - total_actual_amount))}}</view> 
+      </view> 
+      <view style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">实际支付</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{total_actual_amount-deduction_color_global_total_voucher}}</view> 
+      </view> 
+    </view>
+    <!-- 余额不够，只能用券后价-->
+    <view wx:if="{{recharge_balance < (total_amount - total_actual_amount)}}" style="display: flex;flex-direction: column;">
+      <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">因充值账户余额不足抵扣优惠价，不可用充值会员价，改用券后价</view>  
+      <view style="display: flex;flex-direction: row; justify-content: space-between;">    
+        <view class="content-notice" style="margin-top: 10rpx;margin-bottom: 10rpx; margin-left: 10rpx;">实际支付</view>   
+        <view style="margin-top: 10rpx;margin-bottom: 10rpx; font-weight: bolder;">￥{{total_preferential_amount-deduction_color_global_total_voucher}}</view> 
+      </view>     
+    </view>
+  </view>
+</view>
+
+  <!--加一大块空白来解决padding不work的问题-->
+  <view style="height:200rpx;width:100%;">
+    <view style="height:200rpx;width:100%;"></view>
+  </view>
+
+</view>
+
+<view style="display:flex; flex-direction:row;  align-items: center; justify-content:space-between; position:fixed; bottom:0rpx; width:100%; height: 120rpx; background-color: #FFF;">    
+  <view style="color: white;">123</view> 
+  <view style="display:flex; flex-direction:row;">
+    <view style="display:flex; flex-direction:column;">
+      <view style="display:flex; flex-direction:row;">
+        <view style="font-size: 26rpx; color: #666; margin-top: 10rpx;margin-right: 5rpx;">共{{total_number}}件</view>
+        <view style="font-size: 28rpx; margin-top: 9rpx; margin-left: 10rpx;">合计：</view>
+         <!-- 是充值会员 但又余额不足的情况，改用券后价为总价-->  
+      
+        <!-- 其他情况，按原来记录的价格计算 -->
+        <view style="font-size: 38rpx; color: #F89600; font-weight: bolder;" >￥{{total_amount}}</view>
+      </view>
+      <view style="display:flex; flex-direction:row; justify-content: space-between;">
+        <view style="color: white;">123</view>    
+       
+        <view style="font-size: 28rpx; color: #F89600;">共减：￥{{deduction_amount}}元</view> 
+      </view> 
+    </view>
+    <button class="tap" bindtap="insertMallBillMainCheck" style="margin-right: 30rpx;">提交支付</button>
+  </view>   	     
+</view>
+
+<view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" 
+	wx:if="{{showRemark}}" bindtap="closeShowRemark"/>
+
+<view wx:if="{{showRemark}}" class="dialog_wrapper">
+	<view style="display: flex; flex-direction: row; justify-content: center;">
+		<view style="font-size: 32rpx; margin-top: 30rpx; font-weight: 900; "> 订单备注 </view>
+	</view>
+    <textarea style="border: 2rpx solid #dadada;width: 86%; height: 200rpx;border-radius:30rpx;margin-left:6%;padding: 10rpx; margin-top: 30rpx;" 
+		bindinput="remark_change" value="{{remark}}" cols="30" rows="15"></textarea>
+	<view style="position:fixed; bottom:0rpx; width:100%; height: 120rpx; display: flex; flex-direction:row; align-items: flex-start;">
+
+		<button class='tap1' style="width: 80%; border-radius: 40rpx;" bindtap='recordRemark'>确定</button>
+	</view>
+</view>
+    
+
+
+
+
+
+
+<!-- <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;height: 100%;width: 100%;top: 0;z-index: 999999; position: fixed;background-color: #00000066;" wx:if="{{is_in_activity_staus==1||is_in_activity_staus==2||is_in_activity_staus==3}}" bindtap="closeDingDialog">
+</view>
+
+<view style="position: fixed;right: 0;left: 0;bottom: 40%;margin: auto;height: 320rpx;width: 700rpx;background-color: #FFF;border-radius: 12px;display: flex;flex-direction: column;justify-content: center;align-items: center;z-index: 9999999;background-color: #f2f2f2;" wx:if="{{is_in_activity_staus==1||is_in_activity_staus==2||is_in_activity_staus==3}}">
+ 
+      <view style="font-size: larger;padding: 20rpx;color:#F89600;font-weight: 900;">抢礼品活动</view>
+  
+    <view style="display: flex;flex-direction: column;justify-content: center;width: 100%;align-items: center;flex: 1;background-color: #fff;overflow: hidden;border-bottom-left-radius: 12rpx;border-bottom-right-radius: 12rpx;">
+      <text decode='true' style="font-size: large;color:#F89600;margin-bottom: 10rpx;width: 100%;word-break: break-all;text-align: left;text-indent:2em;padding: 0rpx 50rpx;">{{is_in_activity_content}}</text>
+      
+     
+    </view>
+</view> -->
+
+
+
+<!--设置按钮点击后打开选项-->
+<view style="display:flex;flex-direction:column;position:fixed;justify-content:center;align-items:center;width:100vw;bottom:0;height:100vh;background-color:#00000055;left:0;right:0;top:0;margin:auto;z-index:9999;" wx:if="{{mall_password_dialog==true}}">
+    <view style="display: flex;flex-direction: column;justify-content: space-between;width: 90vw;border-radius: 20rpx; height: 400rpx;background-color: #FFFFFF;" >
+      <view style="display: flex;flex-direction: column;width: 100%;height: 100%;">
+        <view style="margin: 0 20rpx 0 20rpx;font-size:18px;font-weight:bold;margin-top:20rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;">
+          <view>
+            代金券使用密码
+          </view>
+          <view  catch:tap="closeBuyerPasswordDialog">
+            <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_close.png" style="width: 50rpx;height: 50rpx;"></image>
+          </view>
+        </view>
+
+        <view style="overflow-x:scroll;">
+        <view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+          
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;width: 100%;margin-top: 40rpx;"> 
+            <text style="margin-right: 20rpx;font-weight: 600;font-size: 29rpx;width: 120rpx;text-align: right;">密码:</text>
+         
+         <input type="password" model:value="{{buyer_password}}" style="background-color: #fff;width: 320rpx;border:1rpx solid #ccc;border-radius: 10rpx;font-size: 20rpx;" />
+          </view>
+
+          <view catch:tap="checkBuyerPassword" style="height: 52rpx; color: white;background-color:#52A76E;display: flex;align-items: center;justify-content: center;border-radius: 35rpx;padding: 0rpx 30rpx; font-size: 29rpx;margin-left: 20rpx;margin-top: 30rpx;">
+                确定
+              </view>
+        </view>
+
+        </view>
+      </view>
+  
+    </view>
+</view>

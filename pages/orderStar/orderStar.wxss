@@ -1,0 +1,66 @@
+/* pages/orderStar/orderStar.wxss */
+
+.orderStarPage {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: fixed;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  text-align: center; /** 水平居中 **/
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/storeCheck/background.png') no-repeat;
+  background-size: 100% 100%;
+}
+
+.btn-mode {
+  display: flex;
+  width: 90%;
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 5%;
+}
+
+.btn {
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/storeCheck/buttom.png') no-repeat;
+  background-size: 100% 100%;
+  width: 250rpx;
+  height: 100rpx;
+  color: white;
+  line-height: 80rpx;
+  font-size: 36rpx;
+  border: none;
+}
+.btn-g::after{
+  border: none
+}
+
+.btn-g {
+  background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/storeCheck/buttom1.png') no-repeat;
+  background-size: 100% 100%;
+  width: 250rpx;
+  height: 100rpx;
+  color: white;
+  line-height: 80rpx;
+  font-size: 36rpx;
+  border: none;
+}
+
+.btn::after {
+  border: none;
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 15px;
+  width: 30%;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}

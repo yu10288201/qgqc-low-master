@@ -1,0 +1,86 @@
+<view class="chat-page">
+  <!-- 会话列表 -->
+  <view wx:if="{{mode === 'list'}}" class="session-page">
+    <view class="search-bar">
+      <view class="search-box">
+        <text class="search-icon">⌕</text>
+        <input class="search-input" placeholder="搜索" disabled />
+      </view>
+      <view class="add-btn">＋</view>
+    </view>
+
+    <view class="session-list">
+      <view
+        wx:for="{{sessionList}}"
+        wx:key="id"
+        class="session-item"
+        bindtap="openSession"
+        data-id="{{item.id}}"
+      >
+        <view class="session-avatar-wrap">
+          <image class="session-avatar" src="{{item.avatar || '/images/default_avatar.png'}}" mode="aspectFill" />
+          <view wx:if="{{item.unread > 0}}" class="session-badge">{{item.unread > 99 ? '99+' : item.unread}}</view>
+        </view>
+
+        <view class="session-main">
+          <view class="session-top">
+            <text class="session-name">{{item.name}}</text>
+            <text class="session-time">{{item.lastTime}}</text>
+          </view>
+          <text class="session-last">{{item.lastMsg}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 聊天窗口 -->
+  <view wx:else class="conversation-page">
+    <view class="chat-header">
+      <view class="back-btn" bindtap="backToList">‹</view>
+      <view class="chat-title">{{currentSession.name}}</view>
+      <view class="header-placeholder"></view>
+    </view>
+
+    <scroll-view
+      class="msg-list"
+      scroll-y
+      scroll-into-view="{{scrollToId}}"
+      scroll-with-animation
+      enable-back-to-top
+    >
+      <view class="time-tip">11:03</view>
+
+      <view
+        wx:for="{{currentMessages}}"
+        wx:key="id"
+        id="msg_{{item.id}}"
+        class="msg-item {{item.isSelf ? 'self' : 'other'}}"
+      >
+        <image class="avatar" src="{{item.avatar || '/images/default_avatar.png'}}" mode="aspectFill" />
+
+        <view class="bubble-area">
+          <text wx:if="{{!item.isSelf && currentSession.type === 'group'}}" class="msg-name">{{item.nickname}}</text>
+          <view class="bubble">
+            <text class="bubble-text">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view style="height: 24rpx;"></view>
+    </scroll-view>
+
+    <view class="input-bar">
+      <view class="tool-btn" bindtap="chooseImage">＋</view>
+      <input
+        class="chat-input"
+        placeholder="输入消息"
+        value="{{inputVal}}"
+        bindinput="onInput"
+        confirm-type="send"
+        bindconfirm="onSend"
+        adjust-position
+      />
+      <view class="send-btn {{inputVal ? '' : 'disabled'}}" bindtap="onSend">发送</view>
+    </view>
+  </view>
+</view>

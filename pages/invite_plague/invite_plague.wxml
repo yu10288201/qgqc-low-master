@@ -1,0 +1,14 @@
+<!-- pages/invite_ plague/invite_ plague.wxml -->
+<view class="page">
+  <view class="background">
+    <view class="top">
+      <button class="button_top" bindtap="toWebInvite"></button>
+      <button class="button_bottom" bindtap="toWebInvite"></button>
+    </view>
+    <view class="bottom">
+      <button class="button_left" bindtap="toInvite"></button>
+      <button class="button_right" bindtap="toMain"></button>
+    </view>
+  </view>
+  <!-- <official-account class="wx"></official-account> -->
+</view>

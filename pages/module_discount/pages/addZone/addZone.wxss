@@ -1,0 +1,62 @@
+/* pages/module_discount/pages/addZone/addZone.wxss */
+.font1 {
+  width: 140rpx;
+  font-size: 30rpx;
+  font-weight: bolder;
+}
+
+.first-box {
+  width: 92%;
+  padding: 30rpx 0 0;
+  display: flex;
+}
+
+.first-box-inner {
+  flex: 1;
+  display: flex;
+  border-bottom: 0.5rpx solid rgb(218, 214, 214);
+  padding-bottom: 20rpx;
+  align-items: center;
+}
+
+.label {
+  width: 100rpx;
+  height: 50rpx;
+  border: 0.5rpx solid rgb(218, 214, 214);
+  border-radius: 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20rpx;
+  font-size: 28rpx;
+}
+
+.color {
+  background-color: #e5f7ff;
+  color: #32b5d7;
+  border-color: #32b5d7;
+}
+
+radio .wx-radio-input {
+  border-radius: 50%;
+  width: 32rpx;
+  height: 32rpx;
+}
+
+radio .wx-radio-input.wx-radio-input-checked{
+  border-color:#009aa2 !important;
+  background:#009aa2 !important;
+}
+
+radio .wx-radio-input.wx-radio-input-checked::before{
+  border-radius:50%;
+  width:32rpx;
+  height:32rpx;
+  line-height:32rpx;
+  text-align:center;
+  font-size:15px;
+  color:#fff;
+  background:transparent;
+  transform:translate(-50%, -50%) scale(1);
+  -webkit-transform:translate(-50%, -50%) scale(1);
+}

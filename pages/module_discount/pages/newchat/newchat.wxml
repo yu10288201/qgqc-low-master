@@ -1,0 +1,22 @@
+<!--pages/newchat/newchat.wxml-->
+<image class="service_img1" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/customerService/service_1.png"/>
+<view class="service_btn_view">
+  <view class="service_btn" >
+    <button style="width: 100%;height: 100%;border: none;" plain='true' session-from="{'nickName':'{{userInfo.nickName}}','avatarUrl':'{{userInfo.avatarUrl}}'}" open-type="contact"/>
+  </view>
+  <view class="service_btn1" bindtap="tel"></view>
+</view>
+<image class="service_img2" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/customerService/service_2.png"/>
+<image class="service_img3" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/customerService/service_3.png"/>
+
+<view class='psp'>
+  <swiper autoplay="true" indicator-dots indicator-color='yellowgreen' indicator-active-color='pink'>
+  <block wx:for="{{imagesUse}}" wx:key="index">
+    <swiper-item>
+      <image class="service_img4" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/customerService/service_4.png"/>
+      <!-- <image class="service_img4" src="{{item.imgUrl}}"></image> -->
+    </swiper-item>
+  </block>
+  </swiper>
+</view>
+

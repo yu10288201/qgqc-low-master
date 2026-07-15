@@ -1,0 +1,11 @@
+<view class="page"> 
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/book/comeback.png" />
+  </view> 
+  <!-- <image class="top-image" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/greatvalueworld/image.png"></image> -->
+  <view class="btn-view">
+    <button class="btn" bindtap="menu"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">超值套餐/菜品</text></button>
+    <button class="btn" bindtap="coupon"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">优惠券</text></button>
+    <button class="btn" bindtap="history" wx:if="{{!isPlatform}}"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">我的订单</text></button>
+  </view>
+</view> 

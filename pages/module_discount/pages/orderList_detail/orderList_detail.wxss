@@ -1,0 +1,246 @@
+/* pages/orderList_detail/orderList_detail.wxss */
+.top{
+  z-index: 9;
+  display:flex;
+  position: fixed;
+  width:100%;
+  height:62rpx;
+  background-color:#009AA2;
+  justify-content:center; 
+  top:0;
+}
+.search-view{
+  letter-spacing:10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 72rpx;
+  width: 96%;
+  font-size: 30rpx;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  background-color:#ffffff;
+  border-top-left-radius:16rpx;
+  border-top-right-radius:16rpx;
+}
+.deline{
+  margin-top: 80rpx;
+  width: 100%;
+  height: 1rpx;
+  background: #f4f4f4;
+}
+
+
+.ListDetail{
+  width: 96%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  filter: drop-shadow( 0rpx 4rpx 8rpx #dadada);
+  background: #ffffff;
+}
+.ListDetail_buttom{
+  margin-bottom: 40rpx;
+  margin-top: 40rpx;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.Detail_button{
+  width: 180rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  margin-left: 20rpx;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #777777;
+  border: 1rpx solid #a7a6a6;
+}
+.Detail_button text{
+  margin-left: 10rpx;
+}
+.Detail_button image{
+  margin-left: 8rpx;
+  width: 34rpx;
+  height: 34rpx;
+}
+
+
+.advertisement{
+  width: 96%;
+  margin-left: 2%;
+  display: flex;
+}
+.advertisement image{
+  border-radius: 8rpx;
+  width: 100%;
+  height: 240rpx;
+}
+
+.orderList_Detail{
+  width: 96%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  border: 1rpx solid #dadada;
+  border-radius: 8rpx;
+}
+.orderList_Detail_shop{
+  height: 100rpx;
+  display: flex;
+  align-items: center;
+  width: 96%;
+  margin-left: 2%;
+  font-size: 28rpx;
+  border-bottom: 4rpx solid #f4f4f4;
+}
+.orderList_Detail_shop text{
+  letter-spacing: 3rpx;
+  margin-left: 10rpx;
+}
+.orderList_Detail_shop image{
+  margin-left: 20rpx;
+  width: 28rpx;
+  height: 28rpx;
+}
+.order_menu{
+  width: 96%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+}
+.order_menu_left image{
+  border-radius: 8rpx;
+  width: 100%;
+  height: 60rpx;
+}
+.order_menu_left{
+  margin-top: 10rpx;
+  width: 10%;
+}
+.order_menu_right{
+  display: flex;
+  flex-direction: column;
+  margin-left: 3%;
+  width: 60%;
+  font-size: 30rpx;
+}
+.cost{
+  border-top: 1rpx solid #f4f4f4;
+  margin-top: 10rpx;
+  padding-top: 14rpx;
+  padding-bottom: 14rpx;
+  display: flex;
+  flex-direction: row;
+  width: 96%;
+  margin-left: 2%;
+}
+.cost_sign{
+  color: #fc5959;
+  font-size: 24rpx;
+  background:  #fceacf;
+  padding-left: 6rpx;
+  padding-right: 6rpx;
+  border-radius: 4rpx;
+}
+.cost_text{
+  display: flex;
+  align-items: center;
+  width: 47%;
+  margin-left: 5%;
+  font-size: 28rpx;
+}
+.cost_price{
+  align-items: center;
+  font-weight: 900;
+  text-align: right;
+  width: 35%;
+  font-size: 30rpx;
+}
+
+.Information{
+  display: flex;
+  flex-direction: row;
+  width: 96%;
+  color: #474747;
+  font-size: 28rpx;
+  margin-left: 2%;
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.modelview{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #474747;
+  opacity:0.7;
+  z-index: 99;
+}
+.model{
+  position: fixed;
+  top: 20%;
+  left: 16%;
+  width:500rpx;
+  background: #ffffff;
+  z-index: 100;
+}
+.modelTitle{
+  width: 100%;
+  height: 80rpx;
+  font-size: 30rpx;
+  text-align: center;
+  line-height: 80rpx;
+  border-bottom: 1rpx solid #f4f4f4;
+  display: flex;
+  flex-direction: row;
+}
+.clear{
+  margin-top: 5rpx;
+  margin-right: 5rpx;
+  line-height: 80rpx;
+  text-align: right;
+}
+.modelTitle1{
+  margin-top: 80rpx;
+  width: 100%;
+  height: 80rpx;
+  font-size: 32rpx;
+  text-align: center;
+  line-height: 80rpx;
+  background: #009AA2;
+  color: #ffffff;
+  font-weight: 900;
+  border-top: 1rpx solid #f4f4f4;
+}
+.menu_name{
+  display: flex;
+  flex-direction: row;
+  margin-top: 20rpx;
+  margin-left: 3%;
+  width: 94%;
+}
+.menu_name text{
+  font-size: 30rpx;
+
+  font-weight: 900;
+}
+.menu_name input{
+  font-size: 28rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  text-align: center;
+  margin-left: 10rpx;
+  border-radius: 14rpx;
+  height: 40rpx;
+  min-height: 40rpx;
+  
+  border: 0.5rpx solid #dadada;
+}

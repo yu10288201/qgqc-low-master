@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="card">
+    <view class="form-card-label-plain" style="margin-left: 20rpx;">活动信息</view>
+    <view class="info-row">
+      <text class="info-label">活动名称：</text>
+      <text class="info-value">{{title || '—'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">活动编号：</text>
+      <text class="info-value">{{activityNo || '—'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">活动类型：</text>
+      <text class="info-value">{{activityType == 1 ? 'KTV' : activityType == 2 ? '旅游' : activityType == 3 ? '美食' : '—'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">活动地点：</text>
+      <scroll-view scroll-x class="info-scroll">
+        <text class="info-scroll-text">{{location || '—'}}</text>
+      </scroll-view>
+    </view>
+    <view class="info-row">
+      <text class="info-label">活动时间：</text>
+      <scroll-view scroll-x class="info-scroll">
+        <text class="info-scroll-text">{{activityTimeStr || '—'}}</text>
+      </scroll-view>
+    </view>
+    <view class="info-row">
+      <text class="info-label">活动费用：</text>
+      <text class="info-value">{{amount}}元</text>
+    </view>
+    <view wx:if="{{description}}" class="info-row-col">
+      <text class="info-label">活动描述：</text>
+      <text class="info-desc">{{description}}</text>
+    </view>
+
+    <!-- 退款申请按钮 -->
+    <view class="submit-row">
+      <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="onRefund">退款申请</view>
+    </view>
+  </view>
+</view>

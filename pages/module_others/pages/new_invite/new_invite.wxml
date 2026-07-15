@@ -1,0 +1,50 @@
+<!--pages/new_invite/new_invite.wxml-->
+<view class="page">
+  <view class="top-image">
+    <image class="registered-image" wx:if="{{!register}}" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/unregistered-image.png"></image>
+    <image class="registered-image" wx:else src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/registered-image.png"></image>
+  </view>
+  <image class="sharing-image" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/sharing_words.png"></image>
+  <image class="activity-process" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/activity-process.png"></image>
+
+  <view class="starFriends-background">
+    <view class="startFriends">
+      <view  class="startFriends-item">
+        <view class="startFriends-number">{{today}}</view>
+        <view class="startFriends-text">今日星友</view>
+      </view>
+      <view class="startFriends-item">
+        <view class="startFriends-number">{{followers}}</view>
+        <view class="startFriends-text">我的星友</view>
+      </view>
+      <view class="startFriends-item">
+        <view class="startFriends-number">{{income}}</view>
+        <view class="startFriends-text">星盾收益</view>
+      </view>
+    </view>
+    <image class="registered_button" wx:if="{{!register}}"  bindtap="toRegister" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/registered.png"></image>
+    <view wx:if="{{register}}" >
+      <button class="registered_button_btn" open-type="share" ></button>
+    </view>
+  </view>
+
+  <view class="invite_view">
+    <image class="invite_button" bindtap="toHelp" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/botton_2.png"></image>
+    <image class="invite_button" bindtap='toIndex' src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/invitation/botton_1.png"></image>
+  </view>
+
+</view>
+
+<view wx:if="{{showAuthorize}}" class='window-bg'>
+  <view class='window' style="background:url({{background2}});background-size:100% 100%;-moz-background-size:100% 100%;" >
+    <view class='window-item' >
+      <view class='window-item-title'>欢迎关注</view>
+      <view class='window-item-content'>申请授权</view>
+      <view class='window-item-content' style="width:90%;margin-left:5%;">现需获取您的昵称、头像、地区及性别，是否同意？</view>
+    </view>
+    <view class='btn-bar'>
+      <button class='cancelBtn'bindtap='refused'>否</button>
+      <button class='confirmBtn' open-type="getUserInfo" lang="zh_CN" bindtap="getUser">是</button>
+    </view>
+  </view>
+</view>

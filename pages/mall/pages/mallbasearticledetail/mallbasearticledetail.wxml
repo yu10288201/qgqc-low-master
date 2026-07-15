@@ -1,0 +1,52 @@
+<view class="content">
+      <view wx:if="{{item.is_delete==0}}"  class="content_box" wx:for="{{article_detail_array}}"  wx:key="index" style="width:100%">
+        <view  class="content_box_content">
+          <view style="width: 100%;margin-top: 20rpx;margin-bottom: 20rpx;display: flex;flex-direction: row;align-items: center;justify-content:space-between ;" >
+              <view style="font-weight: 900;padding: 10rpx 20rpx;border: #ccc dashed 2rpx;border-radius: 8rpx;">
+                      <text>段落_{{item.sort_id_str}} </text>
+                      <text wx:if="{{item.item_type==1}}">图片</text>
+                      <text wx:if="{{item.item_type==2}}">视频</text>
+                      <text wx:if="{{item.item_type==3}}">文字</text>
+              </view>
+            </view>
+            <view style="flex: 1;display: flex;flex-direction: column;">
+              <view style="display: flex;flex-direction: row;align-items: flex-start;align-items: flex-start;width: 100%;">
+                  
+                <view wx:if="{{item.item_type==1}}" style="width: 100%;">
+                    <image data-src="{{item.item_content}}" src="{{item.item_content}}" catchtap="showBigImg"  style="width: 70vw;" mode="aspectFit"></image>
+                </view>
+                <view wx:if="{{item.item_type==2}}">
+                  <video  style="width:80vw;height: 300rpx;border-radius: 8rpx;z-index: 1;" src="{{item.item_content}}"></video>
+                </view>
+                <view  wx:if="{{item.item_type==3}}">
+                  <rich-text nodes="{{item.item_content}}"></rich-text>
+                </view>
+              
+
+                  
+              </view>
+            
+            </view>
+
+          
+            
+        </view>
+
+      </view>
+
+  
+ 
+  
+
+  
+</view>
+
+
+
+ 	
+    
+
+	
+
+
+

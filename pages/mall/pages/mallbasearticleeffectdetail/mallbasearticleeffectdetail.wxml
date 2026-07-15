@@ -1,0 +1,121 @@
+<!--固定置顶条-->
+<view style="display: flex;flex-direction: column;padding: 0; margin: 0;width: 100vw;height: 100vh;">
+
+  <view class="top">
+        <!--搜索条件-->
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 10rpx;font-weight: 600;font-size: 26rpx;width: 120rpx;">分享时间:</text>
+              <text style="font-size: 26rpx;flex:1;">{{main_item.create_date_str}}</text>
+           </view>
+          </view>
+        </view>
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 10rpx;font-weight: 600;font-size: 26rpx;width: 120rpx;">模板名称:</text>
+              <text style="font-size: 26rpx; flex:1;">{{main_item.name}}</text>
+           </view>
+          </view>
+        </view>
+  </view>
+  <view class="top">
+        <!--搜索条件-->
+        <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;height:60rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">打开日期:</text>
+              <text style="font-size: 26rpx;" wx:if="{{current_item}}">{{current_item.enter_date_str}}</text>
+           </view>
+          </view>
+        </view>
+  </view>
+ 
+  <!--查询结果-->
+  <view class='form' style='flex:1;display: flex;flex-direction: column;overflow: auto;'>
+      <view class='form_tittle'>
+        <view class='th-head' style="text-align: center;width:20%;">
+          <text class='text'>打开时间</text>
+        </view>
+        <view class='th-center' style="text-align: center;width:25%;">
+          <text class='text' >打开人编码</text>
+        </view>
+        <view class='th-center' style="text-align: center;width:15%;">
+          <text class='text' >入口</text>
+        </view>
+        <view class='th-center' style="text-align: center;width:20%;">
+          <text class='text' >进入页面</text>
+        </view>
+        <view class='th-end' style="text-align: center;width:20%;">
+          <text class='text'>时长</text>
+        </view>
+      </view>
+      <scroll-view scroll-y='true' style='width:100%;flex:1;overflow: hidden;'
+      bindscrolltolower="scrollToLower">
+        <view class='for' wx:for='{{items}}' wx:key='index' data-index='{{index}}' catch:tap='itemClick'>
+          <view class='td-head' style='width:20%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text>{{item.enter_time_str}}</text>
+
+          </view>
+
+          <view class='td-center' style='width:25%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>{{item.open_user_code}}</view>
+          <view class='td-center' style='width:15%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text wx:if="{{item.wx_pyq_type==1}}">微信</text>
+            <text wx:if="{{item.wx_pyq_type==2}}">朋友圈</text>
+            <text wx:if="{{item.wx_pyq_type==3}}">微信群</text>
+            <text wx:if="{{item.wx_pyq_type==4}}">二维码</text>
+          </view>
+          <view class='td-center' style='width:20%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+          <text wx:if="{{item.app_goods_type==1}}">分享页</text>
+          <text wx:if="{{item.app_goods_type==2}}">商品页</text>
+ 
+          </view>				
+          <view class='td-end' style='width:20%;{{listIndex==index?"background-color:#52A76E;color:#fff":""}}'>
+            <text>{{item.remain_duration}}秒</text>
+          </view>
+        </view>
+
+      </scroll-view>
+
+    <!--按钮-->
+    
+
+  </view>
+
+  <view class="bottom-bar">
+    <view style="margin-top:5rpx; margin-left:20rpx;margin-right:20rpx;display: flex;flex-direction: row; align-items: center;justify-content: center;padding: 0rpx 5rpx;width: 100%;">
+          <view style="flex: 1;display: flex;flex-direction: row;justify-content: flex-start;"> 
+           <view style="display: flex;flex-direction: row;align-items: center;">
+              <text style="margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">打开人数:</text>
+              <text style="font-size: 26rpx;">{{main_item.open_customer_count}} 人</text>
+              <text style="margin-left: 20rpx;margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">分享页:</text>
+              <text style="font-size: 26rpx;">{{main_item.app_count}} 次</text>
+              <text style="margin-left: 20rpx;margin-right: 20rpx;font-weight: 600;font-size: 26rpx;">商品页:</text>
+              <text style="font-size: 26rpx;">{{main_item.goods_count}} 次</text>
+           </view>
+          </view>
+    </view>
+  </view>
+</view>
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+ 	
+    
+
+	
+
+
+

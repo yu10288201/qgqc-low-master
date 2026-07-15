@@ -1,0 +1,4 @@
+<view class="container">
+ <web-view src="https://mb.fsmbdlkj.com/wx_official/web/index.jsp"></web-view>
+ <!-- <web-view src="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzU1ODE0NDI0MQ==#wechat_redirect"></web-view> -->
+</view>

@@ -1,0 +1,23 @@
+<wxs module="filters" src="shopdetail.wxs"></wxs>
+<view class="part1">
+  <view class='margin-box' style='width:100%'>
+        <view style="font-weight:900">营业时间:</view>
+    <view wx:if="{{ timeBoolean1 || timeBoolean2}}">
+      <view wx:if="{{timeBoolean1}}"style="margin-top:25rpx">
+        <view>星期{{day1[0]}} ～ 星期{{day1[1]}}</view>
+        <view class="dateStyle">　早上 : {{filters.time(time1[0])}} - {{filters.time(time1[1])}}</view>
+        <view class="dateStyle">　中午 : {{filters.time(time2[0])}} - {{filters.time(time2[1])}}</view>
+        <view class="dateStyle">　晚上 : {{filters.time(time3[0])}} - {{filters.time(time3[1])}}</view>
+      </view>
+      <view wx:if="{{timeBoolean2}}" style="margin-top:25rpx">
+        <view>星期{{day2[0]}} ～ 星期{{day2[1]}}</view>
+        <view class="dateStyle">　早上 : {{filters.time(time4[0])}} - {{filters.time(time4[1])}}</view>
+        <view class="dateStyle">　中午 : {{filters.time(time5[0])}} - {{filters.time(time5[1])}}</view>
+        <view class="dateStyle">　晚上 : {{filters.time(time6[0])}} - {{filters.time(time6[1])}}</view>
+      </view>
+    </view>
+    <view wx:else>
+    <text>该店铺尚未设置营业时间</text>
+    </view>
+  </view>
+</view>

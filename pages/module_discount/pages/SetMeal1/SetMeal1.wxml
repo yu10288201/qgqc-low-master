@@ -1,0 +1,5 @@
+<!--pages/index/index.wxml-->
+<view class="tap">
+<button bindtap="menu">套餐</button>
+<button bindtap="history">历史订单</button>
+</view>

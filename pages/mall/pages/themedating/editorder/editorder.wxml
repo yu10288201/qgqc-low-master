@@ -1,0 +1,154 @@
+<view class="container">
+  <view class="card">
+    <view class="form-card-label-plain" style="margin-left: 20rpx;">订单信息</view>
+    <!-- 活动编号 姓名 -->
+    <view class="form-row" style="margin-left: 18rpx;">
+      <view class="form-col-auto" style="flex: none;">
+        <text class="form-col-label">姓名编号：</text>
+        <text class="form-col-input" style="width:60rpx;min-width:0;">{{activityNo || '—'}}</text>
+      </view>
+      <view class="form-col-auto" style="flex: none; margin-left:-8rpx;">
+        <text class="form-col-label required">姓名：</text>
+        <input class="form-col-input" placeholder="请输入" data-field="signupName" bindinput="onInput" value="{{signupName}}" style="width: 115rpx;" disabled="{{!canEdit}}" />
+      </view>
+    </view>
+    <!-- 昵称 单独一行 -->
+    <view class="form-row" style="margin-left: 18rpx;">
+      <view class="form-col-auto" style="flex: none;">
+        <text style="font-size:28rpx; color:#333; font-weight:bold; white-space:nowrap; flex-shrink:0;">昵称：</text>
+        <input style="width:200rpx; font-size:28rpx; color:#333; padding:4rpx 8rpx; border:1rpx solid #999; border-radius:12rpx; box-sizing:border-box;" placeholder="选填" data-field="nickname" bindinput="onInput" value="{{nickname}}" disabled="{{!canEdit}}" />
+      </view>
+    </view>
+    <!-- 性别 年龄 婚姻状况 -->
+    <view class="form-row">
+      <view class="form-col-auto" style="width: 140rpx; margin-left: 0rpx;">
+        <text class="form-col-label required">性别：</text>
+        <picker mode="selector" range="{{['男','女']}}" value="{{signupGender - 1}}" bindchange="onGenderChange" disabled="{{!canEdit}}">
+          <view class="picker-inline" style="border: 1rpx solid #999; border-radius: 12rpx; padding: 2rpx 8rpx;">
+            <text>{{signupGender === 1 ? '男' : '女'}}</text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+      <view class="form-col" style="flex: none; margin-left: 40rpx;">
+        <text class="form-col-label required">年龄：</text>
+        <input class="form-col-input" placeholder="年龄" data-field="signupAge" bindinput="onInput" value="{{signupAge}}" type="number" maxlength="3" style="width: 85rpx; min-width: 0; flex: none;" disabled="{{!canEdit}}" />
+      </view>
+      <view class="form-col-auto" style="margin-left: 20rpx;">
+        <text class="form-col-label">婚姻状况：</text>
+        <picker mode="selector" range="{{['未婚','离异','已婚']}}" value="{{maritalStatus - 1}}" bindchange="onMaritalChange" disabled="{{!canEdit}}">
+          <view class="picker-inline" style="border: 1rpx solid #999; border-radius: 12rpx; padding: 2rpx 6rpx; min-width: 80rpx;">
+            <text>{{maritalStatus === 1 ? '未婚' : maritalStatus === 2 ? '离异' : maritalStatus === 3 ? '已婚' : '选填'}}</text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <!-- 手机号 才艺 -->
+    <view class="form-row">
+      <view class="form-col-auto" style="margin-left: 0rpx;">
+        <text class="form-col-label required">手机号：</text>
+        <input class="form-col-input" placeholder="请输入手机号" data-field="signupPhone" bindinput="onInput" value="{{signupPhone}}" type="number" maxlength="11" style="width: 240rpx;" disabled="{{!canEdit}}" />
+      </view>
+      <view class="form-col-auto">
+        <text class="form-col-label">才艺：</text>
+        <input class="form-col-input occ-input talent-input" placeholder="选填" data-field="talent" bindinput="onInput" value="{{talent}}" disabled="{{!canEdit}}" />
+      </view>
+    </view>
+    <!-- 职业 学历 -->
+    <view class="form-row">
+      <view class="form-col-auto" style="margin-left: 20rpx;">
+        <text class="form-col-label">职业：</text>
+        <input class="form-col-input occ-input" placeholder="选填" data-field="occupation" bindinput="onInput" value="{{occupation}}" disabled="{{!canEdit}}" />
+      </view>
+      <view class="form-col-auto">
+        <text class="form-col-label">学历：</text>
+        <picker mode="selector" range="{{educationList}}" value="{{educationIndex}}" bindchange="onEducationChange" disabled="{{!canEdit}}">
+          <view class="picker-inline">
+            <text>{{educationList[educationIndex] || '选填'}}</text>
+            <text class="picker-arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+    <!-- 身份证信息（仅旅游类型显示） -->
+    <block wx:if="{{activityType == 2}}">
+      <!-- 身份证号 -->
+      <view class="form-item">
+        <text class="form-label-sm">身份证号：</text>
+        <input class="form-input" placeholder="请输入身份证号" data-field="idCardNo" bindinput="onInput" value="{{idCardNo}}" maxlength="18" disabled="{{!canEdit}}" />
+      </view>
+      <!-- 身份证人像正面 -->
+      <view class="form-item">
+        <text class="form-label-sm">身份证人像面：</text>
+        <view class="upload-square" bindtap="{{canEdit ? 'uploadIdCardFront' : ''}}">
+          <view wx:if="{{uploadingFront}}" class="upload-loading">上传中...</view>
+          <block wx:elif="{{idCardFrontImg}}">
+            <image src="{{idCardFrontImg}}" class="upload-preview" mode="aspectFill" catchtap="previewFront" />
+            <view wx:if="{{canEdit}}" class="upload-delete" catchtap="deleteIdCardFront">×</view>
+          </block>
+          <view wx:else class="upload-placeholder">
+            <text class="upload-icon">+</text>
+          </view>
+        </view>
+      </view>
+      <!-- 身份证国徽反面 -->
+      <view class="form-item">
+        <text class="form-label-sm">身份证国徽面：</text>
+        <view class="upload-square" bindtap="{{canEdit ? 'uploadIdCardBack' : ''}}">
+          <view wx:if="{{uploadingBack}}" class="upload-loading">上传中...</view>
+          <block wx:elif="{{idCardBackImg}}">
+            <image src="{{idCardBackImg}}" class="upload-preview" mode="aspectFill" catchtap="previewBack" />
+            <view wx:if="{{canEdit}}" class="upload-delete" catchtap="deleteIdCardBack">×</view>
+          </block>
+          <view wx:else class="upload-placeholder">
+            <text class="upload-icon">+</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <!-- 头像上传 -->
+    <view class="form-item">
+      <text class="form-label-sm">头像上传：</text>
+      <view class="upload-square" bindtap="{{canEdit ? 'uploadAvatar' : ''}}">
+        <view wx:if="{{uploadingAvatar}}" class="upload-loading">上传中...</view>
+        <block wx:elif="{{avatarPhoto}}">
+          <image src="{{avatarPhoto}}" class="upload-preview" mode="aspectFill" catchtap="previewAvatar" />
+          <view wx:if="{{canEdit}}" class="upload-delete" catchtap="deleteAvatar">×</view>
+        </block>
+        <view wx:else class="upload-placeholder">
+          <text class="upload-icon">+</text>
+        </view>
+      </view>
+    </view>
+    <!-- 自我简介 -->
+    <view class="form-item-col">
+      <text class="form-col-label" style="margin-left: 20rpx;">自我简介：</text>
+      <textarea class="intro-textarea" style="font-size:28rpx;" placeholder="选填" placeholder-style="font-size:28rpx;" data-field="selfIntro" bindinput="onInput" value="{{selfIntro}}" maxlength="200" disabled="{{!canEdit}}" />
+    </view>
+    <!-- 备注 -->
+    <view class="form-item-col">
+      <text class="form-col-label" style="margin-left: 20rpx;">备注：</text>
+      <textarea class="intro-textarea" style="font-size:28rpx;" placeholder="选填" placeholder-style="font-size:28rpx;" data-field="remark" bindinput="onInput" value="{{remark}}" maxlength="200" disabled="{{!canEdit}}" />
+    </view>
+    <!-- 退款信息（查看模式下有退款记录时显示） -->
+    <block wx:if="{{!canEdit && (refundTimeStr || refundBy || refundReason)}}">
+      <view class="form-item-col" style="border-top: 1rpx solid #f0f0f0; margin-top: 8rpx;">
+        <text class="form-col-label" style="margin-left: 20rpx;">退款理由：</text>
+        <textarea class="intro-textarea" style="font-size:28rpx;" value="{{refundReason || '—'}}" disabled />
+      </view>
+      <view class="form-row">
+        <text class="form-col-label" style="margin-left: 20rpx;">退款时间：</text>
+        <text style="font-size:28rpx; color:#333;">{{refundTimeStr || '—'}}</text>
+      </view>
+      <view class="form-row">
+        <text class="form-col-label" style="margin-left: 20rpx;">退款人：</text>
+        <text style="font-size:28rpx; color:#333;">{{refundBy || '—'}}</text>
+      </view>
+    </block>
+    <!-- 提交按钮 -->
+    <view wx:if="{{canEdit}}" class="submit-row">
+      <view class="submit-btn {{submitting ? 'disabled' : ''}}" bindtap="onSubmit">修改提交</view>
+    </view>
+  </view>
+</view>

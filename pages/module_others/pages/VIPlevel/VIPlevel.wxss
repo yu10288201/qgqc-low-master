@@ -1,0 +1,88 @@
+/* pages/module_others/pages/VIPlevel/VIPlevel.wxss */
+.page {
+  height: 100vh;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg1.png") no-repeat;
+  background-size: 100% 100%;
+}
+
+.return_out {
+  position: fixed;
+  top: 40px;
+  left: 5px;
+  width: 75rpx;
+  height: 75rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.return {
+  width: 17rpx;
+  height: 31rpx;
+}
+
+.top-mode {
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userName {
+  margin-top: 15%;
+}
+
+.ren {
+  position: absolute;
+  top: 120px;
+  right: 30px;
+  width: 180rpx;
+  height: 120rpx;
+}
+
+.head-mode {
+  height: 180rpx;
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/bg1.png") no-repeat;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 40rpx 30rpx 30rpx 30rpx;
+}
+
+.userAvatarUrl {
+  border-radius: 50%;
+  overflow: hidden;
+  height: 100rpx;
+  width: 100rpx;
+  margin-top: 20%;
+  margin-left: 5%;
+  display: flex;
+}
+
+.wrap-item{
+  display: flex;
+  flex-direction: column;
+}
+.hm-list{
+  line-height: 60rpx;
+  width: 100%;
+  display: flex;
+  flex-flow: wrap;
+  align-items: center;
+}
+.hm-list .texts{
+    width: 140rpx;
+    display: inline-block;
+    text-align: justify;
+    text-align-last: justify;
+}
+.hm-list text{
+  margin-left: 50rpx;
+}
+.wrap-img image{
+  width: 220rpx;
+  height: 130rpx;
+  padding-right: 20rpx;
+}

@@ -1,0 +1,424 @@
+<!--pages/order/order.wxml-->
+<wxs module="filters" src="../package_details_buy/addmul.wxs" />
+
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+  <view class='search-view'>
+    <text wx:if="{{id==0}}" wx:for="{{setMeal}}" style="margin-left:20rpx">{{filters.people(item.typeForSetMeal)}}:{{item.setMealName}}</text>
+    <text wx:if="{{id == 1}}" style="margin-left:20rpx">{{CouponList.coupon_name}}</text>
+    <text wx:if="{{distribution == '1'}}" style="margin-left:20rpx">{{distributionFoodInfo[0].dishesName}}</text>
+  </view>
+</view>
+
+<view wx:if="{{setMeal&&setMeal.length>0}}" class="model" style="margin-top:90rpx" wx:if="{{id==0}}">
+  <view wx:if="{{setMeal[0].pageUrl&&setMeal[0].pageUrl.length>0}}" class="menu_image">
+    <image src="{{setMeal[0].pageUrl[0].pageURL}}?x-oss-process=image/resize,m_fill,h_75,w_82" mode="aspectFill" bindtap='bigimg2' data-src="{{setMeal[0].pageUrl[0].pageURL}}"></image>
+    <image wx:if="{{id == 1}}" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1587805769388&di=544565d1bd934f788e3e09b6379c8762&imgtype=0&src=http%3A%2F%2Fpic24.nipic.com%2F20121021%2F5978971_103436687000_2.jpg"></image>
+  </view>
+  <view class="menu_right">
+    <view class="model_title" wx:for="{{setMeal}}">
+      <text wx:if="{{item.refund ==1}}">可退款</text>
+      <text wx:else>不可退款</text>
+      <text wx:if="{{item.appointment == 1}}" style="margin-left: 12rpx;">需预约</text>
+      <text wx:else style="margin-left: 12rpx;">免预约</text>
+      <text wx:if="{{item.pastRefund == 1}}" style="margin-left: 12rpx;">过期可退款</text>
+      <text wx:else style="margin-left: 12rpx;">过期不退款</text>
+      <text wx:if="{{item.pickOneself == 1}}" style="margin-left: 12rpx;">可自提</text>
+      <text wx:else style="margin-left: 12rpx;">不可自提</text>
+    </view>
+    <view class="model_title" wx:for="{{setMeal}}">
+      <text wx:if="{{item.holidays == 1}}">节假日可用</text>
+      <text wx:else>节假不可用</text>
+      <text wx:if="{{item.privateRoom == 1}}" style="margin-left: 12rpx;">包间可用</text>
+      <text wx:else style="margin-left: 12rpx;">包间不可用</text>
+      <!-- <text>不可叠加</text>
+			<text style="margin-left: 12rpx;">全店通用</text> -->
+    </view>
+    <view style="display:flex;flex-direction:row" wx:if="{{setMeal[0].startUsing3 != 1}}">
+      <view style="width:100%">
+        <view class="menu_time" style="margin-top: 8rpx;">
+          <text style="margin-left: 12rpx;">{{startTime}} ~ {{endTime}}</text>
+        </view>
+        <view class="menu_time" style="margin-top: 8rpx;">
+          <text style="margin-left: 12rpx;">{{usefulDateText}}</text>
+        </view>
+        <view class="menu_time" style="margin-top: 4rpx;">
+          <view style="margin-left:12rpx">
+            <text style="text-align:right" wx:for="{{timeList}}">{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{setMeal[0].startUsing3 == 1}}" style="margin-left: 10rpx;margin-top: 10rpx;">
+      <view wx:if="{{setMeal[0].activityDate.time}}">{{filters.formatDate(setMeal[0].activityDate.time)}}</view>
+      <radio-group bindchange="radioChange" style="display:flex;flex-direction:row;width:90%;justify-content: space-between;flex-wrap:wrap;" wx:if="{{!setMeal[0].activityDate.time}}">
+        <view wx:for="{{useTimeList}}">
+          <radio value="{{item}}">{{item}}</radio>
+        </view>
+      </radio-group>
+    </view>
+  </view>
+
+</view>
+
+<!-- <view class="meal" style="margin-top:90rpx" wx:if="{{id==1&&CouponList!=''}}">
+  <view class="ticket">
+    <view class="ticket_title" style="display: flex;flex-direction: column;margin-bottom: 1%;">
+      <view>
+        <text style="width:100%;font-size:30rpx;font-weight:900;width:76%">{{CouponList.coupon_name}}</text>
+      </view>
+
+      <view style="display: flex;justify-content: space-between;">
+        <view style="display: flex;width: 60%;flex-direction: column;justify-content: flex-start;align-items: flex-start;">
+          <view class="menu_right_view" style="margin-top:10rpx;width: 100%;">
+            <text wx:if="{{CouponList.coupon_superposition ==0}}">不可叠加</text>
+            <text wx:elif="{{CouponList.coupon_superposition >= '9999'}}">可无限叠加</text>
+            <text wx:else>可叠加{{CouponList.coupon_superposition}}张</text>
+          </view>
+
+          <view class="menu_right_view" style="margin-top:10rpx;width: 100%;">
+            <wxs module="filter">
+              var usefulDate = function (usefulDate, val2) {
+                var shit = ['1,2,3,4,5,6,7,', '1,2,3,4,5,6,', '1,2,3,4,5,', '1,2,3,4,', '1,2,3,', '1,2,', '2,3,4,5,6,7,', '2,3,4,5,6,', '2,3,4,5,', '2,3,4,', '2,3,', '3,4,5,6,7,', '3,4,5,6,', '3,4,5,', '4,5,', '5,6,7,', '5,6,', '6,7,']
+                console.log(shit.indexOf(usefulDate, 111111))
+                if (shit.indexOf(usefulDate) != -1) {
+                  var day = usefulDate.substring(0, 1).replace('1', '一').replace('2', '二').replace('3', '三').replace('4', '四').replace('5', '五').replace('6', '六') + ' 至 周' + usefulDate.substring(usefulDate.length - 2, usefulDate.length - 1).replace('1', '一').replace('2', '二').replace('3', '三').replace('4', '四').replace('5', '五').replace('6', '六').replace('7', '日')
+                  return '周' + day + ' 可用'
+                }
+                var usefulDate = usefulDate.split(',')
+                var day = ''
+                if (usefulDate.indexOf('1') != -1) {
+                  day += '一、'
+                }
+                if (usefulDate.indexOf('2') != -1) {
+                  day += '二、'
+                }
+                if (usefulDate.indexOf('3') != -1) {
+                  day += '三、'
+                }
+                if (usefulDate.indexOf('4') != -1) {
+                  day += '四、'
+                }
+                if (usefulDate.indexOf('5') != -1) {
+                  day += '五、'
+                }
+                if (usefulDate.indexOf('6') != -1) {
+                  day += '六、'
+                }
+                if (usefulDate.indexOf('7') != -1) {
+                  day += '日、'
+                }
+                return '周' + day.substring(0, day.length - 1) + '可用'
+
+              }
+              var formatDate = function (value) {
+                //不能使用 new Date()
+                var time = getDate(value);
+                var year = time.getFullYear();
+                var month = time.getMonth() + 1;
+                var date = time.getDate();
+                var hour = time.getHours();
+                var minute = time.getMinutes();
+                var second = time.getSeconds();
+                month = month < 10 ? "0" + month : month;
+                date = date < 10 ? "0" + date : date;
+                hour = hour < 10 ? "0" + hour : hour;
+                minute = minute < 10 ? "0" + minute : minute;
+                second = second < 10 ? "0" + second : second;
+                return year + "年" + month + "月" + date + "日";
+              }
+              module.exports = {
+                usefulDate: usefulDate
+              }
+            </wxs>
+            <text wx:if="{{CouponList.coupon_superposition ==0}}" style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{filter.usefulDate(CouponList.coupon_ruleweekstar)}} | 不可叠加</text>
+            <text wx:elif="{{CouponList.coupon_superposition >= '9999'}}" style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{filter.usefulDate(CouponList.coupon_ruleweekstar)}} | 可无限叠加</text>
+            <text wx:else style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{filter.usefulDate(CouponList.coupon_ruleweekstar)}} | 可叠加{{CouponList.coupon_superposition}}张</text>
+          </view>
+          <view class="menu_right_view" style="margin-top:10rpx;width: 100%;">
+            <view style="width:90%">
+              <view style="margin-bottom:10rpx;color:#ea9518;margin:0rpx">
+                <text style="font-weight: bolder;">购买价：<text style="color: green;font-size: 30rpx;font-weight: bold;">￥{{CouponList.coupon_original}}元</text></text>
+              </view>
+            </view>
+          </view>
+          <view class="menu_right_view" style="margin-top:10rpx;width: 100%;">
+            <text wx:if="{{CouponList.coupon_validityend != null}}">有效期：{{filters.formatDate(CouponList.coupon_validityend,0)}} 止</text>
+            <text wx:if="{{CouponList.coupon_validityend == null}}">有效期：{{CouponList.period_of_validity}} 天</text>
+          </view>
+        </view>
+        <view style="width: 40%;display: flex;flex-direction: column;justify-content: center;align-items: flex-end;">
+          <text style="text-align:left;margin-right: 20rpx;font-size: 40rpx;color: rgb(255,153,0);font-weight: 1000;">￥{{CouponList.coupon_facevalue}}元</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> -->
+
+<!-- <view class="model" style="margin-top:90rpx" wx:if="{{distribution == '1'}}">
+  <view class="menu_image">
+    <image src="{{distributionFoodInfo[0].bigDishesImg}}" mode="aspectFill" bindtap='bigimg2' data-src="{{distributionFoodInfo[0].bigDishesImg}}"></image>
+
+  </view>
+  <view class="menu_right">
+    <view class="model_title" wx:for="{{distributionFoodInfo}}">
+      <view style="width:95%;display: flex;flex-direction: row;justify-content: flex-end;">
+        <view style="text-align:left;">
+          销量:{{item.monthlySalesVolume}}
+        </view>
+      </view>
+
+    </view>
+    <view class="model_title" wx:for="{{distributionFoodInfo}}">
+      <view style="width:95%;display: flex;flex-direction: row;justify-content: flex-end;">
+        <view style="text-align:left;">
+          <image style="margin-top:2rpx;width: 32rpx;height: 32rpx;" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png"></image>
+          <text style="padding-top:4rpx;padding-right:1rpx;border: none;">:{{item.praisePoints}}</text>
+        </view>
+      </view>
+    </view>
+    <view style="display:flex;flex-direction:row">
+      <view style="width:100%">
+      </view>
+
+    </view>
+    <view style="display:flex;flex-direction:row">
+      <view class="price" wx:for="{{distributionFoodInfo}}" style="width:100%">
+        <text>￥{{filters.toFix2(item.distributionPrice)}}元/{{item.dishesMeteringType}}</text>
+        <text style="text-decoration: line-through;font-size: 20rpx;margin-left:10rpx">原价{{item.dishesPrice}}元</text>
+      </view>
+    </view>
+  </view>
+</view> -->
+
+<!-- <view class="num" wx:if="{{CouponList.focus_price > 0 || setMeal[0].focus_price > 0}}" style="font-weight: bolder;font-size: 30rpx;border: #dadada 1rpx solid;height: 80rpx;color: {{(CouponList.focus_price > 0 || setMeal[0].focus_price > 0) && checkWxpublic ? '' : 'gray'}};"><text style="margin-left: 30rpx;">关注公众号优惠价：</text><text style="color: {{(CouponList.focus_price > 0 || setMeal[0].focus_price > 0) && checkWxpublic ? 'green' : 'gray' }};font-size: 34rpx;font-weight: bold;">￥{{id == 0 ? setMeal[0].focus_price : CouponList.focus_price}}元</text></view> -->
+
+<view class="num" style="border-bottom:2rpx solid #dadada;padding-bottom:20rpx;display: flex;flex-direction: row;justify-content: space-between;align-items: center;" wx:if="{{setMeal!=''||CouponList!=''||distributionFoodInfo != ''}}">
+  <view>数量</view>
+  <view style="display: flex;flex-direction: row;align-items: center;justify-content: center;height: 75rpx;">
+    <image src="https://test.fsmbdlkj.com/wx_official/web/images/image/delete.png" class='{{minusStatus}}' style="height: 80rpx;width: 80rpx;transform: scale(1.2);" type='number' bindtap='bindMinus'></image>
+    <input bindinput='' disabled value='{{num}}' style="width: 70rpx;text-align: center;"></input>
+    <!-- bindManual -->
+    <image src="https://test.fsmbdlkj.com/wx_official/web/images/image/add.png" style="height: 80rpx;width: 80rpx;transform: scale(1.2);" bindtap='bindPlus'></image>
+
+  </view>
+</view>
+
+<view style="width:100%;margin-top:50%;text-align:center" wx:if="{{setMeal==''&&id==0}}">
+  该套餐已下架
+</view>
+
+<view class="num" style="border-bottom:2rpx solid #dadada;padding-bottom:20rpx" wx:if="{{setMeal!=''||CouponList!=''||distributionFoodInfo != ''}}">
+  <text >单价</text>
+  <text style="width:140rpx;text-align:right;color:#F89600;font-size:32rpx;padding-right:20rpx" wx:if="{{setMeal&&setMeal.length>0}}">￥{{setMeal[0].price}}</text>
+  <text style="width:140rpx;text-align:right;text-decoration:line-through;color: #5a5a5a;font-size:26rpx;" wx:if="{{setMeal&&setMeal.length>0}}">￥{{setMeal[0].originalPrice}}</text>
+</view>
+
+<view class="num" style="border-bottom:2rpx solid #dadada;padding-bottom:20rpx" wx:if="{{setMeal!=''||CouponList!=''||distributionFoodInfo != ''}}">
+  <text style="width:50%">支付金额</text>
+  <text style="width:50%;text-align:right;color:#F89600;font-size:32rpx;padding-right:20rpx">￥{{actualSum}}</text>
+</view>
+
+<view style="border-bottom:2rpx solid #dadada;padding-bottom:20rpx;display: flex;flex-direction: column;" wx:if="{{setMeal[0].wayOfUseStarDust != 0}}">
+  <view style="display: flex;margin-left: 20rpx;margin-top: 20rpx;align-items: center;" wx:if="{{false}}">
+    <checkbox-group bindchange="useStarDustChange">
+      <checkbox value="1" checked="{{isUseStarDust}}"></checkbox>
+    </checkbox-group>
+    <text bindtap="changIsUseStar">使用星盾</text>
+    <view style="margin-left: 36rpx;display: flex;align-items: center;" wx:if="{{isUseStarDust && setMeal[0].wayOfUseStarDust == 1}}">{{isUseStarDustCount}}个【平台星盾】</view>
+    <view style="margin-left: 36rpx;display: flex;align-items: center;" wx:if="{{isUseStarDust && setMeal[0].wayOfUseStarDust == 2}}">{{isUseStarDustCount}}个【店铺星盾】</view>
+    <view style="margin-left: 36rpx;display: flex;align-items: center;" wx:if="{{isUseStarDust && setMeal[0].wayOfUseStarDust == 3}}">{{isUseStarDustCount}}个【平台星盾】【店铺星盾】</view>
+    <view style="margin-left: 36rpx;display: flex;align-items: center;" wx:if="{{isUseStarDust && setMeal[0].wayOfUseStarDust == 4}}">{{isUseStarDustCount}}个【领盾购买】</view>
+  </view>
+  <view class="num" wx:if="{{isUseStarDust}}">
+    <text style="width:50%">实付金额</text>
+    <text style="width:50%;text-align:right;color:#F89600;font-size:32rpx;padding-right:20rpx">￥{{filters.toFix2(actualOfUsingStar)}}</text>
+  </view>
+</view>
+<view style="width:95%;border-bottom:2rpx solid #dadada;padding-bottom:20rpx;display: flex;flex-direction: column;" wx:if="{{setMeal[0].startUsing3 == 3}}">
+  <view style="display: flex;margin-top: 20rpx;align-items: center;justify-content: space-between;">
+    <view style="display: flex;margin-left: 20rpx;margin-top: 20rpx;align-items: center;">
+      <text>家长：</text>
+      <input style="width: 50rpx;font-size: 28rpx;padding-left: 20rpx;padding-right: 20rpx;text-align: center;margin-left: 10rpx;border-radius: 14rpx; height: 42rpx; border: 0.5rpx solid #dadada;" model:value="{{parents}}" />
+      <text decode="true">&nbsp;&nbsp;人</text>
+    </view>
+
+
+    <view style="display: flex;margin-top: 20rpx;align-items: center;">
+      <text>学生：</text>
+      <input style="width: 50rpx;font-size: 28rpx;padding-left: 20rpx;padding-right: 20rpx;text-align: center;margin-left: 10rpx;border-radius: 14rpx; height: 42rpx; border: 0.5rpx solid #dadada;" model:value="{{students}}" />
+      <text decode="true">&nbsp;&nbsp;人</text>
+    </view>
+  </view>
+</view>
+
+
+<!-- <view style="border-bottom:2rpx solid #dadada;padding-bottom:20rpx;font-size: 30rpx;" wx:if="{{setMeal[0].startUsing3 == 1}}">
+  <view style="margin-left: 20rpx;margin-top: 20rpx;">备注:</view>
+  <textarea name="" id="" cols="30" rows="10" style="margin-left: 20rpx;border: 2rpx solid #dadada;height: 200rpx;width: 90%;" bindinput="customerRemarkInput"></textarea>
+</view> -->
+
+<!-- <view style="width: 100%;display: flex;justify-content: center;margin-top: 20rpx;" wx:if="{{id == 0}}">
+  <view style="width: 95%;display: flex;justify-content: flex-end;">
+    <button style="height: 50rpx;background: orange;color: white;display: flex;justify-content: center;line-height: 50rpx;margin: 0;" bindtap="showRemarkDialog">备注</button>
+  </view>
+</view> -->
+
+<!-- <view style="position: fixed;top: 0;width: 100%;height: 100%;background: rgb(0,0,0,.5);z-index: 9;" wx:if="{{isShowRemarkDialog}}"></view> -->
+<!-- <view style="position: fixed;top: 300rpx;width: 100%;z-index: 10;display: flex;justify-content: center;" wx:if="{{isShowRemarkDialog}}">
+  <view style="width: 92%;border-radius: 20rpx;background: #f5f7f6;display: flex;flex-direction: column;align-items: center;overflow: hidden;">
+    <view style="width: 92%;display: flex;flex-direction: column;padding: 30rpx 0 0;">
+      
+       <view style="display: flex;margin-top: 30rpx;">
+        <view style="font-weight: bold;">备注：</view><textarea bindinput="remarkInput" value="{{goods_remark}}" maxlength="200" style="flex: 1;border: 2rpx solid gray;border-radius: 20rpx;padding: 10rpx 10rpx;height: 180rpx;background-color: white;"></textarea>
+      </view> 
+      <view style="width: 100%;display: flex;justify-content: space-between;margin-top: 30rpx;margin-bottom: 30rpx;">
+        <button class="confirmBtn" style="background-color: #009aa2;" bindtap="showRemarkDialog">确定</button>
+        <button class="confirmBtn" style="background-color: #009aa2;" bindtap="cancel">取消</button>
+      </view>
+    </view>
+  </view>
+</view> -->
+
+<view style="margin-top: 20rpx;display: flex;flex-direction: column;justify-content: center;align-items: center;width: 100%;background-color: #f2f2f2;" wx:if="{{constituteTypeList}}">
+  <!-- <scroll-view scroll-y style="height: 200rpx;background-color: #f2f2f2;width: 93%;"> -->
+    <view style="background-color: #f2f2f2;width: 93%;">
+    <view wx:for="{{constituteTypeList}}" wx:key="index">
+      <view wx:if="{{item.choosableCount != -1}}">
+        ● 选择菜品:
+        <text wx:if="{{item.constituteTypeCount != 1 && item.choosableCount != -1}}"> {{item.constituteTypeCount}}选{{item.choosableCount}}</text>
+        <text wx:if="{{item.constituteTypeCount != 1 && item.choosableCount == -1}}">{{item.constituteTypeCount}} {{item.setMealConstituteList[0].constituteUnit}} </text>
+        <checkbox-group bindchange="chooseChange" class="meal_dishes" wx:for="{{item.setMealConstituteList}}" wx:for-item="chooseDetail" data-item="{{item}}" data-index="{{index}}" data-chooseIndex="{{chooseIndex}}" wx:for-index="chooseIndex">
+          <label style="width: 100%;display: flex;flex-direction: row;justify-content: space-between;">
+            <view style="display: flex;flex-direction: row;width: 100%;">
+              <checkbox disabled="{{chooseDetail.isChoose}}" />
+              <text style="width:80%">{{chooseDetail.constituteName}}（{{chooseDetail.constituteUnit}}）x{{chooseDetail.constituteNum}}</text>
+            </view>
+            <view>
+              <text style="width:20%;text-align:right">￥{{chooseDetail.constituteValue*chooseDetail.constituteNum}}</text>
+            </view>
+          </label>
+        </checkbox-group>
+      </view>
+    </view>
+  </view>
+  <!-- </scroll-view> -->
+</view>
+
+<view class='note' style='height: 30%;'>
+ <view class="remark-top" >
+    <text>客人备注：</text>
+    <image style='height: 64rpx;width: 68rpx;margin-left: 5rpx;' bindtap="popRemarkDlgTap" src='{{menu_img}}'></image>
+  </view>
+</view>
+<view wx:if="{{quick_remark!=''}}" style="display: flex;flex-direction: column;padding: 20rpx 20rpx;background-color: #f2f2f2;">
+  <view>常用备注:</view>
+  <view style="display: flex;margin-top: 10rpx;">
+      <view style="flex: 1;border: 2rpx solid gray;border-radius: 20rpx;padding: 10rpx 10rpx;background-color: white;">
+        {{quick_remark}}
+      </view>
+       <!-- <textarea  disabled="disabled" value="{{quick_remark}}"  style="flex: 1;border: 2rpx solid gray;border-radius: 20rpx;padding: 10rpx 10rpx;background-color: white;"></textarea> -->
+  </view>
+</view> 
+ <view style="display: flex;flex-direction: column;padding: 20rpx 20rpx;background-color: #f2f2f2;">
+  <view>自定义备注:</view>
+  <view style="display: flex;margin-top: 10rpx;">
+       <textarea bindinput="remarkInput" value="{{goods_remark}}" maxlength="200" style="flex: 1;border: 2rpx solid gray;border-radius: 20rpx;padding: 10rpx 10rpx;height: 180rpx;background-color: white;"></textarea>
+  </view>
+</view> 
+
+
+<!-- <view wx:else>
+  <view style="height: 600rpx;width: 100%;display: flex;justify-content: center;margin-top: 20rpx;">
+    <view style="display: flex;flex-direction: column;width: 93%;background-color: #f2f2f2;padding: 20rpx 20rpx;">
+      <view style="font-size: 34rpx;font-weight: bolder;">关注"切瓜切菜"公众号可获得:</view>
+      <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">每次消费都有"关注公众号优惠价"的优惠;</view>
+      </view>
+      <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">可享受加入"切瓜切菜"平台的所有商家的"关注公众号优惠价"优惠;</view>
+      </view>
+      <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">一次关注长期有效(取消关注除外);</view>
+      </view>
+      <view style="display: flex;margin-left: 40rpx;">●<view style="font-size: 30rpx;font-weight: bolder;margin-left: 10rpx;">及时精准地接收您所需要的商家优惠信息;</view>
+      </view>
+    </view>
+  </view>
+</view> -->
+
+
+<!-- <button open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button> -->
+<!-- <button wx:if="{{userinfo ==false && !(orderListCome)}}" class="tap" open-type="getUserInfo" bindgetuserinfo="getUserInfo">
+  <view style="display: flex;width: 100%;">
+    <view style="display:flex;justify-content:flex-start;width:40%;align-items: center;">
+      <text style="font-size:24rpx;">￥</text>
+      <text style="font-size:34rpx" wx:if="{{!isUseStarDust}}">{{actualSum}}</text>
+      <text style="font-size:34rpx" wx:else>{{filters.toFix2(actualOfUsingStar)}}</text>
+    </view>
+    <view style="display:flex;justify-content:flex-start;width:60%">
+      <text style="font-size:34rpx"> 提交订单1</text>
+    </view>
+  </view>
+</button> -->
+<button class="tap" bindtap="saveData" style="z-index: 999;">
+  <view style="display: flex;width: 100%;">
+    <view style="display:flex;justify-content:flex-start;width:40%;align-items: center;">
+      <text style="font-size:24rpx;">￥</text>
+      <text style="font-size:34rpx" wx:if="{{!isUseStarDust}}">
+        
+        <text>{{actualSum}}</text>
+      </text>
+      <text style="font-size:34rpx" wx:else>{{filters.toFix2(actualOfUsingStar)}}</text>
+    </view>
+    <view style="display:flex;justify-content:flex-start;width:60%">
+      <text style="font-size:34rpx">确认提交</text>
+    </view>
+  </view>
+</button>
+<!-- <button wx:elif="{{orderListCome}}" class="tap" bindtap="ChangeTicketOrderInfo">
+  <view style="display: flex;width: 100%;">
+    <view style="display:flex;justify-content:flex-start;width:40%;align-items: center;">
+      <text style="font-size:24rpx;">￥</text>
+      <text style="font-size:34rpx" wx:if="{{!isUseStarDust}}">{{filters.toFix2(actualSum)}}</text>
+      <text style="font-size:34rpx" wx:else>{{filters.toFix2(actualOfUsingStar)}}</text>
+    </view>
+    <view style="display:flex;justify-content:flex-start;width:60%">
+      <text style="font-size:34rpx"> 修改确认</text>
+    </view>
+  </view>
+</button> -->
+
+
+
+<view class="pop-remark-dlg"  wx:if="{{pop_remark_dlg_show}}" style="z-index: 999999;" >
+    <view class="container">
+        <view class="container-top">
+            <!-- <text style="margin-left: 40%;">{{dishesInfo.dishes_name}}</text>
+            <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='hideModal'></image> -->
+            <text style="height: 60rpx;width: 300rpx;float: left;margin-left: 20rpx;">常用备注</text>
+            <image style='width:60rpx;height:60rpx;float:right' src='{{i_close_img_url}}' bindtap='hideModal'></image>
+            <text style="width: 140rpx;position: absolute;top: 70rpx;font-weight: normal;right: 100rpx;"></text>
+        </view>
+        <!-- 列表-->
+        <view class="container-table">
+            <form bindsubmit='table_ChangeSubmit' style='width:100%;height:100%'>
+            <scroll-view scroll-y='true' class="scroll-part">
+                <radio-group wx:if="{{quickRemarkList.length!=0}}">
+                <label style="width:21%;display: inline-block;margin:10rpx 10rpx" wx:for="{{quickRemarkList}}" wx:key="index" data-index="{{index}}" bindtap="chooseRemark">
+                    <button class="hallcheckbox {{item.checked ? 'yerrow_background':'green_background'}}" style="{{item.checked ? 'color:#000':'color:#fff'}}">
+                    <view class="asd">{{item.value}}</view>
+                    </button>
+                </label>
+                </radio-group>
+                
+                <view class="modal-textarea" style="height: 100%;width: 100%;" wx:else>
+                <view style="height: 100%;width: 100%;justify-content: center;align-items: center;display: flex;">
+                    <view>--未设置常用备注--</view>
+                </view>
+                </view>
+            </scroll-view>
+            </form>
+        </view>
+        <view class="container-bottom"> 
+            <button class="btn_mid_y" bindtap="quickRemarkConfirm" style="height:50rpx;line-height: 50rpx;">确定</button>
+        </view>
+    </view>
+</view>

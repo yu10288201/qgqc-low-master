@@ -1,0 +1,22 @@
+<view class='top'>
+  <view class='title'>
+    <view class='titleImg'>
+      <image class='titleImage' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_discount.png'></image>
+    </view>
+    <view class='titleItem'>
+      <!-- <text class='text'>点餐星餐饮平台·店铺管理</text> -->
+			<text class='text'>切瓜切菜餐饮平台管理</text>
+    </view>
+  </view>
+</view>
+
+<view class='item'>
+
+  <view class='div' style='font-size:40rpx;font-weight:700;margin-left:-50rpx'>
+    {{shop_name}}
+  </view>
+<view class='div'>
+    <image class='image6' mode='scaleToFill' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_order.png'></image>
+  <button class='btn' bindtap="guke">预存优惠管理</button>
+</view>
+</view>

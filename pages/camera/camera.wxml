@@ -1,0 +1,49 @@
+<!--pages/camera/camera.wxml-->
+
+<view class='psq'>
+       <image class='psr' name='uploadfile_ant' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/Upload_image.png'  bindtap='chooseVideo'/>
+       </view>
+       <view class='psg'>
+       <text class='imagetest'>拍摄/相册</text>
+       </view>
+  <!-- 下拉框 -->
+  <view class='psu'>
+    <view class='select_box'>
+      <view class='select' catchtap='selectTap'>
+        <text class='select_text'>{{selectData[index]}}</text>
+      </view>
+      <view class='option_box' style='height:{{show?(selectData.length>6?400:selectData.length*60):0}}rpx;'>
+        <text class='option' style='{{index==selectData.length-1&&"border:0;"}}' wx:for='{{selectData}}' wx:key='this' data-index='{{index}}' catchtap='optionTap'>{{item}}</text>
+      </view>
+    </view>
+</view>
+
+
+       <view class="divLine"></view>
+<view class="page-body-info"> 
+      <block wx:if="{{src != ''&&is_video_show==1}}">
+        <video src="{{src}}" class="videos"></video>
+      </block>
+      <button bindtap="uploadvideo"></button>
+    </view>
+  <block wx:for="{{(videosUse.videoId)/(videosUse.videoId)}}">
+        <view class='images'>
+          <video wx:if="{{is_video_show==1}}" class="video" src="{{videosUse.videoUrl}}"  data-idx="{{index}}"  /> 
+        </view> 
+      </block>
+      <view class='psb'>
+
+
+<button class='submit' type="primary" bindtap="getmenu">
+ <text>获取菜单</text>
+ </button>
+
+ <button class='submit' type="primary" bindtap="select">
+ <text>获取视频</text>
+ </button>
+ </view>
+ <view class='psc'>
+  <button class='submit'  open-type='getUserInfo' type="primary" bindtap="uploadvideo"  lang="zh_CN">
+    <text>上传视频</text>
+  </button>
+  </view>

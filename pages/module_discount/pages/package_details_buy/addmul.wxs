@@ -1,0 +1,91 @@
+var filters = {
+  toFix: function (value) {
+    return Math.round(value*1000)/100
+  },
+  people:function(value2){
+    var b = ''
+    var c = value2
+    if(c == '2'){
+      b = '[超值菜品]'
+    }else{ 
+      b = '[超值套餐]'
+    }
+    return b
+  },
+  dishes_unit:function(value,value2){
+    var a = value;
+    var b = value2;
+    if(b == 2){
+      return a
+    }else{
+      return '套'
+    }
+  },
+  toFix2: function (value) {
+    var a = value 
+    return a.toFixed(2)//此处2为保留两位小数
+  },
+  userTimeFor: function (value){
+    console.log('userTimeFor:')
+    console.log(value)
+
+    if(value == '1,2,3,4'){
+      return '不限';
+    }else if(value.length == 1){
+      if(value.indexOf('1') != -1){
+        return '早餐'
+      }
+      if(value.indexOf('2') != -1){
+        return '午餐'
+      }
+      if(value.indexOf('3') != -1){
+        return '晚餐'
+      }
+      if(value.indexOf('4') != -1){
+        return '夜宵'
+      }
+    }else if(value.length > 1){
+      var a = value.split(",")
+      var b = ''
+      for(var i = 0;i < a.length;i++){
+        if(a[i].indexOf('1') != -1){
+            b = b + '早餐,';
+        }
+        if(a[i].indexOf('2') != -1){
+            b = b + '午餐,';
+        }
+        if(a[i].indexOf('3') != -1){
+            b = b + '晚餐,';
+        }
+        if(a[i].indexOf('4') != -1){
+            b = b + '夜宵,';
+        }
+      }
+      return b.substring(0,b.length-1);
+    }
+    
+  },
+}
+module.exports = {
+  userTimeFor: filters.userTimeFor,
+
+  toFix: filters.toFix,
+  people:filters.people,
+  dishes_unit:filters.dishes_unit,
+  toFix2: filters.toFix2
+}
+var sub = function(val) {
+  if (val.length == 0 || val == undefined) {
+    return;
+  }
+  if (val.length > 17) {
+    if(val.substring(val.length-2, val.length) =='\r\n'){
+      return val.substring(0, val.length-6) +'big';
+    }else{
+    return val.substring(0, val.length-4) +'big';
+    }
+  } else {
+    return val;
+  }
+}
+module.exports.sub = sub;

@@ -1,0 +1,333 @@
+<!--pages/Shop_ordering/Shop_ordering.wxml-->
+<wxs module="filters" src="../Shop_ordering_couponid/filter.wxs"></wxs>
+<import src="../../../../components/filterbar/filterbar.wxml" />
+
+
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+	<view class='search-view'>
+		<!-- <image src="http://img3.imgtn.bdimg.com/it/u=2064794736,2436845779&fm=26&gp=0.jpg"></image> -->
+		<text wx:if="{{shop_id!=''}}" style="margin-left:20rpx;color: #000000">{{shop_name}}</text>
+		<!-- <view wx:else  style="width:90%" bindtap="selectJump" data-id="搜索">
+			<view class='search-input' style="display: flex;justify-content: space-around;">
+				<input type="text" class='input' disabled="true" placeholder-class="placeholder-color" placeholder="请输入商家名称、菜品" value="{{wxSearchData.value}}" />
+				<image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search.png' />
+			</view>
+		</view> -->
+		<view wx:else style="letter-spacing: 0rpx;display:flex;width: 100%;">
+			<!-- <view class="show_view {{file_id==0?'active':''}}" data-id="0" data-index="0" bindtap="file1">超值套餐/菜品</view> -->
+			<view class="show_view {{file_id==1?'active':''}}" data-id="1" data-index="0" bindtap="file1">超值代金券</view>
+		</view>
+	</view>
+</view>
+
+<view class="show">
+	<view wx:if="{{shop_id!=''}}" style="display: flex;width: 100%;">
+		<!-- <view class="show_view {{file_id==0?'active':''}}" data-id="0" data-index="0" bindtap="file">超值套餐/菜品</view> -->
+		<view class="show_view {{file_id==1?'active':''}}" data-id="1" data-index="0" bindtap="file">超值代金券</view>
+	</view>
+	<view wx:else  style="width:100%" data-id="搜索">
+	<view style="display:flex" class="search-input">
+				<input type="text" class='input' style="width:80%;padding-left: 40rpx;" placeholder-class="placeholder-color" placeholder="请输入超值代金券关键词" value="{{wxSearchData.value}}" bindtap="inputTap" bindinput="wxSearchInput" bindconfirm="wxSearchConfirm" focus="{{focus}}" disabled="{{input_bol}}"/>
+				<view style="width:20%;display: flex;justify-content: center;" bindtap="wxSearchConfirm">
+					<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/image/search.png" role='img'></image>
+				</view>
+			</view>
+      <view class="weui-icon-clear" wx:if="{{wxSearchData.value.length > 0}}" bindtap="wxSearchClear">
+        <icon type="clear" size="14"></icon>
+      </view>
+			<!-- <view style="display:flex" class="search-input">
+				<input type="text" class='input' style="width:80%;padding-left: 40rpx;" placeholder-class="placeholder-color" placeholder="请输入超值代金券关键词" value="{{wxSearchData.value}}" bindtap="inputTap" bindinput="wxSearchInput" bindconfirm="wxSearchConfirm" focus="{{focus}}" disabled="{{input_bol}}"/>
+				<view style="width:20%;display: flex;justify-content: center;" bindtap="wxSearchConfirm">
+					<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search.png" role='img'></image>
+				</view>
+			</view>
+      <view class="weui-icon-clear" wx:if="{{wxSearchData.value.length > 0}}" bindtap="wxSearchClear">
+        <icon type="clear" size="14"></icon>
+      </view> -->
+		<!-- 搜索搬运-->
+ 
+		<view catchtouchmove="true" class='myFilterBar'  wx:if='{{select_bol}}'>
+			<view catchtouchmove="true" class='allArea'>
+				<view class="nav">
+					<view class="nav-son {{shownavindex == 1? 'active' : ''}}" bindtap="listqy" data-nav="1">
+						<view class="content" style='font-weight: bold;'>{{city}}</view>
+						<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+					</view>
+				</view>
+
+				<!-- 区域-》区域、标签 -->
+					<view class="quyu {{qyopen ? 'slidown' : 'slidup'}} {{qyshow ? 'disappear':''}}">
+						<view class='quyuAll'> 
+						
+						<view class="qy quyu-left">
+							<view class="{{select1 == item.city_name ? 'current' : ''}}" wx:for="{{cityleft}}" wx:key="key" bindtap="selectleft" data-city='{{item.city_name}}' data-ID="{{item.id}}">
+								{{item.city_name}}
+							</view>
+						</view>
+
+						<view class="qy quyu-center">
+							<view class="{{select2 == item.county_name? 'current2' : ''}}" wx:for="{{citycenter}}" wx:key="key" bindtap="selectcenter" data-city='{{item.county_name}}' data-ID="{{item.id}}">
+								{{item.county_name}}
+							</view>
+						</view>
+
+						<view class="qy quyu-right">
+							<view class="{{select3 == item.area_name? 'current3':''}}" wx:for="{{cityright}}" wx:key="key" bindtap="selectright" data-city='{{item.area_name}}' data-ID="{{item.id}}">
+								{{item.area_name}}
+							</view>
+						</view>
+					</view>
+
+					<view class='form-btn'>
+						<button class='btn-reset' bindtap='quyuEmpty'>重 置</button>
+						<button class='btn-submit' bindtap='submitFilter'>确 定</button>
+					</view>
+				</view>
+			</view>
+
+			<view catchtouchmove="true" class="classification">
+				<view class="tabTit box">
+					<view class="flex1{{!file[index]?' active':''}}" wx:for="{{fileTxt}}" wx:key="type" data-index="{{index}}" bindtap="filetab">
+						<text style='letter-spacing:10rpx;font-weight: bold;'>{{item}}</text>
+						<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+					</view>
+				</view>
+
+				<view class="tabLayer1" hidden="{{file[0]}}">
+					<view style="margin-bottom:30rpx;margin-top:10rpx">
+						<block wx:for="{{typeList}}">
+								<text class="{{fileid==item.id?'active':''}}" data-id="{{item.id}}" data-index="0" data-txt="{{item.typeName}}" data-condition="{{item.condition}}"  bindtap="file">{{item.typeShowName}}</text>
+						</block>
+					</view>
+					<view class="tab-button">
+							<button class='reset' bindtap='reset'>重 置</button>
+							<button class='submit'bindtap='submit'>确 定</button>
+					</view>
+				</view>
+			</view>
+
+			<view catchtouchmove="true" class='sort'>
+				<view class="tabTit box">
+					<view class="flex1{{!tab[index]?' active':''}}" wx:for="{{tabTxt}}" wx:key="type" data-index="{{index}}" bindtap="filterTab">
+						<text style='letter-spacing:10rpx;font-weight: bold;'>{{item}}</text>
+						<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+						<!-- <image src="{{item.pageUrl)}}"></image> -->
+					</view>
+				</view>
+				
+				<view catchtouchmove="true" class="tabLayer" hidden="{{tab[0]}}">
+				<view style="margin-bottom:30rpx;margin-top:10rpx">
+					<text class="{{sort_id==0?'active':''}}" data-id="0" data-index="0" data-txt="智能排序" data-condition="priceAsc"  bindtap="filter">智能排序</text>
+					<text class="{{sort_id==1?'active':''}}" data-id="1" data-index="0" data-txt="月销量 ↓" data-condition="priceDesc"  bindtap="filter">月销量 ↓</text>
+					<text class="{{sort_id==2?'active':''}}" data-id="2" data-index="0" data-txt="距离 ↑" data-condition="salesAsc"  bindtap="filter">距离 ↑</text>
+					<text class="{{sort_id==3?'active':''}}" data-id="3" data-index="0" data-txt="点赞 ↓" data-condition="fabulousAsc"  bindtap="filter">点赞 ↓</text>
+					<text class="{{sort_id==4?'active':''}}" data-id="4" data-index="0" data-txt="价格 ↑" data-condition="fabulousDesc"  bindtap="filter">价格 ↑</text>
+					<text class="{{sort_id==5?'active':''}}" data-id="5" data-index="0" data-txt="折扣 ↑" data-condition="dishesName"  bindtap="filter">折扣 ↑</text>
+					<!-- <text wx:if="{{menushow}}" class="{{sort_id==3?'active':''}}" data-id="3" data-index="0" data-txt="人均消费 ↑" data-condition="salesDesc"  bindtap="filter">人均消费 ↑</text> -->
+					<text class="{{sort_id==6?'active':''}}" data-id="6" data-index="0" data-txt="人均消费↑" data-condition="salesDesc"  bindtap="filter">人均消费↑</text>
+					</view>
+					<view class="tab-button">
+							<button class='reset' bindtap='reset'>重 置</button>
+							<button class='submit'bindtap='submit'>确 定</button>
+					</view>
+				</view>
+			</view>
+
+			<view class='screen1' bindtap='closeOther'>
+				<template is="filterbar" data="{{ ...$wux.filterbar }}" />
+			</view>
+
+		</view>
+		<!-- 搜索搬运结束-->
+
+
+
+
+
+	</view>
+</view>
+
+<!-- <view class="meal" wx:if="{{file_id==0 && !select_setmeal}}">
+<view wx:if="{{showid ==0}}" style="width:100%;text-align:center;color:#777777;margin-top:40%">
+该店铺未录入套餐
+</view>
+	<view wx:if="{{showid==1}}" wx:key="key" style="margin-top:10rpx;  display: flex;flex-direction: column;" class="menu" wx:for="{{List}}">
+					<text style="width:94%;margin-left:3%;font-size:30rpx;font-weight:900;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;margin-top:1%">{{item.setMealName}}{{filters.people(item.userNum,item.typeForSetMeal)}}</text>
+		<view class="menu_back">
+			<view class="menu_left"> 
+				<image src="{{filters.sub(item.pageUrl[0].pageURL)}}" mode="aspectFill" bindtap='bigimg2' data-src="{{item.pageUrl[0].pageURL}}"></image>
+			</view>
+			<view class="menu_right">
+				<view class="menu_right_view">
+									<text style="width:80%;" wx:if="{{shop_id!=''}}">{{filters.formatDate(item.startTime.time)}}~{{filters.formatDate(item.endTime.time)}}</text>
+									<text style="width:80%;" wx:else>{{filters.Time(item.startTime)}}~{{filters.Time(item.endTime)}}</text>
+					<view class="menu_detail" bindtap="tap" wx:for-index="index" data-index="{{index}}">详情</view>
+				</view>
+		<view class="menu_right_view">
+					<text style="width:90%;">{{filters.usefulDate(item.usefulDate)}}</text>
+				</view>
+				<view class="menu_right_view" style="margin-top: 3rpx;">
+				
+					<text wx:if="{{shop_id==''}}" style="width:90%;">{{item.shop_name}}</text>
+					<text wx:else style="width:90%;">月销量:{{item.setMealSales}}</text>
+				</view>
+
+				<view class="menu_right_view">
+				
+					<text wx:if="{{shop_id==''}}" style="margin-right:25rpx">月销量:{{item.setMealSales}}</text>
+					<image style="margin-left:10rpx" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png"></image>
+					<text style="padding-top:4rpx;padding-right:1rpx">:{{item.setMealLike}}</text>
+				</view>
+				<view style="display:flex;flex-direction:row;">
+					<view style="width:76%">
+						<view class="menu_right_view" style="margin-bottom:10rpx;color:#ea9518;">
+							<text style="font-size:28rpx;font-weight:900">￥{{item.price}}元</text>
+							<text style="text-decoration:line-through;margin-left:1%;padding-top:6rpx;color:#777777">￥{{item.originalPrice}}</text>
+							<text style="font-size:18rpx;margin-top:9rpx;line-height:24rpx;height:24rpx;margin-left:1%;border: 0.5rpx solid #ea9518;">{{filters.toFix(item.price/item.originalPrice)}}折</text>
+						</view>
+					</view>
+					<view class="menu_rush" bindtap="goorder" wx:for-index="index" data-index="{{index}}">抢购</view>
+				</view>
+			</view>
+		</view>
+	</view>
+</view> -->
+
+<view class="meal" wx:if="{{file_id==1 && select_coupon}}" style="{{select_bol ? '' :'margin-top:150rpx'}}">
+<view wx:if="{{showid ==0}}" style="width:100%;text-align:center;color:#777777;margin-top:40%">
+没有关键词或没搜索出相关代金券
+</view>
+	<view wx:if="{{couponid ==1}}" class="ticket" wx:for="{{discountList}}">
+	<!-- <view class="ticket" wx:for="{{discountList}}"> -->
+		<view class="ticket_title">
+			<view class="menu_right_view">
+				<!-- <text style="width:100%;font-size:30rpx;font-weight:900;width:76%">{{item.coupon_original}}元代金券</text> -->
+				<text style="width:100%;font-size:30rpx;font-weight:900;width:76%">{{item.coupon_name}}</text>
+				<view class="detail" bindtap="top" wx:for-index="index" data-index="{{index}}">详情</view>
+			</view>
+			<view class="menu_right_view" style="margin-top:5rpx">
+				<text wx:if="{{shop_id==''}}" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;color: #000000;">{{item.shop_name}}|</text>
+				<text style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">月销量:{{item.coupon_salesvolue}}</text>
+			</view>
+			<!-- <view class="menu_right_view">
+				<image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_like_on.png"></image>
+				<text style="padding-top:4rpx;padding-right:1rpx">:234</text>
+					<text style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;font-weight:900">店铺：东海明珠酒楼</text>
+			</view> -->
+
+			<view class="menu_right_view" style="margin-top:5rpx">
+				<text wx:if="{{item.coupon_superposition ==0}}" style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">周{{item.coupon_ruleweekstar}}至周{{item.coupon_ruleweekend}}可用 | 不可叠加</text>
+								<text wx:else style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">周{{item.coupon_ruleweekstar}}至周{{item.coupon_ruleweekend}}可用 | 可叠加{{item.coupon_superposition}}张</text>
+			</view>
+			<view style="display:flex;flex-direction:row;margin-top:5rpx">
+				<view style="width:76%">
+					<view class="menu_right_view" style="margin-bottom:10rpx;color:#ea9518;">
+						<text style="font-size:28rpx;font-weight:900">￥{{item.coupon_facevalue}}元</text>
+						<text style="text-decoration:line-through;margin-left:20rpx;padding-top:6rpx;color:#363636">￥{{item.coupon_original}}</text>
+						<text style="font-size:20rpx;margin-top:9rpx;line-height:24rpx;height:24rpx;margin-left:20rpx;border: 0.5rpx solid #ea9518;">{{filters.toFix(item.coupon_facevalue/item.coupon_original)}}折</text>
+					</view>
+				</view>
+				<view class="rush" bindtap="goorder" wx:for-index="index" data-index="{{index}}">抢购</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+<view class="meal" wx:if="{{file_id==1 && !select_coupon}}" style="{{select_bol ? '' :'margin-top:150rpx'}}">
+<view wx:if="{{couponid ==0}}" style="width:100%;text-align:center;color:#777777;margin-top:40%">
+该店铺未录入代金券
+</view>
+	<view wx:if="{{couponid ==1}}" class="ticket" wx:for="{{CouponList}}">
+		<view class="ticket_title">
+			<view class="menu_right_view">
+				<text style="width:100%;font-size:30rpx;font-weight:900;width:76%">{{item.coupon_name}}</text>
+				<view class="detail" bindtap="top" wx:for-index="index" data-index="{{index}}">详情</view>
+			</view>
+			<view class="menu_right_view" style="margin-top:5rpx">
+				<text wx:if="{{shop_id==''}}" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;color: #000000;">{{item.shop_name}}|</text>
+				<text style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">月销量:{{item.coupon_salesvolue}}</text>
+			</view>
+
+			<view class="menu_right_view" style="margin-top:5rpx">
+				<text wx:if="{{item.coupon_superposition ==0}}" style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">周{{week[index].starweek}}至周{{week[index].endweek}}可用 | 不可叠加</text>
+								<text wx:else style="width:100%;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">周{{week[index].starweek}}至周{{week[index].endweek}}可用 | 可叠加{{item.coupon_superposition}}张</text>
+			</view>
+			<view style="display:flex;flex-direction:row;margin-top:5rpx">
+				<view style="width:76%">
+					<view class="menu_right_view" style="margin-bottom:10rpx;color:#ea9518;">
+						<text style="font-size:28rpx;font-weight:900">￥{{item.coupon_facevalue}}元</text>
+						<text style="text-decoration:line-through;margin-left:20rpx;padding-top:6rpx;color:#363636">￥{{item.coupon_original}}</text>
+						<text style="font-size:20rpx;margin-top:9rpx;line-height:24rpx;height:24rpx;margin-left:20rpx;border: 0.5rpx solid #ea9518;">{{filters.toFix(item.coupon_facevalue/item.coupon_original)}}折</text>
+					</view>
+				</view>
+				<view class="rush" bindtap="goorder" wx:for-index="index" data-index="{{index}}">抢购</view>
+			</view>
+		</view>
+	</view>
+</view>
+
+
+
+<!-- 立即预约 -->
+<view class="screen" wx:if="{{disTag}}"></view>
+<view wx:if="{{disTag}}" class='notice_details'>
+	<view style="width:94%;margin-left:3%">
+		<view class="order-box {{disTag== true ? 'up' : 'down'}}">
+			<icon class='clear' type="clear" size="24" bindtap='clear' />
+			<view style="display:flex;flex-direction:row">
+				<view class="coupon_details">
+					<view style="width:66%;border-right: 1rpx dashed #F07971;">
+						<view class="coupon_price_details">
+							<text style="font-size:24rpx;margin-top:15rpx">￥</text>
+							<text style="font-size:40rpx">2</text>
+						</view>
+						<view class="coupon_price_details">
+							<text style="font-size:22rpx;">满30可用</text>
+						</view>
+						<view class="coupon_price_details" style="margin-bottom:10rpx">
+							<text style="font-size:22rpx;">有效期至2020.04.27</text>
+						</view>
+					</view>
+					<view class="coupon_receive_details">领取</view>
+				</view>
+				<view style="margin-left:2%" class="coupon_details">
+					<view style="width:66%;border-right: 1rpx dashed #F07971;">
+						<view class="coupon_price_details">
+							<text style="font-size:24rpx;margin-top:15rpx">￥</text>
+							<text style="font-size:40rpx">5</text>
+						</view>
+						<view class="coupon_price_details">
+							<text style="font-size:22rpx;">满58可用</text>
+						</view>
+						<view class="coupon_price_details" style="margin-bottom:10rpx">
+							<text style="font-size:22rpx;">有效期至2020.04.27</text>
+						</view>
+					</view>
+					<view class="coupon_receive_details">领取</view>
+				</view>
+			</view>
+
+			<view style="margin-top:20rpx;font-size: 30rpx;">优惠</view>
+			<view class="favourable">
+				<text class="favourable_title">新品</text>
+				<text class="favourable_text">新品上市，优惠袭来</text>
+			</view>
+			<view class="favourable">
+				<text class="favourable_title">首次</text>
+				<text class="favourable_text">第一次使用用户，立减15元</text>
+			</view>
+			<view class="favourable">
+				<text class="favourable_title">折扣</text>
+				<text class="favourable_text">套餐限时折扣，最低0.5折</text>
+			</view>
+			<view class="favourable">
+				<text class="favourable_title">领券</text>
+				<text class="favourable_text">领取2元，5元优惠券</text>
+			</view>
+
+			<view style="margin-top:20rpx;font-size: 30rpx;">公告</view>
+			<view style="font-size:28rpx;color: #444444;">亲，为了不影响您的用餐愉快，请提前30分钟订餐。若您对我们的餐有任何问题，请先不要轻易的给差评，请您尽快联系我们，一定会让您满意，谢谢。</view>
+		</view>
+	</view>
+</view>

@@ -1,0 +1,544 @@
+checkbox .wx-checkbox-input{
+  border-radius: 50%;/* 圆角 */
+  width: 46rpx; /* 背景的宽 */
+  height: 46rpx; /* 背景的高 */
+}
+/* 选中后的 背景样式*/
+checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+  border: 1rpx solid #f3333e;
+  background: #f3333e;
+}
+
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+  border-radius: 50%;/* 圆角 */
+  width: 40rpx;/* 选中后对勾大小，不要超过背景的尺寸 */
+  height: 40rpx;/* 选中后对勾大小，不要超过背景的尺寸 */
+  line-height: 40rpx;
+  text-align: center;
+  font-size:30rpx; /* 对勾大小 30rpx */
+  color:#fff; /* 对勾颜色 白色 */
+  background: transparent;
+  transform:translate(-50%, -50%) scale(1);
+  -webkit-transform:translate(-50%, -50%) scale(1);
+}
+
+.tap{
+	background-color: red;
+	background-size: 100% 100%;
+	color:#ffffff;
+	width:  180rpx;
+	height: 74rpx;
+	display: flex;
+	font-size: 27rpx;
+	font-weight: 900;
+	align-items: center;
+	justify-content: center;
+	border-radius: 40rpx;		
+	margin-left: 20rpx;
+}
+
+
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-size: 100% 100%;
+  flex-direction: column;
+ 
+}
+
+.content-box{ 
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction:column;
+}
+
+.head-image{
+  border-radius: 20rpx;
+  border: 1rpx solid #f2f2f2;
+  width: 180rpx;
+  height: 180rpx;
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
+.content-title{
+  font-size:31rpx;
+  color:#000000
+}
+.content-notice{
+  font-size: 29rpx;
+  color:#000000;
+  
+}
+.content-total{
+  font-size:30rpx;
+  color:#000000
+}
+.content-input-border{
+  display: table;
+  table-layout: fixed;
+  width: 120rpx;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #777777;
+  overflow: hidden;
+ }
+
+ 
+ .listButton {
+  background: url("https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/膳食掌柜/image/buttom_left_down.png") no-repeat;
+  background-size: 100% 100%;
+  line-height: 50rpx;  
+  font-size: 26rpx;
+  height: 70rpx;
+  border: none;
+  color: #fff;
+  border: 0;
+  margin: 0;
+}
+
+.top{
+  z-index: 9;
+  display:flex;
+  position: fixed;
+  width:100%;
+  height:62rpx;
+  background-color:#009AA2;
+  justify-content:center; 
+  top:0;
+}
+.search-view{
+  letter-spacing:10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 72rpx;
+  width: 96%;
+  font-size: 30rpx;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  background-color:#ffffff;
+  border-top-left-radius:16rpx;
+  border-top-right-radius:16rpx;
+}
+
+.meal_dishes{
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+  width: 96%;
+  margin-left: 2%;
+  margin-bottom: 10rpx;
+  align-items: center;
+}
+
+.model{
+  display: flex;
+  flex-direction: row;
+  border-radius: 10rpx;
+  width: 94%;
+  margin-left: 3%;
+  filter: drop-shadow( 0rpx 4rpx 8rpx #dadada);
+  background: #ffffff;
+}
+.menu_image{
+  display: flex;
+  flex-direction: row;
+  width: 200rpx;
+  height: 150rpx;
+  margin-left: 10rpx;
+}
+.menu_image image{
+  border-radius: 10rpx;
+  width: 200rpx;
+  height: 150rpx;
+}
+.menu_right{
+  font-size: 24rpx;
+  margin-top: 14rpx;
+  margin-bottom: 20rpx;
+  width: 76%;
+}
+.model_title{
+  margin-left: 10rpx;
+  margin-top: 14rpx;
+  font-size: 24rpx;
+}
+.model_title text{
+  padding-left: 6rpx;
+  padding-right: 6rpx;
+  color: #F89600;
+  border: 0.5rpx solid #F89600;
+}
+.menu_setmeal_name{
+  width: 100%;
+  font-size: 36rpx;
+}
+.menu_time{
+  width: 100%;
+  font-size: 24rpx;
+}
+.price{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 16%;
+}
+.price text{
+  font-size: 28rpx;
+  /* margin-top: 40%; */
+}
+
+.num{
+  display: flex;
+  flex-direction: row;
+  font-size: 30rpx;
+  margin-top: 20rpx;
+  align-items: center;
+  width: 94%;
+  margin-left: 3%;
+}
+/* .num text{
+} */
+.image{
+  margin-left: 4%;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  width: 36rpx;
+  height: 36rpx;
+}
+.stepper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  width:50%;
+  height:60rpx;
+}
+/*加号和减号*/
+.stepper image {
+  width: 85rpx;
+  height: 85rpx;
+  float: right;
+  display: flex;
+}
+/*数值*/
+.stepper input {
+  width: 80rpx;
+  height: 70rpx;
+  float: right;
+  text-align: center;
+  font-size: 28rpx;
+}
+/*普通样式*/
+.stepper .normal {
+  background: #ffffff;
+  color:black;
+}
+/*禁用样式*/
+.stepper .disable {
+  background: #ffffff;
+  color: #ccc;
+}
+
+/*弹框样式*/
+.modal-box {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.4);
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+}
+ 
+.modal-content {
+  background: #fff;
+  width: 600rpx;
+  margin: 42% auto 0;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #ebebec;
+}
+ 
+
+ 
+.content-text {
+  padding:50px 0;
+  text-align: center;
+}
+ 
+.modal-btns {
+  width: 600rpx;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+ 
+.dialog-btn {
+  border-radius: 0;
+  background: #fff;
+  height: 100rpx;
+  width: 100%;
+}
+ 
+.dialog-btn::after {
+  border: none;
+  border-radius: 0;
+}
+ 
+.cancel {
+  color: #ccc;
+}
+ 
+.confirm {
+  border-left: 1px solid #ebebec;
+  color: #60d048;
+}
+
+.modelview{
+  background: #ffffff;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 100;
+}
+.ticket{
+  margin-top: 20rpx;
+  margin-left: 2%;
+  display: flex;
+  /*row 横向  column 列表  */
+  flex-direction: column;
+  width: 96%;
+  filter: drop-shadow( 4rpx 6rpx 2rpx #dadada);
+  background-image: radial-gradient(circle at 358rpx 110rpx ,transparent 0%, transparent 18rpx,#ffd5cb 18rpx, #fcfbf9 100%);
+  background-position: 363rpx;
+}
+
+
+.ticket_title{
+  display: flex;
+  flex-direction: column;
+  margin-left: 5%;
+  margin-top: 1%;
+  width: 90%;
+}
+.ticket_title image{
+  width: 26rpx;
+  height: 26rpx;
+}
+.ticket_title text{
+  font-size: 30rpx;
+  font-weight: 900;
+}
+.menu_right_view{
+  margin-top: 2rpx;
+  display:flex;
+  align-items: center;
+  flex-direction: row;  
+}
+.menu_right_view image{
+  margin-left: 1rpx;
+  width: 26rpx;
+  height: 26rpx;
+}
+.menu_right_view text{
+ font-size:24rpx;
+  font-weight:300;
+}
+.detail{
+  margin-left: 12%;
+  text-align: center;
+  justify-content: center;
+  font-weight: 900;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  width: 12%;
+  background: #F89600;
+  color: #ffffff;
+}
+.rush{
+  height: 41rpx;
+  margin-left: 12%;
+  text-align: center;
+  justify-content: center;
+  font-weight: 900;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  width: 12%;
+  background: #F89600;
+  color: #ffffff;
+}
+
+checkbox .wx-checkbox-input {
+  width: 36rpx;
+  height: 36rpx;
+}
+
+radio .wx-radio-input{
+  width: 36rpx;
+  height: 36rpx;
+  margin-top: 10rpx;
+}
+
+.popup-window-bg {
+  position: fixed;
+  left: 0rpx;
+  top: 0rpx;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+.window-bg {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+}
+.popup-window {
+  background: white;
+  position: fixed;
+  top: 15%;
+  left: 7%;
+  width: 86%;
+  z-index: 1000;
+  border-radius: 5%;
+  font-size: 29rpx;
+}
+
+.window-item {
+  padding: 20rpx;
+  height: 40rpx;
+  border-bottom: gray solid 2rpx;
+}
+.window-item-content {
+  font-size: 38rpx;
+  /* 宋体 */
+  font-family:SimSuncss; 
+  color: #ffed99;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  margin-top: 40rpx; 
+  align-items: center;
+}
+.window-item-title {
+  margin-top: 20%;
+  font-size: 70rpx;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  color: #ffed99;
+}
+.window {
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+
+  width: 94%;
+  height: 45%;
+  margin-top: 50%;
+  background: white;
+  border-radius: 15rpx;
+}
+.btn-bar {
+  display: flex;
+  width: 100%;
+  margin-top: 60%;
+}
+.cancelBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.confirmBtn {
+  background-color: #44b549;
+  width: 35%;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: white;
+}
+
+
+.tui-number-group{
+  display: table;
+  table-layout: fixed;
+  width: 266rpx;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #777777;
+  overflow: hidden;
+ }
+ .tui-number-cell{
+  display: table-cell;
+  line-height: 1.0;
+  border-radius: 0;
+ }
+ button::after{
+  border-bottom: none;
+  border-top: none;
+  border-radius: 0;
+ }
+
+ .option_name{
+	margin-top: 25rpx;
+	font-size: 30rpx;
+	color: black;
+	font-weight: 900;
+}
+.gift_box{
+  border: 2rpx solid #AAA;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+	margin-top: 20rpx;
+	border-radius: 20rpx;
+	background-color: #fff;
+	font-size: 29rpx;
+	padding: 20rpx 30rpx;	
+}
+.gift_detail{
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+	margin-top: 10rpx;
+	border-radius: 20rpx;
+	background-color: #fff;
+	font-size: 29rpx;
+
+}
+.gift_title{
+  font-weight: 900;
+}
+
+

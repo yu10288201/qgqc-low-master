@@ -1,0 +1,26 @@
+<!--pages/invitationRevenue/invitationRevenue.wxml-->
+<view class="top-mode">
+  <open-data type="userAvatarUrl" class="userAvatarUrl" mode="cover"></open-data>
+  <open-data type="userNickName" style="color:white" clsss="userName" lang="zh_CN"></open-data>
+</view>
+
+ <view class='history-table-wrap'>
+    <view class="table">
+      <view class="tr">
+          <view class="th th1">今日星友</view>
+          <view class="th th2">我的星友</view>
+          <view class="th th3">星盾收益</view>
+      </view>
+      <view class="tr">
+          <view class="td td1">{{today}}</view>
+          <view class="td td2">{{followers}}</view>
+          <view class="td td3">{{income}}</view>
+      </view>
+    </view>
+ </view>
+
+<!-- <view class='tables'>
+  <view class='table'>今日星友 : {{today}}</view>
+  <view class='table'>我的星友 : {{followers}}</view>
+  <view class='table'>星盾收益 : {{income}}</view>
+</view> -->

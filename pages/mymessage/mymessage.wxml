@@ -1,0 +1,36 @@
+<wxs module="filters" src="mymessage.wxs" />
+<scroll-view wx:if="{{treatInfo.length != 0}}" scroll-y="true" style="height: 100vh;">
+  <view wx:for="{{treatInfo}}" style="display: flex;justify-content: center;font-size: 28rpx;">
+    <view style="display: flex;flex-direction: column;border-radius: 26rpx;margin-top: 16rpx;width: 90%;background-color: white;align-items: center;">
+      <view style="width: 90%;margin-top: 10rpx;text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{item.webkitline}};-webkit-box-orient: vertical;">
+        <view style="display: flex;flex-direction: row;justify-content: space-between;">
+          <text>尊敬的先生/女士：</text>
+          <text style="font-size: 24rpx;color: rgb(121, 121, 121);">{{filters.formatDate(item.createTime,2)}}</text>
+        </view>
+        <view style="text-indent:48rpx;">您好！{{item.nickName}}先生/女士已订【{{item.shopName}}】的{{item.orderInfNew.tableName}}号桌，诚邀您于{{filters.formatDate(item.orderInfNew.dinnerTime,1)}}前到达该房用餐，谢谢！</view>
+
+        <view style="margin-top: 36rpx;">邀请说明:
+          <view style="text-indent:48rpx;">{{item.sendContent}}</view>
+        </view>
+
+        <view style="margin-top: 36rpx;">餐厅地址:
+          <view style="text-indent:48rpx;">{{item.shopAddress}}。<span style="color: blue;" bindtap="map">导航</span></view>
+        </view>
+
+        <view style="margin-top: 36rpx;">菜单:
+          <view wx:if="{{item.isShowMenu == 1}}" wx:for="{{item.orderDetailedNews}}" wx:for-item="showMenu" style="display: flex;flex-direction: column;text-indent:48rpx;">
+            <view>{{showMenu.dishesName}} {{showMenu.itemNumber}}{{showMenu.dishesMeteringType}}</view>
+          </view>
+        </view>
+      </view>
+      <view bindtap="clickMore" data-index="{{index}}" style="display: flex;font-size: 28rpx;align-items: center;margin-left: 74%;margin-bottom: 10rpx;">
+        <text>显示更多</text>
+        <image style="transform: {{item.transform}};width: 32rpx;height: 32rpx;" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xiala.png"></image>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+
+<view wx:if="{{treatInfo.length == 0}}" style="display: flex;justify-content: center;width: 100%;position: fixed;top: 40%;">
+  <view>暂无消息</view>
+</view>

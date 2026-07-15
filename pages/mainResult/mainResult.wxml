@@ -1,0 +1,231 @@
+<import src="../../components/filterbar/filterbar.wxml" /> 
+<wxs module="filters" src="addmul.wxs" /> 
+<view class='top' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/store/store_black.png');background-size: 100% 100%">
+  <view class='search-view' style="background:url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/search/img10.png');display: flex;align-items: center;">
+
+    <view class='selectCity'>
+      <view class="index">
+          <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+            {{cityName}}
+          </view>
+          <view style='overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:112rpx;margin:0 auto;'>
+            {{countyName}}
+          </view>
+      </view>
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/down.png' />
+    </view>
+
+    <view class='inputBar'bindtap="wxSearchTab">
+      <!-- <icon type="search" size="12"></icon> -->
+      <input type='text' value='{{searchValue}}'  disabled='true'></input>
+      <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/search.png' />
+    </view>
+  </view>
+</view>
+
+
+<view class='myFilterBar'>
+  <view class='allArea' wx:if="{{isNeaby}}">
+      <view class="nav">
+        <view class="nav-son">
+          <view class="content" style='color:gray;'>附近</view>
+          <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+        </view>
+      </view>
+    </view>
+
+
+  <view class='allArea' wx:else>
+    
+    <view class="nav">
+      <view style="padding-bottom: 2px;">[{{result_sum}}]</view>
+      <view class="nav-son {{shownavindex == 1? 'active' : ''}}" bindtap="listqy" data-nav="1">
+        <view class="content">{{city}}</view>
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+      </view>
+    </view>
+
+    <!-- 区域-》区域、标签 -->
+    
+      <view class="quyu {{qyopen ? 'slidown' : 'slidup'}} {{qyshow ? 'disappear':''}}">
+        <view class='quyuAll'>  
+        <view class="qy quyu-left">
+          <view class="{{select0 == item.provinceName ? 'current' : ''}}" wx:for="{{provinceList}}" bindtap="selectLefts" data-provincecode="{{item.provinceCode}}" data-id="{{item.id}}" data-province="{{item.provinceName}}">{{item.provinceName}}</view>
+        </view>
+
+        <view class="qy quyu-left">
+          <view class="{{select1 == item.cityName ? 'current' : ''}}" wx:for="{{cityleft}}" wx:key="key" bindtap="selectleft" data-city='{{item.cityName}}' data-ID="{{item.id}}">
+            {{item.cityName}}
+          </view>
+        </view>
+
+        <view class="qy quyu-center">
+          <view class="{{select2 == item.county_name? 'current2' : ''}}" wx:for="{{citycenter}}" wx:key="key" bindtap="selectcenter" data-city='{{item.county_name}}' data-ID="{{item.id}}">
+            {{item.county_name}}
+          </view>
+        </view>
+
+        <view class="qy quyu-right">
+          <view class="{{select3 == item.area_name? 'current3':''}}" wx:for="{{cityright}}" wx:key="key" bindtap="selectright" data-city='{{item.area_name}}' data-ID="{{item.id}}">
+            {{item.area_name}}
+          </view>
+        </view>
+      </view>
+
+      <view class='form-btn'>
+        <button class='btn-reset' bindtap='quyuEmpty'>重置</button>
+        <button class='btn-submit' bindtap='submitFilter'>确定</button>
+      </view>
+    </view>
+  </view>
+
+  <view class='sort'>
+
+    <view class="tabTit box">
+      <view class="flex1{{!tab[index]?' active':''}}" wx:for="{{tabTxt}}" wx:key="type" data-index="{{index}}" bindtap="filterTab">
+        <text style='letter-spacing:10rpx;font-weight:bold;'>{{item}}</text>
+        <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/xiala.png"></image>
+      </view>
+    </view>
+
+    <view class="tabLayer" hidden="{{tab[0]}}">
+        <view>
+          <text class="{{sort_id==0?'active':''}}" data-id="0" data-condition="defaultSort" data-index="0" data-txt="排序" bindtap="filter">不限</text>
+          <text class="{{sort_id==1?'active':''}}" data-id="1" data-condition="star"        data-index="0" data-txt="综合星级" bindtap="filter">综合星级</text>
+          <text class="{{sort_id==2?'active':''}}" data-id="2" data-condition="category"    data-index="0" data-txt="类别" bindtap="filter">类别</text>
+          <text class="{{sort_id==3?'active':''}}" data-id="3" data-condition="distance"    data-index="0" data-txt="距离" bindtap="filter">距离</text>
+          <text class="{{sort_id==4?'active':''}}" data-id="4" data-condition="priceAsc"    data-index="0" data-txt="人均升" bindtap="filter">人均消费升序</text>
+          <text class="{{sort_id==5?'active':''}}" data-id="5" data-condition="priceDesc"   data-index="0" data-txt="人均降" bindtap="filter">人均消费降序</text>
+          <text class="{{sort_id==6?'active':''}}" data-id="6" data-condition="popularity"  data-index="0" data-txt="人气优先" bindtap="filter">人气</text>
+        </view>
+        <view class="tab-button">
+          <button class='reset' bindtap='reset'>重 置</button>
+          <button class='submit'bindtap='submit'>确 定</button>
+        </view>
+    </view>
+  </view>
+
+  <view class='screen' bindtap='closeOther'>
+    <template is="filterbar" data="{{ ...$wux.filterbar }}" />
+  </view>
+
+</view>
+
+
+<view style='padding-top:130rpx;'></view>
+<!--测试下拉框-->
+
+<!-- 店铺 -->
+  <view wx:if="{{storeNameLists.length!=0}}" wx:for="{{storeNameLists}}" wx:key="list">
+  <view class="store" bindtap='store' data-index='{{index}}' data-id='{{item.shop_id}}' style="padding-top: 6rpx;">
+    <view class='store-images'>
+      <image mode="aspectFill" src="{{item.shop_img ? item.shop_img : 'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E5%88%87%E7%93%9C%E5%88%87%E8%8F%9C/images/demo.jpeg'}}" binderror="errImage" data-index="{{index}}"></image>
+      <!-- <image src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/%E5%88%87%E7%93%9C%E5%88%87%E8%8F%9C/images/demo.jpeg"></image> -->
+    </view>
+    <view class='store-text'>
+      <view class='store-name'>
+        <view class='item' id='{{index}}' style='float:left;'>{{item.shop_name}}</view>
+        <view wx:if="{{item.distance!=''}}">
+          <view class='store-address' wx:if="{{item.distance > 1}}">{{filters.toFix(item.distance)}}公里</view>
+          <view class='store-address' wx:else>{{filters.toFix1(item.distance*1000)}}米</view>
+        </view>
+      </view>
+      <view class='store-info clearfix'>
+        <view class='clearfix'>
+
+          <view class='store-start'>
+
+            <block wx:if="{{item.star%1==0}}">
+              <block wx:if="{{item.star>1 || item.star ==1}}">
+                <block wx:for="{{item.star-0}}" wx:key='un' wx:for-value="i">
+                <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                </block>
+              </block>
+
+              <block wx:if='{{item.star< 6}}'>
+                <block wx:for="{{6-item.star-0}}" wx:key="un">
+
+                  <block wx:key="un">
+                    <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start.png' style='width: 30rpx;height: 30rpx;'></image>
+                  </block>
+
+                  </block>
+              </block>
+            </block>
+
+            <block wx:else>
+              <block wx:if="{{item.star>1}}">
+                <block wx:for="{{item.star-1}}" wx:key='un' wx:for-value="i">
+                <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start1.png' style='width: 30rpx;height: 30rpx;'></image>
+                </block>
+              </block>
+
+              <image wx:if="{{item.star%1>0}}" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start3.png' style='width: 30rpx;height: 30rpx;'></image>
+
+
+              <block wx:if='{{item.star< 6}}'>
+                <block wx:for="{{6-item.star-1}}" wx:key="un">
+
+                  <block wx:key="un">
+                    <image src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/start.png' style='width: 30rpx;height: 30rpx;'></image>
+                  </block>
+
+                  </block>
+              </block>
+
+            </block>
+            
+          </view> 
+
+
+          <view class='store-num'> {{item.star}}</view>
+          <view wx:if="{{item.shop_type!=''}}" class='store-style'>
+            [
+            <text style='color:black;'>{{item.shop_type}}</text> ]
+          </view>
+          <view class='item' id='{{index}}' style='float:right;margin:0'>{{item.area_name}}</view>
+        </view>
+
+        <view class='store-level clearfix'>
+          <view class='item' id='{{index}}'>人均消费：{{item.per_capita_price}} 元</view>
+          <view style='width:110rpx;'>食安：10</view>
+          <view style='width:140rpx;'>人气：{{item.popularity}} 人/天</view>
+        </view>
+
+        <view class='store-offer'>
+          <view class='item' style='color:#519761'>优惠信息: [免费大龙虾]、[优惠大酬宾]</view>
+        </view>
+         
+         <!-- 特大 房/厅 -->
+        <view>
+          <text wx:if="{{item.tableTotalNum}}" style="color: brown;" decode="true">总餐位：{{item.tableTotalNum}} 位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+          <text wx:if="{{item.hall}}" style="color: brown;" decode="true">{{item.hall}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</text>
+          <text wx:if="{{item.largeRoom}}" style="color: brown;">{{item.largeRoom}}</text>
+        </view>
+
+        <view>
+          <text wx:if="{{filters.businessTime(item.timeStr1)}}">营业时间:{{filters.businessTime(item.timeStr1)}}</text>
+        </view>
+        
+
+        <view style='width:100%;display:flex;white-space: nowrap;margin-top: 5rpx;'>
+          <view style='color:#E66A68;font-size:24rpx;margin:2rpx;width:480rpx;font-weight:bold;'>{{item.describes}}</view>
+          <!-- <view class='isfull'>满座</view> -->
+        </view>
+
+      </view>
+    </view>
+</view>
+</view>
+
+<view class='hiddenStore' hidden='{{hiddenStore}}'>
+  没有找到匹配的信息
+</view>
+
+<view class='hiddenStore' hidden='{{rquestFail}}'>
+  请求数据库失败,请联系客服
+</view>
+
+<view class='loadCompleted' hidden='{{loadcompleted}}'>
+  全部数据加载完毕
+</view>

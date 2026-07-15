@@ -1,0 +1,395 @@
+page {
+    background-color: #f5f5f5;
+  }
+
+.detail-link {
+  text-align: right;
+  font-size: 26rpx;
+  color: #52A76E;
+  padding: 16rpx 0 4rpx;
+}
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0 0 160rpx;
+    box-sizing: border-box;
+  }
+
+.card {
+  width: 94%;
+  margin: 20rpx 3%;
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+}
+
+.card-label {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 24rpx;
+  padding-left: 16rpx;
+  border-left: 6rpx solid #52A76E;
+}
+
+.info-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 16rpx 0;
+  border-bottom: 0.5rpx solid #f0f0f0;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-key {
+  font-size: 28rpx;
+  color: #777;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.info-val {
+  font-size: 28rpx;
+  color: #333;
+  flex: 1;
+  word-break: break-all;
+  line-height: 1.6;
+}
+
+.price-text {
+  color: #f3333e;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 0.5rpx solid #f0f0f0;
+}
+
+.form-item:last-child {
+  border-bottom: none;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #555;
+  width: 140rpx;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  padding: 10rpx 0;
+}
+
+.form-textarea {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  height: 120rpx;
+  padding: 10rpx 0;
+}
+
+.count-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.count-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background-color: #52A76E;
+  color: #fff;
+  font-size: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 56rpx;
+  text-align: center;
+}
+
+.count-num {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin: 0 30rpx;
+}
+
+.agree-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10rpx 3%;
+  padding: 10rpx 0;
+}
+
+.agree-box {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 6rpx;
+  border: 2rpx solid #ccc;
+  margin-right: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.agree-box.agreed {
+  background-color: #52A76E;
+  border-color: #52A76E;
+}
+
+.agree-check {
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.agree-text {
+  font-size: 26rpx;
+  color: #777;
+}
+
+.agree-link {
+  color: #52A76E;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 20rpx 30rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 -2rpx 10rpx rgba(0,0,0,0.06);
+  box-sizing: border-box;
+}
+
+.total-label {
+  font-size: 28rpx;
+  color: #777;
+}
+
+.total-price {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #f3333e;
+}
+
+.submit-btn {
+  background-color: #52A76E;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: bold;
+  padding: 20rpx 60rpx;
+  border-radius: 50rpx;
+}
+
+.submit-btn.disabled {
+  background-color: #ccc;
+}
+
+/* picker */
+.picker-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+}
+
+.picker-val {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.placeholder-text {
+  color: #aaa;
+}
+
+.picker-arrow {
+  font-size: 36rpx;
+  color: #ccc;
+}
+
+.picker-inline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.activity-info-box {
+  border-top: 0.5rpx solid #f0f0f0;
+  margin-top: 10rpx;
+  padding-top: 10rpx;
+}
+
+/* required 星号 */
+.required::after {
+  content: ' *';
+  color: #f3333e;
+}
+
+/* 上传区 */
+.upload-row {
+  display: flex;
+  flex-direction: row;
+  gap: 24rpx;
+  margin-top: 20rpx;
+}
+
+.upload-item {
+  flex: 1;
+  height: 180rpx;
+  border-radius: 12rpx;
+  border: 2rpx dashed #ccc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-icon {
+  font-size: 56rpx;
+  color: #ccc;
+  line-height: 1;
+}
+
+.upload-tip {
+  font-size: 22rpx;
+  color: #aaa;
+  margin-top: 8rpx;
+}
+
+.upload-loading {
+  font-size: 24rpx;
+  color: #52A76E;
+}
+
+.upload-preview {
+  width: 100%;
+  height: 100%;
+}
+
+/* 头像上传 */
+.avatar-row {
+  align-items: flex-start;
+}
+
+.upload-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 2rpx dashed #ccc;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-preview {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+}
+
+/* 自我介绍 */
+.intro-item {
+  align-items: flex-start;
+  padding-top: 20rpx;
+  flex-wrap: wrap;
+}
+
+.intro-label-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 12rpx;
+}
+
+.form-textarea-full {
+  width: 100%;
+  font-size: 28rpx;
+  color: #333;
+  height: 120rpx;
+  padding: 10rpx 0;
+}
+
+.action-btn {
+  background-color: #52A76E;
+  font-size: 25rpx;
+  padding: 10rpx 40rpx;
+  border-radius: 30rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.intro-use-btn {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  padding: 6rpx 24rpx;
+  font-weight: normal;
+}
+
+/* 活动规则文字 */
+.rule-val {
+  flex: 1;
+  flex-wrap: wrap;
+  word-break: break-all;
+  line-height: 1.6;
+  color: #555;
+}
+
+.rule-content {
+  display: block;
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.bottom-bar {
+  padding: 20rpx 30rpx;
+  justify-content: center;
+}
+

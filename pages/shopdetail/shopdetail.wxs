@@ -1,0 +1,10 @@
+var filters = {
+  time:function(value){
+    return value == "-2" ? "-- --" : value
+  },
+}
+
+
+module.exports = {
+  time: filters.time
+}

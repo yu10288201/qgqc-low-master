@@ -1,0 +1,4 @@
+<!--pages/quyu/quyu.wxml-->
+<view wx:for="{{cityNameList}}" wx:for-index="index" wx:for-item="item">
+{{item.name}}
+</view>

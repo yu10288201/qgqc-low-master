@@ -1,0 +1,342 @@
+<!--pages/orders/orders.wxml-->
+<wxs module="filters" src="orders.wxs"></wxs>
+
+<view style='height: 80rpx;display: flex;flex-direction: row;align-items: center;justify-content: space-between; border-bottom:solid 2rpx #e3e3e3;'>
+  <view style="width: 33%;">
+    <view class='top-item down-center btn_big_green' style="color:white;height: 55rpx;margin-left:20rpx;border-radius:2px;margin-top: 0;width: 120rpx;" bindtap='engoindex'>
+      <image style='width:20rpx;height:20rpx;' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/i_left_white.png'></image>
+      <view style="font-size:28rpx;font-weight:bold;">首页</view>
+    </view>
+  </view>
+  
+  <view class='tab-box' style="width: 34%;text-align: center;">
+    <view style='width:100%;color:green;font-weight:bold;font-size:30rpx;'>订单列表</view>
+  </view>
+
+  <view style="height: 60rpx;width: 33%;align-items: center;justify-content: flex-end;margin-right: 20rpx;display: flex;">
+    <view wx:if="{{isClick}}" class='top-item down-center btn_big_green' 
+    style="color:white;height: 55rpx;margin-left:20rpx;border-radius:2px;margin-top: 0;margin-right: 10rpx;width: 120rpx;font-size:28rpx;" bindtap='clickBtn'>
+      今前订单
+    </view>
+    <view wx:if="{{!isClick}}" class='top-item down-center btn_big_green' 
+    style="color:white;height: 55rpx;margin-left:20rpx;border-radius:2px;margin-top: 0;margin-right: 10rpx;width: 120rpx;font-size:28rpx;" bindtap='clickBtn'>
+      明后订单
+    </view>
+    <image style="height: 60rpx;width: 60rpx;" src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/flesh.png' bindtap='flesh'></image>
+  </view>
+</view>
+
+<!--没有订单时候的页面-->
+<view class="go-center  no-orders-page  {{showOrHidden?'show':'hide'}}">
+  <view class='go-center' style="margin-top:200rpx">
+    <i class="iconfont icon-dingdan dingdan-i go-center"></i>
+  </view>
+
+  <view class=' note-btn go-center'>目前没有即时订单</view>
+  <view class='go-center' style='margin-top:20px'>
+    <view class='start-btn go-center' bindtap='gobook'>预约点餐</view>
+  </view>
+</view>
+<!--线上订单列表-->
+<view class="{{showOrHidden?'hide':'show'}}">
+  <scroll-view scroll-y="true" style='height:{{windowHeight*0.95}}px;' class="{{showOrHidden2?'show':'hide'}}" lower-threshold='50' bindscrolltolower='lineFlesh'>
+
+    <view wx:for="{{orderslist}}" wx:key="unique">
+      <view class='content-list' data-index='{{index}}'>
+        <view class='oneline' style="width:640rpx;" wx:if="{{item.order_type!=3 && item.order_type!=2 }}">
+          <view style="width:480rpx;display:flex;">
+            <!-- <view style='color:#e0825e;font-weight:bold;width:430rpx;' wx:if="{{(item.preorder_starus==5&&item.before_table_name!='')||(item.preorder_starus==7&&item.before_table_name!='')}}">用餐位置：{{item.before_table_name}}</view> -->
+            <view style='color:#e0825e;font-weight:bold;width:430rpx;'>用餐位置：{{item.before_table_name?item.before_table_name:item.table_name}}</view>
+          </view>
+          <view class='oneline item' style='width:25%;height:100%;font-size: 30rpx;' bindtap='showpay' data-state='{{item.order_status}}' data-index='{{index}}' data-total='{{item.total_amount}}'>
+            <!-- <view wx:if="{{item.order_status == '正在用餐'||item.order_status == '待确认'}}"></view>
+            <view wx:else style='width:40rpx'></view> -->
+            <view wx:if="{{item.order_status=='正在用餐'}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='等待用餐'}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='待确认'}}" style='color:red'>[待接单]</view>
+            <view wx:elif="{{item.order_status=='已取消' && item.operator != ' '}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='已取消' && item.operator == ' '}}" style='color:gray'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='等待取消'}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='已买单'}}" style='color:green'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='已完成'}}" style='color:green'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='申请买单'}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='等待买单'}}" style='color:red'>[{{item.order_status}}]</view>
+            <view wx:elif="{{item.order_status=='走单'}}" style='color:#68228B'>[{{item.order_status}}]</view>
+          </view>
+         
+          <view style='width:210rpx;font-size:25rpx;color:red;' wx:if="{{item.operator=='无'&&item.order_status=='已取消'}}">本人取消:{{filters.timeSubstring1(item.create_date)}}</view>
+        </view>
+        <view class="oneline" wx:if="{{item.before_table_name}}">
+          <view style="width:480rpx;display:flex;">
+            <view style='color:white;font-weight:bold;background-color: #854d02;'>部长调整：{{item.table_name}}</view>
+          </view>
+        </view>
+        <view class='oneline'>
+          <view style='font-weight:bold;width:420rpx;'>订单号码：{{filters.orderCodeSubstring(item.order_code)}}</view>
+          <view style="width:60rpx;height:50rpx;margin-bottom:-10rpx;margin-top:-4rpx;margin-right:10rpx;" wx:if="{{item.feedback==''||item.feedback==null||item.feedback==0}}">
+          </view>
+          <view style="width:60rpx;height:50rpx;margin-bottom:-10rpx;margin-top:-4rpx;margin-right:10rpx;" wx:else>
+            <image bindtap='feedback' data-item='{{item}}' data-beforedinnertime='{{item.before_dinner_time}}' data-dinnertime='{{item.dinner_time}}' data-preorderstarus='{{item.preorder_starus}}' data-orderid='{{item.order_id}}' style="width:60rpx;height:50rpx;margin-right:40rpx;"
+              src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/text.png'></image>
+          </view>
+
+         
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+          
+          <view style='width:240rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='已买单'&&(item.order_status=='已买单'||item.order_status=='已完成')}}">
+            <view style="font-size:25rpx;">确认买单:{{items.operatorName}}</view>
+          </view>
+
+          <view style='width:240rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='取消订单'&&item.order_status=='已取消'}}">
+              <view style="font-size:25rpx;">部长取消：{{items.operatorName}}</view>
+            </view>
+
+        </block>
+        </view>
+        
+        <view class='oneline' style="width:640rpx;">
+          <view style='width:430rpx'>订房部长：{{item.minister_name?item.minister_name:'无'}}</view>
+        </view>
+
+        <view class='oneline' style="width:640rpx;">
+          <view style='width:430rpx'>下单时间：{{filters.substringTime(item.create_date)}}</view>
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:210rpx;font-size:20rpx;color:red;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='已买单'&&(item.order_status=='已买单')}}">
+              <view>{{filters.substringTime(items.createTime)}}</view>
+            </view>
+          </block>
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:210rpx;font-size:20rpx;color:red;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='取消订单'&&item.order_status=='已取消'}}">
+              <view>{{filters.substringTime(items.createTime)}}</view>
+            </view>
+            
+          </block>
+          <view class='oneline' style='width:240rpx;font-size:25rpx;flex-direction: row-reverse' wx:if="{{item.order_status=='待确认'}}">
+            <view class='btn1' data-orderid='{{item.order_id}}' data-orderid='{{item.order_id}}' data-beforedinnertime='{{item.before_dinner_time}}' data-preorderstarus='{{item.preorder_starus}}' data-dinnertime='{{item.dinner_time}}' style='width:140rpx;background: red;' bindtap='cancel'>取消用餐</view>
+            <view class='btn1' wx:if="{{item.is_message == 1 && item.preorder_starus == 0}}" data-orderid='{{item.order_id}}' data-shopid='{{item.shop_id}}'style='width:140rpx;margin-right: 10rpx;' bindtap='sureEat'>确认用餐</view>
+          </view>
+        </view>
+        
+        <view class='oneline' style="width:640rpx;"wx:if="{{item.order_type!=3 && item.order_type!=2 }}">
+        <!-- 下单方式:1-手机下单2-触屏下单3-线上下单4-扫码下单5-帮客下单 -->
+        <wxs module="orderWay">
+          function select(num){
+            var a = ["手机下单","触屏下单","线上下单","扫码下单","帮客下单","线上使用已购/赠送","到店使用已购/赠送"]
+            return a[num-1]
+          }
+
+          function getJieDan(id,list){
+            console.log(id)
+            var sta = true
+            list.forEach(function(e){
+              if(id==e.orderId&&e.orderOperator=='部长接单'){
+                console.log(e.orderId)
+                sta = false;
+              }
+            })
+            
+            return sta;
+          }
+
+          module.exports={
+            select: select,
+            getJieDan:getJieDan
+          }
+        </wxs>
+          <view style="width:430rpx;">下单方式：{{orderWay.select(item.order_equipment_type)}}</view>
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:210rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='部长接单'}}">
+              <view style="font-size:25rpx;">部长已接单:{{items.operatorName}}</view>
+            </view>
+          </block>
+          <view style='width:210rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_status == '待确认' && item.is_Deposit == 1 && item.down_payment == 0 && orderWay.getJieDan(item.order_id,orderoperation)}}">
+                <view style="font-size:25rpx;">请您支付定金：</view>
+                <!-- ，您尚未支付订金，请支付订金后再提交 -->
+          </view>
+        </view> 
+
+        <view class='oneline'>
+          <view style='width:430rpx;' wx:if="{{(item.preorder_starus==5&&item.before_dinner_time!='')||(item.preorder_starus==7&&item.before_dinner_time!='')}}">用餐时间：{{filters.substringTime(item.before_dinner_time)}}</view>
+          <view style='width:430rpx;' wx:else>用餐时间：{{filters.substringTime(item.dinner_time)}}</view>
+           <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:210rpx;font-size:20rpx;color:red;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='部长接单'}}">
+              <view>{{filters.substringTime(items.createTime)}}</view>
+            </view>
+          </block>
+
+          <view style='width:210rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_status == '待确认' && item.is_Deposit == 1 && item.down_payment == 0 && orderWay.getJieDan(item.order_id,orderoperation)}}">
+                <view style="font-size:25rpx;">￥ {{item.deposit_price}} 元</view>
+                <!-- ，，请支付订金后再提交 -->
+          </view>
+        </view>
+
+        <view class='oneline' wx:if="{{item.order_type!=3 && item.order_type!=2 }}">
+          <view style="width:430rpx;display:flex;">
+            <view style="width:430rpx;">用餐人数：{{item.user_count}}人</view>
+          </view> 
+          
+          <view style='width:210rpx;font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_status == '待确认' && item.is_Deposit == 1 && item.down_payment == 0 && orderWay.getJieDan(item.order_id,orderoperation)}}">
+                <view style="font-size:25rpx;">再次提交，谢谢</view>
+          </view>
+        </view>
+        <view class='oneline'>
+          <view style="width:430rpx;display:flex;">
+            <view style="width:430rpx;" wx:if="{{item.payment_status==0}}">支付状态：未支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==99}}">支付状态：已支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==1}}">支付状态：余额支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==2}}">支付状态：微信支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==3}}">支付状态：现金支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==4}}">支付状态：银行卡支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==5}}">支付状态：支付宝支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==6}}">支付状态：预存余额支付</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==7}}">支付状态：预存+现金</view>
+            <view style="width:430rpx;" wx:elif="{{item.payment_status==8}}">支付状态：其他方式</view>
+          </view> 
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:210rpx;font-size:20rpx;color:red;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='确认出单'&&(item.order_status=='等待买单'||item.order_status=='已买单'||item.order_status=='正在用餐'||item.order_status=='等待用餐'||item.order_status=='申请买单'||item.order_status=='已完成')}}">
+              <view style="font-size:25rpx;">{{items.orderOperator}}:{{items.operatorName}}</view>
+            </view>
+          </block>
+        </view>
+        <view class='oneline' style='color:green;font-weight:bold'>
+          <!-- <view style=" width: 75%;display:flex;"> -->
+          <view style="width:430rpx;display:flex;">
+            <view style="width:200rpx;"wx:if="{{item.order_type!=3 && item.order_type!=2 }}">菜品数量：{{item.dishes_count}}份</view>
+            <view style="width:200rpx;"wx:else>套餐数量：{{item.dishes_count}}份</view>
+            <view style='width:250rpx;margin-left:10rpx'>总金额{{item.total_amount}}元</view>
+          </view>
+          <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='width:246rpx;font-size:20rpx;color:red;font-weight:normal;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='确认出单'&&(item.order_status=='等待买单'||item.order_status=='已买单'||item.order_status=='正在用餐'||item.order_status=='等待用餐'||item.order_status=='申请买单')}}">
+              {{filters.substringTime(items.createTime)}}
+            </view>
+          </block>
+        </view>
+
+        <view class='oneline' wx:if="{{item.order_type==3 || item.order_type==2 }}">
+          <view style="width:430rpx;display:flex;">
+            <view style="width:430rpx;"wx:if="{{item.order_type==3}}">配送方式：自提</view>
+            <view style="width:430rpx;"wx:if="{{item.order_type==2}}">配送方式：配送</view>
+          </view> 
+        </view>
+
+        
+
+        <view class='btn-bar'>
+          <view class='oneline' wx:if="{{item.order_wait==1 || item.order_wait==3}}">
+            <view style='width:80rpx;font-weight:bold;padding-top:6rpx;'>叫起：</view>
+
+            <view wx:if="{{item.order_status=='待确认'}}" style="width:260rpx;">
+              <!-- <view class='btn1' data-index='{{index}}' data-item='{{item}}' data-orderid='item.order_id' style="background:#999999;color:{{item.order_wait==2||item.order_wait==3?'yellow':''}};width:153rpx;" bindtap=''>现在上菜</view> -->
+
+              <view style='width:160rpx' class="btn1" wx:if="{{item.order_status=='已取消'||item.order_status=='申请买单'||item.order_status=='等待买单'||item.order_status=='已买单'}}" style="background: #999999;" >现在上菜</view>
+          <view style='width:160rpx' class="btn1" wx:elif="{{item.order_status=='正在用餐'||item.order_status=='等待用餐'||item.order_status=='待确认'}}" >现在上菜</view>
+            </view>
+
+            <view wx:elif="{{(item.order_status=='正在用餐'||item.order_status=='等待用餐')&&(item.order_wait==2||item.order_wait==3)}}" style="display:flex;">
+              <view class='btn1' data-index='{{index}}' data-item='{{item}}' data-orderid='item.order_id' style="background:#218c78;color:{{item.order_wait==2||item.order_wait==3?'yellow':''}};width:153rpx;" bindtap='shangcai'>已叫上菜</view>
+              <!-- <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+                <view class='go-center' style='width:38%;font-size:25rpx;color:red;margin-left:4rpx;margin-top:6rpx;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='已叫上菜'}}">
+                  {{filters.timeSubstring1(items.createTime)}}
+                </view>
+              </block> -->
+            </view>
+            <view wx:elif="{{(item.order_status=='申请买单'||item.order_status=='等待买单'||item.order_status=='已买单')&&(item.order_wait==2||item.order_wait==3)}}" style="display:flex;">
+              <view class='btn1' data-index='{{index}}' data-item='{{item}}' data-orderid='item.order_id' style="background:#999999;width:153rpx;" bindtap=''>已叫上菜</view>
+            </view>
+
+
+            <view wx:else style="width:260rpx;">
+              <view class='btn1' data-index='{{index}}' data-item='{{item}}' data-orderid='item.order_id' style="background:#218c78;color:{{item.order_wait==2||item.order_wait==3?'yellow':''}};width:153rpx;" bindtap='shangcai'>现在上菜</view>
+            </view>
+
+          </view>
+          <!-- <view style='width:160rpx' wx:else> 菜品即上</view> -->
+          <view style='width:80rpx;font-weight:bold;padding-top:6rpx;' wx:if="{{item.all_wait_order == 0}}">即上：</view>
+          <view style='width:80rpx;font-weight:bold;padding-top:6rpx;' wx:elif="{{item.all_wait_order == 2}}">加急：</view>
+            <view class='oneline' wx:if="{{item.order_wait==2 || item.order_wait==0}}">
+            
+          <view style='width:160rpx' class="btn1" style="background: #999999;" >现在上菜</view>
+          <!-- <view style='width:160rpx' class="btn1" wx:if="{{item.order_status=='已取消'||item.order_status=='申请买单'||item.order_status=='等待买单'||item.order_status=='已买单'}}" style="background: #999999;" >现在上菜</view>
+          <view style='width:160rpx' class="btn1" wx:elif="{{item.order_status=='正在用餐'||item.order_status=='等待用餐'||item.order_status=='待确认'}}" >现在上菜</view> -->
+          </view>
+
+          <view class='oneline' wx:if="{{(item.order_status=='已取消'||item.order_status=='正在用餐'||item.order_status=='等待用餐'||item.order_status=='待确认'||item.order_status=='申请买单'||item.order_status=='等待买单'||item.order_status=='已买单') && (item.order_type!=3 && item.order_type!=2 )}}">
+
+            <view class="btn1" wx:if="{{(item.order_wait==1||item.order_wait==2||item.order_wait==3||item.order_wait==0)&&(item.order_status=='申请买单'||item.order_status=='等待买单'||item.order_status=='已买单'||item.order_status=='已取消')}}" style='margin-left:48rpx;width:100rpx;background:#999999;'
+              data-index='{{index}}' data-orderid='{{item.order_id}}' data-ordertype='{{item.order_type}}' data-ordercode='{{item.order_code}}' data-order_tablename='{{item.table_name}}' data-arrivaltime='{{item.arrival_time}}' data-dinner_time='{{item.dinner_time}}'
+              bindtap=''>加菜</view>
+
+            <view class="btn1" wx:elif="{{item.order_wait==1||item.order_wait==2||item.order_wait==3}}" style='margin-left:48rpx;width:100rpx' data-index='{{index}}' data-orderid='{{item.order_id}}' data-ordertype='{{item.order_type}}' data-ordercode='{{item.order_code}}'
+              data-order_tablename='{{item.table_name}}' data-arrivaltime='{{item.arrival_time}}' data-dinner_time='{{item.dinner_time}}' bindtap='adddishes' data-dishesitem='{{item}}'>加菜</view>
+            <view class="btn1" wx:else style='margin-left:48rpx;width:100rpx' data-index='{{index}}' data-orderid='{{item.order_id}}' data-ordertype='{{item.order_type}}' data-ordercode='{{item.order_code}}' data-order_tablename='{{item.table_name}}' data-dinner_time='{{item.dinner_time}}'
+              data-arrivaltime='{{item.arrival_time}}' bindtap='adddishes' data-dishesitem='{{item}}'>加菜</view>
+          </view>
+          <view wx:elif="{{item.order_type==3 || item.order_type==2 }}"></view>
+          <view wx:else style='margin-left:90rpx;width:120rpx'></view>
+
+
+        <view class='oneline' wx:if="{{item.order_type==3 || item.order_type==2}}">
+
+            <view class="btn1"  style='margin-left:50rpx;width:140rpx;background:#999999;'
+              bindtap=''>订单二维码</view>
+            </view>
+
+          <view class="btn1" style="margin-left:30rpx;" bindtap='goordersItem'  data-item='{{item}}' data-beforedinnertime='{{item.before_dinner_time}}' data-dinnertime='{{item.dinner_time}}' data-preorderstarus='{{item.preorder_starus}}' data-orderid='{{item.order_id}}'>订单详情</view>
+        </view>
+        
+      <block wx:for="{{orderoperation}}" wx:key="unique" wx:for-item="items" wx:for-index="index1">
+            <view style='font-size:20rpx;color:red;display:flex;' wx:if="{{item.order_id==items.orderId&&items.orderOperator=='已叫上菜'}}">
+              <view style="font-size:25rpx;">[{{items.operatorName == "本人"? "顾客" : items.operatorName}}]</view>
+              <view style="font-size:25rpx;margin-left: 30rpx;">[{{items.createTime}}]</view>
+            </view>
+      </block>
+      </view>
+
+
+    </view>
+  </scroll-view>
+</view>
+
+
+<!--堂食订单订单列表-->
+<view class="{{showOrHidden?'hide':'show'}}">
+  <scroll-view scroll-y="true" style='height:80%' class="{{showOrHidden3?'show':'hide'}}">
+    <view wx:for="{{orderslist_eatin}}" wx:key="unique">
+      <view class='content-list' data-index='{{index}}'>
+        <view class='oneline'>
+          <view style='font-weight:bold;width:70%'>订单号码：{{filters.orderCodeSubstring(item.order_code)}}</view>
+          <view class='oneline item' style='width:30%;height:100%' bindtap='showpay' data-state='{{item.order_status}}' data-index='{{index}}'>
+            <view wx:if="{{item.order_status == '正在用餐'||item.order_status == '等待用餐'}}">>></view>
+            <view wx:else style='width:40rpx'></view>
+            <view wx:if="{{item.order_status=='正在用餐'||item.order_status == '等待用餐'}}" style='color:red'>{{item.order_status}}</view>
+            <view wx:elif="{{item.order_status=='已取消'}}" style='color:orange'>{{item.order_status}}</view>
+            <view wx:elif="{{item.order_status=='已买单'}}" style='color:green'>{{item.order_status}}</view>
+          </view>
+        </view>
+        
+        <view>下单时间：{{filters.substringTime(item.create_date)}}</view>
+        <view>用餐时间：{{filters.substringTime(items.arrival_time)}}</view>
+        <view style='color:red' wx:if="{{item.order_status=='已取消'}}">取消时间：{{filters.substringTime(item.operation_time)}}</view>
+        <view class='oneline'>
+          <view>桌号:{{item.table_name}}</view>
+          <view style="margin-left:20rpx;">用餐人数:{{item.user_count}}人</view>
+        </view>
+        <view class='oneline' style='color:green;font-weight:bold'>
+          <view>菜品数量:{{item.dishes_count}}份</view>
+          <view style='margin-left:10rpx'>总金额{{item.total_amount}}元</view>
+        </view>
+        <view class='btn-bar' style="margin-top:{{(item.order_status=='正在用餐' || item.order_status=='等待用餐')?'':'-50rpx'}}">
+          <view class='oneline' wx:if="{{item.order_status=='正在用餐'|| item.order_status=='等待用餐'}}">
+            <view class='btn1' data-index='{{index}}' style="background:#218c78;color:{{serving&&servingindex==index?'yellow':''}}" bindtap='shangcai'>现在上菜</view>
+            <view class="btn1" style='margin-left:200rpx;width:100rpx' data-index='{{index}}' data-orderid='{{item.order_id}}' data-ordertype='{{item.order_type}}' bindtap='adddishes' data-dishesitem='{{item}}'>加菜</view>
+          </view>
+          <view wx:else style='width:460rpx;'></view>
+          <view class="btn1" style='margin-left:30rpx' bindtap='goordersItem' data-orderid='{{item.order_id}}'>订单详情</view>
+        </view>
+
+      </view>
+    </view>
+
+
+  </scroll-view>
+</view>

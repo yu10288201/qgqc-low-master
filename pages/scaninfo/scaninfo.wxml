@@ -1,0 +1,43 @@
+<view class='oneline toTop' style='margin-top:70rpx;'>
+  <view class='text'>点餐人姓名：</view>
+  <input class="section" style='min-height:36rpx;font-size:26rpx;width:150rpx' type="text" bindblur='bookusername' value='{{username}}'></input>
+  <view class='oneline' style='width:250rpx;margin-left:5%'>
+    <view class=" {{index == 0?'show':'hide'}}" style='width:100%'>
+      <view class='oneline radio-groud' style='width:100%;'>
+        <view class='radio-groud-in' data-index='0' bindtap='changeradio'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png'></image>
+          <view style='font-size:26rpx;margin-left:10rpx'>先生</view>
+        </view>
+        <view class='radio-groud-in' style='margin-left:20rpx' data-index='1' bindtap='changeradio'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'></image>
+          <view style='font-size:26rpx;margin-left:10rpx'>女士</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="{{index == 1?'show':'hide'}}" style='width:100%'>
+      <view class='oneline radio-groud ' style='width:100%'>
+        <view class='radio-groud-in' bindtap='changeradio' data-index='0'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'></image>
+          <view style='font-size:26rpx;margin-left:10rpx'>先生</view>
+        </view>
+        <view class='radio-groud-in' style='margin-left:20rpx' bindtap='changeradio' data-index='1'>
+          <image class='radio' src='https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png'></image>
+          <view style='font-size:26rpx;margin-left:10rpx'>女士</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<view class='oneline toTop'>
+  <view class='text'>电话号码：</view>
+  <input class="section" style='min-height:36rpx;font-size:26rpx;width:30%' maxlength='11' type="number" bindinput="phonenumber" value='{{phonenumber}}'></input>
+</view>
+<view class='oneline btn-bar'>
+  <view class='go-center' style='width:50%'>
+    <view class='btn' bindtap='ensure'>确认</view>
+  </view>
+  <view class='go-center' style='width:50%'>
+    <view class='btn' bindtap='skip'>跳过</view>
+  </view>
+</view>

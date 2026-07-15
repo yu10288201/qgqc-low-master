@@ -1,0 +1,106 @@
+<!--pages/module_others/pages/discountManagement/discountManagement.wxml-->
+<view class="page" style="position: fixed;top: 0;left: 0;right: 0;height: 100vh;width: 100%;">
+  <view class="return_out" bindtap="returnBack">
+    <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+  </view>
+  <view class="return_out"
+    style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+    优惠券
+  </view>
+  <view class="bg-gray" style="width:100%;height:100%">
+    <view class="top">
+      <form bindsubmit="queryList">
+        <view class="box" style="display: flex;margin-top: 230rpx;">
+          <view class="query" style="margin: 0 auto;">
+            <text class='text2'>名称:</text>
+            <input type="text" class="inputText" name="queryByNmae" />
+          </view>
+          <view class="query">
+            <text class='text2'>类型:</text>
+            <picker bindchange="bindPickerChange" value="{{queryByType}}" range="{{chooseType}}" name="queryByType">
+              <view class="inputText" style="flex-direction:row-reverse;justify-content: space-between;">
+                <view style="color:gray;height:48rpx;padding-right:10rpx;margin-right:0;border: none;">▼</view>
+                <view>{{chooseType[index]}}</view>
+              </view>
+            </picker>
+          </view>
+          <view class="query">
+            <button type="text" class="queryButton" form-type="submit">查询</button>
+          </view>
+        </view>
+      </form>
+
+      <view style="display: flex;flex-direction: column;align-items: center;width: 100%;">
+        <view style="display: flex;flex-direction: row;justify-content: center;width: 95%;height: 100rpx;line-height: 100rpx;">
+          <view style="width: 40%;text-align: center;border: 2rpx solid #777777;">
+            <view>名称</view>
+          </view>
+          <view style="width: 20%;text-align: center;border: 2rpx solid #777777;">
+            <view>面额</view>
+          </view>
+          <view style="width: 20%;text-align: center;border: 2rpx solid #777777;">
+            <view>购买价</view>
+          </view>
+          <view style="width: 20%;text-align: center;border: 2rpx solid #777777;">
+            <view>类型</view>
+          </view>
+        </view>
+        <scroll-view scroll-y="true" class="body" style="height: calc(100vh - 240px);" wx:if="{{managementCouponsList.length != 0}}">
+          <view wx:for="{{managementCouponsList}}" style="display: flex;flex-direction: row;justify-content: center;width: 95%;margin: 0 auto;background-color: {{chooseList == index ? '#d89634' : ''}};" bindtap="onDetail" data-index="{{index}}">
+              <view style="width: 40%;border: 2rpx solid #777777;height: 75rpx; line-height: 75rpx;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+               {{item.couponName}}
+              </view>
+              <view style="width: 20%;text-align: center;border: 2rpx solid #777777;height: 75rpx; line-height: 75rpx;">
+                <view>{{item.denomination}}</view>
+              </view>
+              <view style="width: 20%;text-align: center;border: 2rpx solid #777777;height: 75rpx; line-height: 75rpx;">
+                <view>{{item.buyAmount}}</view>
+              </view>
+              <view style="width: 20%;text-align: center;border: 2rpx solid #777777;height: 75rpx; line-height: 75rpx;">
+                <view wx:if="{{item.buyAmount == 0}}">赠送</view>
+                <view wx:else>购买</view>
+              </view>
+          </view>
+        </scroll-view>
+        <view style="height: calc(100vh - 240px);display: flex;flex-direction: column;justify-content: center;align-items: center;" wx:if="{{managementCouponsList.length == 0}}">
+          <view style="color: #777777;">暂无优惠券</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+
+
+<view class="pop" wx:if="{{openDetail}}" bindtap="clocePop">
+</view>
+<view class="detail" wx:if="{{openDetail}}">
+  <view class="detail_title" style="font-size: 40rpx;display: flex;flex-direction: row;justify-content: space-between;">
+    <view>优惠券详情</view>
+    <view style="margin-right: 40rpx;width: 50rpx;height: 50rpx;background-color: rgb(255, 0, 0);border-radius: 90rpx;text-align: center;line-height: 45rpx;" bindtap="clocePop">x</view>
+  </view>
+  <view class="detail_top">
+    <view class="detail_box"><text class="detail_box_box">获取日期:</text>
+      <view class="detail_value">{{managementCouponDetail.createTime}}</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">获取:</text>
+      <view class="detail_value">{{managementCouponDetail.obtainWay != null? managementCouponDetail.obtainWay:'充值赠送'}}</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">名称:</text>
+      <view class="detail_value">{{managementCouponDetail.couponName?managementCouponDetail.couponName:''}}</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">面额:</text>
+      <view class="detail_value">{{managementCouponDetail.denomination}}元</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">类型:</text>
+      <view class="detail_value">{{managementCouponDetail.buyAmount == 0 ? '赠送':'购买'}}</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">购买价:</text>
+      <view class="detail_value">{{managementCouponDetail.buyAmount}}元</view>
+    </view>
+    <view class="detail_box"><text class="detail_box_box">有效期:</text>
+      <view class="detail_value">{{managementCouponDetail.effectiveDay}} 止
+      </view>
+    </view>
+  </view>
+</view>

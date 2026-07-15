@@ -1,0 +1,38 @@
+var filters = {
+  toFix: function (value) {
+    return value.toFixed(1) //此处2为保留两位小数
+  },
+  toFix1: function (value) {
+    return value.toFixed(0) //此处取整
+  },
+  businessTime: function (value) {
+    var str = "";
+    if (value && value != "-1") {
+      var s = value.split(",");
+      for (var i1= 1; i1 < s.length-1; i1++) {
+        if(s[i1].split("/")[0] != "-2"){
+            str += s[i1].split("/")[0] + "-";
+            break;
+        }
+      }
+    var b = false;
+    for (var i2 = s.length-1; i2 > 1; i2--) {
+        if(s[i2].split("/")[1] != "-2"){
+            b = true;
+            str += s[i2].split("/")[1];
+            break;
+        }
+    }
+    if (b) {
+        return str;
+    } else {
+        return "";
+    }
+  }
+    }
+}
+module.exports = {
+  toFix: filters.toFix,
+  toFix1: filters.toFix1,
+  businessTime: filters.businessTime
+}

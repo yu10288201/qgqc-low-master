@@ -1,0 +1,192 @@
+<!--pages/weixinpay/weixinpay.wxml-->
+<view class="return_out" bindtap="returnBack">
+  <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
+</view>
+
+<view class="return_out" style="left:90rpx;width:300rpx;font-size: 37rpx;color: rgb(81,59,38);justify-content: flex-start;">
+  预存信息管理
+</view>
+
+<!-- <form bindsubmit='submitSub' report-submit='true'> -->
+<view class='top'>
+  <view style="width:45%;height:20%;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg2.png') no-repeat;background-size: 100% 100%;position: absolute;top: 100rpx;">
+
+  </view>
+  <view class='comtainer' style="height:30vh;justify-content: flex-start;margin-top: 20vh;z-index: 2;">
+   
+    <view style="width:100%;display:flex;justify-content: center;align-items: center;color: rgb(81,59,38);margin-top:25rpx;font-size: 36rpx;font-weight: 550;">
+      {{shop_name}}</view>
+    <view class='oneline' style="width: 100%;">      
+      <view class="div3" style="margin-left: 0rpx;margin-top: 10rpx;width: 100%;margin-right: 20rpx;">        
+        <label style="width: 100%;">
+          <radio-group bindchange="radioChange" style="display: flex;flex-direction: row;align-items: center;justify-content: space-between;width: 100%;">
+            <radio value="3"  disabled="{{radioDisabled}}">
+              <text style="font-size: 42rpx; font-weight: 700; color: rgb(81, 59, 38);">商城预存</text>
+            </radio>
+            <radio value="0" checked="true"  disabled="{{radioDisabled}}">
+              <text style="font-size: 42rpx; font-weight: 700; color: rgb(81, 59, 38);">普通预存</text>
+            </radio>
+            <radio value="1"  disabled="{{radioDisabled}}">
+              <text style="font-size: 42rpx; font-weight: 700; color: rgb(81, 59, 38);">超值预存</text>
+            </radio>
+          </radio-group>
+        </label>
+      </view>
+    </view>
+    <view class='oneline' style='margin-bottom:0rpx;height:4vh;width:96%;'>
+      <view class='div3'>
+        <text class='text2' wx:if="{{changeColor}}">当前余额：<text style="color: red;">{{existingBalance}}</text>元</text>
+        <text class='text2' wx:else>当前余额：<text>{{existingBalance}}</text>元</text>
+      </view>
+      <view class='div3' style="margin-left: 100rpx;">
+        <text class='text2'>预存金额：</text>
+        <input class='input1' disabled="true" maxlength='12' type="number" style='width:150rpx' name='number' value='{{number}}' bindinput="getNum" disabled="{{closeInput}}"></input>
+      </view>      
+    </view>
+
+    <view class='div3'>
+      <!-- <text class='text2'>预存金额：</text>
+		<input class='input' placeholder="预存1" maxlength='6'  style='width:125rpx' name='prestore_moneystart' value='{{prestore_moneystart_value}}'></input> -->
+      <text class='text2'>赠送金额：</text>
+      <input class='input' maxlength='6' style='width:175rpx' name='givingAmount' value='{{givingAmount}}' disabled="true">{{givingAmount}}</input>
+      <text class="text2">元　　</text>
+      <text class='text2'>折扣：</text>
+      <input class='input' maxlength='6' style='width:125rpx' name='preferentDiscount' value='{{preferentDiscount}}' disabled="true">{{preferentDiscount}}</input>
+      <text class='text2'></text>
+    </view>
+
+    <view class='div3'>
+      <text class='text2'>送优惠券：</text>
+      <input class='input' maxlength='6' style='width:175rpx' name='preferentCount' value='{{preferentCount}}' disabled="true">{{preferentCount}}</input>
+      <text class="text2">张　　</text>
+      <input class='input' maxlength='6' style='width:125rpx' name='preferentMoney' value='{{preferentMoney}}' disabled="true">{{preferentMoney}}</input>
+      <text class='text2' style="margin-right: 15rpx;">元</text>
+    </view>
+
+    <view class='oneline' style='margin-bottom:0rpx;display: flex;flex-direction: row;justify-content: space-between;width: 90%;'>
+
+      <view class='div3'>
+        <view wx:if="{{deductionProportion != '100.00'}}" style="display: flex;">
+          <text class="text2">抵扣比例：</text>
+          <input class='input' maxlength='6' style='width:125rpx' name='deductionProportion' value='{{deductionProportion}}' disabled="true">{{deductionProportion}}</input>
+          <text class='text2' style="margin-right: 15rpx;">%</text>
+        </view>
+        <text class='text2'>存后余额：</text>
+        <input class='input' placeholder='{{user_balance}}' maxlength='18' style='width:150rpx' name='pre_discount' value='{{user_balance}}' disabled="true" readOnly="true"></input>
+        <text class='text'>元</text>
+      </view>
+      <view class="div3" wx:if="{{!closeInput}}">
+        <button bindtap='numbindblur' class='button2'><text style="text-shadow: 1px 2px 1px #222;">确定</text></button>
+      </view>
+    </view>
+
+
+
+  </view>
+
+  <scroll-view scroll-y="true" style="width: 100%;height: 40vh;display: flex;flex-direction: column;margin-left: 2.5%;">
+    <view class='comtainer' style="height:560rpx;margin-top: -26rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view class='padding centercontent' style="font-size: 30rpx;">
+        <view class='oneline' style="width:100%;margin-top: 10rpx;">
+          <view class='title text4' style='width:87%;margin-top: 10rpx;'>充值说明:</view>
+        </view>
+        <view style="height: 52rpx;line-height: 52rpx;width: 100%;display: flex;font-weight: bold;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top-left-radius: 10rpx;border-top-right-radius: 10rpx;overflow: hidden;">
+          <view class="th" style="width: 28%;">预存金额</view>
+          <view class="th" style="width: 20%;">赠送金额</view>
+          <view class="th" style="width: 24%;">抵扣比例</view>
+          <view class="th" style="width: 13%;">抵扣</view>
+          <view class="th" style="flex: 1;">类型</view>
+        </view>
+        <scroll-view scroll-y="true" style="height: 308rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top: 0;border-bottom-left-radius: 10rpx;border-bottom-right-radius: 10rpx;">
+          <view catch:tap="preferentItemClick" data-item="{{item}}" data-index="{{index}}" wx:key="index" wx:for="{{PreferentList}}" style="display: flex;height: 52rpx;line-height: 52rpx;">
+            <view class="td" style="width: 28%;{{listIndex==index?'background-color:#d0d0d0;':''}}">{{item.prestoreMoneyStart}}{{ item.prestoreMoneyStart == item.prestoreMoneyEnd ? '' : '-' + item.prestoreMoneyEnd}}</view>
+            <view class="td" style="width: 20%;{{listIndex==index?'background-color:#d0d0d0;':''}}">{{item.givingAmount}}</view>
+            <view class="td" style="width: 24%;{{listIndex==index?'background-color:#d0d0d0;':''}}">{{item.deductionProportion?item.deductionProportion:100}}%</view>
+            <view class="td" style="width: 13%;{{listIndex==index?'background-color:#d0d0d0;':''}}">{{item.preferentDiscount}}</view>
+
+            <view wx:if="{{item.isSuper==0}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#d0d0d0;':''}}">普通</view>
+            <view wx:if="{{item.isSuper==1}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#d0d0d0;':''}}">超值</view>
+            <view wx:if="{{item.isSuper==2}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#d0d0d0;':''}}">商城</view>
+            <view wx:if="{{item.isSuper!=0&&item.isSuper!=1&&item.isSuper!=2}}" class="td" style="flex: 1;{{listIndex==index?'background-color:#d0d0d0;':''}}"></view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view class='comtainer' style="height:506rpx;margin-top: -70rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view class='padding centercontent' style="font-size: 30rpx;">
+        <view class='oneline' style="width:100%;margin-top: 10rpx;">
+          <view class='title text4' style='width:87%;margin-top: 10rpx;'>兼送或打折礼物:</view>
+        </view>
+        <view style="height: 52rpx;line-height: 52rpx;width: 100%;display: flex;font-weight: bold;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top-left-radius: 10rpx;border-top-right-radius: 10rpx;overflow: hidden;">
+          <view class="th" style="width: 50%;">名称</view>
+          <view class="th" style="width: 17%;">数量</view>
+          <view class="th" style="width: 17%;">单位</view>
+          <view class="th" style="flex: 1;">类型</view>
+        </view>
+        <scroll-view scroll-y="true" style="height: 264rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-top: 0;border-bottom-left-radius: 10rpx;border-bottom-right-radius: 10rpx;">
+          <view wx:for="{{giftRuleList}}" style="display: flex;height: 52rpx;;line-height: 52rpx;">
+            <view class="td" style="width: 50%;">{{item.gift_name}}</view>
+            <view class="td" style="width: 17%;">{{item.gift_num}}</view>
+            <view class="td" style="width: 17%;">{{item.gift_unit}}</view>
+            <view class="td" style="flex: 1;">{{item.gift_type == 0 ? '打折' : '赠送'}}</view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <view class='comtainer' style="height:500rpx;display: flex;margin-top: -70rpx;background: url('https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/weixinpay/bg5.png') no-repeat;background-size: 100% 100%;">
+      <view style="width:92%;height:100%;padding: 0rpx 2.5%;">
+        <view class='oneline2' style="width:100%;margin-top: 30rpx;">
+          <view class='title text5' style='width:87%;margin-top: 10rpx;'>预存优惠规则:</view>
+        </view>
+        <scroll-view scroll-y="true" style="height: 324rpx;border: 1rpx solid rgba(153, 106, 62, 0.281);border-radius: 10rpx;">
+          <view class='vw'>
+            <!-- <text style="font-size:28rpx">{{preferentidGift}}</text> -->
+            <view wx:if="{{prestoreName!=''}}">
+              <text style="font-size:32rpx;font-weight: bold;">{{prestoreName}}:</text>
+            </view>
+            
+            <text style="font-size:28rpx">{{preferentRule}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <view style="height:10%;width:100%;display:center;align-items: center;justify-content: center;margin-bottom: 25rpx;">
+    <!--<view class='oneline' style='margin-bottom:10rpx;width:90%;margin-left: 5%;margin-top: 10rpx;'>
+      <view class='text'>预存方式:</view>
+      <view class='oneline1' style='width:70%'>
+        <view class='radio-groud-in' bindtap="changemodelweixin">
+          <image class='radio2' src="{{paymentweixin_status==0?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'}}">
+          </image>
+          <view class='item'>微信</view>
+        </view>
+        <view class='radio-groud-in' bindtap="changemodelzhifubao">
+          <image class='radio2' src="{{paymentzhifubao_status==1?'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_on.png':'https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/images/radio_off.png'}}">
+          </image>
+          <view class='item'>支付宝</view>
+        </view>
+         <view class='radio-groud-in' bindtap="changemodelbankcard">
+            <image class='radio2' src="{{paymentbankcard_status==2?'../image/radio_on.png':'../image/radio_off.png'}}"></image>
+            <view class='item'>银行卡</view>
+          </view>
+          <view class='radio-groud-in' bindtap="changemodelcash">
+            <image class='radio2' src="{{paymentcash_status==3?'../image/radio_on.png':'../image/radio_off.png'}}"></image>
+            <view class='item'>现金</view>
+          </view> 
+      </view>
+    </view>-->
+
+    <view class='div'>
+      <view class='div1'>
+        <button open-type='getUserInfo' bindtap='wechat_pay' class='btn' >
+          <text style="text-shadow: 1px 2px 1px #222;">微信存入</text></button>        
+      </view>
+      <view class='div1'>
+        <button class='btn' bindtap='jumpmingxi'><text style="text-shadow: 1px 2px 1px #222;">预存/消费明细</text></button>
+      </view>
+    </view>
+  </view>
+</view>

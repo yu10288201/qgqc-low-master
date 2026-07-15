@@ -1,0 +1,140 @@
+<view style="position: fixed;top: 0;width: 100%;z-index: 1000;background-color: #fff;">
+  <view class='navigation'></view>
+
+  <view class='title'>
+    <view class='titletext'>预存优惠</view>
+  </view>
+
+  <view class='cut' style='margin-top:30rpx;margin-bottom: 5rpx;'></view>
+
+  <view class='form' style="height:5vh">
+    <view class='th'>
+      <text class='text'>预存金额</text>
+    </view>
+    <view class='th'>
+      <text class='text'>赠送金额</text>
+    </view>
+    <view class='th'>
+      <text class='text'>抵扣比例</text>
+    </view>
+    <view class='th2'>
+      <text class='text'>折扣</text>
+    </view>
+    <view class='th2'>
+      <text class='text'>状态</text>
+    </view>
+  </view>
+  <scroll-view scroll-y='true' style='height:15vh' scroll-into-view='{{maodian}}'>
+    <view id="dis{{item.pid}}" class='for' wx:for='{{shop_pre_array}}' wx:key='index' bindtap='shop_pre_choice' data-index='{{index}}' data-alias_name='{{item.alias_name}}' data-pid='{{item.pid}}'>
+      <view class='td' style='{{listIndex==index?"background-color:#d0d0d0;":""}}'>{{item.prestoreMoneyStart}}-{{item.prestoreMoneyEnd}}</view>
+      <view class='td' style='{{listIndex==index?"background-color:#d0d0d0;":""}}'>{{item.givingAmount}}</view>
+      <view class='td' style='{{listIndex==index?"background-color:#d0d0d0;":""}}'>{{item.deductionProportion?item.deductionProportion:100}}%</view>
+      <view class='td2' style='{{listIndex==index?"background-color:#d0d0d0;":""}}'>{{item.preferentDiscount}}</view>
+      <view class='td2' style='{{listIndex==index?"background-color:#d0d0d0;":""}}'>{{item.useStatus?'停用':'启用'}}</view>
+    </view>
+  </scroll-view>
+
+  <view class='cut' style='margin-top:30rpx;margin-bottom: 5rpx;'></view>
+</view>
+
+
+<view style='height: 32vh;'></view>
+
+<scroll-view scroll-y='true' style='height:{{scroll_height2}}rpx'>
+  <view class='div' style="border:0rpx;height:5vh">
+    <text class='text'>优惠名称：</text>
+    <view>{{prestoreName}}</view>
+  </view>
+
+  <view class='div' style='height:5vh'>
+    <view style="width: 60%;display: flex;">
+      <text class='text'>预存金额：</text>
+      <view>{{prestoreMoneyStart}}</view>
+      <text wx:if="{{prestoreMoneyStart && prestoreMoneyEnd}}">-</text>
+      <view>{{prestoreMoneyEnd}}元</view>
+    </view>
+    <text class='text'>赠送金额：</text>
+    <view>{{givingAmount}}元</view>
+  </view>
+
+  <view class='div' style="height:5vh">
+    <view style="width: 60%;display: flex;">
+      <text class='text'>优惠券：</text>
+      <view wx:if="{{preferentCount}}" style="display: flex;">
+        <view>{{preferentCount}}</view>
+        <text class="text" style="margin-right: 15rpx;">张</text>
+      </view>
+      <view wx:if="{{preferentMoney}}" style="display: flex;">
+        <view>{{preferentMoney}}</view>
+        <text class='text' style="margin-right: 15rpx;" wx:if="{{preferentMoney}}">元</text>
+      </view>
+    </view>
+    <text class='text'>折扣：</text>
+    <view>{{preferentDiscount}}</view>
+    <text class='text' style="margin-right: 15rpx;" wx:if="{{preferentDiscount}}">折</text>
+  </view>
+
+  <view class='div' style="height:5vh">
+    <view style="width: 60%;display: flex;">
+      <text class='text'>抵扣比例：</text>
+      <view>{{deductionProportion}}</view>
+      <text class='text' style="margin-right: 15rpx;">%</text>
+    </view>
+    <text class='text'>优惠有效期：</text>
+    <view>{{effectiveDay}}天</view>
+  </view>
+  <view class='div' style="height:5vh">
+    <text class='text'>状态：</text>
+    <view style="margin-left: 10rpx;">{{statusSelect[useStatus]}}</view>
+
+  </view>
+  <view class="div" style="height: 5vh;">
+    <view wx:if="{{statusSelect[useStatus]=='启用'}}" style="display: flex;flex-direction: row;">
+      <text class='text'>期限：</text>
+      <view>{{startTime}}</view>
+      <text wx:if="{{startTime && endTime}}">~</text>
+      <view>{{endTime}}</view>
+    </view>
+  </view>
+  <view class='div' style="height:5vh">
+    <text class='text'>超值预存优惠：</text>
+    <view>{{chooseSuper == 0 ? "否" : "是"}}</view>
+  </view>
+
+
+
+  <view class='cut' style='margin-top:10rpx;margin-bottom: 5rpx;'></view>
+
+  <view style="position: relative;display: flex;flex-direction: column;">
+    <text class='text' style='display:flex;flex-direction: column;margin-left: 25rpx;'>预存优惠规则：</text>
+    <view class='div2'>
+      <view style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline1}};-webkit-box-orient: vertical;">{{announcement_value}}</view>
+    </view>
+    <view wx:if="{{announcement_value}}" style="width: 100%;display: flex;justify-content: flex-end;">
+      <view bindtap="showMore1" style="display: flex;font-size: 28rpx;align-items: center;margin-left: 74%;">
+        <text style="color: gray;">更多内容</text>
+        <image style="transform: {{transform1}};width: 32rpx;height: 32rpx;" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xiala.png"></image>
+      </view>
+    </view>
+  </view>
+
+
+  <view class='cut' style='margin-top:10rpx;margin-bottom: 5rpx;'></view>
+
+  <view style="position: relative;display: flex;flex-direction: column;">
+    <text class='text' style='display:flex;flex-direction: column;margin-left: 25rpx;'>兼送或打折礼物：</text>
+    <view class='div2'>
+      <view style="text-overflow: ellipsis;white-space: normal;overflow: hidden;display: -webkit-box;-webkit-line-clamp: {{webkitline2}};-webkit-box-orient: vertical;">{{describes_value}}</view>
+    </view>
+  </view>
+  <view wx:if="{{describes_value}}" style="width: 100%;display: flex;justify-content: flex-end;">
+      <view bindtap="showMore2" style="display: flex;font-size: 28rpx;align-items: center;margin-left: 74%;">
+        <text style="color: gray;">更多内容</text>
+        <image style="transform: {{transform2}};width: 32rpx;height: 32rpx;" src="https://test.fsmbdlkj.com/wx_official/web/images/image/xiala.png"></image>
+      </view>
+    </view>
+</scroll-view>
+
+<view style="width: 100%;;height: 6vh;"></view>
+
+<view bindtap="toWeixinPay" style="position: fixed;bottom: 0;height: 6vh;line-height: 6vh;width: 100%;background-color: #009aa2;text-align: center;color: #fff;font-size: 36rpx;">预存信息管理</view>

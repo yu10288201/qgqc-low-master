@@ -1,0 +1,98 @@
+/* pages/shop/shop.wxss */
+.top{
+  z-index: 9;
+  display:flex;
+  position: fixed;
+  width:100%;
+  height:62rpx;
+  background-color:#009AA2;
+  justify-content:center; 
+  top:0;
+}
+.search-view{
+  letter-spacing:10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 72rpx;
+  width: 96%;
+  font-size: 30rpx;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  background-color:#ffffff;
+  border-top-left-radius:16rpx;
+  border-top-right-radius:16rpx;
+}
+
+.deline{
+  margin-top: 90rpx;
+  width: 96%;
+  margin-left: 2%;
+  height: 1rpx;
+  background: #f4f4f4;
+}
+
+.Business_title{
+  display: flex;
+  margin-top: 20rpx;
+  width: 100%;
+  font-size: 30rpx;
+}
+.usefulshop{
+  text-align:right;
+  width: 50%;
+}
+.usefulshop text{
+  font-size: 28rpx;
+  border-radius: 6rpx;
+  padding: 4rpx 10rpx 4rpx 10rpx;
+  border:1rpx solid #dadada;
+}
+.Business_left{
+  margin-bottom: 20rpx;
+  margin-top: 20rpx;
+  width: 24%;
+}
+.Business_left image{
+  border-radius: 10rpx;
+  width: 100%;
+  height: 160rpx;
+}
+.Business_center{
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+  margin-top: 10rpx;
+  width: 52%;
+}
+.Business_center text{
+  color: #3e3f3f;
+ font-size: 26rpx;
+  margin-top: 10rpx;
+}
+.Business_center image{
+  width: 28rpx;
+  height: 28rpx;
+}
+.Business_right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10rpx;
+  width: 24%;
+}
+.Business_button{
+  display: flex;
+  flex-direction: column;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  margin-top: 10rpx;
+  text-align: center;
+  align-items: center;
+  border-radius: 10rpx;
+  font-size: 26rpx;
+}
+.Business_button image{
+  width: 40rpx;
+  height: 40rpx;
+}

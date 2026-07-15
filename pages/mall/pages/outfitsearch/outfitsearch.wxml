@@ -1,0 +1,80 @@
+<view style="width: 100vw;height: 100vh;display: flex;flex-direction: column;">
+  <view style="margin: 10rpx;display: flex;flex-direction: column;border: #ccc 1rpx solid;border-radius: 10rpx;font-size: 28rpx;">
+    <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;margin-left: 20rpx;">
+      <view>日期：</view>
+          <view style="flex: 1;display: flex;flex-direction: row;"> 
+              <picker mode="date" value="{{begin_date}}" bindchange="bindBeginDateChange">
+                <view class="date-picker" style="margin-right: 10rpx;">
+                  开始: {{begin_date}}
+                </view>
+              </picker>
+              --
+              <picker mode="date" value="{{begin_date}}" bindchange="bindEndDateChange" >
+                <view class="date-picker" style="margin-left: 10rpx;">
+                  结束: {{end_date}}
+                </view>
+              </picker>
+            </view>
+      </view>
+      <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;margin-left: 20rpx;">
+          <view>姓名：</view><input model:value="{{name}}"  style="width: 180rpx;border: 1rpx solid #f2f2f2;"/>
+          <view bind:tap="clearClick" style="height: 50rpx;width: 120rpx;font-size: 28rpx;text-align: center;border-radius: 30rpx;background-color:orange;color: #fff;margin-left: 20rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">清空</view>
+          <view bind:tap="multiSelectClick" style="height: 50rpx;width: 120rpx;font-size: 28rpx;text-align: center;border-radius: 30rpx;background-color: #52A76E;color: #fff;margin-left: 20rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">多选</view>
+          
+            <button wx:if="{{multi_select_count>0}}"  open-type="share" style="position: relative;height: 50rpx;width: 110rpx;font-size: 28rpx;border-radius: 30rpx;background-color: #52A76E;color: #fff;margin-left: 20rpx;text-align: center;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <view style="position: absolute;left:30rpx;">
+                转发
+              </view>
+            </button>
+            <button wx:if="{{multi_select_count<=0}}"  style="position: relative;height: 50rpx;width: 110rpx;font-size: 28rpx;border-radius: 30rpx;background-color: #aaa;color: #fff;margin-left: 20rpx;text-align: center;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <view style="position: absolute;left:30rpx;">
+                转发
+              </view>
+            </button>
+ 
+      </view>
+      <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;margin-left: 20rpx;">
+        <view>上衣：</view><input model:value="{{top_goods_name}}"  style="width: 400rpx;border: 1rpx solid #f2f2f2;"/>
+      </view>
+      <view style="display: flex;flex-direction: row;align-items: center;margin-top: 20rpx;margin-bottom: 20rpx;margin-left: 20rpx;">
+        <view>下衣：</view><input model:value="{{bottom_goods_name}}" style="width: 400rpx;border: 1rpx solid #f2f2f2;"/>
+        <view bind:tap="queryClick" style="height: 50rpx;width: 120rpx;font-size: 28rpx;text-align: center;border-radius: 30rpx;background-color:#52A76E;color: #fff;margin-left: 20rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">查询</view>
+      </view > 
+  </view>
+    <scroll-view style="flex: 1;width: 100%;overflow: scroll;" scroll-y="true" bindscrolltolower="loadNextPage" scroll-top='{{scrollTop}}'>
+      <view wx:if="{{person_array.length==0}}" style="width: 100;text-align: center;margin-top: 50rpx;color: #fff;font-size: 30rpx;display: flex;flex-direction: row;align-items: center;justify-content: center;">
+              <view style="border:#f2f2f2 solid 1rpx; border-radius: 20rpx;padding: 10rpx 40rpx;background-color: rgba(0, 0, 0, 0.7);">
+                无结果
+              </view>
+          </view>
+      <view style="height: 100%;display: grid;grid-template-columns: repeat(2,1fr);gap:10rpx;margin: 10rpx;box-sizing: border-box;">
+      <view  wx:for="{{person_array}}" wx:key="{{index}}" >
+        <view style="width: 100%;background-color: #f2f2f2;display: flex;flex-direction: column;align-items: center;border:#ccc 1rpx solid;border-radius: 6rpx;position: relative;">
+          <image bind:tap="toOutfitPreview" data-img_url="{{item.oss_image_url}}" data-index="{{index}}" style="width: 100%;height: 750rpx;" mode="aspectFill" src="{{item.oss_image_url}}">
+            
+          </image>
+          <!-- <view>{{item.id}}</view> -->
+          <view wx:if="{{item.top_goods_name!=''||item.bottom_goods_name!=''}}" style="background-color: rgba(0,0,0,0.4);color: #fff;position: absolute;bottom: 10rpx;left: 5%;width: 87.5%;border-radius: 10rpx;padding: 5rpx;">
+            <view wx:if="{{item.top_goods_name!=''}}" style="font-size: 26rpx;margin-bottom: 5rpx;">上衣:{{item.top_goods_name}}</view>
+          <view  wx:if="{{item.bottom_goods_name!=''}}" style="font-size: 26rpx;">下衣:{{item.bottom_goods_name}}</view>
+          </view>
+
+          <view data-index="{{index}}" bind:tap="mallOutfitAnyoneDeleteMallOutfitAnyoneClick" style="background-color: #ccc;padding: 5rpx 30rpx;border-radius: 30rpx;background-color:red;color: #fff;position: absolute;font-size: 26rpx;right:10rpx;top: 10rpx;">删除</view>
+
+          <view wx:if="{{multi_show==1}}" style="position: absolute;left:10rpx;top: 10rpx;width: 60rpx;height:60rpx;z-index: 999;border-radius: 6rpx;">
+              <image bind:tap="multiCheckChange" data-index="{{index}}"  wx:if="{{item.checked==true}}" src="{{multi_select1}}"  style="width: 100%;height: 100%;border-radius: 6rpx;">
+              </image>
+              <image bind:tap="multiCheckChange" data-index="{{index}}"  wx:if="{{item.checked==false}}"  src="{{multi_notselect1}}"  style="width: 100%;height: 100%;border-radius: 6rpx;">
+              </image>
+          </view>
+          
+
+        </view>
+           
+      </view>
+    
+    </view>
+
+    </scroll-view>
+    
+</view>

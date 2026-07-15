@@ -1,0 +1,234 @@
+var filters = {
+  toFix: function (value) {
+    if (value != undefined) {
+      var typeOf = typeof value;
+      if(typeOf != "number"){
+        value = Number(value);
+      }
+      return value != null || value != '' ? value.toFixed(2) < 0 ? 0 : value.toFixed(2) : '' //此处2为保留两位小数
+    } else {
+      return ''
+    }
+  },
+  endSubstring:function(value){
+    
+    return value.substring(value.length - 4,value.length);
+  },
+  line: function (value) {
+    return value.replace(',', '-');
+  },
+
+  bluk: function (value) {
+    value = value.split('-');
+    return parseInt(value[0]);
+  },
+
+  median: function (value) {
+    value = value.split(',');
+    var median = (parseInt(value[0]) + parseInt(value[1])) / 2;
+    return median;
+  },
+
+  toSum: function (value, em_id) { // 计算总额
+    return value.toFixed(2) //此处2为保留两位小数
+  },
+
+  sum: function (value1, value2) { // 计算总额
+    return parseInt(value1) + parseInt(value2) //此处2为保留两位小数
+  },
+
+  timeSubstring: function (time) { // 删除默认时间的后两位'.0' {{filters.timeSubstring(tempDetail.operation_time)}}
+    return time != '' && time != undefined ? time.substring(0, time.length - 2) : '';
+  },
+
+  bracket: function (value) {
+    if (value == undefined) {
+      return null
+    }
+
+    var a = value.replace("(", "   [");
+    var b = a.replace(")", "]");
+
+    return b
+  },
+
+  substringTime: function (value) {
+    return value != undefined ? value.substring(0, 19) : value
+  },
+
+
+  abs: function (value) {
+    return Math.abs(value)
+  },
+  substringTime1: function (value) {
+    return value != undefined ? value.substring(11, 16) : value
+  },
+  split: function (value) {
+    var c = value.split(",")[0];
+    var d = value.split(",")[1];
+    return c
+  },
+  splits: function (value) {
+    var d = value.split(",")[1];
+    return d
+  },
+  multi: function (value1, value2) {
+    var a = parseFloat(value1);
+    var b = parseFloat(value2);
+    var c = a * b
+    return parseFloat(c.toFixed(2))
+  },
+  noZero: function (value) {
+    return value == 0 ? '' : value
+  },
+
+  toInt: function (value) {
+    return parseInt(value)
+  },
+
+  chu: function (value) {
+    var a = parseFloat(value);
+    var b = parseFloat(a / 100);
+    return b
+  },
+
+  getRandom: function (num) {
+    return random = Math.floor((Math.random() + Math.floor(Math.random() * 9 + 1)) * Math.pow(10, num - 1));
+  },
+
+  orderCodeSubstring: function (value) {
+    if(value == ''){
+      return '';
+    }else{
+      return value.substring(14, 19);
+    }
+  },
+
+  substring5: function (str) {
+    if (str) {
+      if (str.length > 5) {
+        return str.substring(str.length - 5);
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+  },
+  substringNumber: function (str) {
+    if (str) {
+      var index = str.indexOf(",")
+      if(index!=-1){
+        return str.substring(0,index)
+      }
+      return str
+    } else {
+      return null
+    }
+  },
+
+  //2020-12-03 判断订单状态，返回是否可用，true，false
+  checkOrderStatus:function(status){
+    //订单状态为 “等待买单、已取消、已买单” 返回false
+    var booleanStaus = true;
+    if(status == "等待买单" || status == "已取消" || status == "已买单"){
+      booleanStaus = false;
+    }
+    return booleanStaus;
+  },
+
+  specTypeName:function(type){
+    var typeStr = '';
+    switch (type) {
+      case 0:
+        typeStr = '单规格';
+        break;
+      case 1:
+        typeStr = '多配多规格';
+        break;
+      case 2:
+        typeStr = '多计量多做法';
+        break;
+      case 3:
+        typeStr = '计件多做法';
+        break;
+      case 4:
+        typeStr = '单规格';
+        break;
+      case 5:
+        typeStr = '称重单规格';
+        break;
+      case 6:
+        typeStr = '称重多规格';
+        break;
+      case 7:
+        typeStr = '';
+        break;
+      case 8:
+        typeStr = '来料加工';
+        break;
+      case 9:
+        typeStr = '选拼菜品(份数)';
+        break;
+      case 10:
+        typeStr = '多规格多做法';
+        break;
+      case 21:
+        typeStr = '酒水用品[单]';
+        break;
+      case 22:
+        typeStr = '酒水用品[多]';
+        break;
+      case 23:
+        typeStr = '配料调味[单]';
+        break;
+      case 24:
+        typeStr = '配料调味[多]';
+        break;
+      case 25:
+        typeStr = '按位上菜';
+        // typeStr = '米饭';
+        break;
+      case 26:
+        typeStr = '茶位';
+        break;
+      case 91:
+        typeStr = '选拼菜品(食材)';
+        break;
+      case 100:
+        typeStr = '预定套餐';
+        break;
+      case 101:
+        typeStr = '预定菜品';
+        break;
+    }
+    return typeStr;
+  }
+
+}
+module.exports = {
+  toFix: filters.toFix,
+  line: filters.line,
+  bracket: filters.bracket,
+  median: filters.median,
+  abs: filters.abs,
+  bluk: filters.bluk,
+  sum: filters.sum,
+  chu: filters.chu,
+  isAccess: filters.isAccess,
+  timeSubstring: filters.timeSubstring,
+  substringTime1: filters.substringTime1,
+  substringTime: filters.substringTime,
+  split: filters.split,
+  splits: filters.splits,
+  noZero: filters.noZero,
+  multi: filters.multi,
+  toInt: filters.toInt,
+  substring5: filters.substring5,
+  getRandom: filters.getRandom,
+  orderCodeSubstring: filters.orderCodeSubstring,
+  checkOrderStatus:filters.checkOrderStatus,
+  specTypeName:filters.specTypeName,
+  substringNumber:filters.substringNumber,
+  endSubstring:filters.endSubstring,
+}

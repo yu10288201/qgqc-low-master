@@ -1,0 +1,181 @@
+var filters = {
+  toFix: function (value) {
+    return Math.round(value*1000)/100
+  },
+  people:function(value2){
+    var b = ''
+    var c = value2
+    if(c == '2'){
+      b = '[超值菜品]'
+    }else{ 
+      b = '[超值套餐]'
+    }
+    return b
+  },
+  dishes_unit:function(value,value2){
+    var a = value;
+    var b = value2;
+    if(b == 2){
+      return a
+    }else{
+      return '套'
+    }
+  },
+  toFix2: function (value) {
+    return value != null ? parseFloat(value.toFixed(2)) : ''//此处2为保留两位小数
+  },
+  addHeight:function(index){
+    return index * 4 + 25 ;
+  },
+  usefulDate:function (usefulDate) {
+    var shit = ['1,2,3,4,5,6,7','1,2,3,4,5,6','1,2,3,4,5','1,2,3,4','1,2,3','1,2','2,3,4,5,6,7','2,3,4,5,6','2,3,4,5','2,3,4','2,3','3,4,5,6,7','3,4,5,6','3,4,5','4,5','5,6,7','5,6','6,7']
+    if(shit.indexOf(usefulDate) != -1){
+      var day = usefulDate.substring(0,1).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六') + ' 至 周'+ usefulDate.substring(usefulDate.length-1,usefulDate.length).replace('1','一').replace('2','二').replace('3','三').replace('4','四').replace('5','五').replace('6','六').replace('7','日')
+      return '周'+day+' 可用'
+    }
+    var usefulDate = usefulDate.split(',')
+    var day = ''
+    if(usefulDate.indexOf('1') != -1){
+      day += '一、'
+    }
+    if(usefulDate.indexOf('2') != -1){
+      day += '二、'
+    }
+    if(usefulDate.indexOf('3') != -1){
+      day += '三、'
+    }
+    if(usefulDate.indexOf('4') != -1){
+      day += '四、'
+    }
+    if(usefulDate.indexOf('5') != -1){
+      day += '五、'
+    }
+    if(usefulDate.indexOf('6') != -1){
+      day += '六、'
+    }
+    if(usefulDate.indexOf('7') != -1){
+      day += '日、'
+    }
+    // console.log(day)
+    return '周'+day.substring(0,day.length-1)+'可用'
+  
+    //别人拉屎我也拉，我直接拉一大坨
+  
+    // var star = usefulDate.substring(0,1)
+    // var end = usefulDate.substring(2,3)
+    // if(star== 1){
+    // var weekstar ='一'
+    // }else if(star == 2){
+    // var weekend ='一'
+    // }
+    // if(star== 2){
+    // var weekstar ='二'
+    // }else if(end == 2){
+    // var weekend ='二'
+    // }
+    // if(star==3){
+    //   var weekstar ='三'
+    //   }else if(end == 3){
+    //   var weekend ='三'
+    //   }
+    // if(star== 4){
+    //   var weekstar ='四'
+    //   }else if(end ==4){
+    //   var weekend ='四'
+    //   }
+    // if(star== 5){
+    //   var weekstar ='五'
+    //   }else if(end ==5){
+    //   var weekend ='五'
+    //   }
+    //   if(star== 6){
+    //   var weekstar ='六'
+    //   }else if(end ==6){
+    //   var weekend ='六'
+    //   }
+    //   if(star== 7){
+    //   var weekstar ='日'
+    //   }else if(end ==7){
+    //   var weekend ='日'
+    //   }
+    // return '周'+weekstar+'至'+'周'+weekend+'可用'
+  },
+  userTimeFor: function (value){
+    if(value == '1,2,3,4'){
+      return '不限';
+    }else if(value.length == 1){
+      if(value.indexOf('1') != -1){
+        return '早餐'
+      }
+      if(value.indexOf('2') != -1){
+        return '午餐'
+      }
+      if(value.indexOf('3') != -1){
+        return '晚餐'
+      }
+      if(value.indexOf('4') != -1){
+        return '夜宵'
+      }
+    }else if(value.length > 1){
+      var a = value.split(",")
+      var b = ''
+      for(var i = 0;i < a.length;i++){
+        if(a[i].indexOf('1') != -1){
+            b = b + '早餐,';
+        }
+        if(a[i].indexOf('2') != -1){
+            b = b + '午餐,';
+        }
+        if(a[i].indexOf('3') != -1){
+            b = b + '晚餐,';
+        }
+        if(a[i].indexOf('4') != -1){
+            b = b + '夜宵,';
+        }
+      }
+      return b.substring(0,b.length-1);
+    }
+    
+  },
+  formatDate: function (value) {
+    //不能使用 new Date()
+    var time = getDate(value);
+    var year = time.getFullYear();
+    var month = time.getMonth() + 1;
+    var date = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
+    var second = time.getSeconds();
+    month = month < 10 ? "0" + month : month;
+    date = date < 10 ? "0" + date : date;
+    hour = hour < 10 ? "0" + hour : hour;
+    minute = minute < 10 ? "0" + minute : minute;
+    second = second < 10 ? "0" + second : second;
+    return year + "年" + month + "月" + date + "日";
+  },
+}
+module.exports = {
+  formatDate: filters.formatDate,
+  userTimeFor: filters.userTimeFor,
+  toFix: filters.toFix,
+  people:filters.people,
+  dishes_unit:filters.dishes_unit,
+  toFix2: filters.toFix2,
+  addHeight: filters.addHeight,
+  usefulDate: filters.usefulDate
+}
+var sub = function(val) {
+  if (val.length == 0 || val == undefined) {
+    return;
+  }
+  if (val.length > 17) {
+    if(val.substring(val.length-2, val.length) =='\r\n'){
+      return val.substring(0, val.length-6) +'big';
+    }else{
+    return val.substring(0, val.length-4) +'big';
+    }
+  } else {
+    return val;
+  }
+}
+module.exports.sub = sub;
