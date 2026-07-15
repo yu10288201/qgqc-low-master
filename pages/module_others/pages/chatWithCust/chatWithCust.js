@@ -126,7 +126,7 @@ Page({
         var that = this
         wx.request({
             url: app.globalData.selectWechatMsgRecord_Last,
-            // url: 'http://localhost:8080/evaluation/selectWeChatMsgRecord_QGQC_Customer',
+            // url: 'http://localhost:8080/evaluation/selectWeChatMsgRecord_QGQC_Customer',23112123
             data: {
                 wechat_type: wechat_type,
                 sender_id: sender_id,
@@ -157,6 +157,7 @@ Page({
 
                         that.sortMsgListByLastTime(msgList);
                         console.log("msgList:",msgList);
+                        console.log('123')
                         that.setData({
                             msgList:msgList,
                             total_is_not_read_count:total_is_not_read_count,
