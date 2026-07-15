@@ -1,4 +1,8 @@
 <view class="container" wx:if="{{activity}}">
+
+<!-- 隐藏 canvas 用于海报绘制 -->
+<canvas type="2d" id="posterCanvas" style="width:621px;height:1099px;position:fixed;left:-9999px;top:-9999px;"></canvas>
+<canvas style="width:200px;height:200px;position:fixed;left:-9999px;top:-9999px;" canvas-id="posterQrcode"></canvas>
   <!-- 版头图 -->
   <video wx:if="{{headerImg && headerIsVideo}}" class="cover-img" src="{{headerImg}}" controls show-fullscreen-btn object-fit="cover" autoplay muted />
   <image wx:elif="{{headerImg}}" class="cover-img" src="{{headerImg}}" mode="aspectFill" />
@@ -86,7 +90,7 @@
   </view>
   <view style="display: flex;flex-direction: row;justify-content: center;width: 100%;align-items: center;flex: 1;">
     <view style="display: flex;flex-direction: column;flex: 1;height: 100%;justify-content: space-around; align-items: center;">
-      <button open-type="share" class="share-b1">
+      <button catch:tap="openShareTitleDialog" class="share-b1">
         <view class="share-edit-forward"></view>
         <view style="font-size: 30rpx;margin-top: 20rpx;height: 40rpx;">直接发送</view>
       </button>
@@ -129,5 +133,59 @@
       <view class="share-cust"></view>
       <view style="font-size: 30rpx;margin-top: 20rpx;">生成二维码</view>
     </view>
+  </view>
+</view>
+
+<!--分享朋友圈-->
+<view wx:if="{{is_fenxiangpengyouquan==1}}" style="position: fixed;top: 0;right: 0;width: 260rpx;z-index: 99999;">
+  <view style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+    <view style="width: 10rpx;font-size: large;color: red;">↑</view>
+    <view catch:tap="hideFenXiangPengYouQuan" style="width: 160rpx;padding: 10rpx 10rpx;font-size: 26rpx;color: #fff;background-color: red;">
+      点击右上角三点分享朋友圈
+    </view>
+  </view>
+</view>
+
+<!-- 分享标题编辑弹窗遮罩 -->
+<view wx:if="{{shareTitleDialog}}" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:#00000066;z-index:9999998;" bindtap="cancelShareTitle"></view>
+
+<!-- 分享标题编辑弹窗 -->
+<view wx:if="{{shareTitleDialog}}" style="position:fixed;top:0;left:0;right:0;bottom:0;margin:auto;width:640rpx;height:360rpx;background-color:#fff;border-radius:20rpx;z-index:9999999;display:flex;flex-direction:column;justify-content:space-between;padding:40rpx;box-sizing:border-box;">
+  <view style="font-size:32rpx;font-weight:bold;color:#333;">编辑分享标题</view>
+  <input style="border:1rpx solid #ddd;border-radius:10rpx;padding:0 20rpx;font-size:28rpx;width:100%;box-sizing:border-box;height:64rpx;line-height:64rpx;" value="{{shareTitleInput}}" bindinput="onShareTitleInput" placeholder="请输入分享标题" adjust-position="false" />
+  <view style="display:flex;flex-direction:row;justify-content:flex-end;gap:20rpx;">
+    <view bindtap="cancelShareTitle" class="action-btn" style="background-color:#ccc;">取消</view>
+    <button open-type="share" class="action-btn" style="margin:0;padding:10rpx 40rpx;line-height:normal;border-radius:30rpx;">确认发送</button>
+  </view>
+</view>
+
+<!-- 二维码弹窗遮罩 -->
+<view wx:if="{{qrcodeDialog}}" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#00000066;z-index:999999;" bindtap="closeQrcodeDialog"></view>
+
+<!-- 二维码弹窗 -->
+<view wx:if="{{qrcodeDialog}}" style="position:fixed;top:0;right:0;left:0;bottom:0;margin:auto;width:560rpx;height:640rpx;background:#fff;border-radius:20rpx;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999999;">
+  <view style="width:100%;display:flex;justify-content:flex-end;padding:16rpx 24rpx 0;box-sizing:border-box;">
+    <text style="font-size:40rpx;color:#999;line-height:1;" catchtap="closeQrcodeDialog">✕</text>
+  </view>
+  <view style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20rpx;">
+    <image src="{{qrcodeImg}}" style="width:400rpx;height:400rpx;" mode="aspectFit" />
+    <text style="font-size:26rpx;color:#666;margin-top:24rpx;">扫码进入活动详情</text>
+    <view catchtap="saveQrcode" class="action-btn" style="margin-top:24rpx;">保存到相册</view>
+  </view>
+</view>
+
+<!-- 海报弹窗遮罩 -->
+<view wx:if="{{posterDialog}}" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#00000066;z-index:999999;" catchtap="closePosterDialog" catchtouchmove="stopPropagation"></view>
+
+<!-- 海报弹窗 -->
+<view wx:if="{{posterDialog}}" style="position:fixed;top:0;right:0;left:0;bottom:0;margin:auto;width:660rpx;height:90vh;background:#fff;border-radius:20rpx;display:flex;flex-direction:column;align-items:center;z-index:9999999;" catchtouchmove="stopPropagation">
+  <view style="width:100%;display:flex;justify-content:flex-end;padding:16rpx 24rpx 0;box-sizing:border-box;">
+    <text style="font-size:40rpx;color:#999;line-height:1;" catchtap="closePosterDialog">✕</text>
+  </view>
+  <scroll-view scroll-y style="flex:1;width:100%;padding:0 20rpx;box-sizing:border-box;">
+    <image src="{{posterUrl}}" style="width:100%;" mode="widthFix" show-menu-by-longpress="true" />
+  </scroll-view>
+  <view style="padding:24rpx;width:100%;box-sizing:border-box;display:flex;justify-content:center;">
+    <view catchtap="savePoster" class="action-btn">保存到相册</view>
   </view>
 </view>
