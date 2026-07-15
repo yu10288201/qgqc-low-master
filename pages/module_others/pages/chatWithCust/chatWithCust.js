@@ -18,6 +18,7 @@ Page({
         avatarUrl: defaultAvatarUrl,//默认头像
         msgList: [],
         total_is_not_read_count:0,//未读消息数
+        _pollTimer: null,//轮询定时器
     },
 
     /**
@@ -57,12 +58,15 @@ Page({
           return timeB - timeA;
       });
   },
-    initMsg() {
+    initMsg(silent) {
         console.log("initMsg")
         let that = this
-        wx.showLoading({
-            title: '请稍后',
-        })
+        // 静默刷新时不显示 loading，避免轮询时频繁闪烁
+        if (!silent) {
+            wx.showLoading({
+                title: '请稍后',
+            })
+        }
         var shop_id=app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0;
         var bind_person_id=app.globalData.customerInf.id;
 
@@ -91,8 +95,22 @@ Page({
                         msgList,
                         total_is_not_read_count,
                     })
-                    wx.hideLoading()
+                    if (!silent) {
+                        wx.hideLoading()
+                    }
                 } else {
+                    if (!silent) {
+                        wx.showModal({
+                            title: '提示',
+                            content: '网络异常',
+                            showCancel: false
+                        })
+                        wx.hideLoading()
+                    }
+                }
+            },
+            fail: res => {
+                if (!silent) {
                     wx.showModal({
                         title: '提示',
                         content: '网络异常',
@@ -100,14 +118,6 @@ Page({
                     })
                     wx.hideLoading()
                 }
-            },
-            fail: res => {
-                wx.showModal({
-                    title: '提示',
-                    content: '网络异常',
-                    showCancel: false
-                })
-                wx.hideLoading()
             }
         })
     },
@@ -134,6 +144,10 @@ Page({
                         
                             if(oldItem.customer_id==wechatMsgRecord.receiver_id||oldItem.customer_id==wechatMsgRecord.sender_id){
                                 oldItem.lstWechatMsgRecord=res.data.data;
+                                // 同步更新 time 字段，确保排序正确
+                                if (res.data.data.length > 0) {
+                                    oldItem.time = at.weChatTimeFormat(res.data.data[0].create_time);
+                                }
                                 console.log("oldItem:",oldItem);
                             }
                             if(oldItem.lstWechatMsgRecord.length!=0){
@@ -165,8 +179,26 @@ Page({
     },
 
     chatWithCustDetail(e) {
+        // 点击进入会话时，立即清除该会话的未读红点（乐观更新）
+        var item = e.currentTarget.dataset.item;
+        var msgList = this.data.msgList;
+        var total_is_not_read_count = this.data.total_is_not_read_count;
+        for (var i = 0; i < msgList.length; i++) {
+            if (msgList[i].customer_id == item.customer_id) {
+                if (msgList[i].lstWechatMsgRecord && msgList[i].lstWechatMsgRecord.length > 0) {
+                    var unreadCount = msgList[i].lstWechatMsgRecord[0].is_not_read_count || 0;
+                    total_is_not_read_count -= unreadCount;
+                    msgList[i].lstWechatMsgRecord[0].is_not_read_count = 0;
+                }
+                break;
+            }
+        }
+        this.setData({
+            msgList: msgList,
+            total_is_not_read_count: Math.max(0, total_is_not_read_count),
+        });
         wx.navigateTo({
-            url: '../chatWithCustDetail/chatWithCustDetail?custInfo=' + JSON.stringify(e.currentTarget.dataset.item),
+            url: '../chatWithCustDetail/chatWithCustDetail?custInfo=' + JSON.stringify(item),
         })
     },
 
@@ -444,28 +476,58 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow() {
-       
+        // 每次页面显示时刷新会话列表
+        this.initMsg();
+        // 启动轮询：每5秒静默拉取最新消息列表（WebSocket 的兜底方案）
+        this._startPolling();
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide() {
-
+        this._stopPolling();
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload() {
-
+        this._stopPolling();
     },
 
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh() {
+        // 下拉刷新：完整刷新（带 loading），刷新完成后停止下拉动画
+        var that = this;
+        this.initMsg();
+        // initMsg 是异步的，简单延时后停止下拉动画
+        setTimeout(function () {
+            wx.stopPullDownRefresh();
+        }, 1500);
+    },
 
+    /**
+     * 启动轮询：每5秒静默刷新消息列表
+     */
+    _startPolling() {
+        this._stopPolling();
+        var that = this;
+        this.data._pollTimer = setInterval(function () {
+            that.initMsg(true); // 静默刷新，不显示 loading
+        }, 5000);
+    },
+
+    /**
+     * 停止轮询
+     */
+    _stopPolling() {
+        if (this.data._pollTimer) {
+            clearInterval(this.data._pollTimer);
+            this.data._pollTimer = null;
+        }
     },
 
     /**
