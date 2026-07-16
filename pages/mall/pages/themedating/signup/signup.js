@@ -1,4 +1,5 @@
 const themeApi = require('../themeApi')
+const app = getApp()
 
 Page({
   data: {
@@ -47,6 +48,7 @@ Page({
       priceFemale: pf,
       activityPrice: pm
     })
+    console.log('customerId:', app.globalData.customerInf && app.globalData.customerInf.id)
     themeApi.login().catch(() => {})
   },
 
@@ -120,6 +122,7 @@ Page({
     if (!d.avatarPhoto) return wx.showToast({ title: '请上传本人照片', icon: 'none' })
 
     wx.showLoading({ title: '提交中...' })
+    console.log('customerId:', getApp().globalData.customerInf && getApp().globalData.customerInf.id)
 
     themeApi.request({
       url: '/signup/add',
@@ -138,7 +141,8 @@ Page({
         idCardFrontImg: isTravel ? d.idCardFrontImg : null,
         idCardBackImg:  isTravel ? d.idCardBackImg : null,
         avatarPhoto:    d.avatarPhoto,
-        selfIntro:      d.selfIntro
+        selfIntro:      d.selfIntro,
+        customerId:     app.globalData.customerInf.id
       }
     }).then(res => {
       wx.hideLoading()
