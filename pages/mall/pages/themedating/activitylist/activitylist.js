@@ -62,6 +62,7 @@ Page({
   onLoad(options) {
     themeApi.login().catch(() => {})
     const app = getApp()
+    console.log('customerId:', app.globalData && app.globalData.customerInf && app.globalData.customerInf.id)
     const nickName = (app.globalData && app.globalData.user_name) || ''
     if (nickName) this.setData({ nickname: nickName })
     if (options.activityNo) {
@@ -463,7 +464,8 @@ Page({
         nickname:       d.nickname || null,
         maritalStatus:  d.maritalStatus || null,
         remark:         d.remark || null,
-        unionId:        themeApi.getOpenId() || null
+        unionId:        themeApi.getOpenId() || null,
+        customerId:     getApp().globalData && getApp().globalData.customerInf && getApp().globalData.customerInf.id
       }
     }).then(res => {
       wx.hideLoading()
