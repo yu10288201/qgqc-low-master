@@ -67,11 +67,11 @@ Page({
                 title: '请稍后',
             })
         }
-        var shop_id=app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0;
-        var bind_person_id=app.globalData.customerInf.id;
+        var shop_id = app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0;
+        var bind_person_id = app.globalData.customerInf.id;
 
         console.log("shop_id:"+shop_id);
-        console.log("bind_person_id:"+app.globalData.customerInf.id);
+        console.log("bind_person_id:" + app.globalData.customerInf.id);
         wx.request({
             url: app.globalData.selectWeChatMsgRecord_QGQC_Customer,
             // url: 'http://localhost:8080/evaluation/selectWeChatMsgRecord_QGQC_Customer',
@@ -82,14 +82,14 @@ Page({
             success: res => {
                 if (res.data.code == 1000) {
                     let msgList = res.data.data;
-                    var total_is_not_read_count=0;
+                    var total_is_not_read_count = 0;
                     for (let msg of msgList) {
-
                         if(msg.lstWechatMsgRecord.length > 0){
-                            total_is_not_read_count=total_is_not_read_count+msg.lstWechatMsgRecord[0].is_not_read_count;
+                            total_is_not_read_count = total_is_not_read_count + msg.lstWechatMsgRecord[0].is_not_read_count;
                             msg.time = at.weChatTimeFormat(msg.lstWechatMsgRecord[0].create_time)
                         }
                     }
+                    console.log(msgList,'msgList')
                     that.sortMsgListByLastTime(msgList);
                     that.setData({
                         msgList,
@@ -134,16 +134,16 @@ Page({
             },
             success: res => {
                 if (res.data.code == 1000) {
-                    if(res.data.data!=null&&res.data.data.length>0){
-                   
-                        var wechatMsgRecord=res.data.data[0];
-                        var msgList=that.data.msgList;
-                        var total_is_not_read_count=0;
-                        for(var i=0;i<msgList.length;i++){
-                            var oldItem=msgList[i];
+                    if(res.data.data != null && res.data.data.length>0){
+                      console.log(res.data.data,'res.data.data')
+                        var wechatMsgRecord = res.data.data[0];
+                        var msgList = that.data.msgList;
+                        var total_is_not_read_count = 0;
+                        for(var i = 0;i < msgList.length;i++){
+                            var oldItem = msgList[i];
                         
-                            if(oldItem.customer_id==wechatMsgRecord.receiver_id||oldItem.customer_id==wechatMsgRecord.sender_id){
-                                oldItem.lstWechatMsgRecord=res.data.data;
+                            if(oldItem.customer_id == wechatMsgRecord.receiver_id || oldItem.customer_id == wechatMsgRecord.sender_id){
+                                oldItem.lstWechatMsgRecord = res.data.data;
                                 // 同步更新 time 字段，确保排序正确
                                 if (res.data.data.length > 0) {
                                     oldItem.time = at.weChatTimeFormat(res.data.data[0].create_time);
@@ -151,13 +151,13 @@ Page({
                                 console.log("oldItem:",oldItem);
                             }
                             if(oldItem.lstWechatMsgRecord.length!=0){
-                                total_is_not_read_count=total_is_not_read_count+oldItem.lstWechatMsgRecord[0].is_not_read_count;
+                                total_is_not_read_count = total_is_not_read_count + oldItem.lstWechatMsgRecord[0].is_not_read_count;
                             }
                         }
 
                         that.sortMsgListByLastTime(msgList);
                         console.log("msgList:",msgList);
-                        console.log('123')
+                        console.log('1231211')
                         that.setData({
                             msgList:msgList,
                             total_is_not_read_count:total_is_not_read_count,
