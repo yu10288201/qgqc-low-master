@@ -203,3 +203,17 @@ background-image: url("data:image/svg+xml,%3Csvg t='1668503242302' class='icon' 
     transform: rotate(360deg);
   }
 }
+
+.voicePauseLeftImg{
+	width: 33rpx;
+    height: 33rpx;
+    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201024%201024%22%20width%3D%2232%22%20height%3D%2232%22%3E%3Cpath%20d%3D%22M384%20256h85.333v512H384V256zM554.667%20256H640v512h-85.333V256z%22%20fill%3D%22%23283F52%22%2F%3E%3C%2Fsvg%3E");
+}
+
+.voicePauseRightImg{
+	width: 33rpx;
+    height: 33rpx;
+    background-size: cover;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201024%201024%22%20width%3D%2232%22%20height%3D%2232%22%3E%3Cpath%20d%3D%22M384%20256h85.333v512H384V256zM554.667%20256H640v512h-85.333V256z%22%20fill%3D%22%23283F52%22%2F%3E%3C%2Fsvg%3E");
+}

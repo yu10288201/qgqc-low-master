@@ -26,6 +26,12 @@ Page({
     isOldLoading:false,//正在获取旧资料
     isNewLoading:false,//正在获取新资料
     isAnchoring: false, // 是否正在执行scroll-into-view锚定，锚定期间屏蔽手动滚动干扰
+    playingAudioId: null,     // 当前正在播放的语音消息ID
+    isAudioPlaying: false,    // 是否正在播放
+    audioCurrentTime: 0,      // 当前播放进度（秒）
+    audioPlayDuration: 0,     // 当前音频总时长（秒）
+    audioCurrentTimeText: '00:00',  // 格式化后的当前时间
+    audioDurationText: '00:00',     // 格式化后的总时长
   },
 
 
@@ -548,23 +554,114 @@ Page({
       success: function (res) {}
     })
   },
-  playAudio:function(e){
-      console.log("playAudio")
-      console.log(e)
-      var item=e.target.dataset.item;
-      console.log(item)
+  // 格式化秒数为 mm:ss
+  formatAudioTime: function(seconds) {
+    if (!seconds || isNaN(seconds)) return '00:00';
+    var m = Math.floor(seconds / 60);
+    var s = Math.floor(seconds % 60);
+    return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+  },
 
-      if(item&&item.msg){
-        innerAudioContext.autoplay = true
-        innerAudioContext.src = item.msg,
-          innerAudioContext.onPlay(() => {
-            console.log('开始播放')
-          })
-        innerAudioContext.onError((res) => {
-          console.log(res.errMsg)
-          console.log(res.errCode)
-        })
+  // 滑块拖动结束，跳转到指定位置
+  onSliderChange: function(e) {
+    var newTime = e.detail.value;
+    innerAudioContext.seek(newTime);
+    this.setData({
+      audioCurrentTime: newTime,
+      audioCurrentTimeText: this.formatAudioTime(newTime),
+    });
+  },
+
+  // 滑块拖动中，实时更新显示
+  onSliderChanging: function(e) {
+    var newTime = e.detail.value;
+    this.setData({
+      audioCurrentTime: newTime,
+      audioCurrentTimeText: this.formatAudioTime(newTime),
+    });
+  },
+
+  playAudio: function(e) {
+    console.log("playAudio")
+    console.log(e)
+    var that = this;
+    var item = e.currentTarget.dataset.item;
+    console.log(item)
+
+    if (!item || !item.msg) return;
+
+    // 如果点击的是正在播放的音频 → 暂停/恢复
+    if (this.data.playingAudioId === item.id) {
+      if (innerAudioContext.paused) {
+        innerAudioContext.play();
+      } else {
+        innerAudioContext.pause();
       }
+      return;
+    }
+
+    // 切换到新音频：先停止旧音频
+    innerAudioContext.stop();
+
+    innerAudioContext.src = item.msg;
+    innerAudioContext.autoplay = true;
+
+    var duration = item.duration || 0;
+    this.setData({
+      playingAudioId: item.id,
+      isAudioPlaying: true,
+      audioCurrentTime: 0,
+      audioPlayDuration: duration,
+      audioCurrentTimeText: '00:00',
+      audioDurationText: this.formatAudioTime(duration),
+    });
+
+    // 播放进度更新
+    innerAudioContext.onTimeUpdate(function() {
+      // 确保是当前播放的音频（防止旧回调干扰）
+      if (that.data.playingAudioId !== item.id) return;
+      var currentTime = innerAudioContext.currentTime || 0;
+      var dur = innerAudioContext.duration || duration;
+      that.setData({
+        audioCurrentTime: currentTime,
+        audioPlayDuration: dur,
+        audioCurrentTimeText: that.formatAudioTime(currentTime),
+        audioDurationText: that.formatAudioTime(dur),
+      });
+    });
+
+    // 播放结束
+    innerAudioContext.onEnded(function() {
+      if (that.data.playingAudioId !== item.id) return;
+      that.setData({
+        isAudioPlaying: false,
+        audioCurrentTime: 0,
+        audioCurrentTimeText: '00:00',
+      });
+    });
+
+    // 播放被停止
+    innerAudioContext.onStop(function() {
+      that.setData({
+        isAudioPlaying: false,
+        audioCurrentTime: 0,
+        audioCurrentTimeText: '00:00',
+      });
+    });
+
+    innerAudioContext.onPlay(function() {
+      console.log('开始播放');
+      that.setData({ isAudioPlaying: true });
+    });
+
+    innerAudioContext.onPause(function() {
+      that.setData({ isAudioPlaying: false });
+    });
+
+    innerAudioContext.onError(function(res) {
+      console.log(res.errMsg);
+      console.log(res.errCode);
+    });
   },
   chatWithCust_Last(wechat_type,sender_id,receiver_id){
     try {
@@ -626,7 +723,13 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    innerAudioContext.stop();
+    innerAudioContext.offTimeUpdate();
+    innerAudioContext.offEnded();
+    innerAudioContext.offStop();
+    innerAudioContext.offPlay();
+    innerAudioContext.offPause();
+    innerAudioContext.offError();
   },
 
   /**

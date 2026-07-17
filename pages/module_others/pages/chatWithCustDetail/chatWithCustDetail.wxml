@@ -46,8 +46,20 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
             <view wx:if="{{item.msg_type==1}}">
                   {{item.msg}}
             </view>
-            <view  style="background-color: #fff;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
-                  <view data-item="{{item}}" bindtap="playAudio" class="voiceLeftImg" ></view><view style="margin-right: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view>
+            <!-- 收到的语音：非播放中显示简洁样式（点击整个气泡播放） -->
+            <view  data-item="{{item}}" bindtap="playAudio" style="background-color: #fff;padding:8px 14px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3&&playingAudioId!=item.id}}">
+                  <view class="voiceLeftImg" ></view><view style="margin-left: 8rpx;">{{item.duration}}″</view>
+            </view>
+            <!-- 收到的语音：正在播放时显示进度条（点击整个气泡暂停/播放） -->
+            <view  data-item="{{item}}" bindtap="playAudio" style="background-color: #fff;padding:8px 10px;display: flex;flex-direction: column;width: 80%;border-radius: 10rpx;" wx:elif="{{item.msg_type==3&&playingAudioId==item.id}}">
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                <view class="{{isAudioPlaying ? 'voicePauseLeftImg' : 'voiceLeftImg'}}" style="flex-shrink: 0;"></view>
+                <slider style="flex: 1;margin: 0 10rpx;" min="0" max="{{audioPlayDuration}}" value="{{audioCurrentTime}}" activeColor="#078B60" backgroundColor="#ddd" block-size="16" bindchange="onSliderChange" bindchanging="onSliderChanging"/>
+              </view>
+              <view style="display: flex;flex-direction: row;justify-content: space-between;font-size: 20rpx;color: #999;margin-top: 2rpx;padding: 0 4rpx;">
+                <text>{{audioCurrentTimeText}}</text>
+                <text>{{audioDurationText}}</text>
+              </view>
             </view>
           </view>
           <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;margin-left: 35rpx;border-radius: 10rpx;word-break: break-all;">
@@ -76,8 +88,20 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
             <view wx:if="{{item.msg_type==1}}">
               {{item.msg}}
             </view>
-            <view  style="background-color: #89d961;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
-              <view style="margin-left: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view><view data-item="{{item}}" bindtap="playAudio" class="voiceRightImg" ></view>
+            <!-- 发送的语音：非播放中显示简洁样式（点击整个气泡播放） -->
+            <view  data-item="{{item}}" bindtap="playAudio" style="background-color: #89d961;padding:8px 14px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3&&playingAudioId!=item.id}}">
+              <view style="margin-right: 8rpx;">{{item.duration}}″</view><view class="voiceRightImg" ></view>
+            </view>
+            <!-- 发送的语音：正在播放时显示进度条（点击整个气泡暂停/播放） -->
+            <view  data-item="{{item}}" bindtap="playAudio" style="background-color: #89d961;padding:8px 10px;display: flex;flex-direction: column;width: 80%;border-radius: 10rpx;" wx:elif="{{item.msg_type==3&&playingAudioId==item.id}}">
+              <view style="display: flex;flex-direction: row;align-items: center;">
+                <slider style="flex: 1;margin: 0 10rpx;" min="0" max="{{audioPlayDuration}}" value="{{audioCurrentTime}}" activeColor="#283F52" backgroundColor="rgba(255,255,255,0.6)" block-size="16" bindchange="onSliderChange" bindchanging="onSliderChanging"/>
+                <view class="{{isAudioPlaying ? 'voicePauseRightImg' : 'voiceRightImg'}}" style="flex-shrink: 0;"></view>
+              </view>
+              <view style="display: flex;flex-direction: row;justify-content: space-between;font-size: 20rpx;color: #555;margin-top: 2rpx;padding: 0 4rpx;">
+                <text>{{audioCurrentTimeText}}</text>
+                <text>{{audioDurationText}}</text>
+              </view>
             </view>
             <view wx:else="">
               {{item.msg}}
