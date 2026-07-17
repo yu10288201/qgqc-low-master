@@ -106,10 +106,8 @@ Page({
         },
         success: res => {
           if (res.data.code == 1000) {
-            let recordList = that.data.recordList
-            console.log(recordList,'recordlist')
+            let recordList = that.data.recordListSS
             let resList = res.data.data
-            console.log(resList,'reslist')
             if (resList && resList.length > 0) {
               let a = resList.concat(recordList)
               setTimeout(() => {
@@ -185,6 +183,8 @@ Page({
           if (res.data.code == 1000) {
             var  resList = res.data.data
             console.log('===== recordList 完整消息列表 =====', JSON.parse(JSON.stringify(resList)));
+            console.log('===== res 完整响应 =====', JSON.parse(JSON.stringify(res.data)));
+
             if(resList&&resList.length>0){
                 var newList=resList.concat(recordList);
                 that.setData({

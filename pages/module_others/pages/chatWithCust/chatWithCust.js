@@ -556,9 +556,12 @@ Page({
                 if (curPage && curPage.route && curPage.route.indexOf('chatWithCustDetail') >= 0) {
                     curPage.getNewData();
                     if (data.sender_id !== app.globalData.customerInf.id) {
-                        wx.vibrateShort({ type: 'light' });
                         wx.showToast({ title: '收到新消息', icon: 'none', duration: 1500 });
                     }
+                }
+                // 收到他人消息时震动提醒（列表页和详情页都生效）
+                if (data.sender_id !== app.globalData.customerInf.id) {
+                    wx.vibrateLong();
                 }
             } catch(e) {
                 console.error('chatWithCust WebSocket 消息解析失败', e);
