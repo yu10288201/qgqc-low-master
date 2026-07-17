@@ -32,7 +32,11 @@
 						</view>
 						<view style="display: flex;justify-content: flex-start;align-items: center;width: 100%;height: 70rpx;">
 							<view style="margin-bottom: 20rpx;font-size: 26rpx;width: 550rpx;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
-								{{item.lstWechatMsgRecord[0].msg}}
+								<block wx:if="{{item.lstWechatMsgRecord[0].msg_type == 1}}">{{item.lstWechatMsgRecord[0].msg}}</block>
+								<block wx:elif="{{item.lstWechatMsgRecord[0].msg_type == 2}}">[图片]</block>
+								<block wx:elif="{{item.lstWechatMsgRecord[0].msg_type == 3}}">[语音] {{item.lstWechatMsgRecord[0].duration}}″</block>
+								<block wx:elif="{{item.lstWechatMsgRecord[0].msg_type == 4}}">[视频]</block>
+								<block wx:else>{{item.lstWechatMsgRecord[0].msg}}</block>
 							</view>
 						</view>
 					</view>
