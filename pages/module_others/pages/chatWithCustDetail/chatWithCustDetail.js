@@ -25,6 +25,7 @@ Page({
     isLoading:true,//是否正在加载
     isOldLoading:false,//正在获取旧资料
     isNewLoading:false,//正在获取新资料
+    isAnchoring: false, // 是否正在执行scroll-into-view锚定，锚定期间屏蔽手动滚动干扰
   },
 
 
@@ -83,73 +84,15 @@ Page({
 
   },
   scroll(e) {
-    // 滚动到顶部附近时，用 _Page 分页加载更多历史消息
-    let that = this
-    if (that.data.scrollLoading == 1) {
-      return;
-    }
-    if (e.detail.scrollTop < 10) {
-      that.setData({
-        scrollLoading: 1
-      })
-      wx.showLoading({
-        title: '请稍后',
-      })
-      wx.request({
-        url: app.globalData.selectWechatMsgRecord_StaffToCustomer_Page,
-        data: {
-          page_index: that.data.pageIndex,
-          page_size: that.data.pageSize,
-          shop_id: app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0,
-          sender_id: app.globalData.customerInf.id,
-          receiver_id: that.data.custInfo.customer_id,
-        },
-        success: res => {
-          if (res.data.code == 1000) {
-            let recordList = that.data.recordListSS
-            let resList = res.data.data
-            if (resList && resList.length > 0) {
-              let a = resList.concat(recordList)
-              setTimeout(() => {
-                that.setData({
-                  recordList: a,
-                  pageId: 'page_' + (resList[resList.length - 1].id)
-                }, () => {
-                  if (resList.length >= that.data.pageSize) {
-                    that.setData({
-                      scrollLoading: 0,
-                      pageIndex: Number(that.data.pageIndex) + 1
-                    })
-                  } else {
-                    that.setData({ scrollLoading: 0 })
-                  }
-                  wx.hideLoading()
-                })
-              }, 500)
-            } else {
-              // 没有更多数据了
-              that.setData({ scrollLoading: 0 })
-              wx.hideLoading()
-            }
-          } else {
-            wx.showToast({ title: '加载失败: ' + (res.data.result || '未知错误'), icon: 'none' })
-            that.setData({ scrollLoading: 0 })
-            wx.hideLoading()
-          }
-        },
-        fail: err => {
-          console.error('_Page 请求失败:', err)
-          wx.showToast({ title: '网络异常', icon: 'none' })
-          that.setData({ scrollLoading: 0 })
-          wx.hideLoading()
-        }
-      })
-    }
+    // 记录当前滚动位置
+    this._scrollTop = e.detail.scrollTop;
   },
   getOldData(){
     var that=this;
     var isOldLoading=this.data.isOldLoading;
     if(isOldLoading==true){
+        // 如果已经在加载中，重置 scrollLoading 避免死锁
+        that.setData({ scrollLoading: 0 });
         return;
     }
     //max_id=0 传入服务器后，则会自动设置max_id为int的最大值。
@@ -176,9 +119,6 @@ Page({
           staff_id: that.data.custInfo.customer_id,
         },
         success: res => {
-            that.setData({
-                isOldLoading:false,
-            })
             console.log(res,'res')
           if (res.data.code == 1000) {
             var  resList = res.data.data
@@ -187,24 +127,40 @@ Page({
 
             if(resList&&resList.length>0){
                 var newList=resList.concat(recordList);
+                var current_page_id="page_"+resList[resList.length-1].id;
+                // 先设置数据，再在回调中更新 pageId 和加载状态
+                // 关键修复：不再定时清空 pageId，避免 scroll-into-view 被移除时滚动条跳动
                 that.setData({
                     recordList: newList,
+                }, () => {
+                  setTimeout(function(){
+                      that.setData({
+                          pageId: current_page_id,
+                          isOldLoading: false,
+                          scrollLoading: 0,
+                          isAnchoring: true, // 标记锚定中，scroll 事件会追踪用户是否离开锚点
+                      })
+                      that._anchorTargetTop = undefined; // 锚点目标位置未知，由 scroll 事件自然追踪
+                  }, 300)
                 })
-                var current_page_id="page_"+resList[resList.length-1].id;
-                setTimeout(function(){
-                    that.setData({
-                        pageId:current_page_id,
-                      })
-                  },300)
-                  that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
+                that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
             }else{
+                // 没有更多历史数据，锚到顶部占位元素
                 setTimeout(function(){
                     that.setData({
-                        pageId:"s2",
-                      })
-                  },300)
+                        pageId: "s2",
+                        isOldLoading: false,
+                        scrollLoading: 0,
+                        isAnchoring: true,
+                    })
+                    that._anchorTargetTop = undefined;
+                }, 300)
             }
           } else {
+            that.setData({
+                isOldLoading: false,
+                scrollLoading: 0,
+            })
             wx.showModal({
               title: '提示',
               content: '异常'+res.data.result,
@@ -215,14 +171,12 @@ Page({
         fail: res => {
             that.setData({
                 isOldLoading:false,
+                scrollLoading: 0,
             })
             wx.showModal({
                 title: '提示',
                 content: '网络异常',
                 showCancel: false,
-            })
-            that.setData({
-                scrollLoading: 0,
             })
         }
       })
@@ -259,8 +213,10 @@ Page({
                 var current_page_id="page_"+resList[resList.length-1].id;
                 setTimeout(function(){
                     that.setData({
-                        pageId:current_page_id,
-                      })
+                        pageId: current_page_id,
+                        isAnchoring: true,
+                    })
+                    that._anchorTargetTop = undefined;
                   },300)
             }
             that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
@@ -289,8 +245,13 @@ Page({
   },
   scrollToUpper:function(e){
     console.log("scroll-view 拉取到最顶部")
-    //到达顶部后，向下滚动10px,使视图可以再次滚动
     var that=this;
+    // 防抖：如果正在加载旧数据，忽略重复触发
+    if (that.data.isOldLoading || that.data.scrollLoading == 1) {
+      console.log("正在加载中，忽略重复触发");
+      return;
+    }
+    that.setData({ scrollLoading: 1 });
     this.getOldData();
   },
   // 发送
