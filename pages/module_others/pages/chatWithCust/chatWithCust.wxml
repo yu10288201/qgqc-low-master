@@ -7,7 +7,7 @@
 <!-- <view style="margin-top: {{swiperTop}}px;height: {{swiperHeight}}px;width: 100%;"> -->
 <swiper style="margin-top: {{swiperTop}}px;height: {{swiperHeight}}px;width: 100%;" current="{{pageIndex}}" bindchange="pageChangeEvent">
 	<swiper-item style="height: 100%;width: 100%;">
-		<scroll-view style="height: 100%;width: 100%;" scroll-y>
+		<scroll-view style="height: 100%;width: 100%;" scroll-y lower-threshold="50" bindscrolltolower="loadNextMsgPage">
 			<block wx:if="{{msgList.length > 0}}">
         <view wx:for="{{msgList}}" data-item="{{item}}" bindtap="chatWithCustDetail" style="height: 140rpx;display: flex;flex-direction: row;justify-content: center;align-items: center;"
         wx:if="{{item.customer_name != '未知'}}">

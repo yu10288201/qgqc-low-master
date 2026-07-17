@@ -1,11 +1,9 @@
 // pages/shop_manage/pages/chatWithCustDetail/chatWithCustDetail.js
-
 const recorder = wx.getRecorderManager()
 const innerAudioContext = wx.createInnerAudioContext()
 const app = getApp()
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -34,8 +32,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
-    // console.log(JSON.parse(options.custInfo))
     var that=this;
     this.setData({
       custInfo: JSON.parse(options.custInfo),
@@ -50,9 +46,7 @@ Page({
       pageHeight: sis.safeArea.bottom - (sis.statusBarHeight + (mbbc.height + (mbbc.top - sis.statusBarHeight) * 2)) - 50,
       pageTop: sis.statusBarHeight + (mbbc.height + (mbbc.top - sis.statusBarHeight) * 2)
     })
-
     that.getOldData();
-
     //事件监听
     recorder.onStart(() => {
         console.info('开始录音');
@@ -89,10 +83,7 @@ Page({
 
   },
   scroll(e) {
-    console.log("scroll")
-    console.log(e)
-    return;
-
+    // 滚动到顶部附近时，用 _Page 分页加载更多历史消息
     let that = this
     if (that.data.scrollLoading == 1) {
       return;
@@ -101,74 +92,63 @@ Page({
       that.setData({
         scrollLoading: 1
       })
-      var query = wx.createSelectorQuery();
-      query.select('#scrollview').boundingClientRect()
-      query.exec(function (resHeight) {
-        wx.showLoading({
-          title: '请稍后',
-        })
-        wx.request({
-          url: app.globalData.selectWechatMsgRecord_StaffToCustomer_Page,
-        //   url: 'http://localhost:8080/evaluation/selectWechatMsgRecord_StaffToCustomer_Page',
-          data: {
-            page_index: that.data.pageIndex,
-            page_size: that.data.pageSize,
-            sender_id: app.globalData.customerInf.id,
-            shop_id: app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0,
-            receiver_id: that.data.custInfo.customer_id,
-          },
-          success: res => {
-            console.log(res);
-            if (res.data.code == 1000) {
-              let recordList = that.data.recordList
-              let resList = res.data.data
+      wx.showLoading({
+        title: '请稍后',
+      })
+      wx.request({
+        url: app.globalData.selectWechatMsgRecord_StaffToCustomer_Page,
+        data: {
+          page_index: that.data.pageIndex,
+          page_size: that.data.pageSize,
+          shop_id: app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0,
+          sender_id: app.globalData.customerInf.id,
+          receiver_id: that.data.custInfo.customer_id,
+        },
+        success: res => {
+          if (res.data.code == 1000) {
+            let recordList = that.data.recordList
+            console.log(recordList,'recordlist')
+            let resList = res.data.data
+            console.log(resList,'reslist')
+            if (resList && resList.length > 0) {
               let a = resList.concat(recordList)
-
-
-              setTimeout(() => {  //自行选择是否定时进行加载
+              setTimeout(() => {
                 that.setData({
-                 recordList: a,
-                  pageId: 'page_' + (resList[resList.length-1].id)
-                }, () => {                
+                  recordList: a,
+                  pageId: 'page_' + (resList[resList.length - 1].id)
+                }, () => {
                   if (resList.length >= that.data.pageSize) {
                     that.setData({
                       scrollLoading: 0,
                       pageIndex: Number(that.data.pageIndex) + 1
                     })
+                  } else {
+                    that.setData({ scrollLoading: 0 })
                   }
                   wx.hideLoading()
                 })
-              }, 1000)
-              
+              }, 500)
             } else {
-              wx.showModal({
-                title: '提示',
-                content: '网络异常',
-                showCancel: false,
-              })
-              that.setData({
-                scrollLoading: 0,
-              })
+              // 没有更多数据了
+              that.setData({ scrollLoading: 0 })
               wx.hideLoading()
             }
-          },
-          fail: res => {
-            wx.showModal({
-              title: '提示',
-              content: '网络异常',
-              showCancel: false,
-            })
-            that.setData({
-              scrollLoading: 0,
-            })
+          } else {
+            wx.showToast({ title: '加载失败: ' + (res.data.result || '未知错误'), icon: 'none' })
+            that.setData({ scrollLoading: 0 })
             wx.hideLoading()
           }
-        })
+        },
+        fail: err => {
+          console.error('_Page 请求失败:', err)
+          wx.showToast({ title: '网络异常', icon: 'none' })
+          that.setData({ scrollLoading: 0 })
+          wx.hideLoading()
+        }
       })
     }
   },
   getOldData(){
-
     var that=this;
     var isOldLoading=this.data.isOldLoading;
     if(isOldLoading==true){
@@ -177,6 +157,7 @@ Page({
     //max_id=0 传入服务器后，则会自动设置max_id为int的最大值。
     var max_id=0;
     var recordList = that.data.recordList;
+    console.log(recordList,'recordlist')
     if(recordList&&recordList.length>0){
         var last_index=0;
         max_id=recordList[0].id;
@@ -200,9 +181,10 @@ Page({
             that.setData({
                 isOldLoading:false,
             })
-            console.log(res);
+            console.log(res,'res')
           if (res.data.code == 1000) {
             var  resList = res.data.data
+            console.log('===== recordList 完整消息列表 =====', JSON.parse(JSON.stringify(resList)));
             if(resList&&resList.length>0){
                 var newList=resList.concat(recordList);
                 that.setData({
@@ -246,10 +228,7 @@ Page({
       })
   },
   getNewData(){
-
-    console.log("getNewData")
     var that=this;
-    
     //max_id=0 传入服务器后，则会自动设置max_id为int的最大值。
     var min_id=0;
     var recordList = that.data.recordList;
@@ -308,25 +287,12 @@ Page({
         }
       })
   },
-
   scrollToUpper:function(e){
     console.log("scroll-view 拉取到最顶部")
     //到达顶部后，向下滚动10px,使视图可以再次滚动
     var that=this;
     this.getOldData();
-    // setTimeout(function(){
-    //     that.setData({
-    //         pageId:"s2",
-    //       })
-    //   },800)
-
-    
-    
-    // this.setData({
-    //   scrollTopPos:2000,
-    // })
   },
- 
   // 发送
   addSendRecord(e) {
     let that = this
@@ -346,20 +312,14 @@ Page({
     return;
   },
   sendMsgExec(msg_type,msg,duration){
-
     var that=this;
-
-
-    //var wechat_type=that.data.custInfo.bind_person_type == 1 ? 3 : 2;
     var wechat_type=3;
-
     var shop_id=that.data.custInfo.shopId ? that.data.custInfo.shop_id : app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id :  0;
     var sender_id=app.globalData.customerInf.id;
     var receiver_id=that.data.custInfo.customer_id;
     //msg_type 消息类型 1-文字 2-图片 3-语音 4-视频
     //msg 消息内容
     //wechat_type 聊天类型： 1-店员->客户 2-客户->店员 3-客户->客户
-
     var data={
       shop_id: shop_id,
       msg_type: msg_type,

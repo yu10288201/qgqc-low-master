@@ -12,13 +12,17 @@ Page({
      */
     data: {
         pageIndex: 0,
-        phone:'',//手机号
-        nickname:'',//昵称
+        phone:'',
+        nickname:'',
         tmp_nick_name:'',
-        avatarUrl: defaultAvatarUrl,//默认头像
+        avatarUrl: defaultAvatarUrl,
         msgList: [],
-        total_is_not_read_count:0,//未读消息数
-        _pollTimer: null,//轮询定时器
+        total_is_not_read_count:0,
+        msgPageIndex: 0,
+        hasNextMsgPage: true,
+        isLoadingMsgPage: false,
+        _pollTimer: null,
+        _socketTask: null,
     },
 
     /**
@@ -44,82 +48,95 @@ Page({
        
         this.initMsg();
         this.selectCustomerInfByOpenIdNew();
-
+        this.connectWebSocket();
     },
 
     sortMsgListByLastTime(msgList) {
       return msgList.sort((a, b) => {
           const timeA = a.lstWechatMsgRecord && a.lstWechatMsgRecord.length > 0
-              ? new Date(a.lstWechatMsgRecord[0].create_time).getTime()
+              ? new Date(a.lstWechatMsgRecord[0].create_time.replace(' ', 'T')).getTime()
               : 0;
           const timeB = b.lstWechatMsgRecord && b.lstWechatMsgRecord.length > 0
-              ? new Date(b.lstWechatMsgRecord[0].create_time).getTime()
+              ? new Date(b.lstWechatMsgRecord[0].create_time.replace(' ', 'T')).getTime()
               : 0;
           return timeB - timeA;
       });
   },
+    getTotalUnreadCount(msgList) {
+        return msgList.reduce((total, msg) => {
+            const records = msg.lstWechatMsgRecord || [];
+            return total + (records.length > 0 ? (records[0].is_not_read_count || 0) : 0);
+        }, 0);
+    },
+    formatMsgList(msgList) {
+        msgList.forEach(msg => {
+            const records = msg.lstWechatMsgRecord || [];
+            if (records.length > 0) {
+                msg.time = at.weChatTimeFormat(records[0].create_time);
+            }
+        });
+        return msgList;
+    },
     initMsg(silent) {
-        console.log("initMsg")
-        let that = this
-        // 静默刷新时不显示 loading，避免轮询时频繁闪烁
-        if (!silent) {
-            wx.showLoading({
-                title: '请稍后',
-            })
+        this.loadMsgPage(1, true, silent);
+    },
+    loadNextMsgPage() {
+        if (this.data.isLoadingMsgPage || !this.data.hasNextMsgPage) {
+            return;
         }
-        var shop_id = app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0;
-        var bind_person_id = app.globalData.customerInf.id;
-
-        console.log("shop_id:"+shop_id);
-        console.log("bind_person_id:" + app.globalData.customerInf.id);
+        this.loadMsgPage(this.data.msgPageIndex + 1, false, true);
+    },
+    loadMsgPage(pageIndex, replace, silent) {
+        if (this.data.isLoadingMsgPage || (!replace && !this.data.hasNextMsgPage)) {
+            return;
+        }
+        const that = this;
+        this.setData({ isLoadingMsgPage: true });
+        if (replace && !silent) {
+            wx.showLoading({ title: '请稍后' });
+        }
+        const shop_id = app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0;
+        const bind_person_id = app.globalData.customerInf.id;
         wx.request({
-            url: app.globalData.selectWeChatMsgRecord_QGQC_Customer,
-            // url: 'http://localhost:8080/evaluation/selectWeChatMsgRecord_QGQC_Customer',
+            url: app.globalData.selectWeChatMsgRecord_QGQC_Customer_Page,
             data: {
-                shop_id: shop_id,
-                bind_person_id: bind_person_id,
+                shop_id,
+                bind_person_id,
+                page_index: pageIndex,
             },
             success: res => {
+                console.log('会话列表分页接口响应:', res.data);
                 if (res.data.code == 1000) {
-                    let msgList = res.data.data;
-                    var total_is_not_read_count = 0;
-                    for (let msg of msgList) {
-                        if(msg.lstWechatMsgRecord.length > 0){
-                            total_is_not_read_count = total_is_not_read_count + msg.lstWechatMsgRecord[0].is_not_read_count;
-                            msg.time = at.weChatTimeFormat(msg.lstWechatMsgRecord[0].create_time)
-                        }
-                    }
-                    console.log(msgList,'msgList')
-                    that.sortMsgListByLastTime(msgList);
+                    const pageData = res.data.data || {};
+                    const pageList = that.formatMsgList(Array.isArray(pageData.list) ? pageData.list : []);
+                    const msgList = replace ? pageList : that.data.msgList.concat(pageList);
                     that.setData({
                         msgList,
-                        total_is_not_read_count,
-                    })
-                    if (!silent) {
-                        wx.hideLoading()
+                        total_is_not_read_count: that.getTotalUnreadCount(msgList),
+                        msgPageIndex: pageData.page_index || pageIndex,
+                        hasNextMsgPage: pageData.has_next === true,
+                    });
+                    if (!replace) {
+                        console.log('会话列表分页结果:', pageData);
+                        wx.showToast({ title: '分页加载成功', icon: 'success' });
                     }
-                } else {
-                    if (!silent) {
-                        wx.showModal({
-                            title: '提示',
-                            content: '网络异常',
-                            showCancel: false
-                        })
-                        wx.hideLoading()
-                    }
+                } else if (!silent) {
+                    wx.showModal({ title: '提示', content: res.data.result || '分页接口请求失败', showCancel: false });
                 }
             },
-            fail: res => {
+            fail: err => {
+                console.error('会话列表分页接口请求失败:', err);
                 if (!silent) {
-                    wx.showModal({
-                        title: '提示',
-                        content: '网络异常',
-                        showCancel: false
-                    })
-                    wx.hideLoading()
+                    wx.showModal({ title: '提示', content: '分页接口网络请求失败', showCancel: false });
+                }
+            },
+            complete: () => {
+                that.setData({ isLoadingMsgPage: false });
+                if (replace && !silent) {
+                    wx.hideLoading();
                 }
             }
-        })
+        });
     },
     selectWechatMsgRecord_Last(wechat_type,sender_id,receiver_id) {
         //获取最新的消息
@@ -156,8 +173,7 @@ Page({
                         }
 
                         that.sortMsgListByLastTime(msgList);
-                        console.log("msgList:",msgList);
-                        console.log('1231211')
+                        console.log('123')
                         that.setData({
                             msgList:msgList,
                             total_is_not_read_count:total_is_not_read_count,
@@ -479,22 +495,26 @@ Page({
     onShow() {
         // 每次页面显示时刷新会话列表
         this.initMsg();
-        // 启动轮询：每5秒静默拉取最新消息列表（WebSocket 的兜底方案）
-        this._startPolling();
+        // 轮询已注释，改为 WebSocket 推送刷新
+        // this._startPolling();
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide() {
-        this._stopPolling();
+        // this._stopPolling();
     },
 
     /**
      * 生命周期函数--监听页面卸载
      */
     onUnload() {
-        this._stopPolling();
+        // this._stopPolling();
+        if (this.data._socketTask) {
+            this.data._socketTask.close({ code: 1000, reason: '页面退出' });
+            this.data._socketTask = null;
+        }
     },
 
     /**
@@ -508,6 +528,53 @@ Page({
         setTimeout(function () {
             wx.stopPullDownRefresh();
         }, 1500);
+    },
+
+    connectWebSocket() {
+        var that = this;
+        var userId = app.globalData.customerInf.id;
+        var socketTask = wx.connectSocket({
+            url: 'wss://mb.fsmbdlkj.com/qiaoxin/ws/chat/' + userId,
+            success: function() {
+                console.log('chatWithCust WebSocket 连接请求成功');
+            }
+        });
+
+        socketTask.onOpen(function() {
+            console.log('进入乔信建立WebSocket, ws:/' + userId);
+        });
+
+        socketTask.onMessage(function(res) {
+            try {
+                var data = JSON.parse(res.data);
+                if (data.code === 9999) return;
+                // 刷新会话列表
+                that.selectWechatMsgRecord_Last(data.wechat_type, data.sender_id, data.receiver_id);
+                // 如果当前在聊天详情页，通知详情页刷新消息列表
+                var pages = getCurrentPages();
+                var curPage = pages[pages.length - 1];
+                if (curPage && curPage.route && curPage.route.indexOf('chatWithCustDetail') >= 0) {
+                    curPage.getNewData();
+                    if (data.sender_id !== app.globalData.customerInf.id) {
+                        wx.vibrateShort({ type: 'light' });
+                        wx.showToast({ title: '收到新消息', icon: 'none', duration: 1500 });
+                    }
+                }
+            } catch(e) {
+                console.error('chatWithCust WebSocket 消息解析失败', e);
+            }
+        });
+
+        socketTask.onClose(function() {
+            console.log('chatWithCust WebSocket 已断开');
+        });
+
+        socketTask.onError(function(err) {
+            console.error('chatWithCust WebSocket 错误', err);
+        });
+
+        this.data._socketTask = socketTask;
+        app.globalData.chatSocketTask = socketTask;
     },
 
     /**
@@ -535,7 +602,7 @@ Page({
      * 页面上拉触底事件的处理函数
      */
     onReachBottom() {
-
+        this.loadNextMsgPage();
     },
 
     /**

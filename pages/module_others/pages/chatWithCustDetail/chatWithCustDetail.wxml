@@ -1,11 +1,32 @@
+<wxs module="timeFormat">
+  function formatCreateTime(createTime) {
+    if (!createTime) return '';
+    var parts = createTime.split(' ');
+    if (parts.length < 2) return createTime;
+    var dateParts = parts[0].split('-');
+    var timePart = parts[1];
+    var timeParts = timePart.split(':');
+    if (dateParts.length < 3 || timeParts.length < 3) return createTime;
+    var year = dateParts[0];
+    var month = parseInt(dateParts[1]);
+    var day = parseInt(dateParts[2]);
+    var hour = parseInt(timeParts[0]);
+    var min = parseInt(timeParts[1]);
+    var sec = parseInt(timeParts[2].split('.')[0]);
+    return createTime.substring(0, 19);
+  }
+  module.exports = {
+    formatCreateTime: formatCreateTime
+  };
+</wxs>
 <view class="return_out" style="height: {{return_out_height}}px;top: {{return_out_top}}px;border-bottom: #eeeeee 1rpx solid;" bindtap="returnBack">
   <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
   <view>{{custInfo.customer_name}}</view>
   <view class="return" style="color:#FFF">0</view>
 </view>
-<scroll-view bindtap="showKeyboardDown" 
-style="background-color: #ededed;margin-top: {{pageTop}}px;height: {{keyboardUp ? pageHeight - keyboardHeight : pageHeight}}px;width: 100%;" scroll-y="true" 
-scroll-into-view="{{pageId}}" 
+<scroll-view bindtap="showKeyboardDown"
+style="background-color: #ededed;margin-top: {{pageTop}}px;height: {{keyboardUp ? pageHeight - keyboardHeight : pageHeight}}px;width: 100%;" scroll-y="true"
+scroll-into-view="{{pageId}}"
 bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
 <view wx:if="{{isOldLoading==true}}" class="box" >
   <view class="loading1"></view>
@@ -14,83 +35,85 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
 <view id="s2" style="height: 1rpx;"></view>
 
   <view style="display: flex;width: 100%;justify-content: center;align-items: center;flex-direction: column;" wx:for="{{recordList}}" wx:key="index">
-   
-    <view style="width: 95%;display: flex;justify-content: flex-start;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:if="{{item.sender_id !=customerInf.id}}">
-      <!-- <image style="width: 80rpx;height: 80rpx;border-radius: 10rpx;" src="{{custInfo.avatar_url}}"></image> -->
-      <!-- <image class="avatar" mode="scaleToFill"></image> -->
-      
-      <image wx:if="{{custInfo.avatar_url&&custInfo.avatar_url!=''}}" class="avatar" mode="scaleToFill" src="{{custInfo.avatar_url}}"></image>
-      <view wx:else class="avatar"></view>
-      <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;">
-        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-right-color: #fff;top: 20rpx;left: 0;"></view>
-        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: white;margin-left: 35rpx;border-radius: 10rpx;padding: 20rpx;word-break: break-all;">
-          <view wx:if="{{item.msg_type==1}}">
-                {{item.msg}}
-          </view>
-          <view  style="background-color: #fff;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
-                <view data-item="{{item}}" bindtap="playAudio" class="voiceLeftImg" ></view><view style="margin-right: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view>
-          </view>
-        </view>
-        <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;margin-left: 35rpx;border-radius: 10rpx;word-break: break-all;">
-          
-          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:if="{{item.msg_type==2}}">
-            <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
-          </view>
 
-          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:elif="{{item.msg_type==4}}">
-            <video 
-                src="{{item.msg}}"
-                class="list-video"
-            >
-            </video>
+    <view style="width: 95%;padding-bottom: 4rpx;" id="page_{{item.id}}" wx:if="{{item.sender_id !=customerInf.id}}">
+      <view style="display: flex;justify-content: flex-start;">
+        <image wx:if="{{custInfo.avatar_url&&custInfo.avatar_url!=''}}" class="avatar" mode="scaleToFill" src="{{custInfo.avatar_url}}"></image>
+        <view wx:else class="avatar"></view>
+        <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;">
+          <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-right-color: #fff;top: 20rpx;left: 0;"></view>
+          <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: white;margin-left: 35rpx;border-radius: 10rpx;padding: 20rpx;word-break: break-all;">
+            <view wx:if="{{item.msg_type==1}}">
+                  {{item.msg}}
+            </view>
+            <view  style="background-color: #fff;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
+                  <view data-item="{{item}}" bindtap="playAudio" class="voiceLeftImg" ></view><view style="margin-right: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view>
+            </view>
           </view>
+          <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;margin-left: 35rpx;border-radius: 10rpx;word-break: break-all;">
 
+            <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:if="{{item.msg_type==2}}">
+              <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
+            </view>
+
+            <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-start;" wx:elif="{{item.msg_type==4}}">
+              <video
+                  src="{{item.msg}}"
+                  class="list-video"
+              >
+              </video>
+            </view>
+
+          </view>
         </view>
       </view>
+      <view style="font-size: 22rpx;color: #999;margin-top: 2rpx;padding-bottom: 16rpx;padding-left: 90rpx;">{{timeFormat.formatCreateTime(item.create_time)}}</view>
     </view>
-    <view style="width: 95%;display: flex;justify-content: flex-end;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:else>
-      
-      <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;justify-content: flex-end;">
-        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: #89d961;margin-right: 35rpx;border-radius: 10rpx;padding: 20rpx;word-break: break-all;">
-          <view wx:if="{{item.msg_type==1}}">
-            {{item.msg}}
+    <view style="width: 95%;padding-bottom: 4rpx;" id="page_{{item.id}}" wx:else>
+      <view style="display: flex;justify-content: flex-end;">
+        <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;justify-content: flex-end;">
+          <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: #89d961;margin-right: 35rpx;border-radius: 10rpx;padding: 20rpx;word-break: break-all;">
+            <view wx:if="{{item.msg_type==1}}">
+              {{item.msg}}
+            </view>
+            <view  style="background-color: #89d961;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
+              <view style="margin-left: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view><view data-item="{{item}}" bindtap="playAudio" class="voiceRightImg" ></view>
+            </view>
+            <view wx:else="">
+              {{item.msg}}
+            </view>
           </view>
-          <view  style="background-color: #89d961;padding:1px 8px 1px 8px;display: flex;flex-direction: row;align-items: center;" wx:elif="{{item.msg_type==3}}">
-            <view style="margin-left: {{(item.duration%61+5)*2}}rpx;">{{item.duration}}″</view><view data-item="{{item}}" bindtap="playAudio" class="voiceRightImg" ></view>
+          <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;border-radius: 10rpx;margin-right: 20rpx;word-break: break-all;">
+            <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:if="{{item.msg_type==2}}">
+              <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
+            </view>
+
+            <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:elif="{{item.msg_type==4}}">
+              <video
+                  src="{{item.msg}}"
+                  class="list-video"
+              >
+              </video>
+            </view>
+            <view wx:else="">
+              {{item.msg}}
+            </view>
           </view>
-          <view wx:else="">
-            {{item.msg}}
-          </view>
+
+
+          <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-left-color: #89d961;top: 20rpx;right: 0;"></view>
         </view>
-        <view wx:if="{{item.msg_type==2||item.msg_type==4}}" style="max-width: 77%;width:77%;border-radius: 10rpx;margin-right: 20rpx;word-break: break-all;">
-          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:if="{{item.msg_type==2}}">
-            <image class="list-image" src="{{item.msg}}" data-bigimage='{{item.msg}}' bindtap="showBigPhoto" mode="widthFix"></image>
-          </view>
-
-          <view style="width:100%;display: flex;flex-direction: row;justify-content: flex-end;" wx:elif="{{item.msg_type==4}}">
-            <video 
-                src="{{item.msg}}"
-                class="list-video"
-            >
-            </video>
-          </view>
-          <view wx:else="">
-            {{item.msg}}
-          </view>
-        </view>
 
 
-        <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="position: absolute;width: 0rpx;height: 0rpx;border: 20rpx solid transparent;border-left-color: #89d961;top: 20rpx;right: 0;"></view>
+        <!-- <image style="width: 80rpx;height: 80rpx;border-radius: 10rpx;" src="{{customerInf.avatarUrl}}"></image> -->
+        <image wx:if="{{customerInf&&customerInf.avatarUrl&&customerInf.avatarUrl!=''}}" class="avatar" mode="scaleToFill" src="{{customerInf.avatarUrl}}"></image>
+        <view wx:else class="avatar"></view>
       </view>
-
-
-      <!-- <image style="width: 80rpx;height: 80rpx;border-radius: 10rpx;" src="{{customerInf.avatarUrl}}"></image> -->
-      <image wx:if="{{customerInf&&customerInf.avatarUrl&&customerInf.avatarUrl!=''}}" class="avatar" mode="scaleToFill" src="{{customerInf.avatarUrl}}"></image>
-      <view wx:else class="avatar"></view>
+      <view style="font-size: 22rpx;color: #999;margin-top: 2rpx;padding-bottom: 16rpx;padding-right: 90rpx;text-align: right;">{{timeFormat.formatCreateTime(item.create_time)}}</view>
     </view>
 
   </view>
-  
+
 </scroll-view>
 <view class="{{keyboardUp || utilUp ? 'keyboardUp' : keyboardDownClass }}" style="--keyboardHeight--:{{utilUp ? 200+tabBarHeight : keyboardHeight}}px;--tabBarHeight--:{{tabBarHeight}}px;background-color: #f7f7f7;position: fixed;bottom: {{tabBarHeight}}px;width: 100%;display: flex;flex-direction: row;align-items: flex-end; border-top: #eeeeee 1rpx solid; font-size: 26rpx;min-height: 50px;">
   <view class="{{keyboardType ? 'voiceTypeImg' : 'textTypeImg'}}" bindtap="changeKeyboardType"></view>
@@ -117,10 +140,6 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
       <view style="height: 50rpx;width: 50rpx;margin: 0;" class="videoImg"></view>
     </view>
     <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">视频</view>
-  </view>
-  <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
-    <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
-    <!-- <view style="font-size: 24rpx;margin-top: 20rpx;color: #6f6f6f;">拍摄</view> -->
   </view>
   <view style="display: flex;flex-direction: column;justify-content: center;align-items: center;width: 25%;height: 90px;">
     <!-- <view style="height: 100rpx;width: 100rpx;background-color: #FFF;border-radius: 20rpx;display: flex;justify-content: center;align-items: center;"><view style="height: 50rpx;width: 50rpx;margin: 0;" class="cameraImg"></view></view> -->
