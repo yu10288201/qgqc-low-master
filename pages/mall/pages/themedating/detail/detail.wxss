@@ -45,7 +45,7 @@ page {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 14rpx 0;
+  padding: 8rpx 0;
   border-bottom: 0.5rpx solid #f5f5f5;
 }
 
@@ -64,6 +64,7 @@ page {
   font-size: 30rpx;
   color: #333;
   flex: 1;
+  font-weight: bold;
 }
 
 .price-text {
@@ -248,6 +249,15 @@ page {
   font-size: 28rpx;
   color: #555;
   line-height: 1.8;
+}
+
+.rule-content {
+  display: block;
+  font-size: 28rpx;
+  color: #555;
+  line-height: 1.8;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .func-list {

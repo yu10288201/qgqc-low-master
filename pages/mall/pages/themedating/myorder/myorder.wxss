@@ -7,9 +7,13 @@ page {
 }
 
 .search-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
   background-color: #eed6ba;
   padding: 16rpx 24rpx;
-  margin-bottom: 16rpx;
   width: 100%;
   box-sizing: border-box;
 }

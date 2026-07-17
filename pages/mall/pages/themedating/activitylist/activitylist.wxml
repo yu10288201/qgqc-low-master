@@ -4,6 +4,16 @@
 
     <!-- 搜索区 -->
     <view class="search-panel">
+      <!-- 活动编号 活动类型 同一行 -->
+      <view class="search-row">
+        <text class="search-label">活动编号：</text>
+        <text class="readonly-text" style="margin-right:16rpx;">{{activityNo || '暂无'}}</text>
+        <text class="search-label">活动类型：</text>
+        <scroll-view scroll-x class="readonly-scroll">
+          <text class="readonly-text">{{activityType == 1 ? 'KTV' : activityType == 2 ? '旅游' : activityType == 3 ? '美食' : '暂无'}}</text>
+        </scroll-view>
+      </view>
+
       <!-- 活动名称 -->
       <view class="search-row">
         <text class="search-label">活动名称：</text>
@@ -25,14 +35,6 @@
         <text class="search-label">活动时间：</text>
         <scroll-view scroll-x class="readonly-scroll">
           <text class="readonly-text">{{searchDateStart || '暂无'}}{{searchDateEnd ? ' - ' + searchDateEnd : ''}}</text>
-        </scroll-view>
-      </view>
-
-      <!-- 活动类型 -->
-      <view class="search-row">
-        <text class="search-label">活动类型：</text>
-        <scroll-view scroll-x class="readonly-scroll">
-          <text class="readonly-text">{{activityType == 1 ? 'KTV' : activityType == 2 ? '旅游' : activityType == 3 ? '美食' : '暂无'}}</text>
         </scroll-view>
       </view>
 
@@ -218,6 +220,12 @@
         <view wx:if="{{activityList.length > 0}}">
           <view class="activity-card" wx:for="{{activityList}}" wx:key="id">
             <view class="card-row">
+              <text class="card-label">活动编号：</text>
+              <text class="card-text" style="flex:none; margin-right:16rpx;">{{item.activityNo || '暂无'}}</text>
+              <text class="card-label">活动类型：</text>
+              <text class="card-text">{{item.activityType == 1 ? 'KTV' : item.activityType == 2 ? '旅游' : item.activityType == 3 ? '美食' : '暂无'}}</text>
+            </view>
+            <view class="card-row">
               <text class="card-label">活动名称：</text>
               <text class="card-text">{{item.title}}</text>
             </view>
@@ -232,10 +240,6 @@
               <scroll-view scroll-x class="card-scroll" style="min-width:0;">
                 <text class="card-scroll-text">{{item.activityDateStart || '时间待定'}}{{item.activityDateEnd ? ' - ' + item.activityDateEnd : ''}}</text>
               </scroll-view>
-            </view>
-            <view class="card-row">
-              <text class="card-label">活动类型：</text>
-              <text class="card-text">{{item.activityType == 1 ? 'KTV' : item.activityType == 2 ? '旅游' : item.activityType == 3 ? '美食' : '暂无'}}</text>
             </view>
             <view class="card-row">
               <text class="card-label">活动费用：</text>
