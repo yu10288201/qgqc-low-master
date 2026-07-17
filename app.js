@@ -450,6 +450,7 @@ App({
         updateWechatMsgRecord_IsRead:'https://mb.fsmbdlkj.com/qiaoxin/updateWechatMsgRecord_IsRead',//修改当前状态
         selectWechatMsgRecord_Last:'https://mb.fsmbdlkj.com/qiaoxin/selectWechatMsgRecord_Last',//获取最后一条消息
         selectWeChatMsgRecord_QGQC_Customer:'https://mb.fsmbdlkj.com/qiaoxin/selectWeChatMsgRecord_QGQC_Customer',
+        selectWeChatMsgRecord_QGQC_Customer_Page:'https://mb.fsmbdlkj.com/qiaoxin/selectWeChatMsgRecord_QGQC_Customer_Page',
         selectMallPlatformTotaAmountData:serverConfig.url + "/evaluation/mall/selectMallPlatformTotaAmountData",
         //顾客互绑
         selectShareCardInf: serverConfig.url + "/evaluation/selectShareCardInf",
