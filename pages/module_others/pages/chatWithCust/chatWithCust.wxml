@@ -1,6 +1,6 @@
 <view class="return_out" style="height: {{return_out_height}}px;top: {{return_out_top}}px;border-bottom: #eeeeee 1rpx solid;" bindtap="returnBack">
 	<image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" />
-	<view>客户沟通</view>
+	<view>乔信</view>
 	<!-- <image class="return" src="https://smp-south-china.oss-cn-shenzhen.aliyuncs.com/zsfiles/IMG/切瓜切菜/mine/jiantou1.png" /> -->
 	<view class="return" style="color:#FFF">0</view>
 </view>
@@ -41,10 +41,10 @@
 		</scroll-view>
 	</swiper-item>
 	<swiper-item style="height: 100%;width: 100%;">
-		通讯录
+		  好友列表
 	</swiper-item>
-    <swiper-item style="height: 100%;width: 100%;">
-		绑客
+  <swiper-item style="height: 100%;width: 100%;">
+		  活动内容
 	</swiper-item>
 	<swiper-item style="height: 100%;width: 100%;">
 	    
@@ -131,15 +131,15 @@
         </view>
         
 
-		<view style="color: {{pageIndex == 0 ? '#0099A2' : '#000'}};">叮客</view>
+		<view style="color: {{pageIndex == 0 ? '#0099A2' : '#000'}};">用户列表</view>
 	</view>
 	<view bindtap="pageChangeEvent" data-current="1" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
 		<view class="{{pageIndex == 1 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
-		<view style="color: {{pageIndex == 1 ? '#0099A2' : '#000'}};">通讯录</view>
+		<view style="color: {{pageIndex == 1 ? '#0099A2' : '#000'}};">好友</view>
 	</view>
     <view bindtap="pageChangeEvent" data-current="2" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
 		<view class="{{pageIndex == 2 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
-		<view style="color: {{pageIndex == 2 ? '#0099A2' : '#000'}};">叮友</view>
+		<view style="color: {{pageIndex == 2 ? '#0099A2' : '#000'}};">更多</view>
 	</view>
 	<view bindtap="pageChangeEvent" data-current="3" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
 		<view class="{{pageIndex == 3 ? 'meFillImg' : 'meImg'}}"></view>

@@ -151,16 +151,16 @@ Page({
             },
             success: res => {
                 if (res.data.code == 1000) {
-                    if(res.data.data!=null&&res.data.data.length>0){
-                   
-                        var wechatMsgRecord=res.data.data[0];
-                        var msgList=that.data.msgList;
-                        var total_is_not_read_count=0;
-                        for(var i=0;i<msgList.length;i++){
-                            var oldItem=msgList[i];
+                    if(res.data.data != null && res.data.data.length>0){
+                      console.log(res.data.data,'res.data.data')
+                        var wechatMsgRecord = res.data.data[0];
+                        var msgList = that.data.msgList;
+                        var total_is_not_read_count = 0;
+                        for(var i = 0;i < msgList.length;i++){
+                            var oldItem = msgList[i];
                         
-                            if(oldItem.customer_id==wechatMsgRecord.receiver_id||oldItem.customer_id==wechatMsgRecord.sender_id){
-                                oldItem.lstWechatMsgRecord=res.data.data;
+                            if(oldItem.customer_id == wechatMsgRecord.receiver_id || oldItem.customer_id == wechatMsgRecord.sender_id){
+                                oldItem.lstWechatMsgRecord = res.data.data;
                                 // 同步更新 time 字段，确保排序正确
                                 if (res.data.data.length > 0) {
                                     oldItem.time = at.weChatTimeFormat(res.data.data[0].create_time);
@@ -168,7 +168,7 @@ Page({
                                 console.log("oldItem:",oldItem);
                             }
                             if(oldItem.lstWechatMsgRecord.length!=0){
-                                total_is_not_read_count=total_is_not_read_count+oldItem.lstWechatMsgRecord[0].is_not_read_count;
+                                total_is_not_read_count = total_is_not_read_count + oldItem.lstWechatMsgRecord[0].is_not_read_count;
                             }
                         }
 
@@ -555,8 +555,8 @@ Page({
                 var curPage = pages[pages.length - 1];
                 if (curPage && curPage.route && curPage.route.indexOf('chatWithCustDetail') >= 0) {
                     curPage.getNewData();
-                    // 对方发来的消息才 toast 提示
                     if (data.sender_id !== app.globalData.customerInf.id) {
+                        wx.vibrateShort({ type: 'light' });
                         wx.showToast({ title: '收到新消息', icon: 'none', duration: 1500 });
                     }
                 }
