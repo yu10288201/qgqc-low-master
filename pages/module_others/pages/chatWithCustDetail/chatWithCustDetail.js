@@ -25,6 +25,13 @@ Page({
     isLoading:true,//是否正在加载
     isOldLoading:false,//正在获取旧资料
     isNewLoading:false,//正在获取新资料
+    isAnchoring: false, // 是否正在执行scroll-into-view锚定，锚定期间屏蔽手动滚动干扰
+    playingAudioId: null,     // 当前正在播放的语音消息ID
+    isAudioPlaying: false,    // 是否正在播放
+    audioCurrentTime: 0,      // 当前播放进度（秒）
+    audioPlayDuration: 0,     // 当前音频总时长（秒）
+    audioCurrentTimeText: '00:00',  // 格式化后的当前时间
+    audioDurationText: '00:00',     // 格式化后的总时长
   },
 
 
@@ -83,73 +90,15 @@ Page({
 
   },
   scroll(e) {
-    // 滚动到顶部附近时，用 _Page 分页加载更多历史消息
-    let that = this
-    if (that.data.scrollLoading == 1) {
-      return;
-    }
-    if (e.detail.scrollTop < 10) {
-      that.setData({
-        scrollLoading: 1
-      })
-      wx.showLoading({
-        title: '请稍后',
-      })
-      wx.request({
-        url: app.globalData.selectWechatMsgRecord_StaffToCustomer_Page,
-        data: {
-          page_index: that.data.pageIndex,
-          page_size: that.data.pageSize,
-          shop_id: app.globalData.shopdetail.length > 0 ? app.globalData.shopdetail.shop_id : 0,
-          sender_id: app.globalData.customerInf.id,
-          receiver_id: that.data.custInfo.customer_id,
-        },
-        success: res => {
-          if (res.data.code == 1000) {
-            let recordList = that.data.recordListSS
-            let resList = res.data.data
-            if (resList && resList.length > 0) {
-              let a = resList.concat(recordList)
-              setTimeout(() => {
-                that.setData({
-                  recordList: a,
-                  pageId: 'page_' + (resList[resList.length - 1].id)
-                }, () => {
-                  if (resList.length >= that.data.pageSize) {
-                    that.setData({
-                      scrollLoading: 0,
-                      pageIndex: Number(that.data.pageIndex) + 1
-                    })
-                  } else {
-                    that.setData({ scrollLoading: 0 })
-                  }
-                  wx.hideLoading()
-                })
-              }, 500)
-            } else {
-              // 没有更多数据了
-              that.setData({ scrollLoading: 0 })
-              wx.hideLoading()
-            }
-          } else {
-            wx.showToast({ title: '加载失败: ' + (res.data.result || '未知错误'), icon: 'none' })
-            that.setData({ scrollLoading: 0 })
-            wx.hideLoading()
-          }
-        },
-        fail: err => {
-          console.error('_Page 请求失败:', err)
-          wx.showToast({ title: '网络异常', icon: 'none' })
-          that.setData({ scrollLoading: 0 })
-          wx.hideLoading()
-        }
-      })
-    }
+    // 记录当前滚动位置
+    this._scrollTop = e.detail.scrollTop;
   },
   getOldData(){
     var that=this;
     var isOldLoading=this.data.isOldLoading;
     if(isOldLoading==true){
+        // 如果已经在加载中，重置 scrollLoading 避免死锁
+        that.setData({ scrollLoading: 0 });
         return;
     }
     //max_id=0 传入服务器后，则会自动设置max_id为int的最大值。
@@ -176,9 +125,6 @@ Page({
           staff_id: that.data.custInfo.customer_id,
         },
         success: res => {
-            that.setData({
-                isOldLoading:false,
-            })
             console.log(res,'res')
           if (res.data.code == 1000) {
             var  resList = res.data.data
@@ -187,24 +133,40 @@ Page({
 
             if(resList&&resList.length>0){
                 var newList=resList.concat(recordList);
+                var current_page_id="page_"+resList[resList.length-1].id;
+                // 先设置数据，再在回调中更新 pageId 和加载状态
+                // 关键修复：不再定时清空 pageId，避免 scroll-into-view 被移除时滚动条跳动
                 that.setData({
                     recordList: newList,
+                }, () => {
+                  setTimeout(function(){
+                      that.setData({
+                          pageId: current_page_id,
+                          isOldLoading: false,
+                          scrollLoading: 0,
+                          isAnchoring: true, // 标记锚定中，scroll 事件会追踪用户是否离开锚点
+                      })
+                      that._anchorTargetTop = undefined; // 锚点目标位置未知，由 scroll 事件自然追踪
+                  }, 300)
                 })
-                var current_page_id="page_"+resList[resList.length-1].id;
-                setTimeout(function(){
-                    that.setData({
-                        pageId:current_page_id,
-                      })
-                  },300)
-                  that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
+                that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
             }else{
+                // 没有更多历史数据，锚到顶部占位元素
                 setTimeout(function(){
                     that.setData({
-                        pageId:"s2",
-                      })
-                  },300)
+                        pageId: "s2",
+                        isOldLoading: false,
+                        scrollLoading: 0,
+                        isAnchoring: true,
+                    })
+                    that._anchorTargetTop = undefined;
+                }, 300)
             }
           } else {
+            that.setData({
+                isOldLoading: false,
+                scrollLoading: 0,
+            })
             wx.showModal({
               title: '提示',
               content: '异常'+res.data.result,
@@ -215,14 +177,12 @@ Page({
         fail: res => {
             that.setData({
                 isOldLoading:false,
+                scrollLoading: 0,
             })
             wx.showModal({
                 title: '提示',
                 content: '网络异常',
                 showCancel: false,
-            })
-            that.setData({
-                scrollLoading: 0,
             })
         }
       })
@@ -259,8 +219,10 @@ Page({
                 var current_page_id="page_"+resList[resList.length-1].id;
                 setTimeout(function(){
                     that.setData({
-                        pageId:current_page_id,
-                      })
+                        pageId: current_page_id,
+                        isAnchoring: true,
+                    })
+                    that._anchorTargetTop = undefined;
                   },300)
             }
             that.chatWithCust_Last(3,that.data.custInfo.customer_id,app.globalData.customerInf.id)
@@ -289,8 +251,13 @@ Page({
   },
   scrollToUpper:function(e){
     console.log("scroll-view 拉取到最顶部")
-    //到达顶部后，向下滚动10px,使视图可以再次滚动
     var that=this;
+    // 防抖：如果正在加载旧数据，忽略重复触发
+    if (that.data.isOldLoading || that.data.scrollLoading == 1) {
+      console.log("正在加载中，忽略重复触发");
+      return;
+    }
+    that.setData({ scrollLoading: 1 });
     this.getOldData();
   },
   // 发送
@@ -587,23 +554,114 @@ Page({
       success: function (res) {}
     })
   },
-  playAudio:function(e){
-      console.log("playAudio")
-      console.log(e)
-      var item=e.target.dataset.item;
-      console.log(item)
+  // 格式化秒数为 mm:ss
+  formatAudioTime: function(seconds) {
+    if (!seconds || isNaN(seconds)) return '00:00';
+    var m = Math.floor(seconds / 60);
+    var s = Math.floor(seconds % 60);
+    return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+  },
 
-      if(item&&item.msg){
-        innerAudioContext.autoplay = true
-        innerAudioContext.src = item.msg,
-          innerAudioContext.onPlay(() => {
-            console.log('开始播放')
-          })
-        innerAudioContext.onError((res) => {
-          console.log(res.errMsg)
-          console.log(res.errCode)
-        })
+  // 滑块拖动结束，跳转到指定位置
+  onSliderChange: function(e) {
+    var newTime = e.detail.value;
+    innerAudioContext.seek(newTime);
+    this.setData({
+      audioCurrentTime: newTime,
+      audioCurrentTimeText: this.formatAudioTime(newTime),
+    });
+  },
+
+  // 滑块拖动中，实时更新显示
+  onSliderChanging: function(e) {
+    var newTime = e.detail.value;
+    this.setData({
+      audioCurrentTime: newTime,
+      audioCurrentTimeText: this.formatAudioTime(newTime),
+    });
+  },
+
+  playAudio: function(e) {
+    console.log("playAudio")
+    console.log(e)
+    var that = this;
+    var item = e.currentTarget.dataset.item;
+    console.log(item)
+
+    if (!item || !item.msg) return;
+
+    // 如果点击的是正在播放的音频 → 暂停/恢复
+    if (this.data.playingAudioId === item.id) {
+      if (innerAudioContext.paused) {
+        innerAudioContext.play();
+      } else {
+        innerAudioContext.pause();
       }
+      return;
+    }
+
+    // 切换到新音频：先停止旧音频
+    innerAudioContext.stop();
+
+    innerAudioContext.src = item.msg;
+    innerAudioContext.autoplay = true;
+
+    var duration = item.duration || 0;
+    this.setData({
+      playingAudioId: item.id,
+      isAudioPlaying: true,
+      audioCurrentTime: 0,
+      audioPlayDuration: duration,
+      audioCurrentTimeText: '00:00',
+      audioDurationText: this.formatAudioTime(duration),
+    });
+
+    // 播放进度更新
+    innerAudioContext.onTimeUpdate(function() {
+      // 确保是当前播放的音频（防止旧回调干扰）
+      if (that.data.playingAudioId !== item.id) return;
+      var currentTime = innerAudioContext.currentTime || 0;
+      var dur = innerAudioContext.duration || duration;
+      that.setData({
+        audioCurrentTime: currentTime,
+        audioPlayDuration: dur,
+        audioCurrentTimeText: that.formatAudioTime(currentTime),
+        audioDurationText: that.formatAudioTime(dur),
+      });
+    });
+
+    // 播放结束
+    innerAudioContext.onEnded(function() {
+      if (that.data.playingAudioId !== item.id) return;
+      that.setData({
+        isAudioPlaying: false,
+        audioCurrentTime: 0,
+        audioCurrentTimeText: '00:00',
+      });
+    });
+
+    // 播放被停止
+    innerAudioContext.onStop(function() {
+      that.setData({
+        isAudioPlaying: false,
+        audioCurrentTime: 0,
+        audioCurrentTimeText: '00:00',
+      });
+    });
+
+    innerAudioContext.onPlay(function() {
+      console.log('开始播放');
+      that.setData({ isAudioPlaying: true });
+    });
+
+    innerAudioContext.onPause(function() {
+      that.setData({ isAudioPlaying: false });
+    });
+
+    innerAudioContext.onError(function(res) {
+      console.log(res.errMsg);
+      console.log(res.errCode);
+    });
   },
   chatWithCust_Last(wechat_type,sender_id,receiver_id){
     try {
@@ -665,7 +723,13 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    innerAudioContext.stop();
+    innerAudioContext.offTimeUpdate();
+    innerAudioContext.offEnded();
+    innerAudioContext.offStop();
+    innerAudioContext.offPlay();
+    innerAudioContext.offPause();
+    innerAudioContext.offError();
   },
 
   /**
