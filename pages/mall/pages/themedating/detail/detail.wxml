@@ -10,6 +10,12 @@
   <!-- 活动基本信息 -->
   <view class="card">
     <view class="info-row">
+      <text class="info-key">活动编号：</text>
+      <text class="info-val" style="flex:none; margin-right:16rpx;">{{activity.activityNo || '暂无'}}</text>
+      <text class="info-key">活动类型：</text>
+      <text class="info-val">{{activity.activityType == 1 ? 'KTV' : activity.activityType == 2 ? '旅游' : activity.activityType == 3 ? '美食' : '暂无'}}</text>
+    </view>
+    <view class="info-row">
       <text class="info-key">活动名称：</text>
       <text class="info-val">{{activity.title}}</text>
     </view>
@@ -24,6 +30,16 @@
     <view class="info-row" wx:if="{{activity.activityDateEnd}}">
       <text class="info-key">结束时间：</text>
       <text class="info-val">{{activity.activityDateEnd}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">报名截止：</text>
+      <text class="info-val">{{activity.signupDeadline || '暂无'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-key">活动人数：</text>
+      <text class="info-val" style="flex:none; margin-right:16rpx;">{{activity.currentCount || 0}}/{{activity.maxCount || 0}}</text>
+      <text class="info-key">活动状态：</text>
+      <text class="info-val">{{activity.status == 1 ? '报名中' : activity.status == 2 ? '已结束' : activity.status == 0 ? '未开始' : '暂无'}}</text>
     </view>
     <view class="info-row">
       <text class="info-key">活动费用：</text>
@@ -44,6 +60,12 @@
       <text class="info-key">活动内容：</text>
       <scroll-view scroll-y class="desc-scroll">
         <view class="desc-text">{{activity.descriptionDetail || '空'}}</view>
+      </scroll-view>
+    </view>
+    <view class="info-row-col">
+      <text class="info-key">活动规则：</text>
+      <scroll-view scroll-y class="desc-scroll">
+        <text class="rule-content">{{activity.description || '空'}}</text>
       </scroll-view>
     </view>
   </view>

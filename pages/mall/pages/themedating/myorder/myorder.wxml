@@ -1,7 +1,10 @@
 <view class="container">
-  <!-- 搜索头部 -->
-  <view class="search-panel">
-    <text class="search-title">订单查询：</text>
+  <!-- 固定搜索头部 -->
+  <view class="search-panel" id="search-header">
+    <view class="search-row">
+      <text class="search-label">活动编号：</text>
+      <input class="search-input" placeholder="请输入活动编号" value="{{activityNo}}" data-field="activityNo" bindinput="onSearchInput" style="padding-top: 1rpx; padding-bottom: 1rpx;" />
+    </view>
     <view class="search-row">
       <text class="search-label">活动名称：</text>
       <input class="search-input" placeholder="请输入活动名称" value="{{titleKeyword}}" data-field="titleKeyword" bindinput="onSearchInput" style="padding-top: 1rpx; padding-bottom: 1rpx;" />
@@ -23,7 +26,8 @@
   </view>
 
   <!-- 订单列表 -->
-  <view wx:if="{{orderList.length > 0}}">
+  <view style="padding-top: {{headerHeight}}px; width: 100%; box-sizing: border-box;">
+    <view wx:if="{{orderList.length > 0}}">
     <view class="order-card" wx:for="{{orderList}}" wx:key="id">
       <view class="card-row">
         <text class="card-label">订单编号：</text>
@@ -51,11 +55,11 @@
         <text class="card-label">活动费用：</text>
         <text class="card-text">{{item.amount}}元</text>
         <text class="card-label" style="margin-left:-50rpx;">订单状态：</text>
-        <text class="card-text">{{item.orderStatusText}}</text>
+        <text class="card-text" style="color: {{item.orderStatusText === '已结束' ? '#999' : item.orderStatusText === '退款已拒绝' ? '#f33' : '#333'}}">{{item.orderStatusText}}</text>
       </view>
       <view class="card-row">
         <text class="card-label">支付状态：</text>
-        <text class="card-text {{item.payStatus === 0 ? 'status-unpaid' : item.payStatus === 1 ? 'status-paid' : 'status-refunded'}}">{{item.payStatus === 0 ? '待支付' : item.payStatus === 1 ? '已支付' : '已退款'}}</text>
+        <text class="card-text {{item.payStatus === 0 ? 'status-unpaid' : item.payStatus === 1 ? 'status-paid' : 'status-refunded'}}">{{item.payStatus === 0 ? '未支付' : item.payStatus === 1 ? '已支付' : '已退款'}}</text>
         <view wx:if="{{item.payStatus === 0}}" class="btn-pay" bindtap="onPay" data-item="{{item}}" style="letter-spacing:2rpx;text-indent:2rpx;">支 付</view>
       </view>
       <view class="card-row">
@@ -89,6 +93,7 @@
   </view>
   <view wx:elif="{{loading}}" class="empty-tip">加载中...</view>
   <view wx:else class="empty-tip">暂无订单记录</view>
+  </view>
 
   <!-- 退款弹窗 -->
   <view wx:if="{{refundModal}}" class="modal-mask" bindtap="onCloseRefund">

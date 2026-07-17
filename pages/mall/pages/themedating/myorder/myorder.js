@@ -3,6 +3,7 @@ const themeApi = require('../themeApi')
 Page({
   data: {
     titleKeyword: '',
+    activityNo: '',
     dateStart: '',
     dateEnd: '',
     hasFilter: false,
@@ -12,12 +13,20 @@ Page({
     loading: false,
     refundModal: false,
     refundReason: '',
-    refundOrderId: ''
+    refundOrderId: '',
+    headerHeight: 0
   },
 
   onLoad() {
     themeApi.login().catch(() => {})
     this.loadOrders(true)
+  },
+
+  onReady() {
+    const query = wx.createSelectorQuery()
+    query.select('#search-header').boundingClientRect(rect => {
+      if (rect) this.setData({ headerHeight: rect.height })
+    }).exec()
   },
 
   onShow() {
@@ -41,7 +50,7 @@ Page({
     const val = e.detail.value
     this.setData({
       [e.currentTarget.dataset.field]: val,
-      hasFilter: !!(val || this.data.dateStart || this.data.dateEnd)
+      hasFilter: !!(val || this.data.dateStart || this.data.dateEnd || this.data.activityNo)
     })
   },
 
@@ -67,7 +76,7 @@ Page({
 
   onClear() {
     if (!this.data.hasFilter) return
-    this.setData({ titleKeyword: '', dateStart: '', dateEnd: '', hasFilter: false })
+    this.setData({ titleKeyword: '', activityNo: '', dateStart: '', dateEnd: '', hasFilter: false })
     this.loadOrders(true)
   },
 
@@ -79,9 +88,10 @@ Page({
     if (this.data.loading) return
     const page = reset ? 1 : this.data.page
     this.setData({ loading: true })
-    const { titleKeyword, dateStart, dateEnd } = this.data
+    const { titleKeyword, activityNo, dateStart, dateEnd } = this.data
     const params = { pageNum: page, pageSize: 10 }
     if (titleKeyword) params.titleKeyword = titleKeyword
+    if (activityNo) params.activityNo = activityNo
     if (dateStart) params.dateStart = dateStart
     if (dateEnd) params.dateEnd = dateEnd
     themeApi.request({
@@ -105,6 +115,7 @@ Page({
         if (item.refundStatus === 1) orderStatusText = '退款审核中'
         else if (item.refundStatus === 2) orderStatusText = '已退款'
         else if (item.refundStatus === 3) orderStatusText = '退款已拒绝'
+        else if (item.activityEnded === true) orderStatusText = '已结束'
         else if (item.signupStatus === 0) orderStatusText = '待确认'
         else if (item.signupStatus === 1) orderStatusText = '已确认'
         else if (item.signupStatus === 2) orderStatusText = '已取消'
