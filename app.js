@@ -3033,7 +3033,7 @@ App({
                         curPage.getNewData();
                       }
                       if(pages.length>1){
-                            prePage= pages[pages.length - 2];
+                            var prePage= pages[pages.length - 2];
                             if(prePage){
                                 if(prePage.route){
                                     

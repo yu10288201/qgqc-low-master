@@ -27,10 +27,9 @@ Page({
       if (res && res.code === 200 && res.data) {
         const d = res.data
         const rawList = (d.mediaList || []).sort((a, b) => a.mediaType - b.mediaType)
-        const mediaList = rawList.map((item, i) => {
+        const mediaList = rawList.map((item) => {
           const isVideo = item.mediaType === 1
-          const prevIsVideo = i > 0 && rawList[i - 1].mediaType === 1
-          return { ...item, needGap: isVideo || prevIsVideo }
+          return { ...item, needGap: isVideo }
         })
         const firstImg = mediaList.find(m => m.mediaType !== 1)
         const firstVideo = mediaList.find(m => m.mediaType === 1)

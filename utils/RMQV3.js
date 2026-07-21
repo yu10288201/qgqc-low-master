@@ -97,6 +97,7 @@ function initRabbitMQ(userCode,hj){
   let destination = hj + "qgqc_" + userCode;
   console.log('ATim--用户标识' + destination)
   app.globalData.RMQclient.connect('smp', 'smp83131326', function (sessionId) {
+
     app.globalData.RMQclient.subscribe(destination, function (body, headers) {
 
       console.log("app.globalData.RMQclient.subscribe:",body)
@@ -173,6 +174,26 @@ function initRabbitMQ(userCode,hj){
         app.globalData.RMQCallBack(a)
       }
     },{'auto-delete':false,'x-message-ttl':30000,exclusive:false});
+    var customerId = app.globalData.customerInf.id;
+    if (customerId && String(customerId) !== String(userCode)) {
+      var dest2 = hj + "qgqc_" + customerId;
+      console.log('ATim--额外订阅队列:' + dest2);
+      app.globalData.RMQclient.subscribe(dest2, function (body, headers) {
+        if(body.body.charCodeAt(0) == "123"){
+          let a = JSON.parse(body.body)
+          console.log("JSON.parse(body.body):",a)
+          if(typeof(a.data.msg) == "string"){
+            a.data.msg = JSON.parse(a.data.msg)
+          }
+          if(a.data.msg.type=='wechat'){
+            app.chatWithCustDetail_GetNewMsg(a.data.msg)
+            console.log("收到聊天消息")
+            return
+          }
+          app.globalData.RMQCallBack(a)
+        }
+      },{'auto-delete':false,'x-message-ttl':30000,exclusive:false})
+    }
   })
   app.globalData.RMQclient.debug = !app.globalData.RMQDebug ? '' : function(res){
     console.log(res)

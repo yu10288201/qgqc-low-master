@@ -129,20 +129,20 @@
         <view style="position: relative;">
             <view wx:if="{{total_is_not_read_count>99}}" class="badgecontent">99+</view>
             <view wx:elif="{{total_is_not_read_count>0}}" class="badgecontent">{{total_is_not_read_count}}</view>
-            <view class="{{pageIndex == 0 ? 'onlymefillImg' : 'onlymeImg'}}">
+            <view class="{{pageIndex == 0 ? 'msgFillImg' : 'msgImg'}}">
         
             </view>
         </view>
         
 
-		<view style="color: {{pageIndex == 0 ? '#0099A2' : '#000'}};">用户列表</view>
+		<view style="color: {{pageIndex == 0 ? '#0099A2' : '#000'}};">乔信</view>
 	</view>
 	<view bindtap="pageChangeEvent" data-current="1" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
 		<view class="{{pageIndex == 1 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
-		<view style="color: {{pageIndex == 1 ? '#0099A2' : '#000'}};">好友</view>
+		<view style="color: {{pageIndex == 1 ? '#0099A2' : '#000'}};">通讯录</view>
 	</view>
     <view bindtap="pageChangeEvent" data-current="2" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">
-		<view class="{{pageIndex == 2 ? 'onlyshopfillImg' : 'onlyshopImg'}}"></view>
+		<view class="{{pageIndex == 2 ? 'custFillImg' : 'custImg'}}"></view>
 		<view style="color: {{pageIndex == 2 ? '#0099A2' : '#000'}};">更多</view>
 	</view>
 	<view bindtap="pageChangeEvent" data-current="3" style="display: flex;flex-direction: column;justify-content: center;align-items: center;flex: 1;height: 100%;">

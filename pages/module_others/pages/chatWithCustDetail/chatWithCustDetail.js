@@ -93,6 +93,30 @@ Page({
     // 记录当前滚动位置
     this._scrollTop = e.detail.scrollTop;
   },
+  processTimeDividers(recordList) {
+    for (var i = 0; i < recordList.length; i++) {
+      var item = recordList[i];
+      if (i === 0) {
+        item.showTimeDivider = true;
+        item.timeDividerLabel = item.create_time ? item.create_time.substring(0, 19) : '';
+      } else {
+        var prevTime = recordList[i - 1].create_time;
+        var currTime = item.create_time;
+        if (prevTime && currTime) {
+          var prev = new Date(prevTime.replace(/-/g, '/')).getTime();
+          var curr = new Date(currTime.replace(/-/g, '/')).getTime();
+          if (curr - prev > 300000) {
+            item.showTimeDivider = true;
+            item.timeDividerLabel = currTime.substring(0, 19);
+          } else {
+            item.showTimeDivider = false;
+          }
+        } else {
+          item.showTimeDivider = false;
+        }
+      }
+    }
+  },
   getOldData(){
     var that=this;
     var isOldLoading=this.data.isOldLoading;
@@ -133,6 +157,7 @@ Page({
 
             if(resList&&resList.length>0){
                 var newList=resList.concat(recordList);
+                that.processTimeDividers(newList);
                 var current_page_id="page_"+resList[resList.length-1].id;
                 // 先设置数据，再在回调中更新 pageId 和加载状态
                 // 关键修复：不再定时清空 pageId，避免 scroll-into-view 被移除时滚动条跳动
@@ -213,6 +238,7 @@ Page({
             var  resList = res.data.data
             if(resList&&resList.length>0){
                 var newList=recordList.concat(resList);
+                that.processTimeDividers(newList);
                 that.setData({
                     recordList: newList,
                 })

@@ -72,14 +72,15 @@ function weChatTimeFormat(time) {
 	const getYear = timeDate.getFullYear()
 	// 24小时制时间格式，如 "14:30"
 	const HHmm = `${formatTime2("hh", timeDate)}:${formatTime2("mm", timeDate)}`
+	const HHmmss = HHmm + ':' + formatTime2("ss", timeDate)
 	// 判断是否为同一天（自然日）
 	const isToday = new Date().toDateString() === timeDate.toDateString()
 	if (isToday) {
 		return HHmm
 	} else if (currentYear > getYear) {
-		return `${formatTime2("yyyy年MM月dd日", timeDate)}`
+		return `${formatTime2("yyyy年MM月dd日", timeDate)} ${HHmmss}`
 	} else {
-		return `${formatTime2("MM月dd日", timeDate)}`
+		return `${formatTime2("MM月dd日", timeDate)} ${HHmmss}`
 	}
 }
 //时间格式化兼容 ios
