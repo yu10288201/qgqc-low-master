@@ -3,7 +3,7 @@
   <view class="search-panel" id="search-header">
     <view class="search-row">
       <text class="search-label">活动编号：</text>
-      <input class="search-input" placeholder="请输入活动编号" value="{{activityNo}}" data-field="activityNo" bindinput="onSearchInput" style="padding-top: 1rpx; padding-bottom: 1rpx;" />
+      <input class="search-input" placeholder="请输入活动编号" value="{{activityNo}}" data-field="activityNo" bindinput="onSearchInput" style="padding-top: 1rpx; padding-bottom: 1rpx; flex: none; width: 45%;" />
     </view>
     <view class="search-row">
       <text class="search-label">活动名称：</text>

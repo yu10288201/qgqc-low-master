@@ -59,7 +59,7 @@
     <view class="info-row-col">
       <text class="info-key">活动内容：</text>
       <scroll-view scroll-y class="desc-scroll">
-        <view class="desc-text">{{activity.descriptionDetail || '空'}}</view>
+        <text class="rule-content">{{activity.descriptionDetail || '空'}}</text>
       </scroll-view>
     </view>
     <view class="info-row-col">

@@ -36,7 +36,9 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
 
   <view style="display: flex;width: 100%;justify-content: center;align-items: center;flex-direction: column;" wx:for="{{recordList}}" wx:key="index">
 
-    <view style="width: 95%;padding-bottom: 4rpx;" id="page_{{item.id}}" wx:if="{{item.sender_id !=customerInf.id}}">
+    <view wx:if="{{item.showTimeDivider}}" style="display:flex;justify-content:center;padding:16rpx 0;">
+      <text style="font-size:22rpx;color:#999;">{{item.timeDividerLabel}}</text>
+    </view>    <view style="width: 95%;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:if="{{item.sender_id !=customerInf.id}}">
       <view style="display: flex;justify-content: flex-start;">
         <image wx:if="{{custInfo.avatar_url&&custInfo.avatar_url!=''}}" class="avatar" mode="scaleToFill" src="{{custInfo.avatar_url}}"></image>
         <view wx:else class="avatar"></view>
@@ -79,9 +81,8 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
           </view>
         </view>
       </view>
-      <view style="font-size: 22rpx;color: #999;margin-top: 2rpx;padding-bottom: 16rpx;padding-left: 90rpx;">{{timeFormat.formatCreateTime(item.create_time)}}</view>
     </view>
-    <view style="width: 95%;padding-bottom: 4rpx;" id="page_{{item.id}}" wx:else>
+    <view style="width: 95%;padding-bottom: 20rpx;" id="page_{{item.id}}" wx:else>
       <view style="display: flex;justify-content: flex-end;">
         <view style="width: 80%;display: flex;border-radius: 15rpx;position: relative;justify-content: flex-end;">
           <view wx:if="{{item.msg_type==1||item.msg_type==3}}" style="max-width: 77%;background-color: #89d961;margin-right: 35rpx;border-radius: 10rpx;padding: 20rpx;word-break: break-all;">
@@ -133,7 +134,6 @@ bindscroll="scroll" id="scrollview" bindscrolltoupper="scrollToUpper" >
         <image wx:if="{{customerInf&&customerInf.avatarUrl&&customerInf.avatarUrl!=''}}" class="avatar" mode="scaleToFill" src="{{customerInf.avatarUrl}}"></image>
         <view wx:else class="avatar"></view>
       </view>
-      <view style="font-size: 22rpx;color: #999;margin-top: 2rpx;padding-bottom: 16rpx;padding-right: 90rpx;text-align: right;">{{timeFormat.formatCreateTime(item.create_time)}}</view>
     </view>
 
   </view>

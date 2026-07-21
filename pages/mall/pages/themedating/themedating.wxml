@@ -4,7 +4,6 @@
     <button class="btn" bindtap="toDoubleChoice"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">双向选择</text></button>
     <button class="btn" bindtap="toChat"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">乔信</text></button>
     <button class="btn" bindtap="toMyOrder"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">我的订单</text></button>
-    <button class="btn" bindtap="toMySignup"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">支付</text></button>
     <button class="btn" bindtap="toPromotion"><text style="text-shadow: 2px 4px 10px rgb(80,80,80);">推广奖励</text></button>
   </view>
 </view>
